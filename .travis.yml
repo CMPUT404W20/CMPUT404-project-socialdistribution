@@ -20,3 +20,6 @@ deploy:
   api_key:
     secure: $HEROKU_KEY
   app: cmput404-socialdistribution
+
+notifications:
+  slack: cmput404team2:X4ovyEEbhpnyz8PzuK0KYrIG
