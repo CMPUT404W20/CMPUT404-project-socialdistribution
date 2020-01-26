@@ -18,3 +18,7 @@ deploy:
   api_key:
     secure: $HEROKU_KEY
   app: cmput404-socialdistribution
+
+# Send notifications to Slack when a build occurs
+notifications:
+  slack: cmput404team2:X4ovyEEbhpnyz8PzuK0KYrIG
