@@ -153,3 +153,7 @@ django_heroku.settings(locals())
 # Heroku Postgres requires SSL, but SQLite doesn’t need or expect it.
 del DATABASES['default']['OPTIONS']['sslmode']
 
+
+# Django auth
+
+REST_AUTH_REGISTER_SERIALIZERS = {'REGISTER_SERIALIZER': 'backend.serializers.AuthRegisterSerializer'}
