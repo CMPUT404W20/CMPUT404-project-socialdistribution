@@ -28,6 +28,3 @@ def test_signup(client):
     assert test_user.check_password(test_user1_password)
     assert test_user.is_active is False
     assert test_user.is_superuser is False
-
-
-
