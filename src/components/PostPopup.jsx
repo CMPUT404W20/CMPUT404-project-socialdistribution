@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Row from "react-bootstrap/Row";
+import Dropdown from "react-bootstrap/Dropdown";
 
 class PostPopup extends Component {
   constructor(props) {
@@ -10,15 +10,11 @@ class PostPopup extends Component {
   render() {
     return (
       <div className="post-popup">
-        <Row>
-          <button className="post-popup-button" type="button">button1</button>
-        </Row>
-        <Row>
-          <button className="post-popup-button" type="button">button1</button>
-        </Row>
-        <Row>
-          <button className="post-popup-button" type="button">button1</button>
-        </Row>
+        <Dropdown.Item >Edit</Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item >Delete</Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item >Copy link to post</Dropdown.Item>
       </div>
     );
   }
