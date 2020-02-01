@@ -7,31 +7,22 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 class PostBlock extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      menuShownup: false
-    };
-    this.moreMenuOnClick = this.moreMenuOnClick.bind(this);
-  }
-
-  moreMenuOnClick() {
-    this.setState({
-      menuShownup: !this.state.menuShownup
-    });
+    this.state = {};
   }
 
   render() {
+    console.log(this.state.menuShownup)
     return (
       <div className="post-block">
         <div className="post-info">
           <div className="post-username">{this.props.username}</div>
           <DropdownButton
             id="post-button"
-            onClick={this.moreMenuOnClick}
-            onKeyDown={this.moreMenuOnClick}
             title={<img id="post-more-icon" src={moreIcon} alt="more-icon" />}
             drop="down"
+            alignRight
           >
-            {this.state.menuShownup ? <PostPopup /> : null}
+            <PostPopup />
           </DropdownButton>
 
           <div className="post-time">{this.props.postTime}</div>
