@@ -4,6 +4,7 @@ $right: 25px;
 $top: 15px;
 $bottom: 15px;
 $post-width: 500px;
+$post-info-font-size: 12px;
 
 .post-block {
   width: $post-width;
@@ -14,21 +15,22 @@ $post-width: 500px;
 .post-username,
 .post-time {
   display: inline;
+  padding-top: 2.5px;
 }
 
 .post-info {
   padding: $top $right $bottom $left;
   margin-bottom: $bottom+10px;
+  font-size: $post-info-font-size;
 }
 
 .post-username {
   text-align: left;
-  font-weight: bold;
   float: left;
 }
 .post-time {
   text-align: right;
-  font-weight: lighter;
+  color: #AAAAAA;
   margin-right: 0vw;
   float: right;
 }
@@ -38,6 +40,7 @@ $post-width: 500px;
 .post-content {
   text-align: left;
   padding: $top $right $bottom $left;
+  line-height: normal;
 }
 #post-more-icon {
   float: right;
