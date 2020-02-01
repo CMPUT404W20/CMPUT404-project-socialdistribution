@@ -1,0 +1,45 @@
+$BACKGROUND-WHITE: #ffffff;
+$left: 25px;
+$right: 25px;
+$top: 15px;
+$bottom: 15px;
+$post-width: 500px;
+
+.post-block {
+  width: $post-width;
+  height: fit-content;
+  background-color: $BACKGROUND-WHITE;
+  box-shadow: 0px 0px 6px rgba(202, 202, 202, 0.25);
+}
+.post-username,
+.post-time {
+  display: inline;
+}
+
+.post-info {
+  padding: $top $right $bottom $left;
+  margin-bottom: $bottom+10px;
+}
+
+.post-username {
+  text-align: left;
+  font-weight: bold;
+  float: left;
+}
+.post-time {
+  text-align: right;
+  font-weight: lighter;
+  margin-right: 0vw;
+  float: right;
+}
+.post-img {
+  width: 100%;
+}
+.post-content {
+  text-align: left;
+  padding: $top $right $bottom $left;
+}
+#post-more-icon {
+  float: right;
+  margin-left: 10px;
+}
