@@ -20,7 +20,7 @@ $post-info-font-size: 12px;
 
 .post-info {
   padding: $top $right $bottom $left;
-  margin-bottom: $bottom+10px;
+  margin-bottom: $bottom + 10px;
   font-size: $post-info-font-size;
 }
 
@@ -30,7 +30,7 @@ $post-info-font-size: 12px;
 }
 .post-time {
   text-align: right;
-  color: #AAAAAA;
+  color: #aaaaaa;
   margin-right: 0vw;
   float: right;
 }
@@ -44,10 +44,13 @@ $post-info-font-size: 12px;
 }
 
 #post-button {
-    all: unset;
-    border: none;
-    outline:none;
-    float: right;
-    margin-left: 10px;
+  all: unset;
+  border: none;
+  outline: none;
+  float: right;
+  margin-left: 10px;
 }
 
+.dropdown-toggle::after {
+  border: none;
+}
