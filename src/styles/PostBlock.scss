@@ -51,6 +51,11 @@ $post-info-font-size: 12px;
   margin-left: 10px;
 }
 
+.dropdown-menu[aria-labelledby = post-button] {
+  border: 1px solid #5E5E5E;
+  border-radius: 2px;
+}
+
 .dropdown-toggle::after {
   border: none;
 }

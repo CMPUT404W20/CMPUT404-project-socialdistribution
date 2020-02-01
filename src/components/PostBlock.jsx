@@ -11,7 +11,6 @@ class PostBlock extends Component {
   }
 
   render() {
-    console.log(this.state.menuShownup)
     return (
       <div className="post-block">
         <div className="post-info">
