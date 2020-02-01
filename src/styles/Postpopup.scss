@@ -1,0 +1,10 @@
+$BACKGROUND-WHITE: #ffffff;
+$POPUP-WIDTH:20%;
+
+.post-popup {
+    border: 1px solid #5E5E5E;
+    width: $POPUP-WIDTH;
+    height: fit-content;
+    background-color: $BACKGROUND-WHITE;
+    box-shadow: 0px 0px 6px rgba(202, 202, 202, 0.25);
+}
