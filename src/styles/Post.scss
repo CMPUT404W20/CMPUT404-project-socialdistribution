@@ -42,7 +42,12 @@ $post-info-font-size: 12px;
   padding: $top $right $bottom $left;
   line-height: normal;
 }
-#post-more-icon {
-  float: right;
-  margin-left: 10px;
+
+#post-button {
+    all: unset;
+    border: none;
+    outline:none;
+    float: right;
+    margin-left: 10px;
 }
+
