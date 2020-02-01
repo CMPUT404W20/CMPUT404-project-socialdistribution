@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../styles/PostBlock.scss";
 import moreIcon from "../staticfiles/more-icon.svg";
-import PostPopup from "./PostPopup";
+import PostPopup from "./PostDropDown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
 class PostBlock extends Component {
