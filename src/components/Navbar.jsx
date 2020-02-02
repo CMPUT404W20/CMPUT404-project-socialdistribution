@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Navbar, NavItem, Nav, Form, FormControl} from "react-bootstrap";
+import Col from "react-bootstrap/Col";
 import "../styles/Nav.scss";
 import logo from "../images/logo.svg";
 import Container from "react-bootstrap/Container";
@@ -15,17 +15,19 @@ import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 class NavBar extends Component {
   render() {
     return (
-        <Container className="nav">
-          <Row className="navRow">
+      <Container className="nav">
+        <Row className="navRow">
+          <div className="left-menu">
             <div className="logo-container">
-              <img src={logo} width="80%" />
+              <img src={logo} width="70%" />
             </div>
             <div class="search-input-container">
               {/* color can be changed!!! */}
-              <SearchRoundedIcon color="primary" />
+              <SearchRoundedIcon style={{ color:"#0275B1"}} />
               <input class="search-input" placeholder="Search" />
             </div>
-            <div className="right-side-menu">
+          </div>
+          <div className="right-side-menu">
               <div className="icons">
                 <a className="Home" href="">
                   <HomeOutlinedIcon />
@@ -41,7 +43,6 @@ class NavBar extends Component {
                 </a>
               </div>
               <div className="user">
-                {/* need to change this later */}
                 <a href="">
                   <p>USERNAME</p>
                 </a>
@@ -52,9 +53,9 @@ class NavBar extends Component {
                   <p>LOG OUT</p>
                 </a>
               </div>
-            </div>
-          </Row>
-        </Container>
+          </div>
+        </Row>
+      </Container>
     );
   }
 }
