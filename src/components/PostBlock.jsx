@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "../styles/PostBlock.scss";
-import moreIcon from "../staticfiles/more-icon.svg";
-import PostDropDown from "./PostDropDown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import PostDropDown from "./PostDropDown";
+import moreIcon from "../staticfiles/more-icon.svg";
 
 class PostBlock extends Component {
   constructor(props) {
@@ -11,10 +12,13 @@ class PostBlock extends Component {
   }
 
   render() {
+    const {
+      username, content, imageSrc, postTime,
+    } = this.props;
     return (
       <div className="post-block">
         <div className="post-info">
-          <div className="post-username">{this.props.username}</div>
+          <div className="post-username">{username}</div>
           <DropdownButton
             id="post-button"
             title={<img id="post-more-icon" src={moreIcon} alt="more-icon" />}
@@ -24,13 +28,25 @@ class PostBlock extends Component {
             <PostDropDown />
           </DropdownButton>
 
-          <div className="post-time">{this.props.postTime}</div>
+          <div className="post-time">{postTime}</div>
         </div>
-        <img className="post-img" src={this.props.imageSrc} alt="more-icon" />
-        <div className="post-content">{this.props.content}</div>
+        <img className="post-img" src={imageSrc} alt="more-icon" />
+        <div className="post-content">{content}</div>
       </div>
     );
   }
 }
+
+PostBlock.propTypes = {
+  username: PropTypes.string.isRequired,
+  postTime: PropTypes.string.isRequired,
+  imageSrc: PropTypes.node,
+  content: PropTypes.string,
+};
+
+PostBlock.defaultProps = {
+  content: "",
+  imageSrc: "",
+};
 
 export default PostBlock;
