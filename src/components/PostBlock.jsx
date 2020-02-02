@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../styles/PostBlock.scss";
 import moreIcon from "../staticfiles/more-icon.svg";
-import PostPopup from "./PostDropDown";
+import PostDropDown from "./PostDropDown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
 class PostBlock extends Component {
@@ -21,7 +21,7 @@ class PostBlock extends Component {
             drop="down"
             alignRight
           >
-            <PostPopup />
+            <PostDropDown />
           </DropdownButton>
 
           <div className="post-time">{this.props.postTime}</div>
