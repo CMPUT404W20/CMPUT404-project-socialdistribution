@@ -20,7 +20,7 @@ class PostBlock extends Component {
         <div className="post-info">
           <div className="post-username">{username}</div>
           <DropdownButton
-            id="post-button"
+            id="post-more-button"
             title={<img id="post-more-icon" src={moreIcon} alt="more-icon" />}
             drop="down"
             alignRight
