@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import "../styles/PostDropDown.scss";
+import "../../styles/PostDropDown.scss";
 import Dropdown from "react-bootstrap/Dropdown";
-import editIcon from "../staticfiles/edit-pencil.svg";
-import deleteIcon from "../staticfiles/del-bin.svg";
-import linkIcon from "../staticfiles/link.svg";
+import editIcon from "../../images/edit-pencil.svg";
+import deleteIcon from "../../images/del-bin.svg";
+import linkIcon from "../../images/link.svg";
 
 class PostDropDown extends Component {
   constructor(props) {

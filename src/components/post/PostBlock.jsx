@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import "../styles/PostBlock.scss";
+import "../../styles/PostBlock.scss";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import PostDropDown from "./PostDropDown";
-import moreIcon from "../staticfiles/more-icon.svg";
+import moreIcon from "../../images/more-icon.svg";
 
 class PostBlock extends Component {
   constructor(props) {

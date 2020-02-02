@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
-import PostBlock from "../../components/PostBlock";
-import demoImage from "../../staticfiles/demo-img.png";
+import PostBlock from "../../../components/post/PostBlock";
+import demoImage from "../../../images/demo-img.png";
 
 describe("Post Block Components", () => {
   const content = "test blog content";
