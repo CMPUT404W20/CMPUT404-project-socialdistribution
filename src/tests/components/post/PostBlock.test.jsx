@@ -4,16 +4,13 @@ import PostBlock from "../../../components/post/PostBlock";
 import demoImage from "../../../images/demo-img.png";
 
 describe("Post Block Components", () => {
-  const content = "test blog content";
-  const user = "testuser";
-  const postTime = "10 hours ago";
   it("should render correctly", () => {
     const component = shallow(
       <PostBlock
         imageSrc={demoImage}
-        username={user}
-        postTime={postTime}
-        content={content}
+        username="testuser"
+        postTime="10 hours ago"
+        content="test blog content"
       />,
     );
     expect(component).toMatchSnapshot();

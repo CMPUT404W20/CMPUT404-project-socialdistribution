@@ -14,17 +14,17 @@ class PostDropDown extends Component {
   render() {
     return (
       <div>
-        <Dropdown.Item className="post-dropdown-item">
+        <Dropdown.Item>
           <img src={editIcon} alt="pencil-icon" />
           <span className="post-dropdown-text">Edit</span>
         </Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item className="post-dropdown-item">
+        <Dropdown.Item>
           <img src={deleteIcon} alt="del-icon" />
           <span className="post-dropdown-text">Delete</span>
         </Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item className="post-dropdown-item">
+        <Dropdown.Item>
           <img src={linkIcon} alt="link-icon" />
           <span className="post-dropdown-text">Copy link to post</span>
         </Dropdown.Item>

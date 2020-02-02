@@ -10,7 +10,6 @@ exports[`Post DropDown Components should render correctly 1`] = `
         "render": [Function],
       }
     }
-    className="post-dropdown-item"
     disabled={false}
   >
     <img
@@ -34,7 +33,6 @@ exports[`Post DropDown Components should render correctly 1`] = `
         "render": [Function],
       }
     }
-    className="post-dropdown-item"
     disabled={false}
   >
     <img
@@ -58,7 +56,6 @@ exports[`Post DropDown Components should render correctly 1`] = `
         "render": [Function],
       }
     }
-    className="post-dropdown-item"
     disabled={false}
   >
     <img
