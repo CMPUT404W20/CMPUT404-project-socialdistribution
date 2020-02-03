@@ -1,5 +1,6 @@
-$box-width:50%;
+$box-width:50rem;
 $box-height:205px;
+$font:Euclid Circular B;
 .makePost{
 	margin-top: 90px;
 	background-color: white;
@@ -9,11 +10,44 @@ $box-height:205px;
 	border-radius: 4px;
 	width:$box-width;
 	height: $box-height;
+	display: flex;
+	justify-content: center;
+}
+.block{
+	display: flex;
+	flex-direction: column;
+	width: 90%;
 }
 .form-row-1{
-	display: flex;
+	display: flexbox;
 	flex-direction: row;
+	justify-content: center;
+	border-bottom: 1px solid #C1C1C1;
+	height: fit-content;
+	padding-top: 10pt;
+	padding-bottom:3pt;
+	&>b{font-family: $font;
+		font-style: normal;
+		font-weight: 500;
+		font-size: 10pt;
+		text-transform: uppercase;
+		color: #181818;
+
+	}
 }
 select {
-  font-family: 'FontAwesome', 'sans-serif';
+	font-family: $font;
+	font-style: normal;
+	font-size: 10pt;
+  	margin-left: 5%;
+}
+.row-2-input{
+	height:40%;
+	margin-top: 1.5rem;
+}
+.row-2-input>textarea{
+	width: 100%;
+	font-size: 12pt;
+	height:100%;
+	border: none;
 }

@@ -5,6 +5,9 @@
     color:#0275B1;
   }
   &>p{
+    font-family: Euclid Circular B;
+    font-style: normal;
+    font-weight: 400;
     font-size: 8pt;
     margin-top: 0;
     margin-bottom: 0;
@@ -56,6 +59,9 @@
 }
 ::-webkit-input-placeholder,::-moz-placeholder{
     color:#BABABA;
+    font-family: Euclid Circular B;
+    font-style: normal;
+    font-weight: normal;
 }
 
 .right-side-menu{
