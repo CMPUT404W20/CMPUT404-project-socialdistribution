@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/PostDropDown.scss";
+import "../../styles/post/PostDropDown.scss";
 import Dropdown from "react-bootstrap/Dropdown";
 import editIcon from "../../images/edit-pencil.svg";
 import deleteIcon from "../../images/del-bin.svg";
