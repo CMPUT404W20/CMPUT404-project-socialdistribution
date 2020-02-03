@@ -1,13 +1,13 @@
-p{
-  font-size: 8pt;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-a{
+.icons>a, .user>a,.log-out>a{
   text-decoration: none;
   color: #181818;
   &:hover, &:focus, &:active {
     color:#0275B1;
+  }
+  &>p{
+    font-size: 8pt;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 }
 
@@ -16,9 +16,11 @@ a{
   position: fixed;
   top:0;
   width:100%;
+
 }
 .navRow {
   display: flex;
+  height:40px;
   align-content: center;
   justify-content: center;
   flex-direction: row;
@@ -50,7 +52,7 @@ a{
   border: none;
   font-size: 10pt;
   margin-left: 2%;
-  width:100%;
+  width:80%;
 }
 ::-webkit-input-placeholder,::-moz-placeholder{
     color:#BABABA;
@@ -85,7 +87,7 @@ a{
   justify-content: center;
 }
 .user{
-  margin-left: 15%;
+  margin-left: 5rem;
   margin-right: 10%;
   padding-left: 3%;
 

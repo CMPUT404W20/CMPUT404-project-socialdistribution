@@ -13,6 +13,12 @@ import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 
 
 class NavBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: 'Username'
+    };
+  }
   render() {
     return (
       <Container className="nav">
@@ -44,7 +50,7 @@ class NavBar extends Component {
               </div>
               <div className="user">
                 <a href="">
-                  <p>USERNAME</p>
+                  <p>{this.state.username}</p>
                 </a>
               </div>
               <div className="log-out">
