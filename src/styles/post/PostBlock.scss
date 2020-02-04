@@ -24,17 +24,18 @@ $post-info-font-size: 12px;
   text-align: left;
   float: left;
   vertical-align: middle;
-  background-color: red;
-  height: 30pt;
+  position: relative;
+  top: 0.5pt;
   svg {
-    background-color: pink;
+    position: relative;
+    top: 1.5pt;
+    left: 2pt;
     height: 100%;
   }
 }
 .post-time {
   color: #aaaaaa;
   float: right;
-  background-color: green;
 }
 .post-img {
   width: 100%;
