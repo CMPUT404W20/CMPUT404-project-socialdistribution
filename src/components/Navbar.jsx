@@ -16,10 +16,20 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: 'Username'
+      username: 'Username',
+      notification: 1,
     };
+    var element = document.getElementsByClassName(this.props.selected);
+    element.className += "selected";
+  }
+  handleSubmit(event) {
+    if (event.key === 'Enter') {
+      alert('you entered: ' + event.target.value);
+    }
+    
   }
   render() {
+    
     return (
       <Container className="nav">
         <Row className="navRow">
@@ -30,26 +40,32 @@ class NavBar extends Component {
             <div class="search-input-container">
               {/* color can be changed!!! */}
               <SearchRoundedIcon style={{ color:"#0275B1"}} />
-              <input class="search-input" placeholder="Search" />
+              <input class="search-input" placeholder="Search" onKeyDown={this.handleSubmit}/>
             </div>
           </div>
           <div className="right-side-menu">
               <div className="icons">
-                <a className="Home" href="">
+              <a className={this.props.selected==="Home" ? "Home selected" : "Home"} href="">
+                {/* <a className="Home" href="#"> */}
                   <HomeOutlinedIcon />
                   <p>HOME</p>
                 </a>
-                <a className="Friends" href="">
+              <a className={this.props.selected === "Friends" ? "Friends selected" : "Friends"}  href="">
                   <PeopleAltOutlinedIcon />
                   <p>FRIENDS</p>
                 </a>
-                <a className="Notice" href="">
-                  <NotificationsNoneOutlinedIcon />
+              <a className={this.props.selected === "Notices" ? "Notices selected" : "Notices"} href="">
+                  <div className="icon-wrapper">
+                    <NotificationsNoneOutlinedIcon />
+                    <div className="badge-wrapper">
+                    <span className="badge">{this.state.notification}</span>
+                  </div>
+                </div>
                   <p>NOTICES</p>
                 </a>
               </div>
               <div className="user">
-                <a href="">
+              <a href="#" className={this.props.selected === "Username" ? "selected" : ""}>
                   <p>{this.state.username}</p>
                 </a>
               </div>

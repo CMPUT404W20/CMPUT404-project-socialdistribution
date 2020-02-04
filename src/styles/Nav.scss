@@ -1,9 +1,13 @@
+.selected{
+    color:#0275B1 !important;
+  }
 .icons>a, .user>a,.log-out>a{
   text-decoration: none;
   color: #181818;
   &:hover, &:focus, &:active {
     color:#0275B1;
   }
+
   &>p{
     font-family: Euclid Circular B;
     font-style: normal;
@@ -97,4 +101,27 @@
   margin-right: 10%;
   padding-left: 3%;
 
+}
+.icon-wrapper{
+  display: flex;
+  justify-content: center;
+    
+}
+.badge-wrapper{
+  background: #FFB75E;
+  width:10pt;
+  height:10pt;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  margin-left: -0.6rem;
+
+
+}
+.badge{
+    font-weight: 700;
+    color:white !important;
+    font-size: 6pt;
+    align-self: center;
+  
 }
