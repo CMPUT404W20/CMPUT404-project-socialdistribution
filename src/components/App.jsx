@@ -1,11 +1,9 @@
 import React from "react";
-import "../styles/App.scss";
-import NavBar from "./Navbar";
-
+import Login from "./Login";
 
 function App() {
   return (
-    <NavBar selected="Home" />
+    <Login />
   );
 }
 
