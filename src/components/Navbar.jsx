@@ -41,20 +41,37 @@ class NavBar extends Component {
             </div>
             <div className="search-input-container">
               <SearchRoundedIcon style={{ color: "#0275B1" }} />
-              <input className="search-input" placeholder="Search" onKeyDown={this.handleSubmit} />
+              <input
+                className="search-input"
+                placeholder="Search"
+                onKeyDown={this.handleSubmit}
+              />
             </div>
           </div>
           <div className="right-side-menu">
             <div className="icons">
-              <a className={selected === "Home" ? "Home selected" : "Home"} href=" ">
+              <a
+                className={selected === "Home" ? "Home selected" : "Home"}
+                href=" "
+              >
                 <HomeOutlinedIcon />
                 <p>HOME</p>
               </a>
-              <a className={selected === "Friends" ? "Friends selected" : "Friends"} href=" ">
+              <a
+                className={
+                  selected === "Friends" ? "Friends selected" : "Friends"
+                }
+                href=" "
+              >
                 <PeopleAltOutlinedIcon />
                 <p>FRIENDS</p>
               </a>
-              <a className={selected === "Notices" ? "Notices selected" : "Notices"} href=" ">
+              <a
+                className={
+                  selected === "Notices" ? "Notices selected" : "Notices"
+                }
+                href=" "
+              >
                 <div className="icon-wrapper">
                   <NotificationsNoneOutlinedIcon />
                   <div className="badge-wrapper">
