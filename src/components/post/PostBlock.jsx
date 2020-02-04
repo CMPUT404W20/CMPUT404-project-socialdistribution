@@ -28,7 +28,7 @@ class PostBlock extends Component {
     return (
       <div className="post-block">
         <div className="post-info">
-          <span className="post-username">
+          <span className="post-user-and-visibility">
             {username}
             { invisible ? <VisibilityOffIcon fontSize="inherit" /> : null }
           </span>

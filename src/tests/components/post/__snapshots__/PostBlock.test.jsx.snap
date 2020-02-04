@@ -8,7 +8,7 @@ exports[`Post Block Components should render correctly 1`] = `
     className="post-info"
   >
     <span
-      className="post-username"
+      className="post-user-and-visibility"
     >
       testuser
     </span>

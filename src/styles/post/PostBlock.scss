@@ -20,12 +20,13 @@ $post-info-font-size: 12px;
   font-size: $post-info-font-size;
 }
 
-.post-username {
+.post-user-and-visibility {
   text-align: left;
   float: left;
   vertical-align: middle;
   position: relative;
   top: 0.5pt;
+
   svg {
     position: relative;
     top: 1.5pt;
