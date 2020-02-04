@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "enzyme-to-json": "^3.4.4",
+    "moment": "^2.24.0",
     "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
@@ -23,6 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
+    "test:coverage": "react-scripts test --coverage --watchAll",
     "eject": "react-scripts eject"
   },
   "browserslist": {

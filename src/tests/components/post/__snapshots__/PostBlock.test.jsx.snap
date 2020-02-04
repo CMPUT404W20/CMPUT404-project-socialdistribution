@@ -29,8 +29,8 @@ exports[`Post Block Components should render correctly 1`] = `
     <span
       className="post-time"
     >
-      10 hours ago
-    </span>
+      a few seconds ago
+    </div>
   </div>
   <img
     alt="more-icon"

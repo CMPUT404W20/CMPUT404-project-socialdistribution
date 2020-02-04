@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import "../../styles/post/PostBlock.scss";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
@@ -21,6 +22,9 @@ class PostBlock extends Component {
       invisible,
     } = this.props;
 
+    const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
+    const formattedTime = moment(postTime).fromNow();
+
     return (
       <div className="post-block">
         <div className="post-info">
@@ -30,13 +34,14 @@ class PostBlock extends Component {
           </span>
           <DropdownButton
             id="post-more-button"
-            title={<img id="post-more-icon" src={moreIcon} alt="more-icon" />}
+            title={dropdownIcon}
             drop="down"
             alignRight
           >
             <PostDropDown />
           </DropdownButton>
-          <span className="post-time">{postTime}</span>
+
+          <div className="post-time">{formattedTime}</div>
         </div>
         <img className="post-img" src={imageSrc} alt="more-icon" />
         <div className="post-content">{content}</div>
@@ -47,7 +52,7 @@ class PostBlock extends Component {
 
 PostBlock.propTypes = {
   username: PropTypes.string.isRequired,
-  postTime: PropTypes.string.isRequired,
+  postTime: PropTypes.instanceOf(Date).isRequired,
   imageSrc: PropTypes.node,
   content: PropTypes.string,
   invisible: PropTypes.bool,
