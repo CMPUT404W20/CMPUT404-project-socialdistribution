@@ -16,18 +16,14 @@ exports[`Navigation bar Component should render correctly 1`] = `
         <img
           alt="app logo"
           src="logo.svg"
-          width="70%"
+          width="85%"
         />
       </div>
       <div
         className="search-input-container"
       >
         <SearchRoundedIcon
-          style={
-            Object {
-              "color": "#0275B1",
-            }
-          }
+          className="searchButton"
         />
         <input
           className="search-input"
