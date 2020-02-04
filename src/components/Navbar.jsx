@@ -35,10 +35,10 @@ class NavBar extends Component {
         <div className="navRow">
           <div className="left-menu">
             <div className="logo-container">
-              <img src={logo} width="70%" alt="app logo" />
+              <img src={logo} width="85%" alt="app logo" />
             </div>
             <div className="search-input-container">
-              <SearchRoundedIcon style={{ color: "#0275B1" }} />
+              <SearchRoundedIcon className="searchButton" />
               <input
                 className="search-input"
                 placeholder="Search"
