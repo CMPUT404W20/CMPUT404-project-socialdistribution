@@ -7,11 +7,11 @@ exports[`Post Block Components should render correctly 1`] = `
   <div
     className="post-info"
   >
-    <div
+    <span
       className="post-username"
     >
       testuser
-    </div>
+    </span>
     <DropdownButton
       alignRight={true}
       drop="down"
@@ -26,11 +26,11 @@ exports[`Post Block Components should render correctly 1`] = `
     >
       <PostDropDown />
     </DropdownButton>
-    <div
+    <span
       className="post-time"
     >
       10 hours ago
-    </div>
+    </span>
   </div>
   <img
     alt="more-icon"
