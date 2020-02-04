@@ -26,7 +26,7 @@ exports[`Post Block Components should render correctly 1`] = `
     >
       <PostDropDown />
     </DropdownButton>
-    <span
+    <div
       className="post-time"
     >
       a few seconds ago
