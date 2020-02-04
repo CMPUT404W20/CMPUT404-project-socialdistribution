@@ -6,6 +6,8 @@ $placeholder-text-color: #bababa;
 
 $icon-text-color: #181818;
 
+$border-color: #d9d9d9;
+
 .selected {
   color: $accent-color !important;
 }
@@ -70,7 +72,7 @@ $icon-text-color: #181818;
 .user,
 .log-out {
   display: flex;
-  border-left: 1px solid #d9d9d9;
+  border-left: 1px solid $border-color;
   align-items: center;
   height: 40px;
   padding-left: 2%;
