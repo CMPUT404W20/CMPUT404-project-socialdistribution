@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import "../styles/Nav.scss";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
@@ -16,7 +14,7 @@ class NavBar extends Component {
     super(props);
     this.state = {
       username: "Username",
-      notification: 1
+      notification: 1,
     };
   }
   // will implement search later. Disabled eslint for this method for now
@@ -33,8 +31,8 @@ class NavBar extends Component {
     const { username, notification } = this.state;
     const { selected } = this.props;
     return (
-      <Container className="nav">
-        <Row className="navRow">
+      <div className="nav">
+        <div className="navRow">
           <div className="left-menu">
             <div className="logo-container">
               <img src={logo} width="70%" alt="app logo" />
@@ -93,17 +91,17 @@ class NavBar extends Component {
               </a>
             </div>
           </div>
-        </Row>
-      </Container>
+        </div>
+      </div>
     );
   }
 }
 NavBar.propTypes = {
-  selected: PropTypes.string
+  selected: PropTypes.string,
 };
 
 NavBar.defaultProps = {
-  selected: ""
+  selected: "",
 };
 
 export default NavBar;

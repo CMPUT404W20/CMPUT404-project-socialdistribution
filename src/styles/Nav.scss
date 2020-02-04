@@ -21,16 +21,18 @@
 .nav{
   background-color: white;
   position: fixed;
+  justify-content: center;
   top:0;
   width:100%;
-
 }
 .navRow {
   display: flex;
   height:40px;
+  width:100%;
   align-content: center;
   justify-content: center;
   flex-direction: row;
+  padding-top: 0.07rem;
 
 }
 .left-menu{
@@ -87,7 +89,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  margin-right: 20%;
+  margin-right: 2rem;
 }
 .logout-div{
   display: flex;
@@ -97,7 +99,7 @@
   justify-content: center;
 }
 .user{
-  margin-left: 5rem;
+  margin-left: 1rem;
   margin-right: 10%;
   padding-left: 3%;
 
