@@ -20,20 +20,19 @@
 
 .nav{
   background-color: white;
-  // position: fixed;
-  display: flex;
+  position: fixed;
+  justify-content: center;
   top:0;
   width:100%;
-  justify-content: center;
-
 }
 .navRow {
   display: flex;
   height:40px;
-  width: 100%;
+  width:100%;
   align-content: center;
   justify-content: center;
   flex-direction: row;
+  padding-top: 0.07rem;
 
 }
 .left-menu{
@@ -118,8 +117,6 @@
   display: flex;
   justify-content: center;
   margin-left: -0.6rem;
-
-
 }
 .badge{
     font-weight: 700;
