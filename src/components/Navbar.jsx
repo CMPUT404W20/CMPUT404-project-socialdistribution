@@ -14,7 +14,7 @@ class NavBar extends Component {
     super(props);
     this.state = {
       username: "Username",
-      notification: 1,
+      notification: 1
     };
   }
   // will implement search later. Disabled eslint for this method for now
@@ -35,10 +35,10 @@ class NavBar extends Component {
         <div className="navRow">
           <div className="left-menu">
             <div className="logo-container">
-              <img src={logo} width="70%" alt="app logo" />
+              <img src={logo} width="85%" alt="app logo" />
             </div>
             <div className="search-input-container">
-              <SearchRoundedIcon style={{ color: "#0275B1" }} />
+              <SearchRoundedIcon className="searchButton" />
               <input
                 className="search-input"
                 placeholder="Search"
@@ -97,11 +97,11 @@ class NavBar extends Component {
   }
 }
 NavBar.propTypes = {
-  selected: PropTypes.string,
+  selected: PropTypes.string
 };
 
 NavBar.defaultProps = {
-  selected: "",
+  selected: ""
 };
 
 export default NavBar;
