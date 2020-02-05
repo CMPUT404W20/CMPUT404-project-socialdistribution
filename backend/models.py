@@ -27,29 +27,29 @@ class Post(models.Model):
 
 class PostAccess(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=CASCADE)
-    accessId = models.ForeignKey(User, on_delete=CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    accessId = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Comments(models.Model):
     commentId = models.UUIDField(
         primary_key=True, uuid=uuid.uuid4, editable=False, unique=True)
     content = models.CharField(max_length=250)
-    post = models.ForeignKey(Post, on_delete=CASCADE)
-    postedBy = models.ForeignKey(User, on_delete=CASCADE)
-    postedTo = models.ForeignKey(User, on_delete=CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    postedBy = models.ForeignKey(User, on_delete=models.CASCADE)
+    postedTo = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class FriendRequest(models.Model):
-    fromUser = models.ForeignKey(User, on_delete=CASCADE)
-    toUser = models.ForeignKey(User, on_delete=CASCADE)
+    fromUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    toUser = models.ForeignKey(User, on_delete=models.CASCADE)
     isAccepted = models.BooleanField(default=False)
     sentDate = models.DateTimeField(auto_now_add=True)
 
 
 class Friend(models.Model):
-    fromUser = models.ForeignKey(User, on_delete=CASCADE)
-    toUser = models.ForeignKey(User, on_delete=CASCADE)
+    fromUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    toUser = models.ForeignKey(User, on_delete=models.CASCADE)
     friendDate = models.DateTimeField(auto_now_add=True)
     # unfriend date
     unfriendDate = models.DateTimeField(null=True, blank=True)
