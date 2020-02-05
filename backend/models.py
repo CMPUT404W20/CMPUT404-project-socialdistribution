@@ -9,13 +9,16 @@ import uuid
 
 
 class User(AbstractUser):
-    uuid = models.UUIDField(primary_key=True, uuid=uuid.uuid4, editable=False, unique=True )
+    uuid = models.UUIDField(
+        primary_key=True, uuid=uuid.uuid4, editable=False, unique=True)
     # Using: username, password, first_name, last_name, email inherited from Abstractuser
 
+
 class Post(models.Model):
-    postId = models.UUIDField(primary_key=True,default=uuid.uuid4, editable=False, unique=True )
+    postId = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    title =models.CharField(max_length=50)
+    title = models.CharField(max_length=50)
     timestamp = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=450)
     # default posts are public
@@ -29,11 +32,13 @@ class PostAccess(models.Model):
 
 
 class Comments(models.Model):
-    commentId = models.UUIDField(primary_key=True, uuid=uuid.uuid4, editable=False, unique=True)
+    commentId = models.UUIDField(
+        primary_key=True, uuid=uuid.uuid4, editable=False, unique=True)
     content = models.CharField(max_length=250)
     post = models.ForeignKey(Post, on_delete=CASCADE)
     postedBy = models.ForeignKey(User, on_delete=CASCADE)
     postedTo = models.ForeignKey(User, on_delete=CASCADE)
+
 
 class FriendRequest(models.Model):
     fromUser = models.ForeignKey(User, on_delete=CASCADE)
@@ -41,9 +46,10 @@ class FriendRequest(models.Model):
     isAccepted = models.BooleanField(default=False)
     sentDate = models.DateTimeField(auto_now_add=True)
 
+
 class Friend(models.Model):
     fromUser = models.ForeignKey(User, on_delete=CASCADE)
-    toUser= models.ForeignKey(User, on_delete=CASCADE)
+    toUser = models.ForeignKey(User, on_delete=CASCADE)
     friendDate = models.DateTimeField(auto_now_add=True)
     # unfriend date
     unfriendDate = models.DateTimeField(null=True, blank=True)
