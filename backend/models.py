@@ -1,16 +1,12 @@
 
 # Create your models here.
-from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import AbstractUser
-from django.contrib.postgres.fields import JSONField
 from django.db import models
 
 import uuid
 
 
 class User(AbstractUser):
-    uuid = models.UUIDField(
-        primary_key=True, uuid=uuid.uuid4, editable=False, unique=True)
     # Using: username, password, first_name, last_name, email inherited from Abstractuser
 
 
@@ -36,20 +32,26 @@ class Comments(models.Model):
         primary_key=True, uuid=uuid.uuid4, editable=False, unique=True)
     content = models.CharField(max_length=250)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    postedBy = models.ForeignKey(User, on_delete=models.CASCADE)
-    postedTo = models.ForeignKey(User, on_delete=models.CASCADE)
+    postedBy = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="comment_postedBy")
+    postedTo = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="comment_postedTo")
 
 
 class FriendRequest(models.Model):
-    fromUser = models.ForeignKey(User, on_delete=models.CASCADE)
-    toUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    fromUser = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="friendRequest_fromUser")
+    toUser = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="friendRequest_toUser")
     isAccepted = models.BooleanField(default=False)
     sentDate = models.DateTimeField(auto_now_add=True)
 
 
 class Friend(models.Model):
-    fromUser = models.ForeignKey(User, on_delete=models.CASCADE)
-    toUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    fromUser = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="friend_fromUser")
+    toUser = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="friend_toUser")
     friendDate = models.DateTimeField(auto_now_add=True)
     # unfriend date
     unfriendDate = models.DateTimeField(null=True, blank=True)
