@@ -84,20 +84,6 @@ class MakePost extends Component {
           </form>
         </div>
         {this.Modal()}
-        {/* <Modal show animation={false}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-          <Modal.Footer>
-            <button type="button" >
-              Close
-            </button>
-            <button type="button">
-              Save Changes
-            </button>
-          </Modal.Footer>
-        </Modal> */}
       </div>
     );
   }
