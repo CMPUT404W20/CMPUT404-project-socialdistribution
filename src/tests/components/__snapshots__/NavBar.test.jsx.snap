@@ -98,7 +98,9 @@ exports[`Navigation bar Component should render correctly 1`] = `
           className="logout-div"
           href=" "
         >
-          <ExitToAppOutlinedIcon />
+          <ExitToAppOutlinedIcon
+            className="post-icon"
+          />
           <p>
             LOG OUT
           </p>
