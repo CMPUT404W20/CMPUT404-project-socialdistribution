@@ -7,6 +7,7 @@ import uuid
 
 
 class User(AbstractUser):
+    githubUrl = models.URLField(max_length=400)
     # Using: username, password, first_name, last_name, email inherited from Abstractuser
 
 
@@ -16,7 +17,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     timestamp = models.DateTimeField(auto_now_add=True)
-    description = models.CharField(max_length=450)
+    content = models.TextField()
     # default posts are public
     isPublic = models.BooleanField(default=True)
 
@@ -30,7 +31,7 @@ class PostAccess(models.Model):
 class Comments(models.Model):
     commentId = models.UUIDField(
         primary_key=True, uuid=uuid.uuid4, editable=False, unique=True)
-    content = models.CharField(max_length=250)
+    content = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     postedBy = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="comment_postedBy")
