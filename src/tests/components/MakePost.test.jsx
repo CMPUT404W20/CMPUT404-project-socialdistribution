@@ -25,4 +25,4 @@ describe("Post box Component", () => {
       expect(modalShow).toBe(true);
     }, 500);
   });
-}); 
+});

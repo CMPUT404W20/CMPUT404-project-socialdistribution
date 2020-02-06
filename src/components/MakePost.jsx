@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../styles/MakePost.scss";
+import "../styles/makePost.scss";
 import SendIcon from "@material-ui/icons/Send";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import Modal from "react-bootstrap/Modal";
