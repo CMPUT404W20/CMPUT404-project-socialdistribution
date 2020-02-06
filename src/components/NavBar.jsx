@@ -14,7 +14,7 @@ class NavBar extends Component {
     super(props);
     this.state = {
       username: "Username",
-      notification: 1
+      notification: 1,
     };
   }
   // will implement search later. Disabled eslint for this method for now
@@ -86,7 +86,7 @@ class NavBar extends Component {
             </div>
             <div className="log-out">
               <a className="logout-div" href=" ">
-                <ExitToAppOutlinedIcon />
+                <ExitToAppOutlinedIcon className="post-icon" />
                 <p>LOG OUT</p>
               </a>
             </div>
@@ -97,11 +97,11 @@ class NavBar extends Component {
   }
 }
 NavBar.propTypes = {
-  selected: PropTypes.string
+  selected: PropTypes.string,
 };
 
 NavBar.defaultProps = {
-  selected: ""
+  selected: "",
 };
 
 export default NavBar;

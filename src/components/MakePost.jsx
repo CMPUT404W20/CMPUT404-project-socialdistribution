@@ -1,11 +1,50 @@
 import React, { Component } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import "../styles/makePost.scss";
-import Form from "react-bootstrap/Form";
+import "../styles/MakePost.scss";
+import SendIcon from "@material-ui/icons/Send";
+import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
+import Modal from "react-bootstrap/Modal";
+import icon from "../images/markdown-icon.svg";
 
 class MakePost extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalShow: true,
+    };
+  }
+
+  renderModal = () => {
+    this.setState({ modalShow: true });
+  }
+
+  Modal = () => {
+    const { modalShow } = this.state;
+    const handleClose = () => this.setState({ modalShow: false });
+    return (
+      <div className="modal-upload">
+        <Modal show={modalShow} onHide={handleClose} animation={false}>
+          <Modal.Header closeButton>
+            <Modal.Title>Upload images</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <input
+              accept="image/*"
+              className="upload-image"
+              id="contained-button-file"
+              multiple
+              type="file"
+            />
+          </Modal.Body>
+          <Modal.Footer className="upload-button-wrapper">
+            <button type="button" className="upload-button" onClick={handleClose}>
+              Upload
+            </button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="makePost">
@@ -23,10 +62,42 @@ class MakePost extends Component {
               <option value="private">Private</option>
             </select>
           </div>
-          <div className="row-2-input">
-            <textarea placeholder="What's on your mind?"></textarea>
-          </div>
+          {this.Modal}
+          <form className="row-2-input" onSubmit={this.handleSubmit}>
+            <textarea placeholder="What's on your mind?" />
+            <div className="row-3-buttons">
+              <img
+                className="markdown-icon icon"
+                src={icon}
+                width="20pt"
+                alt="markdown"
+              />
+              <ImageOutlinedIcon
+                className="image-icon icon"
+                onClick={this.renderModal}
+              />
+              <button type="submit" className="post-button icon">
+                <span>POST</span>
+                <SendIcon className="post-icon" />
+              </button>
+            </div>
+          </form>
         </div>
+        {this.Modal()}
+        {/* <Modal show animation={false}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Footer>
+            <button type="button" >
+              Close
+            </button>
+            <button type="button">
+              Save Changes
+            </button>
+          </Modal.Footer>
+        </Modal> */}
       </div>
     );
   }
