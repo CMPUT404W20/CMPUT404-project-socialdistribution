@@ -10,8 +10,19 @@ class MakePost extends Component {
     super(props);
     this.state = {
       modalShow: false,
+      post: "",
     };
   }
+
+  handleTextChange = (event) => {
+    this.setState({ post: event.target.value });
+  };
+
+  handleSubmit = () => {
+    const { post } = this.state;
+    // eslint-disable-next-line no-alert
+    alert(post);
+  };
 
   renderModal = () => {
     this.setState({ modalShow: true });
@@ -67,8 +78,11 @@ class MakePost extends Component {
             </select>
           </div>
           {this.Modal}
-          <form className="row-2-input" onSubmit={this.handleSubmit}>
-            <textarea placeholder="What's on your mind?" />
+          <form className="row-2-input" action="submit">
+            <textarea
+              placeholder="What's on your mind?"
+              onChange={this.handleTextChange}
+            />
             <div className="row-3-buttons">
               <img
                 className="markdown-icon icon"
@@ -80,7 +94,11 @@ class MakePost extends Component {
                 className="image-icon icon"
                 onClick={this.renderModal}
               />
-              <button type="submit" className="post-button icon">
+              <button
+                type="submit"
+                className="post-button icon"
+                onClick={this.handleSubmit}
+              >
                 <span>POST</span>
                 <SendIcon className="post-icon" />
               </button>

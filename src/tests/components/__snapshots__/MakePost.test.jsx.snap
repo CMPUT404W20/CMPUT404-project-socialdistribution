@@ -51,9 +51,11 @@ exports[`Post box Component should render correctly 1`] = `
     </div>
     <Component />
     <form
+      action="submit"
       className="row-2-input"
     >
       <textarea
+        onChange={[Function]}
         placeholder="What's on your mind?"
       />
       <div
@@ -71,6 +73,7 @@ exports[`Post box Component should render correctly 1`] = `
         />
         <button
           className="post-button icon"
+          onClick={[Function]}
           type="submit"
         >
           <span>

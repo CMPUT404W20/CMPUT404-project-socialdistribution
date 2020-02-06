@@ -1,7 +1,8 @@
-.Homepage{
-	height: 100vh;
-	background-color: #EAEAEA;
-	display: flex;
-	justify-content: center;
-	
+$background-color: #eaeaea;
+
+.Homepage {
+  height: 100vh;
+  background-color: $background-color;
+  display: flex;
+  justify-content: center;
 }
