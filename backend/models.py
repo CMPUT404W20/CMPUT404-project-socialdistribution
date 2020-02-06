@@ -23,9 +23,18 @@ class Post(models.Model):
 
 
 class PostAccess(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+     accessChoices = [
+        (PUBLIC, 'Public'),
+        (PRIVATE, 'Private'),
+        (FRIENDS, 'Friends'),
+        (FOF, 'FoF'),
+    ]
+    # author = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    accessId = models.ForeignKey(User, on_delete=models.CASCADE)
+    # accessId = models.ForeignKey(User, on_delete=models.CASCADE)
+    visibility = models.CharField(max_length=10, choices=accessChoices, default=PUBLIC)
+    # contains users that are able to access the post
+    visible_to = ArrayField(models.CharField(max_length=500), blank=True, default=list)
 
 
 class Comments(models.Model):
