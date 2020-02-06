@@ -9,7 +9,7 @@ class MakePost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalShow: false
+      modalShow: false,
     };
   }
 
