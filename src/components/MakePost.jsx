@@ -9,13 +9,13 @@ class MakePost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalShow: false,
+      modalShow: false
     };
   }
 
   renderModal = () => {
     this.setState({ modalShow: true });
-  }
+  };
 
   Modal = () => {
     const { modalShow } = this.state;
@@ -36,14 +36,18 @@ class MakePost extends Component {
             />
           </Modal.Body>
           <Modal.Footer className="upload-button-wrapper">
-            <button type="button" className="upload-button" onClick={handleClose}>
+            <button
+              type="button"
+              className="upload-button"
+              onClick={handleClose}
+            >
               Upload
             </button>
           </Modal.Footer>
         </Modal>
       </div>
     );
-  }
+  };
 
   render() {
     return (
