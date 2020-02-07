@@ -25,10 +25,10 @@ class Post(models.Model):
 
 class PostAccess(models.Model):
     accessChoices = [
-        (PUBLIC, 'Public'),
-        (PRIVATE, 'Private'),
-        (FRIENDS, 'Friends'),
-        (FOF, 'FoF'),
+        ("PUBLIC", 'Public'),
+        ("PRIVATE", 'Private'),
+        ("FRIENDS", 'Friends'),
+        ("FOF", 'FoF'),
     ]
     # post = models.ForeignKey(Post, on_delete=models.CASCADE) # remove
     visibility = models.CharField(max_length=10, choices=accessChoices, default=PUBLIC)
