@@ -31,14 +31,14 @@ class PostAccess(models.Model):
         ("FOF", 'FoF'),
     ]
     # post = models.ForeignKey(Post, on_delete=models.CASCADE) # remove
-    visibility = models.CharField(max_length=10, choices=accessChoices, default=PUBLIC)
+    visibility = models.CharField(max_length=10, choices=accessChoices, default="PUBLIC")
     # contains users that are able to access the post
     visible_to = ArrayField(models.CharField(max_length=500), blank=True, default=list)
 
 
 class Comments(models.Model):
     commentId = models.UUIDField(
-        primary_key=True, uuid=uuid.uuid4, editable=False, unique=True)
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     content = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     postedBy = models.ForeignKey(
