@@ -43,6 +43,7 @@ class PostBlock extends Component {
 
           <div className="post-time">{formattedTime}</div>
         </div>
+        {/* TODO: need to make it not render image if there is none provided */}
         <img className="post-img" src={imageSrc} alt="more-icon" />
         <div className="post-content">{content}</div>
       </div>
