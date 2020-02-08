@@ -17,12 +17,11 @@ class Homepage extends Component {
   // eslint-disable-next-line class-methods-use-this
   renderPosts() {
     return (
-      <Row className="post">
+      <Row className="postWrapper">
         <Col md={2} />
         <Col md={8}>
           <Post
-            className="testing"
-            username="maharsh"
+            username="username"
             postTime={new Date()}
             imageSrc={demoImage}
             content="Some content"
@@ -48,7 +47,6 @@ class Homepage extends Component {
           </Col>
           <Col md={2} />
         </Row>
-        {this.renderPosts()}
         {this.renderPosts()}
       </Container>
     );
