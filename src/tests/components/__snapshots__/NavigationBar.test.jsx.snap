@@ -112,7 +112,7 @@ exports[`Navigation bar Component should render correctly 1`] = `
     >
       <NavDropdown
         alignRight={true}
-        id="basic-nav-dropdown"
+        id="username-dropdown"
         title="Username"
       >
         <DropdownItem
