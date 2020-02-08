@@ -35,50 +35,48 @@ class NavigationBar extends Component {
     const { username, numNotifications } = this.state;
     const { selected } = this.props;
     return (
-      <Container className="header" fluid>
-        <Navbar collapseOnSelect expand="sm">
-          <Navbar.Brand className="logo">
-            <img src={logo} width="85%" alt="app logo" />
-          </Navbar.Brand>
-          <div className="search-input-container">
-            <InputGroup size="sm" className="searchBar">
-              <FormControl
-                placeholder="Search"
-                aria-label="Search"
-                aria-describedby="basic-addon1"
-              />
-            </InputGroup>
-          </div>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto" />
-            <Nav>
-              <Nav.Link target="_blank" href="#" active={selected === "Home"}>
-                <HomeOutlinedIcon />
-              </Nav.Link>
-              <Nav.Link target="_blank" href="#" active={selected === "Friends"}>
-                <PeopleAltOutlinedIcon />
-              </Nav.Link>
-              <Nav.Link target="_blank" href="#" active={selected === "Notifications"}>
-                <div className="icon-wrapper">
-                  <NotificationsNoneOutlinedIcon />
-                  <div className="badge-wrapper">
-                    <span className="badge">{numNotifications}</span>
-                  </div>
+      <Navbar collapseOnSelect expand="sm" fixed="top" className="navigationBar">
+        <Navbar.Brand className="logo">
+          <img src={logo} width="85%" alt="app logo" />
+        </Navbar.Brand>
+        <div className="search-input-container">
+          <InputGroup size="sm" className="searchBar">
+            <FormControl
+              placeholder="Search"
+              aria-label="Search"
+              aria-describedby="basic-addon1"
+            />
+          </InputGroup>
+        </div>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto" />
+          <Nav>
+            <Nav.Link target="_blank" href="#" active={selected === "Home"}>
+              <HomeOutlinedIcon />
+            </Nav.Link>
+            <Nav.Link target="_blank" href="#" active={selected === "Friends"}>
+              <PeopleAltOutlinedIcon />
+            </Nav.Link>
+            <Nav.Link target="_blank" href="#" active={selected === "Notifications"}>
+              <div className="notification-icon-wrapper">
+                <NotificationsNoneOutlinedIcon />
+                <div className="notification-badge-wrapper">
+                  <span className="notification-badge">{numNotifications}</span>
                 </div>
-              </Nav.Link>
-            </Nav>
-            <Nav>
-              <NavDropdown title={username} id="basic-nav-dropdown" alignRight>
-                <NavDropdown.Item href="#">Profile</NavDropdown.Item>
-                <NavDropdown.Item href="#">Settings</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#">Logout</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-      </Container>
+              </div>
+            </Nav.Link>
+          </Nav>
+          <Nav>
+            <NavDropdown title={username} id="basic-nav-dropdown" alignRight>
+              <NavDropdown.Item href="#">Profile</NavDropdown.Item>
+              <NavDropdown.Item href="#">Settings</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#">Logout</NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }
