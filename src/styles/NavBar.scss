@@ -1,157 +1,97 @@
 $accent-color: #0275b1;
-
 $badge-bg-color: #ffb75e;
-
 $placeholder-text-color: #bababa;
-
 $icon-text-color: #181818;
-
 $border-color: #d9d9d9;
 
-.selected {
-  color: $accent-color !important;
-}
-
-.icons > a,
-.user > a,
-.log-out > a {
-  text-decoration: none;
-  color: $icon-text-color;
-
-  &:hover,
-  &:focus,
-  &:active {
-    color: $accent-color;
-  }
-
-  & > p {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 8pt;
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-}
-// .form-control:focus {
-//   outline: 0;
-//   border: 0;
-// }
-.searchBar {
-  .form-control {
-    
-  }
-  .form-control:focus {
-    border-color: unset;
-    box-shadow: unset;
-  }
-  .btn-outline-secondary {
-    background-color: white;
-    // outline: 0;
-    border: 1px red solid;
-
-    &:hover {
-      background-color: red;
-    }
-  }
-  width: 100%;
-}
-
-.searchButton {
-  color: $accent-color;
-  vertical-align: middle;
-}
 
 .header {
   background-color: white;
   width: 100%;
-  .navbar {
-      .logo {
-          font-weight: 700;
-          font-size: 18px;
-      }
-      padding: 0 !important;
 
-      .nav-link {
-          padding-right: 0 !important;
-          padding-left: 35px !important;
-          font-size: 12px;
-          text-align: center;
-          font-weight: 500;
+  .search-input-container {
+    width: 50%;
+    
+    .searchBar {
+      max-width: 400px;
+
+      .form-control {
+        border: 1px white solid;
+      }
+
+      .form-control:focus {
+        border: 1px $border-color solid;
+        box-shadow: unset;
+      }
+    }
+  }
+
+  .navbar-brand {
+    margin-right: unset;
+  }
+
+  .logo {
+      font-weight: 700;
+      font-size: 18px;
+  }
+
+  .nav-link {
+      padding-right: 0 !important;
+      padding-left: 35px !important;
+      font-size: 10pt;
+      text-align: center;
+      font-weight: 500;
+      line-height: 10px;
+
+      &:hover {
           color: black;
-          line-height: 10px;
-
-          &:hover {
-              color: black;
-          }
       }
+
+      .icon-wrapper {
+        display: flex;
+        justify-content: center;
       
-      .navbar-toggler {
-          border: none !important;
-          padding: 0 !important;
-          font-size: 14px !important;
-          outline: 0 !important;
-      }
-
-      @media screen and (max-width: 576px) {
-          .nav-link {
-              padding-left: 0px !important;
+        .badge-wrapper {
+          background: $badge-bg-color;
+          height: 10pt;
+          min-width: 10pt;  // if there are a lot of notifications (ex: 1000), we want this badge to expand to fit the number
+          border-radius: 50%;
+          margin-left: -0.6rem;
+        
+          .badge {
+            font-weight: 700;
+            color: white !important;
+            font-size: 6pt;
           }
+        }
       }
   }
-}
+  
+  .navbar-toggler {
+      border: none !important;
+      padding: 0 !important;
+      font-size: 14px !important;
+      outline: 0 !important;
+  }
 
+  .dropdown-menu {
+    border: 0;
+    box-shadow: 0px 0px 10px rgba(121, 121, 121, 0.25);
 
+    .dropdown-item {
+      font-size: 10pt;
+    }
 
-.nav {
-  // background-color: white;
-  // position: fixed;
-  // justify-content: center;
-  // top: 0;
-  // width: 100%;
-}
+    .dropdown-divider {
+      border-top-color: $border-color
+    }
+  }
 
-.navRow {
-  display: flex;
-  height: 40px;
-  width: 100%;
-  align-content: center;
-  justify-content: center;
-  flex-direction: row;
-  padding-top: 0.07rem;
-}
-
-.left-menu {
-  justify-content: center;
-  display: flex;
-  flex-direction: row;
-  width: 50%;
-}
-
-.logo-container {
-  display: inline-flex;
-  align-items: center;
-}
-
-.search-input-container,
-.right-side-menu,
-.user,
-.log-out {
-  display: flex;
-  border-left: 1px solid $border-color;
-  align-items: center;
-  height: 40px;
-  padding-left: 2%;
-}
-
-.search-input-container {
-  width: 50%;
-}
-
-.search-input {
-  border: none;
-  font-size: 10pt;
-  margin-left: 2%;
-  width: 80%;
+  @media screen and (max-width: 576px) {
+      .nav-link {
+          padding-left: 0px !important;
+      }
+  }
 }
 
 ::-webkit-input-placeholder,
@@ -159,63 +99,4 @@ $border-color: #d9d9d9;
   color: $placeholder-text-color;
   font-style: normal;
   font-weight: normal;
-}
-
-.right-side-menu {
-  padding-left: 2%;
-  width: 50%;
-}
-
-.icons {
-  display: flex;
-  align-items: center;
-  padding-left: 1%;
-}
-
-.log-out {
-  padding-left: 2%;
-}
-
-.icons > a {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  margin-right: 2rem;
-}
-
-.logout-div {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.user {
-  margin-left: 1rem;
-  margin-right: 10%;
-  padding-left: 3%;
-}
-
-.icon-wrapper {
-  display: flex;
-  justify-content: center;
-}
-
-.badge-wrapper {
-  background: $badge-bg-color;
-  width: 10pt;
-  height: 10pt;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  margin-left: -0.6rem;
-}
-
-.badge {
-  font-weight: 700;
-  color: white !important;
-  font-size: 6pt;
-  align-self: center;
 }
