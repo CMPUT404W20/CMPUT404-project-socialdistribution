@@ -1,4 +1,3 @@
-
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -47,5 +46,4 @@ class Friend(models.Model):
     toUser = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="friend_toUser")
     friendDate = models.DateTimeField(auto_now_add=True)
-    # unfriend date
     unfriendDate = models.DateTimeField(null=True, blank=True)
