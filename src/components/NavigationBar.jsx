@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../styles/NavBar.scss";
+import "../styles/NavigationBar.scss";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
@@ -12,8 +12,8 @@ import FormControl from "react-bootstrap/FormControl";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import logo from "../images/logo.svg";
 
-// Example usage: <Navbar selected="Friends" />
-class NavBar extends Component {
+// Example usage: <NavigationBar selected="Friends" />
+class NavigationBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -82,12 +82,12 @@ class NavBar extends Component {
     );
   }
 }
-NavBar.propTypes = {
+NavigationBar.propTypes = {
   selected: PropTypes.string,
 };
 
-NavBar.defaultProps = {
+NavigationBar.defaultProps = {
   selected: "Home",
 };
 
-export default NavBar;
+export default NavigationBar;
