@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import "../../styles/post/PostBlock.scss";
+import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import PostDropDown from "./PostDropDown";
 import moreIcon from "../../images/more-icon.svg";
 
 class PostBlock extends Component {
@@ -38,7 +38,9 @@ class PostBlock extends Component {
             drop="down"
             alignRight
           >
-            <PostDropDown />
+            <Dropdown.Item href="#">Edit</Dropdown.Item>
+            <Dropdown.Item href="#">Delete</Dropdown.Item>
+            <Dropdown.Item href="#">Copy Link</Dropdown.Item>
           </DropdownButton>
 
           <div className="post-time">{formattedTime}</div>

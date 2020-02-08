@@ -16,7 +16,7 @@ class Homepage extends Component {
 
   renderPosts = () => {
     return (
-      <Row>
+      <Row className="post">
         <Col md={2} />
         <Col md={8}>
           <PostBlock
@@ -40,7 +40,7 @@ class Homepage extends Component {
             <NavigationBar selected="Home" />
           </Col>
         </Row>
-        <Row>
+        <Row className="createPostDialog">
           <Col md={2} />
           <Col md={8}>
             <MakePost />

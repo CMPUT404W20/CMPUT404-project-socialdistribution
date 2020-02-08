@@ -83,11 +83,24 @@ $border-color: #d9d9d9;
 
     .dropdown-item {
       font-size: 10pt;
+      &:hover {
+        background-color: $accent-color;
+        color: white;
+      }
+      &:focus,
+      &.active {
+        color: black;
+        background-color: white;
+      }
     }
 
     .dropdown-divider {
       border-top-color: $border-color
     }
+  }
+
+  .dropdown-toggle::after {
+    border: none;
   }
 
   @media screen and (max-width: 576px) {

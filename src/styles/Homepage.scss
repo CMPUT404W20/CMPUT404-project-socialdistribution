@@ -3,4 +3,9 @@ $background-color: #eaeaea;
 .homepage {
   background-color: $background-color;
   padding: 0 0 20px 0;
+  
+  .createPostDialog,
+  .post {
+    padding: 15px 10px;
+  }
 }

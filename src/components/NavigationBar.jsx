@@ -67,7 +67,7 @@ class NavigationBar extends Component {
             </Nav.Link>
           </Nav>
           <Nav>
-            <NavDropdown title={username} id="basic-nav-dropdown" alignRight>
+            <NavDropdown title={username} id="username-dropdown" alignRight>
               <NavDropdown.Item href="#">Profile</NavDropdown.Item>
               <NavDropdown.Item href="#">Settings</NavDropdown.Item>
               <NavDropdown.Divider />
