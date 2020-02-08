@@ -6,10 +6,9 @@ from django.contrib.postgres.fields import ArrayField
 
 import uuid
 
-
 class User(AbstractUser):
     githubUrl = models.URLField(max_length=400)
-    # Using: username, password, first_name, last_name, email inherited from Abstractuser
+#     # Using: username, password, first_name, last_name, email inherited from Abstractuser
 
 
 class Post(models.Model):
@@ -19,22 +18,8 @@ class Post(models.Model):
     title = models.CharField(max_length=50)
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
-    # default posts are public
-    isPublic = models.BooleanField(default=True)
-
-
-class PostAccess(models.Model):
-    accessChoices = [
-        ("PUBLIC", 'Public'),
-        ("PRIVATE", 'Private'),
-        ("FRIENDS", 'Friends'),
-        ("FOF", 'FoF'),
-    ]
-    # post = models.ForeignKey(Post, on_delete=models.CASCADE) # remove
-    visibility = models.CharField(max_length=10, choices=accessChoices, default="PUBLIC")
-    # contains users that are able to access the post
-    visible_to = ArrayField(models.CharField(max_length=500), blank=True, default=list)
-
+    # Visibility can be one of the followings : "PUBLIC","PRIVATE","Private","FRIENDS","FOF" or specific user ID
+    visibility = models.CharField(max_length=20, default="PUBLIC")
 
 class Comments(models.Model):
     commentId = models.UUIDField(
