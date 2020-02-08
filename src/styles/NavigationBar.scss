@@ -41,9 +41,13 @@ $border-color: #d9d9d9;
       text-align: center;
       font-weight: 500;
       line-height: 10px;
+      
+      &.active {
+        color: $accent-color !important;
+      }
 
       &:hover {
-          color: black;
+        color: black;
       }
 
       .notification-icon-wrapper {
