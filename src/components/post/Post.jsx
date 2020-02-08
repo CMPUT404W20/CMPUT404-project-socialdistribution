@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import "../../styles/post/PostBlock.scss";
+import "../../styles/post/Post.scss";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import moreIcon from "../../images/more-icon.svg";
 
-class PostBlock extends Component {
+class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -53,7 +53,7 @@ class PostBlock extends Component {
   }
 }
 
-PostBlock.propTypes = {
+Post.propTypes = {
   username: PropTypes.string.isRequired,
   postTime: PropTypes.instanceOf(Date).isRequired,
   imageSrc: PropTypes.node,
@@ -61,10 +61,10 @@ PostBlock.propTypes = {
   invisible: PropTypes.bool,
 };
 
-PostBlock.defaultProps = {
+Post.defaultProps = {
   content: "",
   imageSrc: "",
   invisible: false,
 };
 
-export default PostBlock;
+export default Post;

@@ -4,8 +4,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import NavigationBar from "./NavigationBar";
-import MakePost from "./MakePost";
-import PostBlock from "./post/PostBlock";
+import MakePost from "./post/MakePost";
+import Post from "./post/Post";
 import demoImage from "../images/demo-img.png";
 
 class Homepage extends Component {
@@ -14,12 +14,13 @@ class Homepage extends Component {
     this.props = props;
   }
 
-  renderPosts = () => {
+  // eslint-disable-next-line class-methods-use-this
+  renderPosts() {
     return (
       <Row className="post">
         <Col md={2} />
         <Col md={8}>
-          <PostBlock
+          <Post
             className="testing"
             username="maharsh"
             postTime={new Date()}
@@ -40,7 +41,7 @@ class Homepage extends Component {
             <NavigationBar selected="Home" />
           </Col>
         </Row>
-        <Row className="createPostDialog">
+        <Row className="makePostWrapper">
           <Col md={2} />
           <Col md={8}>
             <MakePost />

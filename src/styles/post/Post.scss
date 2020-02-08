@@ -55,12 +55,12 @@ $post-width: 100%;
     
       .dropdown-item {
         font-size: 10pt;
-        line-height: 15px;
 
         &:hover {
           background-color: $accent-color;
           color: white;
         }
+
         &:focus,
         &.active {
           color: black;
@@ -72,7 +72,6 @@ $post-width: 100%;
     .dropdown-toggle::after {
       border: none;
     }
-    
   }
 
   .post-img {
