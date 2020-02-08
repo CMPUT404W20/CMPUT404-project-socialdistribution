@@ -1,13 +1,12 @@
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 
 import uuid
 
+
 class User(AbstractUser):
     githubUrl = models.URLField(max_length=400)
-#     # Using: username, password, first_name, last_name, email inherited from Abstractuser
 
 
 class Post(models.Model):
@@ -19,6 +18,7 @@ class Post(models.Model):
     content = models.TextField()
     # Visibility can be one of the followings : "PUBLIC","PRIVATE","Private","FRIENDS","FOF" or specific user ID
     visibility = models.CharField(max_length=20, default="PUBLIC")
+
 
 class Comments(models.Model):
     commentId = models.UUIDField(
