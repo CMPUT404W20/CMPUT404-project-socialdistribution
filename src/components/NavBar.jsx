@@ -55,11 +55,6 @@ class NavBar extends Component {
                 aria-describedby="basic-addon1"
                 className="formform"
               />
-              <InputGroup.Append>
-                <Button variant="outline-secondary">
-                  <SearchRoundedIcon className="searchButton" />
-                </Button>
-              </InputGroup.Append>
             </InputGroup>
           </div>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -68,18 +63,30 @@ class NavBar extends Component {
             <Nav>
               <Nav.Link target="_blank" href="#">
                 <HomeOutlinedIcon />
-                <br />
-                Home
+                {/* <br />
+                Home */}
               </Nav.Link>
               <Nav.Link target="_blank" href="#">
                 <PeopleAltOutlinedIcon />
-                <br />
-                Friends
+                {/* <br />
+                Friends */}
               </Nav.Link>
               <Nav.Link target="_blank" href="#">
-                <NotificationsNoneOutlinedIcon />
-                <br />
-                Notices
+                <div className="icon-wrapper">
+                  <NotificationsNoneOutlinedIcon />
+                  <div className="badge-wrapper">
+                    <span className="badge">{2}</span>
+                  </div>
+                </div>
+                {/* <NotificationsNoneOutlinedIcon /> */}
+                {/* <br />
+                Notices */}
+              </Nav.Link>
+            </Nav>
+            <Nav>
+              <Nav.Link target="_blank" href="#">
+                {/* <NotificationsNoneOutlinedIcon /> */}
+                username
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
