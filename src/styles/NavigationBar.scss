@@ -105,7 +105,10 @@ $border-color: #d9d9d9;
 
   @media screen and (max-width: 576px) {
       .nav-link {
-          padding-left: 0px !important;
+        padding-left: 0px !important;
+      }
+      .form-control {
+        text-align: center;
       }
   }
 }
