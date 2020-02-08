@@ -3,7 +3,7 @@ import "../styles/Homepage.scss";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import NavBar from "./NavBar";
+import NavigationBar from "./NavigationBar";
 import MakePost from "./MakePost";
 import PostBlock from "./post/PostBlock";
 import demoImage from "../images/demo-img.png";
@@ -37,7 +37,7 @@ class Homepage extends Component {
       <Container fluid className="homepage">
         <Row>
           <Col md={12}>
-            <NavBar selected="Home" />
+            <NavigationBar selected="Home" />
           </Col>
         </Row>
         <Row>
@@ -47,6 +47,7 @@ class Homepage extends Component {
           </Col>
           <Col md={2} />
         </Row>
+        {this.renderPosts()}
         {this.renderPosts()}
       </Container>
     );
