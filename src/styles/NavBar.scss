@@ -32,17 +32,82 @@ $border-color: #d9d9d9;
     margin-bottom: 0;
   }
 }
+// .form-control:focus {
+//   outline: 0;
+//   border: 0;
+// }
+.searchBar {
+  .form-control {
+    
+  }
+  .form-control:focus {
+    border-color: unset;
+    box-shadow: unset;
+  }
+  .btn-outline-secondary {
+    background-color: white;
+    // outline: 0;
+    border: 1px red solid;
+
+    &:hover {
+      background-color: red;
+    }
+  }
+  width: 100%;
+}
 
 .searchButton {
   color: $accent-color;
+  vertical-align: middle;
 }
 
-.nav {
+.header {
   background-color: white;
-  position: fixed;
-  justify-content: center;
-  top: 0;
   width: 100%;
+  .navbar {
+      .logo {
+          font-weight: 700;
+          font-size: 18px;
+      }
+      padding: 0 !important;
+
+      .nav-link {
+          padding-right: 0 !important;
+          padding-left: 35px !important;
+          font-size: 12px;
+          text-align: center;
+          font-weight: 500;
+          color: black;
+          line-height: 10px;
+
+          &:hover {
+              color: black;
+          }
+      }
+      
+      .navbar-toggler {
+          border: none !important;
+          padding: 0 !important;
+          font-size: 14px !important;
+          outline: 0 !important;
+      }
+
+      @media screen and (max-width: 576px) {
+          .nav-link {
+              padding-left: 0px !important;
+          }
+      }
+  }
+}
+
+
+
+.nav {
+  // background-color: white;
+  // position: fixed;
+  // justify-content: center;
+  // top: 0;
+  // width: 100%;
 }
 
 .navRow {
