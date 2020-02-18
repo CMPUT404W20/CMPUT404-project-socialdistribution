@@ -3,9 +3,11 @@ $badge-bg-color: #ffb75e;
 $placeholder-text-color: #bababa;
 $icon-text-color: #181818;
 $border-color: #d9d9d9;
+$shadow: 0px 0px 10px rgba(121, 121, 121, 0.25);
 
 .navigationBar {
   background-color: white;
+  box-shadow: $shadow;
   width: 100%;
 
   .search-input-container {
@@ -79,7 +81,7 @@ $border-color: #d9d9d9;
 
   .dropdown-menu {
     border: 0;
-    box-shadow: 0px 0px 10px rgba(121, 121, 121, 0.25);
+    box-shadow: $shadow;
 
     .dropdown-item {
       font-size: 10pt;
