@@ -3,7 +3,6 @@ import "../../styles/post/MakePost.scss";
 import SendIcon from "@material-ui/icons/Send";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import Modal from "react-bootstrap/Modal";
-import icon from "../../images/markdown-icon.svg";
 
 class MakePost extends Component {
   constructor(props) {
@@ -86,12 +85,6 @@ class MakePost extends Component {
               onChange={this.handleTextChange}
             />
             <div className="row-3-buttons">
-              <img
-                className="markdown-icon icon"
-                src={icon}
-                width="20pt"
-                alt="markdown"
-              />
               <ImageOutlinedIcon
                 className="image-icon icon"
                 onClick={this.renderModal}
