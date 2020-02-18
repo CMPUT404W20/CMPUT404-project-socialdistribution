@@ -18,7 +18,9 @@ class MakePost extends Component {
     this.setState({ post: event.target.value });
   };
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
+
     const { post } = this.state;
     // eslint-disable-next-line no-alert
     alert(post);
