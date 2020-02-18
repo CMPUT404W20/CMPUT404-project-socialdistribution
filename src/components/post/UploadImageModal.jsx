@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import React from "react";
 import PropTypes from "prop-types";
 import "../../styles/post/UploadImageModal.scss";
@@ -35,7 +34,7 @@ function UploadImageModal(props) {
 }
 
 UploadImageModal.propTypes = {
-  show: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
 };
 
