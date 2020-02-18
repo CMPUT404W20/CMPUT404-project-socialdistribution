@@ -1,8 +1,46 @@
+/* eslint-disable max-classes-per-file */
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "../../styles/post/MakePost.scss";
 import SendIcon from "@material-ui/icons/Send";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import Modal from "react-bootstrap/Modal";
+
+function UploadImageModal(props) {
+  const { onHide, show } = props;
+
+  return (
+    <Modal onHide={onHide} show={show} className="upload-image-modal">
+      <Modal.Header closeButton>
+        <Modal.Title>Upload images</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <input
+          accept="image/*"
+          className="upload-image"
+          id="contained-button-file"
+          multiple
+          type="file"
+        />
+      </Modal.Body>
+      <Modal.Footer className="upload-button-wrapper">
+        <button
+          type="button"
+          className="upload-button"
+          onClick={onHide}
+        >
+          Upload
+        </button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
+UploadImageModal.propTypes = {
+  show: PropTypes.func.isRequired,
+  onHide: PropTypes.func.isRequired,
+};
+
 
 class MakePost extends Component {
   constructor(props) {
@@ -29,39 +67,9 @@ class MakePost extends Component {
     this.setState({ modalShow: true });
   };
 
-  Modal = () => {
+  render() {
     const { modalShow } = this.state;
     const handleClose = () => this.setState({ modalShow: false });
-    return (
-      <div>
-        <Modal show={modalShow} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Upload images</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <input
-              accept="image/*"
-              className="upload-image"
-              id="contained-button-file"
-              multiple
-              type="file"
-            />
-          </Modal.Body>
-          <Modal.Footer className="upload-button-wrapper">
-            <button
-              type="button"
-              className="upload-button"
-              onClick={handleClose}
-            >
-              Upload
-            </button>
-          </Modal.Footer>
-        </Modal>
-      </div>
-    );
-  };
-
-  render() {
     return (
       <div className="make-post-wrapper">
         <div className="make-post-content">
@@ -78,7 +86,7 @@ class MakePost extends Component {
               <option value="private">Private</option>
             </select>
           </div>
-          {this.Modal}
+          <UploadImageModal show={modalShow} onHide={handleClose} />
           <form className="make-post-input-wrapper" action="submit">
             <textarea
               placeholder="What's on your mind?"
@@ -101,7 +109,6 @@ class MakePost extends Component {
             </div>
           </form>
         </div>
-        {this.Modal()}
       </div>
     );
   }
