@@ -33,8 +33,8 @@ class MakePost extends Component {
     const { modalShow } = this.state;
     const handleClose = () => this.setState({ modalShow: false });
     return (
-      <div className="modal-upload">
-        <Modal show={modalShow} onHide={handleClose} animation={false}>
+      <div>
+        <Modal show={modalShow} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Upload images</Modal.Title>
           </Modal.Header>
@@ -63,9 +63,9 @@ class MakePost extends Component {
 
   render() {
     return (
-      <div className="makePost">
-        <div className="block">
-          <div className="form-row-1">
+      <div className="make-post-wrapper">
+        <div className="make-post-content">
+          <div className="make-post-header">
             <b>NEW POST</b>
             <select className="privacy-select">
               <option selected value="public">
@@ -79,14 +79,15 @@ class MakePost extends Component {
             </select>
           </div>
           {this.Modal}
-          <form className="row-2-input" action="submit">
+          <form className="make-post-input-wrapper" action="submit">
             <textarea
               placeholder="What's on your mind?"
+              className="post-text-area"
               onChange={this.handleTextChange}
             />
-            <div className="row-3-buttons">
+            <div className="make-post-buttons-wrapper">
               <ImageOutlinedIcon
-                className="image-icon icon"
+                className="upload-image-icon icon"
                 onClick={this.renderModal}
               />
               <button
