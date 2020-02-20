@@ -33,16 +33,18 @@ class PostViewSet(mixins.CreateModelMixin,
         request_query = body.get("query")
         post_data = body.get("post")
 
+        current_user_id = self.request.user.id
+        post_data["author"] = current_user_id
+
         if request_query == "createPost" and post_data:
-            serializer = PostSerializer(data=post_data, context={"request": request})
+            serializer = PostSerializer(
+                data=post_data, context={"request": request})
+
             if serializer.is_valid():
                 serializer.save()
-                return Response(
-                    {"query": "createPost", "success": True, "message": "Post created"}, status=status.HTTP_201_CREATED
-                )
+                return Response({"query": "createPost", "success": True, "message": "Post created"}, status=status.HTTP_201_CREATED)
             else:
-                return Response({"query": "createPost", "success": False, "message": "wrong payload format"},
-                            status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                return Response({"query": "createPost", "success": False, "message": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         else:
             return Response({"query": "createPost", "success": False, "message": "wrong request"},
                             status=status.HTTP_400_BAD_REQUEST)

@@ -6,6 +6,10 @@ import uuid
 
 
 class User(AbstractUser):
+    # displayName = models.CharField(max_length=50)
+    # bio = models.CharField(max_length=150)
+    # host = models.URLField(max_length=400)
+    # TODO add blank=True on model field
     githubUrl = models.URLField(max_length=400)
 
 
