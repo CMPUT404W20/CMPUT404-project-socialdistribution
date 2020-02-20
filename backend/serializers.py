@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
 
+from backend.models import Post
+
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
-
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 
@@ -27,3 +28,10 @@ class AuthRegisterSerializer(RegisterSerializer):
         setup_user_email(request, user, [])
 
         return user
+
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = '__all__'

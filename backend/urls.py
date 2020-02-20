@@ -16,12 +16,17 @@ Including another URLconf
 from django.urls import include, path
 from django.contrib import admin
 
-from .views import index
+from rest_framework.routers import DefaultRouter
+from backend.views.post_views import PostViewSet
+
+router = DefaultRouter()
+router.register('post', PostViewSet, basename='user')
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('auth/', include('rest_auth.urls')),
     path('auth/registration/', include('rest_auth.registration.urls')),
-    path('^accounts/', include('allauth.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
+
