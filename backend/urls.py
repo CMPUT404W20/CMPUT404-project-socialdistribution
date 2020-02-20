@@ -20,13 +20,14 @@ from rest_framework.routers import DefaultRouter
 from backend.views.post_views import PostViewSet
 
 router = DefaultRouter()
-router.register('post', PostViewSet, basename='user')
 
 urlpatterns = [
-    path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('auth/', include('rest_auth.urls')),
     path('auth/registration/', include('rest_auth.registration.urls')),
+    path('api-auth/', include('rest_framework.urls')),
     path('accounts/', include('allauth.urls')),
+    # Url for Post Operations
+    path('post', PostViewSet.as_view({"get": "list"})),
+    path('author/post', PostViewSet.as_view({"post":"create_post"})) 
 ]
-
