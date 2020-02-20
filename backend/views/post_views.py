@@ -33,13 +33,16 @@ class PostViewSet(mixins.CreateModelMixin,
         request_query = body.get("query")
         post_data = body.get("post")
 
-        current_user_id = self.request.user.id
-        post_data["author"] = current_user_id
-
         if request_query == "createPost" and post_data:
+            '''
+            Our model takes in a pk rather than Json, since only this endpoint will only be used by logged in user,
+            therefore, we just grab the id from request after they authenticated successfully
+            '''
+            current_user_id = self.request.user.id
+            post_data["author"] = current_user_id
+
             serializer = PostSerializer(
                 data=post_data, context={"request": request})
-
             if serializer.is_valid():
                 serializer.save()
                 return Response({"query": "createPost", "success": True, "message": "Post created"}, status=status.HTTP_201_CREATED)
