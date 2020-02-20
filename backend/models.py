@@ -14,6 +14,16 @@ class User(AbstractUser):
 
 
 class Post(models.Model):
+
+    # visibility ["PUBLIC","FOAF","FRIENDS","PRIVATE","SERVERONLY"]
+    VISIBILITY_CHOICES = (
+        ("PUBLIC", "PUBLIC"),
+        ("FOAF", "FOAF"),
+        ("FRIENDS", "FRIENDS"),
+        ("PRIVATE", "PRIVATE"),
+        ("SERVERONLY", "SERVERONLY")
+    )
+    
     postId = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -21,7 +31,8 @@ class Post(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
     # Visibility can be one of the followings : "PUBLIC","PRIVATE","Private","FRIENDS","FOF" or specific user ID
-    visibility = models.CharField(max_length=20, default="PUBLIC")
+    visibility = models.CharField(
+        max_length=10, choices=VISIBILITY_CHOICES, default="PUBLIC")
 
 
 class Comments(models.Model):
