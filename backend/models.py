@@ -9,8 +9,7 @@ class User(AbstractUser):
     # displayName = models.CharField(max_length=50)
     # bio = models.CharField(max_length=150)
     # host = models.URLField(max_length=400)
-    # TODO add blank=True on model field
-    githubUrl = models.URLField(max_length=400)
+    githubUrl = models.URLField(max_length=400, blank=True)
 
 
 class Post(models.Model):
@@ -23,7 +22,7 @@ class Post(models.Model):
         ("PRIVATE", "PRIVATE"),
         ("SERVERONLY", "SERVERONLY")
     )
-    
+
     postId = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
