@@ -28,7 +28,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('accounts/', include('allauth.urls')),
     # Url for Post Operations
-    path('post/', PostViewSet.as_view({"get": "list"})),
-    path('post/<uuid:postId>/', PostViewSet.as_view({"get": "retrieve"})),
-    path('author/post', PostViewSet.as_view({"post":"create_post"})) 
+    path('posts/', PostViewSet.as_view({"get": "list"})),
+    path('posts/<uuid:postId>/', PostViewSet.as_view({"get": "retrieve"})),
+    path('author/posts', PostViewSet.as_view({"post":"create_post"})) 
 ]

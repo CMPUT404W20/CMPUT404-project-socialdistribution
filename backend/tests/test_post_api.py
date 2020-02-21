@@ -10,6 +10,7 @@ test_user_password = "ualberta!"
 test_user_github_url = "https://github.com/testuser001"
 
 
+@pytest.mark.django_db
 class TestPostAPI:
 
     @pytest.fixture
@@ -18,12 +19,11 @@ class TestPostAPI:
             username=test_user_username, email=test_user_email, password=test_user_password, githubUrl=test_user_github_url)
         return test_user
 
-    @pytest.mark.django_db
     def test_get_post_by_id(self, client, test_user):
         test_post = Post.objects.create(author=test_user, title="post title", content="post content")
         test_post_id = test_post.postId
 
-        response = client.get('/post/{}/'.format(test_post_id))
+        response = client.get('/posts/{}/'.format(test_post_id))
         assert response.status_code == 200
         assert response.data["query"] == "posts"
         assert response.data["count"] == 1
@@ -38,7 +38,7 @@ class TestPostAPI:
         assert response.data["post"][0]["author"]["displayName"] == test_user.username
         assert response.data["post"][0]["author"]["github"] == test_user.githubUrl
 
-
+        
 
 
 
