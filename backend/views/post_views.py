@@ -13,18 +13,23 @@ from backend.models import Post
 from backend.permissions import *
 
 
-class PostViewSet(mixins.CreateModelMixin,
-                  mixins.ListModelMixin,
-                  mixins.RetrieveModelMixin,
-                  viewsets.GenericViewSet):
+class PostViewSet(viewsets.ModelViewSet):
     """
     Viewset for all the operation related to Post
     """
 
     serializer_class = PostSerializer
-    # queryset = Post.objects.all()
+    queryset = Post.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    lookup_field = "postId"
 
+    def retrieve(self, request, *args, **kwargs):
+        '''
+        /posts/{POST_ID} : access to a single post with id = {POST_ID}
+        '''
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response({"query": "posts", "count": 1, "size": 1, "post": [serializer.data]})
 
     def create_post(self, request, *args, **kwargs):
         body = request.data
@@ -50,9 +55,5 @@ class PostViewSet(mixins.CreateModelMixin,
             return Response({"query": "createPost", "success": False, "message": "wrong request"},
                             status=status.HTTP_400_BAD_REQUEST)
 
-    def get_queryset(self):
-        return Post.objects.filter(visibility=PUBLIC)
-
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-    
