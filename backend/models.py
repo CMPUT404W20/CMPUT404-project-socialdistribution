@@ -1,7 +1,7 @@
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.contrib.sites.models import Site
+from django.conf import settings
 
 import uuid
 
@@ -14,9 +14,18 @@ class Host(models.Model):
 
 class User(AbstractUser):
     githubUrl = models.URLField(max_length=400, blank=True)
+
+    # TODO do we need to store the host?
     host = models.ForeignKey(
         Host, null=True, blank=True, on_delete=models.CASCADE)
-        
+
+    def get_full_user_id(self):
+        if self.host is None:
+            host = settings.APP_HOST
+            if host[-1] == "/":
+                host = host[:-1]
+            
+            return "{}/author/{}".format(host, self.id)
 
 class Post(models.Model):
     VISIBILITY_CHOICES = (
