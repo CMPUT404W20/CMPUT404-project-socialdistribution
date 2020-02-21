@@ -165,3 +165,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
+
+# APP specific
+APP_HOST = os.environ.get(
+    "APP_HOST", "https://cmput404-socialdistribution.herokuapp.com/"
+)
