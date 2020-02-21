@@ -10,6 +10,7 @@ from rest_framework.decorators import permission_classes
 
 from backend.serializers import PostSerializer
 from backend.models import Post
+from backend.permissions import *
 
 
 class PostViewSet(mixins.CreateModelMixin,
@@ -21,19 +22,16 @@ class PostViewSet(mixins.CreateModelMixin,
     """
 
     serializer_class = PostSerializer
-    queryset = Post.objects.all()
+    # queryset = Post.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def get(self, request, *args, **kwargs):
-        # TODO add permission check for post
-        return self.list(request, *args, **kwargs)
 
     def create_post(self, request, *args, **kwargs):
         body = request.data
         request_query = body.get("query")
         post_data = body.get("post")
 
-        if request_query == "createPost" and post_data:
+        if post_data:
             '''
             Our model takes in a pk rather than Json, since only this endpoint will only be used by logged in user,
             therefore, we just grab the id from request after they authenticated successfully
@@ -52,5 +50,9 @@ class PostViewSet(mixins.CreateModelMixin,
             return Response({"query": "createPost", "success": False, "message": "wrong request"},
                             status=status.HTTP_400_BAD_REQUEST)
 
+    def get_queryset(self):
+        return Post.objects.filter(visibility=PUBLIC)
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+    
