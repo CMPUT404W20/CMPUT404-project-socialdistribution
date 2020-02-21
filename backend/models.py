@@ -1,26 +1,31 @@
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.contrib.sites.models import Site
 
 import uuid
 
 
-class User(AbstractUser):
-    # displayName = models.CharField(max_length=50)
-    # bio = models.CharField(max_length=150)
-    # host = models.URLField(max_length=400)
-    githubUrl = models.URLField(max_length=400, blank=True)
+class Host(models.Model):
+    url = models.URLField(max_length=400)
+    serviceAccountUsername = models.CharField(max_length=100, null=True, blank=True)
+    serviceAccountPassword = models.CharField(max_length=100, null=True, blank=True)
 
+
+class User(AbstractUser):
+    githubUrl = models.URLField(max_length=400, blank=True)
+    host = models.ForeignKey(
+        Host, null=True, blank=True, on_delete=models.CASCADE)
+        
 
 class Post(models.Model):
-
-    # visibility ["PUBLIC","FOAF","FRIENDS","PRIVATE","SERVERONLY"]
     VISIBILITY_CHOICES = (
         ("PUBLIC", "PUBLIC"),
         ("FOAF", "FOAF"),
         ("FRIENDS", "FRIENDS"),
         ("PRIVATE", "PRIVATE"),
-        ("SERVERONLY", "SERVERONLY")
+        ("SERVERONLY", "SERVERONLY"),
+        ("UNLISTED", "UNLISTED"),
     )
 
     postId = models.UUIDField(
