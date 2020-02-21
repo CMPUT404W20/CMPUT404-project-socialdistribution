@@ -1,6 +1,4 @@
-from django.contrib.auth.models import User
-
-from backend.models import Post
+from backend.models import *
 
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
@@ -30,7 +28,20 @@ class AuthRegisterSerializer(RegisterSerializer):
         return user
 
 
+class UserSerializer(serializers.ModelSerializer):
+
+    displayName = serializers.CharField(source="username")
+    github = serializers.URLField(source="githubUrl")
+    id = serializers.CharField(source="get_full_user_id")
+
+    class Meta:
+        model = User
+        # TODO ignored host stuff for now, need to add back later
+        fields = ["id", "displayName", "github"]
+    
+
 class PostSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
 
     class Meta:
         model = Post
