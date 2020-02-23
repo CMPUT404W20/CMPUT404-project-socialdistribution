@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import "../styles/ProfileHeader.scss";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 class ProfileHeader extends Component {
   constructor(props) {
@@ -15,30 +16,70 @@ class ProfileHeader extends Component {
     };
   }
 
-  handleEditButtonClick() {
+  handleEditButtonClick = () => {
     alert("todo");
-  }
+  };
 
-  renderStatus() {
+  renderStatus = () => {
     const { self, following, friend } = this.state;
-    if (friend) {
-      this.renderFriendOptions(true);
+    if (!self) {
+      if (!friend && !following) {
+        return (this.renderFollowButton());
+      }
+      if (!friend && following) {
+        return (this.renderDropDown(false));
+      }
+      return (this.renderDropDown(true));
     }
-  }
+    return (
+      <button
+        type="button"
+        className="edit-profile-button"
+        onClick={this.handleEditButtonClick}
+      >
+        <EditOutlinedIcon className="edit-icon" />
+        <span>EDIT PROFILE</span>
+      </button>
+    );
+  };
+
+  handleFollow = () => {
+    this.setState({ following: true });
+  };
+
+  renderDropDown = (isFriend) => (
+    <DropdownButton
+      id="friend-status"
+      title={isFriend === true ? "FRIENDS" : "FOLLOWING"}
+      drop="down"
+      alignRight
+    >
+      <Dropdown.Item onClick={this.handleUnStatus}>{isFriend === true ? "Unfriend" : "Unfollow"}</Dropdown.Item>
+    </DropdownButton>
+  );
+
+  handleUnStatus = () => {
+    const { friend } = this.state;
+    if (friend) {
+      this.setState({ friend: false });
+    }
+    this.setState({ following: false });
+  };
+
+  renderFollowButton = () => (
+    <button
+      type="button"
+      className="follow-button"
+      onClick={this.handleFollow}
+    >
+      Follow
+    </button>
+  );
 
   render() {
     return (
       <div className="profileHeader">
-        <div className="image-section">
-          <button
-            type="button"
-            className="edit-profile-button"
-            onClick={() => this.handleEditButtonClick()}
-          >
-            <EditOutlinedIcon className="edit-icon" />
-            <span>EDIT PROFILE</span>
-          </button>
-        </div>
+        <div className="image-section" />
         <div className="user-section">
           <div className="row1">
             <p>{this.state.username}</p>

@@ -3,6 +3,7 @@ $header-height: 250px;
 $bg-path: "../images/profile-bg.png";
 $text-color: #181818;
 $button-border-color: #dadada;
+$accent-color: #0275b1;
 .profileHeader {
     margin-top: 90px;
     background-color: white;
@@ -15,32 +16,6 @@ $button-border-color: #dadada;
     height: 50%;
     background: url($bg-path) bottom;
     background-size: auto 100%;
-    .edit-profile-button {
-        float: right;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 4px;
-        border: 1px solid $button-border-color;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        height: 1.8rem;
-        margin-top: 0.9rem;
-        margin-right: 0.9rem;
-        padding-left: 0.9rem;
-        padding-right: 0.9rem;
-        font-style: normal;
-        color: $text-color;
-        font-size: 7pt;
-        text-align: center;
-        text-transform: uppercase;
-    }
-    .edit-icon {
-        margin-right: 2px;
-        color: $text-color;
-        height: 15pt;
-    }
 }
 
 .row1 {
@@ -57,5 +32,46 @@ $button-border-color: #dadada;
         font-weight: bold;
         text-transform: uppercase;
         font-size: 11pt;
+    }
+}
+
+.row2 {
+    float: right;
+    padding-right: 3rem;
+    button {
+        background-color: $accent-color;
+        color: white;
+        width: 10rem;
+        height: 2rem;
+        font-size: 9pt;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-style: normal;
+        text-align: center;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: none;
+        border-radius: 4px;
+    }
+    .edit-icon {
+        margin-right: 2px;
+        color: white;
+        height: 15pt;
+    }
+    #friend-status {
+        background-color: $accent-color;
+        cursor: default;
+    }
+    .dropdown-menu {
+        border: 0;
+        box-shadow: 0px 0px 10px rgba(121, 121, 121, 0.25);
+        .dropdown-item {
+            font-size: 10pt;
+            &:hover {
+                background-color: $accent-color;
+                color: white;
+            }
+        }
     }
 }

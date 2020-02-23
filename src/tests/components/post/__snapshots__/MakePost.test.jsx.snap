@@ -49,7 +49,6 @@ exports[`Post box Component should render correctly 1`] = `
         </option>
       </select>
     </div>
-    <Component />
     <form
       action="submit"
       className="row-2-input"

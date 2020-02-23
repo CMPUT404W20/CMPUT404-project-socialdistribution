@@ -77,7 +77,6 @@ class MakePost extends Component {
               <option value="private">Private</option>
             </select>
           </div>
-          {this.Modal}
           <form className="row-2-input" action="submit">
             <textarea
               placeholder="What's on your mind?"
