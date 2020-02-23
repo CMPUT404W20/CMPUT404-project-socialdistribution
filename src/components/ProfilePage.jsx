@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import NavigationBar from "./NavigationBar";
+import ProfileHeader from "./ProfileHeader";
 import Post from "./post/Post";
 import demoImage from "../images/demo-img.png";
 
@@ -11,6 +12,7 @@ class ProfilePage extends Component {
   constructor(props) {
     super(props);
     this.props = props;
+    // fetch by user id?
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -39,13 +41,13 @@ class ProfilePage extends Component {
             <NavigationBar />
           </Col>
         </Row>
-        {/* <Row className="makePostWrapper">
+        <Row className="profileHeaderWapper">
           <Col md={2} />
           <Col md={8}>
-            <MakePost />
+            <ProfileHeader />
           </Col>
           <Col md={2} />
-        </Row> */}
+        </Row>
         {this.renderPosts()}
       </Container>
     );
