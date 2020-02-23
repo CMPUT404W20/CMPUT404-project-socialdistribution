@@ -17,6 +17,7 @@ class ProfileHeader extends Component {
   }
 
   handleEditButtonClick = () => {
+    // eslint-disable-next-line no-alert
     alert("todo");
   };
 
@@ -31,17 +32,19 @@ class ProfileHeader extends Component {
       }
       return (this.renderDropDown(true));
     }
-    return (
-      <button
-        type="button"
-        className="edit-profile-button"
-        onClick={this.handleEditButtonClick}
-      >
-        <EditOutlinedIcon className="edit-icon" />
-        <span>EDIT PROFILE</span>
-      </button>
-    );
+    return (this.renderEditProfileButton());
   };
+
+  renderEditProfileButton = () => (
+    <button
+      type="button"
+      className="edit-profile-button"
+      onClick={this.handleEditButtonClick}
+    >
+      <EditOutlinedIcon className="edit-icon" />
+      <span>EDIT PROFILE</span>
+    </button>
+  );
 
   handleFollow = () => {
     this.setState({ following: true });
@@ -77,13 +80,14 @@ class ProfileHeader extends Component {
   );
 
   render() {
+    const { username, remote } = this.state;
     return (
       <div className="profileHeader">
         <div className="image-section" />
         <div className="user-section">
           <div className="row1">
-            <p>{this.state.username}</p>
-            <p>{this.state.remote === true ? "Remote" : "Local"}</p>
+            <p>{username}</p>
+            <p>{remote === true ? "Remote" : "Local"}</p>
           </div>
           <div className="row2">
             {this.renderStatus()}
