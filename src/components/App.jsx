@@ -1,8 +1,8 @@
 import React from "react";
-import ProfilePage from "./ProfilePage";
+import Login from "./Login";
 
 function App() {
-  return <ProfilePage />;
+  return <Login />;
 }
 
 export default App;
