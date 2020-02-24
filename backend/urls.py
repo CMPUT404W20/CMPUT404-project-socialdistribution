@@ -18,6 +18,7 @@ from django.contrib import admin
 
 from rest_framework.routers import DefaultRouter
 from backend.views.post_views import PostViewSet
+from backend.views.author_views import AuthorViewSet
 
 router = DefaultRouter()
 
@@ -30,5 +31,9 @@ urlpatterns = [
     # Url for Post Operations
     path('posts/', PostViewSet.as_view({"get": "list"})),
     path('posts/<uuid:postId>/', PostViewSet.as_view({"get": "retrieve"})),
-    path('author/posts', PostViewSet.as_view({"post":"create_post"})) 
+    path('author/posts', PostViewSet.as_view({"post":"create_post"})), 
+    #url of Author Operations
+    path('author/', AuthorViewSet.as_view({"get": "list"})),
+    path('author/<id>/',AuthorViewSet.as_view({"get":"retrieve"}))
+
 ]
