@@ -13,6 +13,8 @@ class ProfileHeader extends Component {
       friend: true,
       following: true,
       self: false,
+      // self could be checked using the userID and the loggedIn user's id
+      // to do: fetch the user
     };
   }
 

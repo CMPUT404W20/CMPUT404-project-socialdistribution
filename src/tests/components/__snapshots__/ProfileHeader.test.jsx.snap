@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navigation bar Component should render correctly 1`] = `
+<div
+  className="profileHeader"
+>
+  <div
+    className="image-section"
+  />
+  <div
+    className="user-section"
+  >
+    <div
+      className="row1"
+    >
+      <p>
+        Username
+      </p>
+      <p>
+        Local
+      </p>
+    </div>
+    <div
+      className="row2"
+    >
+      <DropdownButton
+        alignRight={true}
+        drop="down"
+        id="friend-status"
+        title="FRIENDS"
+      >
+        <DropdownItem
+          as={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "displayName": "SafeAnchor",
+              "render": [Function],
+            }
+          }
+          disabled={false}
+          onClick={[Function]}
+        >
+          Unfriend
+        </DropdownItem>
+      </DropdownButton>
+    </div>
+  </div>
+</div>
+`;
