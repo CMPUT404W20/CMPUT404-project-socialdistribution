@@ -42,11 +42,12 @@ class UserSerializer(serializers.ModelSerializer):
     displayName = serializers.CharField(source="username")
     github = serializers.URLField(source="githubUrl")
     id = serializers.CharField(source="get_full_user_id")
+    host = serializers.CharField(source="host.url")
+    url = serializers.CharField(source="get_full_user_id")
 
     class Meta:
         model = User
-        # TODO ignored host stuff for now, need to add back later
-        fields = ["id", "displayName", "github"]
+        fields = ["id", "host", "displayName", "url", "github"]
     
 
 class PostSerializer(serializers.ModelSerializer):
