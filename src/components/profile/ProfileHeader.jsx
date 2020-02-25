@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../styles/ProfileHeader.scss";
+import "../../styles/profile/ProfileHeader.scss";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -12,8 +12,8 @@ class ProfileHeader extends Component {
       remote: false,
       friend: true,
       following: true,
-      self: false,
-      // self could be checked using the userID and the loggedIn user's id
+      isSelf: false,
+      // isSelf will be changed by comparing the userID and the loggedIn user's id
       // to do: fetch the user
     };
   }
@@ -24,8 +24,8 @@ class ProfileHeader extends Component {
   };
 
   renderStatus = () => {
-    const { self, following, friend } = this.state;
-    if (!self) {
+    const { isSelf, following, friend } = this.state;
+    if (!isSelf) {
       if (!friend && !following) {
         return (this.renderFollowButton());
       }
@@ -59,16 +59,12 @@ class ProfileHeader extends Component {
       drop="down"
       alignRight
     >
-      <Dropdown.Item onClick={this.handleUnStatus}>{isFriend === true ? "Unfriend" : "Unfollow"}</Dropdown.Item>
+      <Dropdown.Item onClick={this.handleUnFollow}>{isFriend === true ? "Unfriend" : "Unfollow"}</Dropdown.Item>
     </DropdownButton>
   );
 
-  handleUnStatus = () => {
-    const { friend } = this.state;
-    if (friend) {
-      this.setState({ friend: false });
-    }
-    this.setState({ following: false });
+  handleUnFollow = () => {
+    this.setState({ friend: false, following: false });
   };
 
   renderFollowButton = () => (

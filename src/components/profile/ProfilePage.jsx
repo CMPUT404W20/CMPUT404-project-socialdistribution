@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import "../styles/ProfilePage.scss";
+import "../../styles/profile/ProfilePage.scss";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import NavigationBar from "./NavigationBar";
+import NavigationBar from "../NavigationBar";
 import ProfileHeader from "./ProfileHeader";
-import Post from "./post/Post";
-import demoImage from "../images/demo-img.png";
+import Post from "../post/Post";
+import demoImage from "../../images/demo-img.png";
 
 class ProfilePage extends Component {
   constructor(props) {
