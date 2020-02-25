@@ -17,7 +17,7 @@ from django.urls import include, path
 from django.contrib import admin
 
 from rest_framework.routers import DefaultRouter
-from backend.views.post_views import PostViewSet
+from backend.apiviews.post_views import PostViewSet
 
 router = DefaultRouter()
 

@@ -1,4 +1,5 @@
 from backend.models import *
+from django.conf import settings
 
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
@@ -21,6 +22,14 @@ class AuthRegisterSerializer(RegisterSerializer):
         adapter = get_adapter()
         user = adapter.new_user(request)
         user.is_active = False
+        
+        current_host = settings.APP_HOST
+        if Host.objects.filter(url=current_host).exists():
+            host_obj = Host.objects.filter(url=current_host)
+        else:
+            host_obj = Host.objects.create(url=current_host)
+        user.host = host_obj
+
         self.cleaned_data = self.get_cleaned_data()
         adapter.save_user(request, user, self)
         setup_user_email(request, user, [])
