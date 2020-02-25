@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
-from backend.models import Post
+from django.conf import settings
+
+from backend.models import Post, Host
 
 import pytest
 
@@ -14,13 +16,19 @@ test_user_github_url = "https://github.com/testuser001"
 class TestPostAPI:
 
     @pytest.fixture
-    def test_user(self, db):
+    def test_host(self, db):
+        test_host = Host.objects.create(url=settings.APP_HOST)
+        return test_host
+
+    @pytest.fixture
+    def test_user(self, db, test_host):
         test_user = User.objects.create_user(
-            username=test_user_username, email=test_user_email, password=test_user_password, githubUrl=test_user_github_url)
+            username=test_user_username, email=test_user_email, password=test_user_password, githubUrl=test_user_github_url, host=test_host)
         return test_user
 
     def test_get_post_by_id(self, client, test_user):
-        test_post = Post.objects.create(author=test_user, title="post title", content="post content")
+        test_post = Post.objects.create(
+            author=test_user, title="post title", content="post content")
         test_post_id = test_post.postId
 
         response = client.get('/posts/{}/'.format(test_post_id))
@@ -37,8 +45,3 @@ class TestPostAPI:
         assert response.data["post"][0]["author"] is not None
         assert response.data["post"][0]["author"]["displayName"] == test_user.username
         assert response.data["post"][0]["author"]["github"] == test_user.githubUrl
-
-        
-
-
-
