@@ -33,7 +33,8 @@ urlpatterns = [
     path('posts/<uuid:postId>/', PostViewSet.as_view({"get": "retrieve"})),
     path('author/posts', PostViewSet.as_view({"post":"create_post"})), 
     #url of Author Operations
-    path('author/', AuthorViewSet.as_view({"get": "list"})),
-    path('author/<id>/',AuthorViewSet.as_view({"get":"retrieve"}))
+    path('author/', AuthorViewSet.as_view({"get": "get_authors"})),
+    path('author/<int:pk>/',AuthorViewSet.as_view({"get": "get_profile"})),
+    path('author/<int:pk>/friends',AuthorViewSet.as_view(({"get": "get_friends"})))
 
 ]

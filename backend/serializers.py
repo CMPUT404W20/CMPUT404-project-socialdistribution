@@ -49,3 +49,10 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = '__all__'
+
+class FriendSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Friend
+        fields = ["id","friendDate","unfriendDate","toUser_id"]
+        # fields = '__all__'
+
