@@ -59,8 +59,14 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = '__all__'
 
+class UserFriendSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source="get_full_user_id")
+    class Meta:
+        model = User
+        fields = ["id"]
+
 class FriendSerializer(serializers.ModelSerializer):
+    toUser = UserFriendSerializer()
     class Meta:
         model = Friend
-        fields = ["id","friendDate","unfriendDate","toUser_id"]
-        # fields = '__all__'
+        fields = ["toUser"]

@@ -58,9 +58,9 @@ class TestAuthorAPI:
         assert response.data["query"] == "friends"
         assert response.data["Author"] is not None
 
-
-        assert list(response.data["Author"][0].items()) is not None
-        assert list(response.data["Author"][1].items()) is not None
-        assert list(response.data["Author"][0].items()) [3][1] == test_user[1].id
-        assert list(response.data["Author"][1].items()) [3][1] == test_user[2].id
+        # print(response.data)
+        assert list(list(response.data["Author"][0].items())[0][1].items()) is not None
+        assert list(list(response.data["Author"][1].items())[0][1].items())is not None
+        assert list(list(response.data["Author"][0].items())[0][1].items())[0][1] == test_user[1].get_full_user_id()
+        assert list(list(response.data["Author"][1].items())[0][1].items()) [0][1] == test_user[2].get_full_user_id()
     
