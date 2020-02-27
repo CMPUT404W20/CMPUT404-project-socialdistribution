@@ -44,10 +44,12 @@ class UserSerializer(serializers.ModelSerializer):
     id = serializers.CharField(source="get_full_user_id")
     host = serializers.CharField(source="host.url")
     url = serializers.CharField(source="get_full_user_id")
+    firstName = serializers.CharField(source="first_name")
+    lastName = serializers.CharField(source="last_name")
 
     class Meta:
         model = User
-        fields = ["id", "host", "displayName", "url", "github"]
+        fields = ["id", "host", "displayName","firstName", "lastName", "url", "github"]
     
 
 class PostSerializer(serializers.ModelSerializer):
@@ -56,3 +58,9 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = '__all__'
+
+class FriendSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Friend
+        fields = ["id","friendDate","unfriendDate","toUser_id"]
+        # fields = '__all__'
