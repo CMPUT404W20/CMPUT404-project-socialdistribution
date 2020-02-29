@@ -35,7 +35,6 @@ class AuthorViewSet(viewsets.ViewSet):
         '''
         /author/{author_id}: Get a author's profile with id = {author_id}
         '''
-        
         author = self.get_object(pk)
         serializer = UserSerializer(author)
         return Response({"query": "author", "count": 1, "size": 1, "Profile": [serializer.data]})
@@ -50,3 +49,5 @@ class AuthorViewSet(viewsets.ViewSet):
         serializer = FriendSerializer(friends,many=True)
         return Response({"query":"friends","Author":serializer.data})
         # return Response(serializer.data)
+
+    

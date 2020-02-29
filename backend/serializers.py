@@ -22,7 +22,7 @@ class AuthRegisterSerializer(RegisterSerializer):
         adapter = get_adapter()
         user = adapter.new_user(request)
         user.is_active = False
-        
+
         current_host = settings.APP_HOST
         if Host.objects.filter(url=current_host).exists():
             host_obj = Host.objects.filter(url=current_host)
@@ -49,8 +49,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "host", "displayName","firstName", "lastName", "url", "github"]
-    
+        fields = ["id", "host", "displayName",
+                  "firstName", "lastName", "url", "github"]
+
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer()
@@ -59,14 +60,27 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = '__all__'
 
+
 class UserFriendSerializer(serializers.ModelSerializer):
     id = serializers.CharField(source="get_full_user_id")
+
     class Meta:
         model = User
         fields = ["id"]
 
+
 class FriendSerializer(serializers.ModelSerializer):
     toUser = UserFriendSerializer()
+
     class Meta:
         model = Friend
         fields = ["toUser"]
+
+
+class FriendRequestSerializer(serializers.HyperlinkedModelSerializer):
+    toUser = UserFriendSerializer()
+    fromUser = UserSerializer()
+
+    class Meta:
+        model = FriendRequest
+        fields = ('url', 'fromUser', "toUser")
