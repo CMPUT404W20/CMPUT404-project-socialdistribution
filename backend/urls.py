@@ -41,5 +41,5 @@ urlpatterns = [
          AuthorViewSet.as_view(({"get": "get_friends"}))),
     path('friendrequest/',
          FriendRequestViewSet.as_view({"post": "create_friend_request"})),
-    path("friendrequest/all", FriendRequestViewSet.as_view({"get": "list"}))
+    # path("friendrequest/all", FriendRequestViewSet.as_view({"get": "list"}))
 ]
