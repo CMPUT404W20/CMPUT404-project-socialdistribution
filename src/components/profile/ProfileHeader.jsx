@@ -3,6 +3,7 @@ import "../../styles/profile/ProfileHeader.scss";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import EditProfileModal from "./EditProfileModal";
 
 class ProfileHeader extends Component {
   constructor(props) {
@@ -12,15 +13,20 @@ class ProfileHeader extends Component {
       remote: false,
       friend: true,
       following: true,
-      isSelf: false,
+      isSelf: true,
       // isSelf will be changed by comparing the userID and the loggedIn user's id
       // to do: fetch the user
+      modalShow: false,
     };
   }
 
   handleEditButtonClick = () => {
     // eslint-disable-next-line no-alert
     alert("todo");
+  };
+
+  renderModal = () => {
+    this.setState({ modalShow: true });
   };
 
   renderStatus = () => {
@@ -41,7 +47,7 @@ class ProfileHeader extends Component {
     <button
       type="button"
       className="edit-profile-button"
-      onClick={this.handleEditButtonClick}
+      onClick={this.renderModal}
     >
       <EditOutlinedIcon className="edit-icon" />
       <span>EDIT PROFILE</span>
@@ -78,7 +84,8 @@ class ProfileHeader extends Component {
   );
 
   render() {
-    const { username, remote } = this.state;
+    const { username, remote, modalShow } = this.state;
+    const handleClose = () => this.setState({ modalShow: false });
     return (
       <div className="profileHeader">
         <div className="image-section" />
@@ -89,6 +96,7 @@ class ProfileHeader extends Component {
           </div>
           <div className="row2">
             {this.renderStatus()}
+            <EditProfileModal show={modalShow} onHide={handleClose} />
           </div>
         </div>
       </div>

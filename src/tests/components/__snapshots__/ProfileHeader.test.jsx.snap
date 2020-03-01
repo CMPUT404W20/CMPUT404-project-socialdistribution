@@ -23,26 +23,22 @@ exports[`Navigation bar Component should render correctly 1`] = `
     <div
       className="row2"
     >
-      <DropdownButton
-        alignRight={true}
-        drop="down"
-        id="friend-status"
-        title="FRIENDS"
+      <button
+        className="edit-profile-button"
+        onClick={[Function]}
+        type="button"
       >
-        <DropdownItem
-          as={
-            Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "displayName": "SafeAnchor",
-              "render": [Function],
-            }
-          }
-          disabled={false}
-          onClick={[Function]}
-        >
-          Unfriend
-        </DropdownItem>
-      </DropdownButton>
+        <EditOutlinedIcon
+          className="edit-icon"
+        />
+        <span>
+          EDIT PROFILE
+        </span>
+      </button>
+      <EditProfileModal
+        onHide={[Function]}
+        show={false}
+      />
     </div>
   </div>
 </div>
