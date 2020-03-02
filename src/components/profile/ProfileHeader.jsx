@@ -26,7 +26,12 @@ class ProfileHeader extends Component {
   };
 
   renderModal = () => {
-    this.setState({ modalShow: true });
+    const { modalShow } = this.state;
+    if (modalShow) {
+      this.setState({ modalShow: false });
+    } else {
+      this.setState({ modalShow: true });
+    }
   };
 
   renderStatus = () => {
@@ -85,7 +90,6 @@ class ProfileHeader extends Component {
 
   render() {
     const { username, remote, modalShow } = this.state;
-    const handleClose = () => this.setState({ modalShow: false });
     return (
       <div className="profileHeader">
         <div className="image-section" />
@@ -96,7 +100,7 @@ class ProfileHeader extends Component {
           </div>
           <div className="row2">
             {this.renderStatus()}
-            <EditProfileModal show={modalShow} onHide={handleClose} />
+            <EditProfileModal show={modalShow} onHide={this.renderModal} />
           </div>
         </div>
       </div>
