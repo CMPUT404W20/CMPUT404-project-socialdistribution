@@ -4,6 +4,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import PropTypes from "prop-types";
 import Col from "react-bootstrap/Col";
+
 class FriendItem extends Component {
   constructor(props) {
     super(props);
