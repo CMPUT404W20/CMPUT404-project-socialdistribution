@@ -12,10 +12,31 @@ class Homepage extends Component {
     super(props);
     this.props = props;
     this.state = {
-      friendsList: ["F1", "f2", "F3"],
+      friendsList: [{ id: "001", name: "Username1" }, { id: "002", name: "Username2" }, { id: "003", name: "Username3" }, { id: "004", name: "Username4" }, { id: "005", name: "Username5" }],
     };
   }
 
+  handleUnfollow(id) {
+    const { friendsList } = this.state;
+    const filteredList = friendsList.filter((item) => item.id !== id);
+    this.setState({ friendsList: filteredList });
+  }
+
+  renderFriendItems = () => {
+    const { friendsList } = this.state;
+    return (
+      <Row className="friends-list">
+        {friendsList.map((item) => (
+          <FriendItem
+            key={item.id}
+            username={item.name}
+            id={item.id}
+            handleUnfollow={(id) => this.handleUnfollow(id)}
+          />
+        ))}
+      </Row>
+    );
+  }
 
   render() {
     const { friendsList } = this.state;
@@ -39,10 +60,9 @@ class Homepage extends Component {
                   )
                 </p>
               </div>
-              <FriendItem username="username" />
+              {this.renderFriendItems()}
             </div>
           </Col>
-          <Col md={2} />
         </Row>
       </Container>
     );
