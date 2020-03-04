@@ -16,23 +16,14 @@ from django.db.models import Q
 
 
 class FriendRequestViewSet(viewsets.ModelViewSet):
-    queryset = FriendRequest.objects.all()
     serializer_class = FriendRequestSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def list(self, request):
-        print(request)
-        # user = request.fromUser
-        # queryset = FriendRequest.objects.filter(user=user).all()
-        # TODO add pagination
-        # page = self.paginate_queryset(queryset)
-        # if page is not None:
-        #     serializer = self.get_serializer(page, many=True)
-        #     return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+    def create_request(self, request, *args, **kwargs):
+        body = request.data
+       
+        serializer = FriendRequestSerializer(data=body)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['post'])
-    def create_friend_request(self, request, pk=None):
-        friend_request = get_object_or_404(self.queryset, pk=pk)
-        return Response(status=rest_framework.status.HTTP_200_OK)

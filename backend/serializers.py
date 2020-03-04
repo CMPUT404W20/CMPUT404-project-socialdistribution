@@ -76,11 +76,43 @@ class FriendSerializer(serializers.ModelSerializer):
         model = Friend
         fields = ["toUser"]
 
+# class UserFriendRequestSerializer(serializers.ModelSerializer):
+#     # id = serializers.CharField(source="get_full_user_id")
+#     # id = serializers.CharField(source="id")
+#     host = serializers.URLField(source="host.url")
+#     displayName = serializers.CharField(source="username")
+#     url = serializers.CharField(source="get_full_user_id")
 
-class FriendRequestSerializer(serializers.HyperlinkedModelSerializer):
-    toUser = UserFriendSerializer()
-    fromUser = UserSerializer()
+#     class Meta:
+#         model = User
+#         fields = ['id','host','displayName','url']
 
+class FriendRequestSerializer(serializers.ModelSerializer):
+
+    '''
+    Adding 'many=True' to the serializer displays this message 'Lists are not currently supported in HTML input.'
+    '''
+    # fromUser = UserSerializer(many=True) 
+    # toUser = UserSerializer(many=True)
+
+    fromUser = UserSerializer() 
+    # toUser = UserSerializer()
+    
     class Meta:
         model = FriendRequest
-        fields = ('url', 'fromUser', "toUser")
+        # fields = ["id","host","displayName","url","toUser","fromUser"]
+        fields = ['fromUser', "toUser"]
+
+    '''
+    Defined the create function below
+
+    '''
+    
+    def create(self, validated_data):
+        info = validated_data.pop('fromUser') 
+        friendRequest = FriendRequest.objects.create(**validated_data)
+        for data in info:
+            User.objects.create(friendRequest=friendRequest, **info)
+        return friendRequest
+    
+
