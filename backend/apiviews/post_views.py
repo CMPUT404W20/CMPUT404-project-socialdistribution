@@ -50,7 +50,7 @@ class PostViewSet(viewsets.ModelViewSet):
         post_id = self.kwargs.get(self.lookup_field)
         deleted_post = get_object_or_404(Post, pk=post_id)
         
-        if deleted_post.author.id == request.user.profile.id:
+        if deleted_post.author.id == request.user.id:
             self.perform_destroy(deleted_post)
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
