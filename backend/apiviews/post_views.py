@@ -37,18 +37,30 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         '''
-        /posts/{POST_ID} : access to a single post with id = {POST_ID}
+        GET /posts/{POST_ID} : access to a single post with id = {POST_ID}
         '''
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response({"query": "posts", "count": 1, "size": 1, "post": [serializer.data]})
 
+    def destroy(self, request, *args, **kwargs):
+        '''
+        DELETE /posts/{POST_ID} : access to a single post with id = {POST_ID}
+        '''
+        post_id = self.kwargs.get(self.lookup_field)
+        deleted_post = get_object_or_404(Post, pk=post_id)
+        
+        if deleted_post.author.id == request.user.profile.id:
+            self.perform_destroy(deleted_post)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(data={"success": False, "msg": "Forbidden"}, status=status.HTTP_403_FORBIDDEN)
+
     def create_post(self, request, *args, **kwargs):
         '''
-        /author/posts : create a post for currently authenticated user
+        POST /author/posts : create a post for currently authenticated user
         '''
-        post_data = dict(request.data)
-
+        post_data = request.data
         if post_data:
             '''
             Our model takes in a pk rather than Json, since only this endpoint will only be used by logged in user,
