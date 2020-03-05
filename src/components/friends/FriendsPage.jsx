@@ -7,7 +7,7 @@ import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import NavigationBar from "../NavigationBar";
 import FriendItem from "./FriendItem";
 
-class Homepage extends Component {
+class FriendsPage extends Component {
   constructor(props) {
     super(props);
     this.props = props;
@@ -68,4 +68,4 @@ class Homepage extends Component {
     );
   }
 }
-export default Homepage;
+export default FriendsPage;
