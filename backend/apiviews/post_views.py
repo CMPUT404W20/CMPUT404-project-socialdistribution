@@ -45,7 +45,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         '''
-        DELETE /posts/{POST_ID} : access to a single post with id = {POST_ID}
+        DELETE /posts/{POST_ID} : delete post with id = {POST_ID}
         '''
         post_id = self.kwargs.get(self.lookup_field)
         deleted_post = get_object_or_404(Post, pk=post_id)
