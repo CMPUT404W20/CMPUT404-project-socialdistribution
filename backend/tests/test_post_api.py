@@ -1,5 +1,5 @@
 from django.conf import settings
-from backend.models import Post, Host
+from backend.models import Post, Host, User 
 from backend.permissions import *
 
 import pytest, json
@@ -51,16 +51,24 @@ class TestPostAPI:
         # Create a post used to test the delete
         test_post = Post.objects.create(
             author=test_user, title="post title", content="post content")
-        post_id = test_post.postId
+        test_post_id = test_post.postId
+        # Create another user
+        test_user_non_author = User.objects.create_user(username='testuser002', password='ualberta!')
 
-        response = client.delete('/posts/{}'.format(post_id))
-        assert response.status_code == 403
-        
-        client.force_login(test_user)
-        response = client.delete('/posts/{}'.format(post_id))
-        assert response.status_code == 204
+        response = client.delete('/posts/{}/'.format(test_post_id))
+        assert response.status_code == 401
 
         # user other than post owner shouldn't be able to delete the post
+        client.force_login(test_user_non_author)
+        response = client.delete('/posts/{}/'.format(test_post_id))
+        assert response.status_code == 403
+        
+        client.logout()
+        client.force_login(test_user)
+        response = client.delete('/posts/{}/'.format(test_post_id))
+        assert response.status_code == 204
+        assert not Post.objects.filter(postId = test_post_id).exists() 
+
         
 
 
