@@ -46,6 +46,26 @@ class TestPostAPI:
         response = client.post('/author/posts', data=post_body_1,
                            content_type='application/json', charset='UTF-8')
         assert response.status_code == 201
+    
+    def test_delete_post(self, client, test_user):
+        # Create a post used to test the delete
+        test_post = Post.objects.create(
+            author=test_user, title="post title", content="post content")
+        post_id = test_post.postId
+
+        response = client.delete('/posts/{}'.format(post_id))
+        assert response.status_code == 403
+        
+        client.force_login(test_user)
+        response = client.delete('/posts/{}'.format(post_id))
+        assert response.status_code == 204
+
+        # user other than post owner shouldn't be able to delete the post
+        
+
+
+        
+
 
 
 
