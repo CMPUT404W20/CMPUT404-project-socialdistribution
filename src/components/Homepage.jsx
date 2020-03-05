@@ -24,7 +24,7 @@ class Homepage extends Component {
             username="username"
             postTime={new Date()}
             imageSrc={demoImage}
-            content="Some content"
+            content="# Testing"
           />
         </Col>
         <Col md={2} />
