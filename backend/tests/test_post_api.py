@@ -1,5 +1,6 @@
 from django.conf import settings
 from backend.models import Post, Host
+from backend.permissions import *
 
 import pytest, json
 
@@ -32,7 +33,8 @@ class TestPostAPI:
         test_post_content = "testposttitle001"
         post_body_1 = json.dumps({
             "title": test_post_title,
-            "content": test_post_content
+            "content": test_post_content,
+            "visibility": PUBLIC
         })
         
         response = client.post('/author/posts', data=post_body_1,
