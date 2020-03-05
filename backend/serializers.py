@@ -22,7 +22,7 @@ class AuthRegisterSerializer(RegisterSerializer):
         adapter = get_adapter()
         user = adapter.new_user(request)
         user.is_active = False
-        
+
         current_host = settings.APP_HOST
         if Host.objects.filter(url=current_host).exists():
             host_obj = Host.objects.filter(url=current_host)
@@ -48,17 +48,15 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "host", "displayName", "url", "github"]
-    
+
 
 class PostSerializer(serializers.ModelSerializer):
-    # author = UserSerializer(read_only=True) 
-    # author = serializers.PrimaryKeyRelatedField(
-    #     queryset=User.objects.all(), source='user', write_only=True)
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
         response['author'] = UserSerializer(instance.author).data
         return response
+
     class Meta:
         model = Post
         fields = '__all__'
