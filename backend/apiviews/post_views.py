@@ -45,8 +45,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def create_post(self, request, *args, **kwargs):
         body = request.data
-        request_query = body.get("query")
-        post_data = body.get("post")
+        post_data = dict(body)
 
         if post_data:
             '''
@@ -55,6 +54,7 @@ class PostViewSet(viewsets.ModelViewSet):
             '''
             current_user_id = self.request.user.id
             post_data["author"] = current_user_id
+            print(post_data)
 
             serializer = PostSerializer(
                 data=post_data, context={"request": request})
@@ -66,6 +66,3 @@ class PostViewSet(viewsets.ModelViewSet):
         else:
             return Response({"query": "createPost", "success": False, "message": "wrong request"},
                             status=status.HTTP_400_BAD_REQUEST)
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)

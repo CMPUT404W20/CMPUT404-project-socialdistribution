@@ -51,8 +51,14 @@ class UserSerializer(serializers.ModelSerializer):
     
 
 class PostSerializer(serializers.ModelSerializer):
-    author = UserSerializer()
+    # author = UserSerializer(read_only=True) 
+    # author = serializers.PrimaryKeyRelatedField(
+    #     queryset=User.objects.all(), source='user', write_only=True)
 
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['author'] = UserSerializer(instance.author).data
+        return response
     class Meta:
         model = Post
         fields = '__all__'
