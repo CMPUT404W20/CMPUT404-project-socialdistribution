@@ -1,8 +1,6 @@
 language: python
 python:
   - "3.6"
-env:
-  - DATABASE_URL=sqlite:///db.sqlite3
 cache:
   yarn: true
   pip: true
@@ -13,13 +11,6 @@ script:
   - python manage.py makemigrations --dry-run | grep 'No changes detected' || (echo 'There are changes which require migrations.' && exit 1)
   - py.test backend/
   - yarn test
-
-# Deploy to Heroku
-deploy:
-  provider: heroku
-  api_key:
-    secure: $HEROKU_KEY
-  app: cmput404-socialdistribution
 
 # Send notification to Slack on deploy
 notifications:

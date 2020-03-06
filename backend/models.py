@@ -2,16 +2,15 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.conf import settings
+from django.contrib.postgres.fields import ArrayField
 
 import uuid
 
 
 class Host(models.Model):
     url = models.URLField(max_length=400)
-    serviceAccountUsername = models.CharField(
-        max_length=100, null=True, blank=True)
-    serviceAccountPassword = models.CharField(
-        max_length=100, null=True, blank=True)
+    serviceAccountUsername = models.CharField(max_length=100, null=True, blank=True)
+    serviceAccountPassword = models.CharField(max_length=100, null=True, blank=True)
 
 
 class User(AbstractUser):
@@ -61,6 +60,7 @@ class Post(models.Model):
     # Visibility can be one of the followings : "PUBLIC","PRIVATE","Private","FRIENDS","FOF" or specific user ID
     visibility = models.CharField(
         max_length=10, choices=VISIBILITY_CHOICES, default="PUBLIC")
+    visibleTo = ArrayField(models.CharField(max_length=200), blank=True, default=list)
 
 
 class Comments(models.Model):

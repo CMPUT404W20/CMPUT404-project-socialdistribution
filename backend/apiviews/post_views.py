@@ -59,6 +59,7 @@ class PostViewSet(viewsets.ModelViewSet):
         '''
         POST /author/posts : create a post for currently authenticated user
         '''
+        
         post_data = request.data
         if post_data:
             '''
