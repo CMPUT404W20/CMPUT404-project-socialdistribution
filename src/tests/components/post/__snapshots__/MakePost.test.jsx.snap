@@ -53,18 +53,29 @@ exports[`Post box Component should render correctly 1`] = `
       onHide={[Function]}
       show={false}
     />
+    <PostPreviewModal
+      onHide={[Function]}
+      show={false}
+    />
     <form
       action="submit"
       className="make-post-input-wrapper"
     >
-      <textarea
+      <TextareaAutosize
         className="post-text-area"
+        inputRef={[Function]}
         onChange={[Function]}
+        onHeightChange={[Function]}
         placeholder="What's on your mind?"
+        useCacheForDOMMeasurements={false}
       />
       <div
         className="make-post-buttons-wrapper"
       >
+        <VisibilityRoundedIcon
+          className="upload-image-icon icon"
+          onClick={[Function]}
+        />
         <ImageOutlinedIcon
           className="upload-image-icon icon"
           onClick={[Function]}

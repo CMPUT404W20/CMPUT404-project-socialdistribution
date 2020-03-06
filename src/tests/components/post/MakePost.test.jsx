@@ -1,5 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
+import TextareaAutosize from "react-textarea-autosize";
 import MakePost from "../../../components/post/MakePost";
 
 describe("Post box Component", () => {
@@ -10,19 +11,19 @@ describe("Post box Component", () => {
 
   it("should have a text area", () => {
     const component = shallow(<MakePost />);
-    expect(component.find("textarea")).toHaveLength(1);
+    expect(component.find(TextareaAutosize)).toHaveLength(1);
   });
 
   it("should show the modal after clicking on image icon", () => {
     const component = shallow(<MakePost />);
-    const { modalShow } = component.state();
-    expect(modalShow).toBe(false);
+    const { uploadModalVisibility } = component.state();
+    expect(uploadModalVisibility).toBe(false);
     setTimeout(() => {
       component.find(".image-icon").simulate("click");
 
       jest.runOnlyPendingTimers();
       component.update();
-      expect(modalShow).toBe(true);
+      expect(uploadModalVisibility).toBe(true);
     }, 500);
   });
 });
