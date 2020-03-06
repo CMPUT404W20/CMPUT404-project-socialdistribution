@@ -13,20 +13,20 @@ class MakePost extends Component {
     this.state = {
       uploadModalVisibility: false,
       previewModalVisibility: false,
-      post: "",
+      postContent: "",
     };
   }
 
   handleTextChange = (event) => {
-    this.setState({ post: event.target.value });
+    this.setState({ postContent: event.target.value });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
 
-    const { post } = this.state;
+    const { postContent } = this.state;
     // eslint-disable-next-line no-alert
-    alert(post);
+    alert(postContent);
   };
 
   toggleUploadModalVisibility = () => {
