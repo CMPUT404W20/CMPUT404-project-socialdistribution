@@ -3,6 +3,7 @@ import "../../styles/post/MakePost.scss";
 import SendIcon from "@material-ui/icons/Send";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import VisibilityRoundedIcon from "@material-ui/icons/VisibilityRounded";
+import TextareaAutosize from "react-textarea-autosize";
 import UploadImageModal from "./UploadImageModal";
 import PostPreviewModal from "./PostPreviewModal";
 
@@ -61,7 +62,7 @@ class MakePost extends Component {
           <UploadImageModal show={uploadModalVisibility} onHide={this.toggleUploadModalVisibility} />
           <PostPreviewModal show={previewModalVisibility} onHide={this.togglePreviewModalVisibility} />
           <form className="make-post-input-wrapper" action="submit">
-            <textarea
+            <TextareaAutosize
               placeholder="What's on your mind?"
               className="post-text-area"
               onChange={this.handleTextChange}
