@@ -26,11 +26,10 @@ class PostViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset().filter(visibility=PUBLIC)
 
-        # TODO add pagination
-        # page = self.paginate_queryset(queryset)
-        # if page is not None:
-        #     serializer = self.get_serializer(page, many=True)
-        #     return self.get_paginated_response(serializer.data)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
@@ -77,3 +76,19 @@ class PostViewSet(viewsets.ModelViewSet):
         else:
             return Response({"query": "createPost", "success": False, "message": "wrong request"},
                             status=status.HTTP_400_BAD_REQUEST)
+    # def get_user_posts(self, user_id):
+    #     # user_posts = []
+    #     # Get post that's public
+
+    #     # Get post that's private to user
+
+    #     # Get post that's made by user
+
+    #     # Get post that's 
+
+    # def get_auth_user_post(self, request):
+    #     user_id = request.user.id
+    #     user_posts = self.get_user_posts(user_id)
+
+
+    #     return
