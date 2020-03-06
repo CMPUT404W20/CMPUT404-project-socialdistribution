@@ -6,7 +6,7 @@ import Post from "./Post";
 import demoImage from "../../images/demo-img.png";
 
 function PostPreviewModal(props) {
-  const { onHide, show } = props;
+  const { onHide, show, postContent } = props;
 
   return (
     <Modal size="lg" onHide={onHide} show={show} className="post-preview-modal">
@@ -18,8 +18,8 @@ function PostPreviewModal(props) {
           username="username"
           postTime={new Date()}
           imageSrc={demoImage}
-          content="Some content"
-          previewMode
+          content={postContent}
+          previewMode // to prevent it from rendering the menu bar with dropdown and time
         />
       </Modal.Body>
     </Modal>
@@ -29,6 +29,7 @@ function PostPreviewModal(props) {
 PostPreviewModal.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
+  postContent: PropTypes.string.isRequired,
 };
 
 export default PostPreviewModal;

@@ -42,7 +42,7 @@ class MakePost extends Component {
   }
 
   render() {
-    const { uploadModalVisibility, previewModalVisibility } = this.state;
+    const { uploadModalVisibility, previewModalVisibility, postContent } = this.state;
     return (
       <div className="make-post-wrapper">
         <div className="make-post-content">
@@ -60,7 +60,7 @@ class MakePost extends Component {
             </select>
           </div>
           <UploadImageModal show={uploadModalVisibility} onHide={this.toggleUploadModalVisibility} />
-          <PostPreviewModal show={previewModalVisibility} onHide={this.togglePreviewModalVisibility} />
+          <PostPreviewModal show={previewModalVisibility} onHide={this.togglePreviewModalVisibility} postContent={postContent} />
           <form className="make-post-input-wrapper" action="submit">
             <TextareaAutosize
               placeholder="What's on your mind?"
