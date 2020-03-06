@@ -30,7 +30,7 @@ class NoticesPage extends Component {
   renderNoticeItems = () => {
     const { noticesList } = this.state;
     return (
-      <div className="friends-list">
+      <Row className="item-list">
         {noticesList.map((item) => (
           <NoticeItem
             key={item.id}
@@ -41,7 +41,7 @@ class NoticesPage extends Component {
             handleDecline={(id) => this.handleRemoveNotice(id)}
           />
         ))}
-      </div>
+      </Row>
     );
   }
 

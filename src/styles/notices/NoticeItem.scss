@@ -1,9 +1,9 @@
-$accent-color: #0275b1;
+$accent-color: #4B84F2;
 $type-text-color: rgba(24, 24, 24, 0.6);
 .notice-item-wrapper {
     border: 1px solid #BFBFBF;
     box-sizing: border-box;
-    padding: 0 1rem 0 2rem;
+    padding: 0 2rem 0 2rem;
     border-radius: 4px;
     height: 4rem;
     display: flex;
@@ -15,7 +15,6 @@ $type-text-color: rgba(24, 24, 24, 0.6);
         font-weight: 600;
         font-size: 12pt;
         color: black;
-        margin-right: 2rem;
         width: 20%;
     }
     .username-link:hover {
@@ -27,7 +26,6 @@ $type-text-color: rgba(24, 24, 24, 0.6);
         padding-left: 2rem;
         height: 2rem;
         width: 30%;
-        margin-right: 2rem;
         border-left: 2px solid $accent-color;
         >p {
             margin: 0 0 0 0;
@@ -42,7 +40,7 @@ $type-text-color: rgba(24, 24, 24, 0.6);
     .decline-button {
         background-color: $accent-color;
         color: white;
-        width: 5rem;
+        width: 40%;
         height: 2rem;
         font-size: 9pt;
         display: inline-flex;

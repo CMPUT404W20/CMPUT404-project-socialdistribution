@@ -18,15 +18,22 @@ class NoticeItem extends Component {
       <Col>
         <div className="notice-item-wrapper">
           {/* need to redirect to the user's profile page */}
-          <a href=" " className="username-link">{username}</a>
-          <div className="type-wrapper">
-            <p>{type}</p>
-          </div>
-          <div className="button-wrapper">
-            <button type="button" className="accept-button" onClick={() => handleAccept(id)}>ACCEPT</button>
-            <button type="button" className="decline-button" onClick={() => handleDecline(id)}>DECLINE</button>
-          </div>
+          <Col sm={3} md={4}>
+            <a href=" " className="username-link">{username}</a>
+          </Col>
+          <Col sm={3} md={4}>
+            <div className="type-wrapper">
+              <p>{type}</p>
+            </div>
+          </Col>
+          <Col>
+            <div className="button-wrapper">
+              <button type="button" className="accept-button" onClick={() => handleAccept(id)}>ACCEPT</button>
+              <button type="button" className="decline-button" onClick={() => handleDecline(id)}>DECLINE</button>
+            </div>
+          </Col>
         </div>
+
       </Col>
 
     );

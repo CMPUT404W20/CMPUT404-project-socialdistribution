@@ -5,7 +5,7 @@ exports[`Login Page should render correctly 1`] = `
   className="login"
   fluid={true}
 >
-  <Row
+  <ForwardRef
     noGutters={false}
   >
     <Col
@@ -91,7 +91,7 @@ exports[`Login Page should render correctly 1`] = `
         </button>
       </div>
     </Col>
-  </Row>
+  </ForwardRef>
 </Container>
 `;
 
@@ -100,7 +100,7 @@ exports[`Login Page should switch to sign in on secondary button click 1`] = `
   className="login"
   fluid={true}
 >
-  <Row
+  <ForwardRef
     noGutters={false}
   >
     <Col
@@ -178,6 +178,6 @@ exports[`Login Page should switch to sign in on secondary button click 1`] = `
         </button>
       </div>
     </Col>
-  </Row>
+  </ForwardRef>
 </Container>
 `;
