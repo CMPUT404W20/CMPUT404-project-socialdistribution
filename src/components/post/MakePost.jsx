@@ -2,13 +2,16 @@ import React, { Component } from "react";
 import "../../styles/post/MakePost.scss";
 import SendIcon from "@material-ui/icons/Send";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
+import VisibilityRoundedIcon from "@material-ui/icons/VisibilityRounded";
 import UploadImageModal from "./UploadImageModal";
+import PostPreviewModal from "./PostPreviewModal";
 
 class MakePost extends Component {
   constructor(props) {
     super(props);
     this.state = {
       uploadModalVisibility: false,
+      previewModalVisibility: false,
       post: "",
     };
   }
@@ -31,8 +34,14 @@ class MakePost extends Component {
     }));
   }
 
+  togglePreviewModalVisibility = () => {
+    this.setState((prevState) => ({
+      previewModalVisibility: !prevState.previewModalVisibility,
+    }));
+  }
+
   render() {
-    const { uploadModalVisibility } = this.state;
+    const { uploadModalVisibility, previewModalVisibility } = this.state;
     return (
       <div className="make-post-wrapper">
         <div className="make-post-content">
@@ -50,6 +59,7 @@ class MakePost extends Component {
             </select>
           </div>
           <UploadImageModal show={uploadModalVisibility} onHide={this.toggleUploadModalVisibility} />
+          <PostPreviewModal show={previewModalVisibility} onHide={this.togglePreviewModalVisibility} />
           <form className="make-post-input-wrapper" action="submit">
             <textarea
               placeholder="What's on your mind?"
@@ -57,6 +67,10 @@ class MakePost extends Component {
               onChange={this.handleTextChange}
             />
             <div className="make-post-buttons-wrapper">
+              <VisibilityRoundedIcon
+                className="upload-image-icon icon"
+                onClick={this.togglePreviewModalVisibility}
+              />
               <ImageOutlinedIcon
                 className="upload-image-icon icon"
                 onClick={this.toggleUploadModalVisibility}
