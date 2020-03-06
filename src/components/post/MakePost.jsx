@@ -8,7 +8,7 @@ class MakePost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalShow: false,
+      uploadModalVisibility: false,
       post: "",
     };
   }
@@ -25,17 +25,14 @@ class MakePost extends Component {
     alert(post);
   };
 
-  renderModal = () => {
-    const { modalShow } = this.state;
-    if (modalShow) {
-      this.setState({ modalShow: false });
-    } else {
-      this.setState({ modalShow: true });
-    }
-  };
+  toggleUploadModalVisibility = () => {
+    this.setState((prevState) => ({
+      uploadModalVisibility: !prevState.uploadModalVisibility,
+    }));
+  }
 
   render() {
-    const { modalShow } = this.state;
+    const { uploadModalVisibility } = this.state;
     return (
       <div className="make-post-wrapper">
         <div className="make-post-content">
@@ -52,7 +49,7 @@ class MakePost extends Component {
               <option value="private">Private</option>
             </select>
           </div>
-          <UploadImageModal show={modalShow} onHide={this.renderModal} />
+          <UploadImageModal show={uploadModalVisibility} onHide={this.toggleUploadModalVisibility} />
           <form className="make-post-input-wrapper" action="submit">
             <textarea
               placeholder="What's on your mind?"
@@ -62,7 +59,7 @@ class MakePost extends Component {
             <div className="make-post-buttons-wrapper">
               <ImageOutlinedIcon
                 className="upload-image-icon icon"
-                onClick={this.renderModal}
+                onClick={this.toggleUploadModalVisibility}
               />
               <button
                 type="submit"
