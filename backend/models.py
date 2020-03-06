@@ -8,8 +8,10 @@ import uuid
 
 class Host(models.Model):
     url = models.URLField(max_length=400)
-    serviceAccountUsername = models.CharField(max_length=100, null=True, blank=True)
-    serviceAccountPassword = models.CharField(max_length=100, null=True, blank=True)
+    serviceAccountUsername = models.CharField(
+        max_length=100, null=True, blank=True)
+    serviceAccountPassword = models.CharField(
+        max_length=100, null=True, blank=True)
 
 
 class User(AbstractUser):
@@ -17,13 +19,27 @@ class User(AbstractUser):
     host = models.ForeignKey(
         Host, null=True, blank=True, on_delete=models.CASCADE)
 
-    
     def get_full_user_id(self):
         user_host = self.host.url
         if user_host[-1] == "/":
             user_host = user_host[:-1]
 
         return "{}/author/{}".format(user_host, self.id)
+
+    def get_friends(self):
+        friend_ids = Friend.objects.filter(fromUser_id=self.id).values_list('toUser_id', flat=True)
+        friend_list = User.objects.filter(id__in=friend_ids)
+
+        return friend_list
+
+    def get_fof(self):
+        fof = User.objects.none()
+        friends = self.get_friends()
+
+        for friend in friends:
+            fof |= friend.get_friends().exclude(id=self.id)
+
+        return fof
 
 class Post(models.Model):
     VISIBILITY_CHOICES = (
