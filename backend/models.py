@@ -37,9 +37,10 @@ class User(AbstractUser):
         friends = self.get_friends()
 
         for friend in friends:
-            fof |= friend.get_friends().exclude(id=self.id)
+            friend_ids = friend.get_friends().exclude(id=self.id)
+            fof |= User.objects.filter(id__in=friend_ids)
 
-        return fof
+        return fof.distinct()
 
 class Post(models.Model):
     VISIBILITY_CHOICES = (
