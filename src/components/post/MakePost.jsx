@@ -43,6 +43,10 @@ class MakePost extends Component {
 
   render() {
     const { uploadModalVisibility, previewModalVisibility, postContent } = this.state;
+
+    // Marcos, https://stackoverflow.com/questions/2476382/how-to-check-if-a-textarea-is-empty-in-javascript-or-jquery
+    const postLength = postContent.replace(/^\s+|\s+$/g, "").length;
+
     return (
       <div className="make-post-wrapper">
         <div className="make-post-content">
@@ -68,10 +72,15 @@ class MakePost extends Component {
               onChange={this.handleTextChange}
             />
             <div className="make-post-buttons-wrapper">
-              <VisibilityRoundedIcon
-                className="upload-image-icon icon"
-                onClick={this.togglePreviewModalVisibility}
-              />
+              {
+                postLength > 0 ? (
+                  <VisibilityRoundedIcon
+                    className="upload-image-icon icon"
+                    onClick={this.togglePreviewModalVisibility}
+                  />
+                ) : null
+              }
+
               <ImageOutlinedIcon
                 className="upload-image-icon icon"
                 onClick={this.toggleUploadModalVisibility}
@@ -80,6 +89,7 @@ class MakePost extends Component {
                 type="submit"
                 className="post-button icon"
                 onClick={this.handleSubmit}
+                disabled={postLength === 0}
               >
                 <span>POST</span>
                 <SendIcon className="post-icon" />
