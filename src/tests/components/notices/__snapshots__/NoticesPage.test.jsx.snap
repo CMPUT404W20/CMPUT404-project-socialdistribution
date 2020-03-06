@@ -5,7 +5,7 @@ exports[`Notices Page Component should render correctly 1`] = `
   className="page-wrapper"
   fluid={true}
 >
-  <ForwardRef
+  <Row
     noGutters={false}
   >
     <Col
@@ -15,8 +15,8 @@ exports[`Notices Page Component should render correctly 1`] = `
         selected="Notifications"
       />
     </Col>
-  </ForwardRef>
-  <ForwardRef
+  </Row>
+  <Row
     noGutters={false}
   >
     <Col
@@ -43,7 +43,7 @@ exports[`Notices Page Component should render correctly 1`] = `
             )
           </p>
         </div>
-        <ForwardRef
+        <Row
           className="item-list"
           noGutters={false}
         >
@@ -87,9 +87,9 @@ exports[`Notices Page Component should render correctly 1`] = `
             type="Local"
             username="Username5"
           />
-        </ForwardRef>
+        </Row>
       </div>
     </Col>
-  </ForwardRef>
+  </Row>
 </Container>
 `;

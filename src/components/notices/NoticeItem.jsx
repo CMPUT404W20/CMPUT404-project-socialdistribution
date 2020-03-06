@@ -33,7 +33,6 @@ class NoticeItem extends Component {
             </div>
           </Col>
         </div>
-
       </Col>
 
     );
