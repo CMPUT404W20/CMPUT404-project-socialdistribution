@@ -92,7 +92,7 @@ $inactive-color: #989898;
       margin-left: 0.8rem;
 
       &:disabled {
-        background-color: #989898;
+        background-color: $inactive-color;
         cursor: not-allowed;
       }
   
