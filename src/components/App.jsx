@@ -1,9 +1,9 @@
 import React from "react";
-import FriendsPage from "./friends/FriendsPage";
+import NoticesPage from "./notices/NoticesPage";
 // import Homepage from "./Homepage";
 
 function App() {
-  return <FriendsPage />;
+  return <NoticesPage />;
 }
 
 export default App;

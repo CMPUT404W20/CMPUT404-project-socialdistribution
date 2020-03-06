@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Friends Page Component should render correctly 1`] = `
+exports[`Notices Page Component should render correctly 1`] = `
 <Container
   className="page-wrapper"
   fluid={true}
@@ -12,7 +12,7 @@ exports[`Friends Page Component should render correctly 1`] = `
       md={12}
     >
       <NavigationBar
-        selected="Friends"
+        selected="Notifications"
       />
     </Col>
   </Row>
@@ -31,11 +31,11 @@ exports[`Friends Page Component should render correctly 1`] = `
         <div
           className="title"
         >
-          <PeopleAltOutlinedIcon
+          <NotificationsNoneOutlinedIcon
             className="icon"
           />
           <p>
-            Friends
+            Notifications
           </p>
           <p>
             (
@@ -43,41 +43,50 @@ exports[`Friends Page Component should render correctly 1`] = `
             )
           </p>
         </div>
-        <Row
+        <div
           className="friends-list"
-          noGutters={false}
         >
-          <FriendItem
-            handleUnfollow={[Function]}
+          <NoticeItem
+            handleAccept={[Function]}
+            handleDecline={[Function]}
             id="001"
             key="001"
+            type="Local"
             username="Username1"
           />
-          <FriendItem
-            handleUnfollow={[Function]}
+          <NoticeItem
+            handleAccept={[Function]}
+            handleDecline={[Function]}
             id="002"
             key="002"
+            type="Local"
             username="Username2"
           />
-          <FriendItem
-            handleUnfollow={[Function]}
+          <NoticeItem
+            handleAccept={[Function]}
+            handleDecline={[Function]}
             id="003"
             key="003"
+            type="Local"
             username="Username3"
           />
-          <FriendItem
-            handleUnfollow={[Function]}
+          <NoticeItem
+            handleAccept={[Function]}
+            handleDecline={[Function]}
             id="004"
             key="004"
+            type="Local"
             username="Username4"
           />
-          <FriendItem
-            handleUnfollow={[Function]}
+          <NoticeItem
+            handleAccept={[Function]}
+            handleDecline={[Function]}
             id="005"
             key="005"
+            type="Local"
             username="Username5"
           />
-        </Row>
+        </div>
       </div>
     </Col>
   </Row>

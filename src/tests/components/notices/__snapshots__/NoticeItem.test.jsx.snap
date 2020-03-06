@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Notice Item Component should render correctly 1`] = `
+<Col>
+  <div
+    className="notice-item-wrapper"
+  >
+    <a
+      className="username-link"
+      href=" "
+    />
+    <div
+      className="type-wrapper"
+    >
+      <p />
+    </div>
+    <div
+      className="button-wrapper"
+    >
+      <button
+        className="accept-button"
+        onClick={[Function]}
+        type="button"
+      >
+        ACCEPT
+      </button>
+      <button
+        className="decline-button"
+        onClick={[Function]}
+        type="button"
+      >
+        DECLINE
+      </button>
+    </div>
+  </div>
+</Col>
+`;

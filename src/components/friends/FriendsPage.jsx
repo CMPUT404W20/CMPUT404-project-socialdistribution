@@ -41,7 +41,7 @@ class FriendsPage extends Component {
   render() {
     const { friendsList } = this.state;
     return (
-      <Container fluid className="friendsPage">
+      <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
             <NavigationBar selected="Friends" />
