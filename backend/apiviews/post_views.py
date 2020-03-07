@@ -37,8 +37,12 @@ class PostViewSet(viewsets.ModelViewSet):
         GET /posts/{POST_ID} : access to a single post with id = {POST_ID}
         '''
         instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response({"query": "posts", "count": 1, "size": 1, "post": [serializer.data]})
+        queryset = Post.objects.none()
+        queryset |= Post.objects.filter(pk=instance.pk).order_by("pk")
+
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
         '''

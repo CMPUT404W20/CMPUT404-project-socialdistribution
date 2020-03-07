@@ -18,16 +18,16 @@ class TestPostAPI:
         assert response.status_code == 200
         assert response.data["query"] == "posts"
         assert response.data["count"] == 1
-        assert response.data["size"] == 1
+        assert response.data["size"] == 50
 
-        assert response.data["post"] is not None
-        assert len(response.data["post"]) == 1
-        assert response.data["post"][0]["title"] == "post title"
-        assert response.data["post"][0]["content"] == "post content"
+        assert response.data["posts"] is not None
+        assert len(response.data["posts"]) == 1
+        assert response.data["posts"][0]["title"] == "post title"
+        assert response.data["posts"][0]["content"] == "post content"
 
-        assert response.data["post"][0]["author"] is not None
-        assert response.data["post"][0]["author"]["displayName"] == test_user.username
-        assert response.data["post"][0]["author"]["github"] == test_user.githubUrl
+        assert response.data["posts"][0]["author"] is not None
+        assert response.data["posts"][0]["author"]["displayName"] == test_user.username
+        assert response.data["posts"][0]["author"]["github"] == test_user.githubUrl
 
     def test_create_post(self, client, test_user):
         test_post_title = "testpost001"
