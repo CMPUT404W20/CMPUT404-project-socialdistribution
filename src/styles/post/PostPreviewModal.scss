@@ -1,3 +1,10 @@
 .post-preview-modal {
-    
+    .modal-content {
+        background-color: #f8f8f8;
+        border: none;
+
+        .close {
+            outline: 0;
+        }
+    }
 }
