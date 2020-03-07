@@ -1,12 +1,11 @@
-$background-color: #ffffff;
-$accent-color: #5c9cf5;
+@import "../common.scss";
 
 .post-block {
   width: 100%;
   height: fit-content;
-  background-color: $background-color;
-  box-shadow: 0px 0px 6px rgba(202, 202, 202, 0.25);
-  border-radius: 5px;
+  background-color: $post-background-color;
+  box-shadow: $post-box-shadow;
+  border-radius: $radius;
   
   .post-info {
     padding: 0 15pt;
@@ -107,8 +106,8 @@ $accent-color: #5c9cf5;
     pre {
       border: 1px solid black;
       padding: 10px;
-      border-radius: 2px;
-      background-color: #f8f8f8
+      border-radius: $radius;
+      background-color: $background-color;
     }
 
     blockquote {

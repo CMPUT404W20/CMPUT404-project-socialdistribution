@@ -1,10 +1,5 @@
-.post-preview-modal {
-    .modal-content {
-        background-color: #f8f8f8;
-        border: none;
+@import "../common.scss";
 
-        .close {
-            outline: 0;
-        }
-    }
+.post-preview-modal {
+  @extend %modal;
 }

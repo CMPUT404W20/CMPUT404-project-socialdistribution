@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "../../styles/post/MakePost.scss";
-import SendIcon from "@material-ui/icons/Send";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import VisibilityRoundedIcon from "@material-ui/icons/VisibilityRounded";
 import TextareaAutosize from "react-textarea-autosize";

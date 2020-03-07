@@ -1,14 +1,13 @@
+@import "./common.scss";
+
 %button {
     height: 47px;
     outline: 0;
-    border-radius: 2px;
+    border-radius: $radius;
     box-shadow: 0px 0px 10px rgba(121, 121, 121, 0.25);
     font-weight: 500;
     cursor: pointer;
 }
-
-$accent-color: #5c9cf5;
-$background-color: white;
 
 .login {
     margin: 0;
@@ -39,7 +38,7 @@ $background-color: white;
     }
 
     .login-form-wrapper {
-        background-color: $background-color;
+        background-color: $login-background-color;
         height: 100vh;
         padding: 0 7%;
 
@@ -56,7 +55,7 @@ $background-color: white;
             outline: 0;
             margin-top: 10px;
             border: 1px #EBEBEB solid;
-            border-radius: 2px;
+            border-radius: $radius;
             font-size: 16px;
             padding: 15px 20px;
 
@@ -67,7 +66,7 @@ $background-color: white;
 
         .login-error-message {
             font-size: 14px;
-            color: red;
+            color: $error-color;
         }
 
         .login-button {
@@ -94,7 +93,7 @@ $background-color: white;
             float: right;
             border: 1px $accent-color solid;
             color: $accent-color;
-            background-color: $background-color;
+            background-color: $login-background-color;
         }
     }
 }
