@@ -19,8 +19,8 @@ class PostViewSet(viewsets.ModelViewSet):
     Viewset for all the operation related to Post
     """
 
-    serializer_class = PostSerializer
     queryset = Post.objects.all()
+    serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     lookup_field = "postId"
     pagination_class = PostPagination
@@ -29,12 +29,8 @@ class PostViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset().filter(visibility=PUBLIC)
 
         page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
         '''
@@ -50,7 +46,7 @@ class PostViewSet(viewsets.ModelViewSet):
         '''
         post_id = self.kwargs.get(self.lookup_field)
         deleted_post = get_object_or_404(Post, pk=post_id)
-        
+
         if deleted_post.author.id == request.user.id:
             self.perform_destroy(deleted_post)
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -61,7 +57,7 @@ class PostViewSet(viewsets.ModelViewSet):
         '''
         POST /author/posts : create a post for currently authenticated user
         '''
-        
+
         post_data = request.data
         if post_data:
             '''
@@ -88,9 +84,7 @@ class PostViewSet(viewsets.ModelViewSet):
             if user in post.get_visible_users():
                 visible_posts |= Post.objects.filter(postId=post.postId)
 
-        page = self.paginate_queryset(visible_posts)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+        page = self.paginate_queryset(visible_posts.order_by('-timestamp'))
+        serializer = self.get_serializer(page, many=True)
 
-        # return Response({"query": "posts", "count": 1, "size": 1, "post": [serializer.data]})
+        return self.get_paginated_response(serializer.data)
