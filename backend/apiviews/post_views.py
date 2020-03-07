@@ -11,6 +11,7 @@ from rest_framework.decorators import permission_classes
 from backend.serializers import PostSerializer
 from backend.models import Post
 from backend.permissions import *
+from backend.apiviews.paginations import PostPagination
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -22,6 +23,7 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     lookup_field = "postId"
+    pagination_class = PostPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset().filter(visibility=PUBLIC)
@@ -77,19 +79,19 @@ class PostViewSet(viewsets.ModelViewSet):
         else:
             return Response({"query": "createPost", "success": False, "message": "wrong request"},
                             status=status.HTTP_400_BAD_REQUEST)
-    # def get_user_posts(self, user_id):
-    #     # user_posts = []
-    #     # Get post that's public
 
-    #     # Get post that's private to user
+    def get_user_visible_posts(self, request):
+        user = request.user
+        user_id = user.id
+        visible_posts = Post.objects.none()
 
-    #     # Get post that's made by user
+        for post in self.get_queryset():
+            if user in post.get_visible_users():
+                visible_posts |= Post.objects.filter(postId=post.postId)
 
-    #     # Get post that's 
+        page = self.paginate_queryset(visible_posts)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
 
-    # def get_auth_user_post(self, request):
-    #     user_id = request.user.id
-    #     user_posts = self.get_user_posts(user_id)
-
-
-    #     return
+        # return Response({"query": "posts", "count": 1, "size": 1, "post": [serializer.data]})

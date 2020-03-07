@@ -35,5 +35,8 @@ urlpatterns = [
         "put": "partial_update",
         })),
     path('posts/<uuid:postId>/', PostViewSet.as_view({"get": "retrieve"})),
-    path('author/posts', PostViewSet.as_view({"post":"create_post"})) 
+    path('author/posts', PostViewSet.as_view({
+        "get":"get_user_visible_posts",
+        "post":"create_post"
+        })) 
 ]
