@@ -51,6 +51,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    published = serializers.DateTimeField(source="timestamp")
+    id = serializers.UUIDField(source="postId")
+    unlisted = serializers.BooleanField(source="is_unlisted")
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
@@ -59,4 +62,4 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = '__all__'
+        exclude = ["timestamp","postId"]

@@ -62,6 +62,12 @@ class Post(models.Model):
         max_length=10, choices=VISIBILITY_CHOICES, default="PUBLIC")
     visibleTo = ArrayField(models.CharField(max_length=200), blank=True, default=list)
 
+    def is_unlisted(self):
+        if self.visibility == "UNLISTED":
+            return True
+        else:
+            return False
+
     def get_visible_users(self):
         if self.visibility == "PUBLIC":
             users = User.objects.all().values_list("id", flat=True)
@@ -75,6 +81,7 @@ class Post(models.Model):
             users = User.objects.filter(id__in=visible_to)
         elif self.visibility == "UNLISTED":
             users = User.objects.none()
+        #TODO add serveronly
 
         return users.distinct()
 
