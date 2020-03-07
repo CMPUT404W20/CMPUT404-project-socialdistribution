@@ -1,12 +1,9 @@
 @import "./common.scss";
 
-%button {
+%login-button {
+  @extend %button;
   height: 47px;
-  outline: 0;
-  border-radius: $radius;
-  box-shadow: 0px 0px 10px rgba(121, 121, 121, 0.25);
-  font-weight: 500;
-  cursor: pointer;
+  font-size: 16px;
 }
 
 .login {
@@ -70,7 +67,7 @@
     }
     
     .login-button {
-      @extend %button;
+      @extend %login-button;
       width: 100%;
       background: $accent-color;
       color: white;
@@ -88,12 +85,19 @@
     }
     
     .login-secondary-button {
-      @extend %button;
+      @extend %login-button;
       width: 100px;
       float: right;
       border: 1px $accent-color solid;
       color: $accent-color;
       background-color: $login-background-color;
+
+      // turn off the background colour change that is part of the shared button component
+      &:not(:disabled) {
+        &:hover, &:focus {
+          background-color: $login-background-color;
+        }
+      }
     }
   }
 }
