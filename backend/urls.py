@@ -17,7 +17,6 @@ from django.urls import include, path
 from django.contrib import admin
 
 from rest_framework.routers import DefaultRouter
-<<<<<<< HEAD
 from backend.apiviews.post_views import PostViewSet
 
 router = DefaultRouter()
@@ -40,19 +39,10 @@ urlpatterns = [
         "get":"get_user_visible_posts",
         "post":"create_post"
         })) 
+
+    #url of Author Operations
+    path('author/', AuthorViewSet.as_view({"get": "get_authors"})),
+    path('author/<int:pk>/',AuthorViewSet.as_view({"get": "get_profile"})),
+    path('author/<int:pk>/friends',AuthorViewSet.as_view(({"get": "get_friends"}))) 
+    
 ]
-=======
-from backend.views.post_views import PostViewSet
-
-router = DefaultRouter()
-router.register('post', PostViewSet, basename='user')
-
-urlpatterns = [
-    path('api/', include(router.urls)),
-    path('admin/', admin.site.urls),
-    path('auth/', include('rest_auth.urls')),
-    path('auth/registration/', include('rest_auth.registration.urls')),
-    path('accounts/', include('allauth.urls')),
-]
-
->>>>>>> add serializers and update the url
