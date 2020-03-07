@@ -14,18 +14,16 @@ class Host(models.Model):
 
 class User(AbstractUser):
     githubUrl = models.URLField(max_length=400, blank=True)
-
-    # TODO do we need to store the host?
     host = models.ForeignKey(
         Host, null=True, blank=True, on_delete=models.CASCADE)
 
+    
     def get_full_user_id(self):
-        if self.host is None:
-            host = settings.APP_HOST
-            if host[-1] == "/":
-                host = host[:-1]
-            
-            return "{}/author/{}".format(host, self.id)
+        user_host = self.host.url
+        if user_host[-1] == "/":
+            user_host = user_host[:-1]
+
+        return "{}/author/{}".format(user_host, self.id)
 
 class Post(models.Model):
     VISIBILITY_CHOICES = (

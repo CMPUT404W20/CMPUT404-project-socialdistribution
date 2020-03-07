@@ -44,18 +44,17 @@ class PostViewSet(viewsets.ModelViewSet):
         return Response({"query": "posts", "count": 1, "size": 1, "post": [serializer.data]})
 
     def create_post(self, request, *args, **kwargs):
-        body = request.data
-        request_query = body.get("query")
-        post_data = body.get("post")
+        '''
+        /author/posts : create a post for currently authenticated user
+        '''
+        post_data = dict(request.data)
 
         if post_data:
             '''
             Our model takes in a pk rather than Json, since only this endpoint will only be used by logged in user,
             therefore, we just grab the id from request after they authenticated successfully
             '''
-            current_user_id = self.request.user.id
-            post_data["author"] = current_user_id
-
+            post_data["author"] = self.request.user.id
             serializer = PostSerializer(
                 data=post_data, context={"request": request})
             if serializer.is_valid():
@@ -66,6 +65,3 @@ class PostViewSet(viewsets.ModelViewSet):
         else:
             return Response({"query": "createPost", "success": False, "message": "wrong request"},
                             status=status.HTTP_400_BAD_REQUEST)
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
