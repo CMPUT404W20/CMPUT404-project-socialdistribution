@@ -1,7 +1,5 @@
 @import "../common.scss";
 
-$icon-color: #787878;
-
 .make-post-wrapper {
   margin-top: 5rem;
   background-color: white;
@@ -62,10 +60,8 @@ $icon-color: #787878;
     padding-bottom: 15pt;
     
     .icon {
-      color: $icon-color;
-      height: 100%;
+      @extend %icon;
       margin: 2px 0.2rem;
-      cursor: pointer;
     }
   
     .post-button {
