@@ -62,6 +62,22 @@ class Post(models.Model):
         max_length=10, choices=VISIBILITY_CHOICES, default="PUBLIC")
     visibleTo = ArrayField(models.CharField(max_length=200), blank=True, default=list)
 
+    def get_visible_users(self):
+        if self.visibility == "PUBLIC":
+            users = User.objects.all().values_list("id", flat=True)
+        elif self.visibility == "FRIENDS":
+            users = self.author.get_friends()
+        elif self.visibility == "FOAF":
+            users = self.author.get_friends()
+            users |= self.author.get_fof()
+        elif self.visibility == "PRIVATE":
+            visible_to = self.visibleTo
+            users = User.objects.filter(id__in=visible_to)
+        elif self.visibility == "UNLISTED":
+            users = User.objects.none()
+
+        return users.distinct()
+
 
 class Comments(models.Model):
     commentId = models.UUIDField(
