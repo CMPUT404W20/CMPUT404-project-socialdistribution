@@ -82,7 +82,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def get_user_visible_posts(self, request):
         user = request.user
-        user_id = user.id
         visible_posts = Post.objects.none()
 
         for post in self.get_queryset():
