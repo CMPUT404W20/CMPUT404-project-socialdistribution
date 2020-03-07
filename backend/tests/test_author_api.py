@@ -29,13 +29,10 @@ class TestAuthorAPI:
         test_auth_id = test_user.id
 
         response = client.get('/author/{}/friends'.format(test_auth_id))
-
+        
         assert response.status_code == 200
         assert response.data["query"] == "friends"
         assert response.data["Author"] is not None
-
-        assert list(list(response.data["Author"][0].items())[0][1].items()) is not None
-        assert list(list(response.data["Author"][1].items())[0][1].items())is not None
-        assert list(list(response.data["Author"][0].items())[0][1].items())[0][1] == friend_user[0].get_full_user_id()
-        assert list(list(response.data["Author"][1].items())[0][1].items()) [0][1] == friend_user[1].get_full_user_id()
+        assert response.data["Author"][0] == friend_user[0].get_full_user_id()
+        assert response.data["Author"][1] == friend_user[1].get_full_user_id()
     

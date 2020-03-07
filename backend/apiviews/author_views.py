@@ -40,5 +40,8 @@ class AuthorViewSet(viewsets.ViewSet):
         author = User.objects.get(pk=pk)
         friends = Friend.objects.filter(fromUser_id=author)
         serializer = FriendSerializer(friends,many = True)
-        # print(serializer.data["Author"])
-        return Response({"query":"friends","Author":serializer.data})
+        id_List = []
+        for i in serializer.data:
+            id_List.append(list(list(i.items())[0][1].items())[0][1])
+            
+        return Response({"query":"friends","Author":id_List})
