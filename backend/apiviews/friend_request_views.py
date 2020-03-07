@@ -17,16 +17,15 @@ from django.db.models import Q
 
 class FriendRequestViewSet(viewsets.ModelViewSet):
     serializer_class = FriendRequestSerializer
+    queryset = FriendRequest.objects.all()
 
     def create_request(self, request, *args, **kwargs):
         body = request.data
-       
+
         serializer = FriendRequestSerializer(data=body)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def add_freind(viewsets.ModelViewSet):
-        
-
+    # def update(self, request, *args, **kwargs):

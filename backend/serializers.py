@@ -62,7 +62,6 @@ class PostSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
 class UserFriendSerializer(serializers.ModelSerializer):
     id = serializers.CharField(source="get_full_user_id")
 
@@ -89,17 +88,18 @@ class FriendSerializer(serializers.ModelSerializer):
 #         model = User
 #         fields = ['id','host','displayName','url']
 
+
 class FriendRequestSerializer(serializers.ModelSerializer):
 
     '''
     Adding 'many=True' to the serializer displays this message 'Lists are not currently supported in HTML input.'
     '''
-    # fromUser = UserSerializer(many=True) 
+    # fromUser = UserSerializer(many=True)
     # toUser = UserSerializer(many=True)
 
-    fromUser = UserSerializer() 
-    # toUser = UserSerializer()
-    
+    fromUser = UserSerializer()
+    toUser = UserSerializer()
+
     class Meta:
         model = FriendRequest
         # fields = ["id","host","displayName","url","toUser","fromUser"]
@@ -109,13 +109,10 @@ class FriendRequestSerializer(serializers.ModelSerializer):
     Defined the create function below
 
     '''
-    
+
     def create(self, validated_data):
-        info = validated_data.pop('fromUser') 
+        info = validated_data.pop('fromUser')
         friendRequest = FriendRequest.objects.create(**validated_data)
         for data in info:
             User.objects.create(friendRequest=friendRequest, **info)
         return friendRequest
-    
-
-
