@@ -75,24 +75,23 @@ class MakePost extends Component {
               {
                 postLength > 0 ? (
                   <VisibilityRoundedIcon
-                    className="upload-image-icon icon"
+                    className="icon"
                     onClick={this.togglePreviewModalVisibility}
                   />
                 ) : null
               }
 
               <ImageOutlinedIcon
-                className="upload-image-icon icon"
+                className="icon"
                 onClick={this.toggleUploadModalVisibility}
               />
               <button
                 type="submit"
-                className="post-button icon"
+                className="post-button"
                 onClick={this.handleSubmit}
                 disabled={postLength === 0}
               >
-                <span>POST</span>
-                <SendIcon className="post-icon" />
+                Post
               </button>
             </div>
           </form>

@@ -1,11 +1,12 @@
 $background-color: #ffffff;
-$accent-color: #4B84F2;
+$accent-color: #5c9cf5;
 
 .post-block {
   width: 100%;
   height: fit-content;
   background-color: $background-color;
   box-shadow: 0px 0px 6px rgba(202, 202, 202, 0.25);
+  border-radius: 5px;
   
   .post-info {
     padding: 0 15pt;
