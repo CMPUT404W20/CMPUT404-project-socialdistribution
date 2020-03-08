@@ -32,6 +32,7 @@ class FriendRequestViewSet(views.APIView):
                 data=request_data, context={"fromUser": request_data["fromUser"], "toUser": request_data["toUser"]})
             if serializer.is_valid():
                 serializer.save()
-                print(serializer.data)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"query": "createFriendRequest", "success": True, "message": "FreindRequest created"}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"query": "createFriendRequest", "success": False, "message": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        return Response({"query": "createFriend", "success": False, "message": "wrong request"}, status=status.HTTP_400_BAD_REQUEST)

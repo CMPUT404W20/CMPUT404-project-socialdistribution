@@ -74,21 +74,19 @@ class UserFriendSerializer(serializers.ModelSerializer):
 
 class FriendSerializer(serializers.ModelSerializer):
     toUser = UserFriendSerializer()
+    # fromUser = UserFriendSerializer()
 
     class Meta:
         model = Friend
         fields = ["toUser"]
+        # fields = ["toUser", "fromUser"]
 
-# class UserFriendRequestSerializer(serializers.ModelSerializer):
-#     # id = serializers.CharField(source="get_full_user_id")
-#     # id = serializers.CharField(source="id")
-#     host = serializers.URLField(source="host.url")
-#     displayName = serializers.CharField(source="username")
-#     url = serializers.CharField(source="get_full_user_id")
-
-#     class Meta:
-#         model = User
-#         fields = ['id','host','displayName','url']
+    def create(self, validated_data):
+        user = self.context["fromUser"]
+        friend = self.context["toUser"]
+        req = Friend.objects.create(fromUser=user, toUser=friend)
+        req.save()
+        return req
 
 
 class FriendRequestSerializer(serializers.ModelSerializer):
@@ -105,6 +103,7 @@ class FriendRequestSerializer(serializers.ModelSerializer):
     '''
 
     def create(self, validated_data):
+        # change int id -> uuid
         user_id = self.context['fromUser'].get("id").rsplit('/', 1)[1]
         friend_id = self.context['toUser'].get("id").rsplit('/', 1)[1]
         user = User.objects.get(id=int(user_id))

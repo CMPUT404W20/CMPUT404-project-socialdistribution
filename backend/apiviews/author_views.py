@@ -14,16 +14,16 @@ from backend.permissions import *
 from django.http import Http404
 from django.db.models import Q
 
+
 class AuthorViewSet(viewsets.ViewSet):
-    
+
     def get_authors(self, request, *args, **kwargs):
         '''
         Get all the authors
         '''
         author = User.objects.all()
-        serializer = UserSerializer(author,many=True)
+        serializer = UserSerializer(author, many=True)
         return Response(serializer.data)
-
 
     def get_object(self, pk):
         try:
@@ -31,7 +31,7 @@ class AuthorViewSet(viewsets.ViewSet):
         except User.DoesNotExist:
             raise Http404
 
-    def get_profile(self, request,pk, *args, **kwargs):
+    def get_profile(self, request, pk, *args, **kwargs):
         '''
         /author/{author_id}: Get a author's profile with id = {author_id}
         '''
@@ -39,15 +39,13 @@ class AuthorViewSet(viewsets.ViewSet):
         serializer = UserSerializer(author)
         return Response({"query": "author", "count": 1, "size": 1, "Profile": [serializer.data]})
 
-    def get_friends(self, request,pk, *args, **kwargs):
+    def get_friends(self, request, pk, *args, **kwargs):
         '''
         /author/{author_id}/friends: Get all the friends of the author
         '''
-        
+
         author = self.get_object(pk)
         friends = Friend.objects.filter(Q(fromUser_id=author))
-        serializer = FriendSerializer(friends,many=True)
-        return Response({"query":"friends","Author":serializer.data})
+        serializer = FriendSerializer(friends, many=True)
+        return Response({"query": "friends", "Author": serializer.data})
         # return Response(serializer.data)
-
-    

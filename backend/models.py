@@ -8,8 +8,10 @@ import uuid
 
 class Host(models.Model):
     url = models.URLField(max_length=400)
-    serviceAccountUsername = models.CharField(max_length=100, null=True, blank=True)
-    serviceAccountPassword = models.CharField(max_length=100, null=True, blank=True)
+    serviceAccountUsername = models.CharField(
+        max_length=100, null=True, blank=True)
+    serviceAccountPassword = models.CharField(
+        max_length=100, null=True, blank=True)
 
 
 class User(AbstractUser):
@@ -17,13 +19,13 @@ class User(AbstractUser):
     host = models.ForeignKey(
         Host, null=True, blank=True, on_delete=models.CASCADE)
 
-    
     def get_full_user_id(self):
         user_host = self.host.url
         if user_host[-1] == "/":
             user_host = user_host[:-1]
 
         return "{}/author/{}".format(user_host, self.id)
+
 
 class Post(models.Model):
     VISIBILITY_CHOICES = (
@@ -63,6 +65,7 @@ class FriendRequest(models.Model):
     toUser = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="friendRequest_toUser")
     sentDate = models.DateTimeField(auto_now_add=True)
+    isAccepted = models.BooleanField(default=False)
 
 
 class Friend(models.Model):
@@ -73,4 +76,4 @@ class Friend(models.Model):
     friendDate = models.DateTimeField(auto_now_add=True)
     unfriendDate = models.DateTimeField(null=True, blank=True)
 
-    
+ 
