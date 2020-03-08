@@ -2,6 +2,17 @@
 
 .upload-image-modal {
   @extend %modal;
+
+  .dropzone {
+    text-align: center;
+    padding: 20px;
+    border-width: 2px;
+    border-radius: 5px;
+    border-style: dashed;
+    background-color: #fafafa;
+    color: #bdbdbd;
+    outline: none;
+  }
   
   .upload-button-wrapper {
     display: flex;

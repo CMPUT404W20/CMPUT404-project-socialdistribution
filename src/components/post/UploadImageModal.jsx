@@ -5,15 +5,14 @@ import PropTypes from "prop-types";
 import "../../styles/post/UploadImageModal.scss";
 import Modal from "react-bootstrap/Modal";
 
-
-function ImageDropzone() {
+function ImageDropzone(props) {
   const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles);
+    props.onDrop();
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ accept: "image/*", onDrop });
 
   return (
-    <div {...getRootProps()}>
+    <div className="dropzone" {...getRootProps()}>
       <input {...getInputProps()} />
       {
         isDragActive ? <p>Drop the files here ...</p> : <p>Drag and drop some files here, or click to select files</p>
@@ -25,13 +24,15 @@ function ImageDropzone() {
 function UploadImageModal(props) {
   const { onHide, show } = props;
 
+  
+
   return (
     <Modal onHide={onHide} show={show} className="upload-image-modal">
       <Modal.Header closeButton>
         <Modal.Title>Upload Image</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <ImageDropzone />
+        <ImageDropzone onDrop={onHide} />
       </Modal.Body>
       <Modal.Footer className="upload-button-wrapper">
         <button
@@ -45,6 +46,10 @@ function UploadImageModal(props) {
     </Modal>
   );
 }
+
+ImageDropzone.propTypes = {
+  onDrop: PropTypes.func.isRequired,
+};
 
 UploadImageModal.propTypes = {
   show: PropTypes.bool.isRequired,
