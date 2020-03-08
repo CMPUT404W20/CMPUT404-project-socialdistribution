@@ -75,3 +75,24 @@ class FriendSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friend
         fields = ["toUser"]
+    
+class User_AuthorFriendSerializer(serializers.ModelSerializer):
+    
+    displayName = serializers.CharField(source="username")
+    id = serializers.CharField(source="get_full_user_id")
+    host = serializers.CharField(source="host.url")
+    url = serializers.CharField(source="get_full_user_id")
+
+    class Meta:
+        model = User
+        fields = ["id", "host", "displayName", "url"]
+
+class AuthorFriendSerializer(serializers.ModelSerializer):
+    toUser = User_AuthorFriendSerializer()
+    class Meta:
+        model = Friend
+        fields = ["toUser"]
+
+
+
+
