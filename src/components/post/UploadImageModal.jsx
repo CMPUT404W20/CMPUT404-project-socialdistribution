@@ -7,9 +7,9 @@ import Modal from "react-bootstrap/Modal";
 
 function ImageDropzone(props) {
   const onDrop = useCallback((acceptedFiles) => {
-    props.onDrop();
+    props.onDrop(acceptedFiles);
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ accept: "image/*", onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ accept: "image/*", onDrop, multiple: false });
 
   return (
     <div className="dropzone" {...getRootProps()}>
@@ -24,15 +24,13 @@ function ImageDropzone(props) {
 function UploadImageModal(props) {
   const { onHide, show } = props;
 
-  
-
   return (
     <Modal onHide={onHide} show={show} className="upload-image-modal">
       <Modal.Header closeButton>
         <Modal.Title>Upload Image</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <ImageDropzone onDrop={onHide} />
+        <ImageDropzone onDrop={console.log} />
       </Modal.Body>
       <Modal.Footer className="upload-button-wrapper">
         <button
