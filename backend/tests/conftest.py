@@ -1,6 +1,7 @@
 import pytest
 from django.contrib.auth import get_user_model
 from backend.models import *
+import dj_database_url
 
 User = get_user_model()
 test_user_username = "testuser001"
