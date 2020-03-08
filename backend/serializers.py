@@ -92,11 +92,6 @@ class FriendSerializer(serializers.ModelSerializer):
 
 
 class FriendRequestSerializer(serializers.ModelSerializer):
-
-    '''
-    Adding 'many=True' to the serializer displays this message 'Lists are not currently supported in HTML input.'
-    '''
-
     fromUser = UserSerializer(read_only=True)
     toUser = UserSerializer(read_only=True)
 
@@ -110,11 +105,8 @@ class FriendRequestSerializer(serializers.ModelSerializer):
     '''
 
     def create(self, validated_data):
-        # print(self.context["request"].get("fromUser"))
         user_id = self.context['fromUser'].get("id").rsplit('/', 1)[1]
-        print(user_id)
         friend_id = self.context['toUser'].get("id").rsplit('/', 1)[1]
-        print("****", user_id, friend_id)
         user = User.objects.get(id=int(user_id))
         friend = User.objects.get(id=int(friend_id))
         req = FriendRequest.objects.create(fromUser=user, toUser=friend)
