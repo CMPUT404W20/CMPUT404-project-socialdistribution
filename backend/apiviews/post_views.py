@@ -92,3 +92,21 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(page, many=True)
 
         return self.get_paginated_response(serializer.data)
+
+    def visible_posts(self, request, author_id):
+        user = request.user
+        posts = Post.objects.filter(author=author_id)
+        viewable_posts = Post.objects.none()
+
+        for post in posts:
+            visible_users = post.get_visible_users()
+            if user in visible_users:
+                viewable_posts |= post
+
+        print(viewable_posts)
+        page = self.paginate_queryset(viewable_posts.order_by('-timestamp'))
+        serializer = self.get_serializer(page, many=True)
+
+        return self.get_paginated_response(serializer.data)
+
+

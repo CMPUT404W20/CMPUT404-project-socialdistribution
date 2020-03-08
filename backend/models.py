@@ -19,6 +19,7 @@ class User(AbstractUser):
     githubUrl = models.URLField(max_length=400, blank=True)
     host = models.ForeignKey(
         Host, null=True, blank=True, on_delete=models.CASCADE)
+    fullId = models.CharField(max_length=400)
 
     def get_full_user_id(self):
         user_host = self.host.url

@@ -29,22 +29,32 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('accounts/', include('allauth.urls')),
     # Url for Post Operations
-    path('posts/', PostViewSet.as_view({"get": "list"})),
+    path('posts/', PostViewSet.as_view({
+        "get": "list"
+    })),
     path('posts/<uuid:postId>/', PostViewSet.as_view({
         "get": "retrieve",
         "delete": "destroy",
         "put": "partial_update",
     })),
-    path('posts/<uuid:postId>/', PostViewSet.as_view({"get": "retrieve"})),
+    path('posts/<uuid:postId>/', PostViewSet.as_view({
+        "get": "retrieve"
+    })),
     path('author/posts', PostViewSet.as_view({
         "get": "get_user_visible_posts",
         "post": "create_post"
     })),
+    path('author/<int:author_id>/posts', PostViewSet.as_view({
+         "get": "visible_posts"
+         })),
 
     # url of Author Operations
-    path('author/', AuthorViewSet.as_view({"get": "get_authors"})),
-    path('author/<int:pk>/', AuthorViewSet.as_view({"get": "get_profile"})),
+    path('author/', AuthorViewSet.as_view({
+        "get": "get_authors"
+    })),
+    path('author/<int:pk>/', AuthorViewSet.as_view({
+        "get": "get_profile"
+    })),
     path('author/<int:pk>/friends',
-         AuthorViewSet.as_view(({"get": "get_friends"})))
-
+         AuthorViewSet.as_view(({"get": "get_friends"}))),
 ]
