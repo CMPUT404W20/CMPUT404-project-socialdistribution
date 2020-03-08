@@ -6,6 +6,8 @@ from rest_auth.registration.serializers import RegisterSerializer
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 
+import uuid
+
 
 class AuthRegisterSerializer(RegisterSerializer):
 
@@ -94,16 +96,13 @@ class FriendRequestSerializer(serializers.ModelSerializer):
     '''
     Adding 'many=True' to the serializer displays this message 'Lists are not currently supported in HTML input.'
     '''
-    # fromUser = UserSerializer(many=True)
-    # toUser = UserSerializer(many=True)
 
-    fromUser = UserSerializer()
-    toUser = UserSerializer()
+    fromUser = UserSerializer(read_only=True)
+    toUser = UserSerializer(read_only=True)
 
     class Meta:
         model = FriendRequest
-        # fields = ["id","host","displayName","url","toUser","fromUser"]
-        fields = ['fromUser', "toUser"]
+        fields = ["fromUser", "toUser"]
 
     '''
     Defined the create function below
@@ -111,8 +110,13 @@ class FriendRequestSerializer(serializers.ModelSerializer):
     '''
 
     def create(self, validated_data):
-        info = validated_data.pop('fromUser')
-        friendRequest = FriendRequest.objects.create(**validated_data)
-        for data in info:
-            User.objects.create(friendRequest=friendRequest, **info)
-        return friendRequest
+        # print(self.context["request"].get("fromUser"))
+        user_id = self.context['fromUser'].get("id").rsplit('/', 1)[1]
+        print(user_id)
+        friend_id = self.context['toUser'].get("id").rsplit('/', 1)[1]
+        print("****", user_id, friend_id)
+        user = User.objects.get(id=int(user_id))
+        friend = User.objects.get(id=int(friend_id))
+        req = FriendRequest.objects.create(fromUser=user, toUser=friend)
+        req.save()
+        return req

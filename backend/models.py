@@ -62,7 +62,6 @@ class FriendRequest(models.Model):
         User, on_delete=models.CASCADE, related_name="friendRequest_fromUser")
     toUser = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="friendRequest_toUser")
-    isAccepted = models.BooleanField(default=False)
     sentDate = models.DateTimeField(auto_now_add=True)
 
 

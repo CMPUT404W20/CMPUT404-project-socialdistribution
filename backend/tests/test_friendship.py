@@ -17,5 +17,4 @@ def test_freindship(self, client, db):
         username="user02", email="user02@gmail.com", password="cmput404!", githubUrl="https://github.com/user02",
         first_name="user2", last_name="testing2", host_id=host.id)
 
-    friendship = FriendRequest.objects.create(fromUser=test_user, toUser=test_user2)
-    
+    # friendship = FriendRequest.objects.create(fromUser=test_user, toUser=test_user2)
