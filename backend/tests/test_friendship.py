@@ -23,6 +23,4 @@ def test_create_friend_request(self, client, db):
     })
     response = client.post('/friendRequest', data=post_body_1,
                            content_type='application/json', charset='UTF-8')
-
     assert response.status_code == 200
-    print(response)
