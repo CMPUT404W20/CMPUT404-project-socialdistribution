@@ -27,7 +27,7 @@ class FriendRequestViewSet(views.APIView):
         '''
 
         request_data = dict(request.data)
-        if request_data:
+        if request_data.get("query") == "friendrequest":
             serializer = FriendRequestSerializer(
                 data=request_data, context={"fromUser": request_data["fromUser"], "toUser": request_data["toUser"]})
             if serializer.is_valid():

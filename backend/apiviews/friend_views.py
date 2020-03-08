@@ -28,7 +28,6 @@ class FriendViewSet(views.APIView):
 
         # print(dict(request.data))
         request_data = dict(request.data)
-        print(request_data.get("query"))
         if (request_data.get("query") == "friend"):
             user_id = request_data["fromUser"].get("id").rsplit('/', 1)[1]
             friend_id = request_data["toUser"].get("id").rsplit('/', 1)[1]
