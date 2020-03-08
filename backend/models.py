@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 
 import uuid
+from urllib.parse import urlparse
 
 
 class Host(models.Model):
@@ -19,12 +20,16 @@ class User(AbstractUser):
     githubUrl = models.URLField(max_length=400, blank=True)
     host = models.ForeignKey(
         Host, null=True, blank=True, on_delete=models.CASCADE)
-    fullId = models.CharField(max_length=400)
+    fullId = models.CharField(max_length=400, default='')
 
     def get_full_user_id(self):
         user_host = self.host.url
         if user_host[-1] == "/":
             user_host = user_host[:-1]
+
+        parsed_url = urlparse(user_host)
+        scheme = "%s://" % parsed_url.scheme
+        user_host = parsed_url.geturl().replace(scheme, '', 1)
 
         return "{}/author/{}".format(user_host, self.id)
 
@@ -44,6 +49,12 @@ class User(AbstractUser):
             fof |= User.objects.filter(id__in=friend_ids)
 
         return fof.distinct()
+
+    def save(self, *args, **kwargs):
+        # save twice to get auto-increment id 
+        super().save(*args, **kwargs)
+        self.fullId = self.get_full_user_id()
+        super().save(*args, **kwargs)
 
 
 class Post(models.Model):
