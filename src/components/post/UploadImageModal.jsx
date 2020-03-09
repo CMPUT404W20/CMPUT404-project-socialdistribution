@@ -13,7 +13,7 @@ function ImageDropzone(props) {
     <div className="dropzone" {...getRootProps()}>
       <input {...getInputProps()} />
       {
-        isDragActive ? <p>Drop the files here ...</p> : <p>Drag and drop some files here, or click to select files</p>
+        isDragActive ? <p>Drop image here ...</p> : <p>Drag and drop an image here, or click to select an image</p>
       }
     </div>
   );
