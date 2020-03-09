@@ -95,7 +95,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def visible_posts(self, request, author_id):
         user = request.user
-        posts = Post.objects.filter(author=author_id)
+        posts = Post.objects.filter(author__fullId=author_id)
         viewable_posts = Post.objects.none()
 
         for post in posts:

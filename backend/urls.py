@@ -45,7 +45,7 @@ urlpatterns = [
         "get": "get_user_visible_posts",
         "post": "create_post"
     })),
-    path('author/<author_id>/posts', PostViewSet.as_view({
+    path('author/<path:author_id>/posts', PostViewSet.as_view({
          "get": "visible_posts"
          })),
 
