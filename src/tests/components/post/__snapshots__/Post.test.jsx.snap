@@ -159,6 +159,14 @@ exports[`Post Block Components should render correctly 1`] = `
       </div>
     </div>
   </Collapse>
+  <TextareaAutosize
+    className="post-comment-text-area"
+    inputRef={[Function]}
+    onChange={[Function]}
+    onHeightChange={[Function]}
+    placeholder="Add a comment"
+    useCacheForDOMMeasurements={false}
+  />
 </div>
 `;
 
@@ -353,5 +361,13 @@ Normal Text
       </div>
     </div>
   </Collapse>
+  <TextareaAutosize
+    className="post-comment-text-area"
+    inputRef={[Function]}
+    onChange={[Function]}
+    onHeightChange={[Function]}
+    placeholder="Add a comment"
+    useCacheForDOMMeasurements={false}
+  />
 </div>
 `;

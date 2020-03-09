@@ -69,6 +69,15 @@
     .comment-content {
         padding-left: 0.5rem;
     }
+    .post-comment-text-area {
+        width: 100%;
+        min-height: 40px;
+        font-size: 10pt;
+        padding: 10px 15pt 5px 15pt;
+        border: none;
+        border-top: 0.4px solid #E5E5E5;
+        resize: none;
+    }
     .post-content {
         text-align: left;
         padding: 15px 15pt 5px 15pt;

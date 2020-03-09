@@ -5,11 +5,11 @@ import "../../styles/post/Post.scss";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import TextareaAutosize from "react-textarea-autosize";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
 import Collapse from "react-bootstrap/Collapse";
 import moreIcon from "../../images/more-icon.svg";
-
 
 class Post extends Component {
   constructor(props) {
@@ -102,6 +102,10 @@ class Post extends Component {
         <Collapse in={commentsOpen}>
           {this.renderComments()}
         </Collapse>
+        <TextareaAutosize
+          placeholder="Add a comment"
+          className="post-comment-text-area"
+        />
       </div>
     );
   }
