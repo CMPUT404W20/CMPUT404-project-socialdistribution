@@ -25,7 +25,7 @@ class AuthRegisterSerializer(RegisterSerializer):
 
         current_host = settings.APP_HOST
         if Host.objects.filter(url=current_host).exists():
-            host_obj = Host.objects.filter(url=current_host)
+            host_obj = Host.objects.get(url=current_host)
         else:
             host_obj = Host.objects.create(url=current_host)
         user.host = host_obj
@@ -51,6 +51,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    published = serializers.DateTimeField(source="timestamp", read_only=True)
+    id = serializers.UUIDField(source="postId", read_only=True)
+    unlisted = serializers.BooleanField(source="is_unlisted", read_only=True)
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
@@ -59,4 +62,40 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = '__all__'
+        exclude = ["timestamp", "postId"]
+
+
+class UserFriendSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source="get_full_user_id")
+
+    class Meta:
+        model = User
+        fields = ["id"]
+
+
+class FriendSerializer(serializers.ModelSerializer):
+    toUser = UserFriendSerializer()
+
+    class Meta:
+        model = Friend
+        fields = ["toUser"]
+
+
+class User_AuthorFriendSerializer(serializers.ModelSerializer):
+
+    displayName = serializers.CharField(source="username")
+    id = serializers.CharField(source="get_full_user_id")
+    host = serializers.CharField(source="host.url")
+    url = serializers.CharField(source="get_full_user_id")
+
+    class Meta:
+        model = User
+        fields = ["id", "host", "displayName", "url"]
+
+
+class AuthorFriendSerializer(serializers.ModelSerializer):
+    toUser = User_AuthorFriendSerializer()
+
+    class Meta:
+        model = Friend
+        fields = ["toUser"]
