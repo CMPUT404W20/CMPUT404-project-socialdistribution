@@ -30,6 +30,7 @@ class UploadImageModal extends Component {
   }
 
   handleDropAccept = (file) => {
+    this.revokeUrl();
     this.setState({
       errorMessage: null,
       imageFile: file[0],
@@ -37,22 +38,48 @@ class UploadImageModal extends Component {
   }
 
   handleDropError = () => {
+    this.revokeUrl();
     this.setState({
       errorMessage: "Please upload a single image file",
+      imageFile: null,
     });
   }
 
+  onUpload = () => {
+    this.hideModal();
+  }
+
+  revokeUrl = () => {
+    // need to revoke the object URL to prevent memory leaks
+    const { imageFile } = this.state;
+    URL.revokeObjectURL(imageFile);
+  }
+
+  hideModal = () => {
+    // clear out the modal contents so that the modal is empty next time
+    const { onHide } = this.props;
+    onHide(); // the default behaviour
+
+    setTimeout(() => {
+      this.setState({
+        errorMessage: null,
+        imageFile: null,
+      });
+      this.revokeUrl();
+    }, 500);
+  }
+
   render() {
-    const { onHide, show } = this.props;
+    const { show } = this.props;
     const { errorMessage, imageFile } = this.state;
     return (
-      <Modal onHide={onHide} show={show} className="upload-image-modal">
+      <Modal onHide={this.hideModal} show={show} className="upload-image-modal">
         <Modal.Header closeButton>
           <Modal.Title>Upload Image</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <ImageDropzone onDropAccepted={this.handleDropAccept} onDropRejected={this.handleDropError} />
-          <span className="error-message">{errorMessage}</span>
+          <div className="error-message">{errorMessage}</div>
           {
             imageFile ? <img className="preview-image" src={URL.createObjectURL(imageFile)} alt="preview" /> : null
           }
@@ -61,8 +88,8 @@ class UploadImageModal extends Component {
           <button
             type="button"
             className="upload-button"
-            onClick={onHide}
-            disabled
+            onClick={this.onUpload}
+            disabled={imageFile === null}
           >
             Upload
           </button>

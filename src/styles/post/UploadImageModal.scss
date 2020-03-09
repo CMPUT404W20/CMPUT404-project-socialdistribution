@@ -14,6 +14,12 @@
     outline: none;
   }
 
+  .error-message {
+    margin-top: 20px;
+    color: $error-color;
+    text-align: center;
+  }
+
   .preview-image {
     margin-top: 20px;
     box-shadow: $post-box-shadow;
