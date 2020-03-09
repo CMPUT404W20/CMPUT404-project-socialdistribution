@@ -97,16 +97,18 @@ class PostViewSet(viewsets.ModelViewSet):
     def visible_posts(self, request, author_id):
         user = request.user
         author_id = protocol_removed(author_id)
+        if User.objects.filter(fullId=author_id).exists():
+            posts = Post.objects.filter(author__fullId=author_id)
+            viewable_posts = Post.objects.none()
 
-        posts = Post.objects.filter(author__fullId=author_id)
-        viewable_posts = Post.objects.none()
+            for post in posts:
+                visible_users = post.get_visible_users()
+                if user in visible_users:
+                    viewable_posts |= Post.objects.filter(postId=post.postId)
 
-        for post in posts:
-            visible_users = post.get_visible_users()
-            if user in visible_users:
-                viewable_posts |= Post.objects.filter(postId=post.postId)
+            page = self.paginate_queryset(viewable_posts)
+            serializer = self.get_serializer(page, many=True)
 
-        page = self.paginate_queryset(viewable_posts)
-        serializer = self.get_serializer(page, many=True)
-
-        return self.get_paginated_response(serializer.data)
+            return self.get_paginated_response(serializer.data)
+        else:
+            return Response(data={"success": False, "msg": "No such user"}, status=status.HTTP_400_BAD_REQUEST)
