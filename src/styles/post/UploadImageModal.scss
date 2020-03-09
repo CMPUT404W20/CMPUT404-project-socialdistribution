@@ -1,5 +1,7 @@
 @import "../common.scss";
 
+$border-color: #bdbdbd;
+
 .upload-image-modal {
   @extend %modal;
 
@@ -9,8 +11,8 @@
     border-width: 2px;
     border-radius: 5px;
     border-style: dashed;
-    background-color: #fafafa;
-    color: #bdbdbd;
+    background-color: $background-color;
+    color: $border-color;
     outline: none;
   }
 
