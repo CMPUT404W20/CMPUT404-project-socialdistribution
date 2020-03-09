@@ -11,6 +11,7 @@ from rest_framework.decorators import permission_classes
 from backend.serializers import *
 from backend.models import User, Friend
 from backend.permissions import *
+from backend.utils import *
 from django.db.models import Q
 
 
@@ -26,12 +27,12 @@ class AuthorViewSet(viewsets.ViewSet):
 
     def get_profile(self, request, pk, *args, **kwargs):
         '''
-        /author/{author_id}: Get a author's profile with id = {author_id}
+        /author/{author_id}: Get a author's profile with fullId = {author_id}
         '''
-
-        author = get_object_or_404(User, pk=pk)
+        fullId = protocol_removed(pk)
+        author = get_object_or_404(User, fullId=fullId)
         serializer = User_AuthorFriendSerializer(author)
-        friends = Friend.objects.filter(fromUser_id=author)
+        friends = Friend.objects.filter(fromUser__fullId=author.fullId)
         newSerializer = AuthorFriendSerializer(friends, many=True)
 
         friends_list = []
@@ -49,9 +50,10 @@ class AuthorViewSet(viewsets.ViewSet):
         '''
         /author/{author_id}/friends: Get all the friends of the author
         '''
-
-        author = get_object_or_404(User, pk=pk)
-        friends = Friend.objects.filter(fromUser_id=author)
+        fullId = protocol_removed(pk)
+        author = get_object_or_404(User, fullId=fullId)
+        pk = protocol_removed(pk)
+        friends = Friend.objects.filter(fromUser__fullId=author.fullId)
         serializer = FriendSerializer(friends, many=True)
         id_List = []
         for i in serializer.data:
@@ -61,8 +63,10 @@ class AuthorViewSet(viewsets.ViewSet):
     
     def check_friends(self, request, authorId1,authorId2, *args, **kwargs):
     
-        author1 = get_object_or_404(User, pk=authorId1)
-        author2 = get_object_or_404(User, pk=authorId2)
+        id1 = protocol_removed(authorId1)
+        id2 = protocol_removed(authorId2)
+        author1 = get_object_or_404(User, fullId=id1)
+        author2 = get_object_or_404(User, fullId=id2)
         friend_ids = Friend.objects.filter(
             fromUser_id=author1.id).values_list('toUser_id', flat=True)
         friends_list = []
