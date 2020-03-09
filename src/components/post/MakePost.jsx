@@ -13,7 +13,7 @@ class MakePost extends Component {
       uploadModalVisibility: false,
       previewModalVisibility: false,
       postContent: "",
-      postImage: null,
+      postImage: "",
     };
   }
 
@@ -55,7 +55,7 @@ class MakePost extends Component {
 
     // Marcos, https://stackoverflow.com/questions/2476382/how-to-check-if-a-textarea-is-empty-in-javascript-or-jquery
     const postLength = postContent.replace(/^\s+|\s+$/g, "").length;
-    const validPost = postLength > 0 || postImage !== null;
+    const validPost = postLength > 0 || postImage !== "";
 
     return (
       <div className="make-post-wrapper">
@@ -74,7 +74,7 @@ class MakePost extends Component {
             </select>
           </div>
           <UploadImageModal show={uploadModalVisibility} onHide={this.toggleUploadModalVisibility} onUpload={this.handleImageUpload} />
-          <PostPreviewModal show={previewModalVisibility} onHide={this.togglePreviewModalVisibility} postContent={postContent} />
+          <PostPreviewModal show={previewModalVisibility} onHide={this.togglePreviewModalVisibility} postContent={postContent} imageObjectUrl={postImage} />
           <form className="make-post-input-wrapper" action="submit">
             <TextareaAutosize
               placeholder="What's on your mind?"
