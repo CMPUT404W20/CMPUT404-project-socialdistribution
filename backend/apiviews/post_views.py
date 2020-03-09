@@ -103,10 +103,7 @@ class PostViewSet(viewsets.ModelViewSet):
             if user in visible_users:
                 viewable_posts |= post
 
-        print(viewable_posts)
         page = self.paginate_queryset(viewable_posts.order_by('-timestamp'))
         serializer = self.get_serializer(page, many=True)
 
         return self.get_paginated_response(serializer.data)
-
-

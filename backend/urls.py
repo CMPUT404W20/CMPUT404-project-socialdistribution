@@ -28,7 +28,8 @@ urlpatterns = [
     path('auth/registration/', include('rest_auth.registration.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('accounts/', include('allauth.urls')),
-    # Url for Post Operations
+
+    # url for Post Operations
     path('posts/', PostViewSet.as_view({
         "get": "list"
     })),
@@ -44,7 +45,7 @@ urlpatterns = [
         "get": "get_user_visible_posts",
         "post": "create_post"
     })),
-    path('author/<int:author_id>/posts', PostViewSet.as_view({
+    path('author/<author_id>/posts', PostViewSet.as_view({
          "get": "visible_posts"
          })),
 
@@ -52,9 +53,10 @@ urlpatterns = [
     path('author/', AuthorViewSet.as_view({
         "get": "get_authors"
     })),
-    path('author/<int:pk>/', AuthorViewSet.as_view({
+    path('author/<path:pk>/', AuthorViewSet.as_view({
         "get": "get_profile"
     })),
-    path('author/<int:pk>/friends',
-         AuthorViewSet.as_view(({"get": "get_friends"}))),
+    path('author/<path:pk>/friends', AuthorViewSet.as_view(({
+        "get": "get_friends"
+    }))),
 ]

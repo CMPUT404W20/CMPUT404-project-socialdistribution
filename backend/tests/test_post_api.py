@@ -48,14 +48,14 @@ class TestPostAPI:
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 201
 
-    def test_delete_post(self, client, test_user):
+    def test_delete_post(self, client, test_user, test_host):
         # Create a post used to test the delete
         test_post = Post.objects.create(
             author=test_user, title="post title", content="post content")
         test_post_id = test_post.postId
         # Create another user
         test_user_non_author = User.objects.create_user(
-            username='testuser002', password='ualberta!')
+            username='testuser002', password='ualberta!', host=test_host)
 
         response = client.delete('/posts/{}/'.format(test_post_id))
         assert response.status_code == 401
@@ -78,7 +78,7 @@ class TestPostAPI:
             username='testuser004', password='ualberta!', host=test_host)
 
         test_post = Post.objects.create(
-            author=test_user, title="post title", content="post content", visibility=PRIVATE, visibleTo=[test_user_with_access.get_full_user_id()])
+            author=test_user, title="post title", content="post content", visibility=PRIVATE, visibleTo=[test_user_with_access.fullId])
 
         client.force_login(test_user_no_access)
         response = client.get('/author/posts')
