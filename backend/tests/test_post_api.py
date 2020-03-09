@@ -78,7 +78,7 @@ class TestPostAPI:
             username='testuser004', password='ualberta!', host=test_host)
 
         test_post = Post.objects.create(
-            author=test_user, title="post title", content="post content", visibility=PRIVATE, visibleTo=[test_user_with_access.fullId])
+            author=test_user, title="post title", content="post content", visibility=PRIVATE, visibleTo=[test_user_with_access.get_full_user_id()])
 
         client.force_login(test_user_no_access)
         response = client.get('/author/posts')
