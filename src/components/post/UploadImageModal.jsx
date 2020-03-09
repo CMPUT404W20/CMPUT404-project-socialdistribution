@@ -7,13 +7,20 @@ import Modal from "react-bootstrap/Modal";
 
 function ImageDropzone(props) {
   const { onDropAccepted, onDropRejected } = props;
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ accept: "image/*", onDropAccepted, multiple: false, onDropRejected });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: "image/*",
+    multiple: false,
+    onDropAccepted,
+    onDropRejected,
+  });
 
   return (
     <div className="dropzone" {...getRootProps()}>
       <input {...getInputProps()} />
       {
-        isDragActive ? <p>Drop image here ...</p> : <p>Drag and drop an image here, or click to select an image</p>
+        isDragActive ? (
+          <p>Drop image here ...</p>
+        ) : <p>Drag and drop an image here, or click to select an image</p>
       }
     </div>
   );
@@ -30,7 +37,6 @@ class UploadImageModal extends Component {
   }
 
   handleDropAccept = (file) => {
-    this.revokeUrl();
     this.setState({
       errorMessage: null,
       imageFile: file[0],
@@ -38,34 +44,32 @@ class UploadImageModal extends Component {
   }
 
   handleDropError = () => {
-    this.revokeUrl();
     this.setState({
       errorMessage: "Please upload a single image file",
       imageFile: null,
     });
   }
 
-  onUpload = () => {
+  handleUpload = () => {
+    const { onUpload } = this.props;
+    const { imageFile } = this.state;
+
+    onUpload(imageFile);
     this.hideModal();
   }
 
-  revokeUrl = () => {
-    // need to revoke the object URL to prevent memory leaks
-    const { imageFile } = this.state;
-    URL.revokeObjectURL(imageFile);
-  }
-
   hideModal = () => {
-    // clear out the modal contents so that the modal is empty next time
     const { onHide } = this.props;
     onHide(); // the default behaviour
 
+    // need to wait 500ms otherwise the contents will clear out while the modal is still
+    // fading away
     setTimeout(() => {
+      // clear out the modal contents so that the modal is empty next time
       this.setState({
         errorMessage: null,
         imageFile: null,
       });
-      this.revokeUrl();
     }, 500);
   }
 
@@ -88,7 +92,7 @@ class UploadImageModal extends Component {
           <button
             type="button"
             className="upload-button"
-            onClick={this.onUpload}
+            onClick={this.handleUpload}
             disabled={imageFile === null}
           >
             Upload
@@ -107,6 +111,7 @@ ImageDropzone.propTypes = {
 UploadImageModal.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
+  onUpload: PropTypes.func.isRequired,
 };
 
 export default UploadImageModal;
