@@ -82,7 +82,10 @@ class UploadImageModal extends Component {
           <Modal.Title>Upload Image</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ImageDropzone onDropAccepted={this.handleDropAccept} onDropRejected={this.handleDropError} />
+          <ImageDropzone
+            onDropAccepted={this.handleDropAccept}
+            onDropRejected={this.handleDropError}
+          />
           <div className="error-message">{errorMessage}</div>
           {
             imageFile ? <img className="preview-image" src={URL.createObjectURL(imageFile)} alt="preview" /> : null
