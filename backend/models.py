@@ -94,7 +94,7 @@ class Post(models.Model):
             users = self.author.get_friends()
             users |= self.author.get_fof()
         elif self.visibility == "PRIVATE":
-            visible_to = self.visibleTo
+            visible_to = map(protocol_removed,self.visibleTo)
             users = User.objects.filter(fullId__in=visible_to)
 
         elif self.visibility == "UNLISTED":

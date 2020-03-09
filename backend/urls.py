@@ -47,7 +47,7 @@ urlpatterns = [
     })),
     path('author/<path:author_id>/posts', PostViewSet.as_view({
          "get": "visible_posts"
-         })),
+    })),
 
     # url of Author Operations
     path('author/', AuthorViewSet.as_view({
