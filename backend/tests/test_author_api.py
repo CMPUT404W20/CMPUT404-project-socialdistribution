@@ -43,3 +43,43 @@ class TestAuthorAPI:
         assert response.data["Author"] is not None
         assert response.data["Author"][0] == friend_user[0].get_full_user_id()
         assert response.data["Author"][1] == friend_user[1].get_full_user_id()
+
+    def test_check_friends(self, client, test_user, friend_user):
+        Friend.objects.create(
+            fromUser=test_user, toUser=friend_user[0])
+        test_auth_id = test_user.id
+        
+        '''
+            checking if they are friends
+        '''
+        response = client.get('/author/{}/friends/{}'.format(test_auth_id,friend_user[0].id))
+
+        assert response.status_code == 200
+        assert response.data["query"] == "friends"
+        assert response.data["authors"] is not None
+
+        assert response.data["authors"] == [test_user.get_full_user_id(),friend_user[0].get_full_user_id()]
+        assert response.data['friends'] == True
+
+
+        '''
+            Checking if they are not friends
+        '''
+        secondResponse = client.get('/author/{}/friends/{}'.format(test_auth_id,friend_user[1].id))
+
+        assert secondResponse.status_code == 200
+        assert secondResponse.data["query"] == "friends"
+        assert secondResponse.data["authors"] is not None
+  
+
+        assert secondResponse.data["authors"] == [test_user.get_full_user_id(),friend_user[1].get_full_user_id()]
+        assert secondResponse.data['friends'] == False
+
+
+        
+
+
+
+    
+    
+        

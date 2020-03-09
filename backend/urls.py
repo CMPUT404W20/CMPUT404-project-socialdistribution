@@ -45,6 +45,9 @@ urlpatterns = [
     path('author/', AuthorViewSet.as_view({"get": "get_authors"})),
     path('author/<int:pk>/', AuthorViewSet.as_view({"get": "get_profile"})),
     path('author/<int:pk>/friends',
-         AuthorViewSet.as_view(({"get": "get_friends"})))
+         AuthorViewSet.as_view(({"get": "get_friends"}))), 
+    path('author/<int:authorId1>/friends/<int:authorId2>',
+         AuthorViewSet.as_view(({"get": "check_friends"})))
+        
 
 ]
