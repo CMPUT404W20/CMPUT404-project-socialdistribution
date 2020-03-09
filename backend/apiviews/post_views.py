@@ -11,6 +11,7 @@ from rest_framework.decorators import permission_classes
 from backend.serializers import PostSerializer
 from backend.models import Post
 from backend.permissions import *
+from backend.utils import *
 from backend.apiviews.paginations import PostPagination
 
 
@@ -95,15 +96,17 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def visible_posts(self, request, author_id):
         user = request.user
+        author_id = protocol_removed(author_id)
+
         posts = Post.objects.filter(author__fullId=author_id)
         viewable_posts = Post.objects.none()
 
         for post in posts:
             visible_users = post.get_visible_users()
             if user in visible_users:
-                viewable_posts |= post
+                viewable_posts |= Post.objects.filter(postId=post.postId)
 
-        page = self.paginate_queryset(viewable_posts.order_by('-timestamp'))
+        page = self.paginate_queryset(viewable_posts)
         serializer = self.get_serializer(page, many=True)
 
         return self.get_paginated_response(serializer.data)
