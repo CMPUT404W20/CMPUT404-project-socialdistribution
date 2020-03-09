@@ -85,7 +85,9 @@ class FriendSerializer(serializers.ModelSerializer):
         user = self.context["fromUser"]
         friend = self.context["toUser"]
         req = Friend.objects.create(fromUser=user, toUser=friend)
+        req2 = Friend.objects.create(fromUser=friend, toUser=user)
         req.save()
+        req2.save()
         return req
 
 
