@@ -1,15 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useCallback } from "react";
+import React, { Component } from "react";
 import { useDropzone } from "react-dropzone";
 import PropTypes from "prop-types";
 import "../../styles/post/UploadImageModal.scss";
 import Modal from "react-bootstrap/Modal";
 
 function ImageDropzone(props) {
-  const onDrop = useCallback((acceptedFiles) => {
-    props.onDrop(acceptedFiles);
-  }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ accept: "image/*", onDrop, multiple: false });
+  const { onDropAccepted, onDropRejected } = props;
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ accept: "image/*", onDropAccepted, multiple: false, onDropRejected });
 
   return (
     <div className="dropzone" {...getRootProps()}>
@@ -21,32 +19,62 @@ function ImageDropzone(props) {
   );
 }
 
-function UploadImageModal(props) {
-  const { onHide, show } = props;
+class UploadImageModal extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <Modal onHide={onHide} show={show} className="upload-image-modal">
-      <Modal.Header closeButton>
-        <Modal.Title>Upload Image</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <ImageDropzone onDrop={console.log} />
-      </Modal.Body>
-      <Modal.Footer className="upload-button-wrapper">
-        <button
-          type="button"
-          className="upload-button"
-          onClick={onHide}
-        >
-          Upload
-        </button>
-      </Modal.Footer>
-    </Modal>
-  );
+    this.state = {
+      errorMessage: null,
+      imageFile: null,
+    };
+  }
+
+  handleDropAccept = (file) => {
+    this.setState({
+      errorMessage: null,
+      imageFile: file[0],
+    });
+  }
+
+  handleDropError = () => {
+    this.setState({
+      errorMessage: "Please upload a single image file",
+    });
+  }
+
+  render() {
+    const { onHide, show } = this.props;
+    const { errorMessage, imageFile } = this.state;
+    return (
+      <Modal onHide={onHide} show={show} className="upload-image-modal">
+        <Modal.Header closeButton>
+          <Modal.Title>Upload Image</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ImageDropzone onDropAccepted={this.handleDropAccept} onDropRejected={this.handleDropError} />
+          <span className="error-message">{errorMessage}</span>
+          {
+            imageFile ? <img className="preview-image" src={URL.createObjectURL(imageFile)} alt="preview" /> : null
+          }
+        </Modal.Body>
+        <Modal.Footer className="upload-button-wrapper">
+          <button
+            type="button"
+            className="upload-button"
+            onClick={onHide}
+            disabled
+          >
+            Upload
+          </button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
 }
 
 ImageDropzone.propTypes = {
-  onDrop: PropTypes.func.isRequired,
+  onDropAccepted: PropTypes.func.isRequired,
+  onDropRejected: PropTypes.func.isRequired,
 };
 
 UploadImageModal.propTypes = {

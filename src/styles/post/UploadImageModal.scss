@@ -13,6 +13,12 @@
     color: #bdbdbd;
     outline: none;
   }
+
+  .preview-image {
+    margin-top: 20px;
+    box-shadow: $post-box-shadow;
+    width: 100%;
+  }
   
   .upload-button-wrapper {
     display: flex;
