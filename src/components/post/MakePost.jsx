@@ -73,8 +73,17 @@ class MakePost extends Component {
               <option value="private">Private</option>
             </select>
           </div>
-          <UploadImageModal show={uploadModalVisibility} onHide={this.toggleUploadModalVisibility} onUpload={this.handleImageUpload} />
-          <PostPreviewModal show={previewModalVisibility} onHide={this.togglePreviewModalVisibility} postContent={postContent} imageObjectUrl={postImage} />
+          <UploadImageModal
+            show={uploadModalVisibility}
+            onHide={this.toggleUploadModalVisibility}
+            onUpload={this.handleImageUpload}
+          />
+          <PostPreviewModal
+            show={previewModalVisibility}
+            onHide={this.togglePreviewModalVisibility}
+            postContent={postContent}
+            imageObjectUrl={postImage}
+          />
           <form className="make-post-input-wrapper" action="submit">
             <TextareaAutosize
               placeholder="What's on your mind?"
