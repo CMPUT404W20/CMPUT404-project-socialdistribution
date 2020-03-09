@@ -96,6 +96,9 @@ class PostViewSet(viewsets.ModelViewSet):
         return self.get_paginated_response(serializer.data)
 
     def visible_posts(self, request, author_id):
+        '''
+        http://service/author/{AUTHOR_ID}/posts all posts made by {AUTHOR_ID} visible to the currently authenticated user
+        '''
         user = request.user
         author_id = protocol_removed(author_id)
 
