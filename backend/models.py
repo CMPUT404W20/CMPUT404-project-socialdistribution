@@ -32,28 +32,26 @@ class User(AbstractUser):
 
     def get_friends(self):
         friend_ids = Friend.objects.filter(
-            fromUser__fullId=self.fullId).values_list('toUser_fullId', flat=True)
+            fromUser__fullId=self.fullId).values_list('toUser__fullId', flat=True)
         friend_list = User.objects.filter(fullId__in=friend_ids)
 
         return friend_list
 
-    def get_fof(self):
-        fof = User.objects.none()
+    def get_foaf(self):
+        foaf = User.objects.none()
         friends = self.get_friends()
 
         for friend in friends:
-            friend_ids = friend.get_friends().exclude(fullId=self.fullId)
-            fof |= User.objects.filter(fullId__in=friend_ids)
+            foaf |= friend.get_friends().exclude(fullId=self.fullId)
 
-        return fof.distinct()
+        return foaf.distinct()
 
     def save(self, *args, **kwargs):
-        # save twice to get auto-increment id 
+        # save twice to get auto-increment id
         super().save(*args, **kwargs)
         fullId = self.get_full_user_id()
         fullId = protocol_removed(fullId)
         self.fullId = fullId
-
         super().save(*args, **kwargs)
 
 
@@ -94,7 +92,7 @@ class Post(models.Model):
             users = self.author.get_friends()
             users |= self.author.get_fof()
         elif self.visibility == "PRIVATE":
-            visible_to = map(protocol_removed,self.visibleTo)
+            visible_to = map(protocol_removed, self.visibleTo)
             users = User.objects.filter(fullId__in=visible_to)
 
         elif self.visibility == "UNLISTED":
