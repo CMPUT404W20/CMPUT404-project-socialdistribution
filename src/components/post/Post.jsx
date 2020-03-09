@@ -7,12 +7,19 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
+import Collapse from "react-bootstrap/Collapse";
 import moreIcon from "../../images/more-icon.svg";
+
 
 class Post extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      commentsOpen: false,
+      comments: [{ username: "abc", content: "good!" },
+        { username: "imUser2", content: "This HTML file is a template.If you open it directly in the browser, you will see an empty page. You can add webfonts, meta tags, or analytics to this file." },
+        { username: "chubby bunny", content: "ahhhhhhhh i want bubble tttttttt!!!" }],
+    };
   }
 
   renderMenu = () => {
@@ -51,17 +58,50 @@ class Post extends Component {
     );
   }
 
+  renderComments = () => {
+    const { comments } = this.state;
+    return (
+      <div id="comment-list">
+        {comments.map((comment, index) => (
+          <div key={index}>
+            <p>
+              {comment.username}
+              {" "}
+              :
+              <span className="comment-content">{comment.content}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+
+    );
+  }
+
   render() {
     const {
       content,
       imageSrc,
     } = this.props;
-
+    const { commentsOpen, comments } = this.state;
     return (
       <div className="post-block">
         {this.renderMenu()}
         { imageSrc ? <img className="post-img" src={imageSrc} alt="more-icon" /> : null }
         <ReactMarkdown className="post-content" plugins={[breaks]} source={content} />
+        <button
+          className="post-show-comment"
+          onClick={() => this.setState({ commentsOpen: !commentsOpen })}
+          aria-controls="post-comments"
+          aria-expanded={commentsOpen}
+          type="button"
+        >
+          {comments.length}
+          {" "}
+          comments
+        </button>
+        <Collapse in={commentsOpen}>
+          {this.renderComments()}
+        </Collapse>
       </div>
     );
   }
