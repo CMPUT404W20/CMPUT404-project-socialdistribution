@@ -44,7 +44,7 @@ class AuthorViewSet(viewsets.ViewSet):
             friends_list.append(friends_dict.copy())
 
         return Response({"id": serializer.data["id"], "host": serializer.data["host"], "displayName": serializer.data["displayName"], "url": serializer.data["url"],
-                         "Friends": friends_list})
+                         "friends": friends_list})
 
     def get_friends(self, request, pk, *args, **kwargs):
         '''
