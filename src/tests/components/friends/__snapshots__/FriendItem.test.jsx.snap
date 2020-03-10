@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FriendItem Component should render correctly 1`] = `
+<Col
+  md={6}
+>
+  <div
+    className="friend-item-wrapper"
+  >
+    <a
+      className="username-link"
+      href=" "
+    />
+    <DropdownButton
+      alignRight={true}
+      drop="down"
+      id="friend-status"
+      title="FRIENDS"
+    >
+      <DropdownItem
+        as={
+          Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "SafeAnchor",
+            "render": [Function],
+          }
+        }
+        disabled={false}
+        onClick={[Function]}
+      >
+        Unfriend
+      </DropdownItem>
+    </DropdownButton>
+  </div>
+</Col>
+`;
