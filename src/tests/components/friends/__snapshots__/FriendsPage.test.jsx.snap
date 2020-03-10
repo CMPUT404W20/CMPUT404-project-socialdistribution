@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Friends Page Component should render correctly 1`] = `
+<Container
+  className="page-wrapper"
+  fluid={true}
+>
+  <Row
+    noGutters={false}
+  >
+    <Col
+      md={12}
+    >
+      <NavigationBar
+        selected="Friends"
+      />
+    </Col>
+  </Row>
+  <Row
+    noGutters={false}
+  >
+    <Col
+      md={2}
+    />
+    <Col
+      md={8}
+    >
+      <div
+        className="content-wrapper"
+      >
+        <div
+          className="title"
+        >
+          <PeopleAltOutlinedIcon
+            className="icon"
+          />
+          <p>
+            Friends
+          </p>
+          <p>
+            (
+            5
+            )
+          </p>
+        </div>
+        <Row
+          className="item-list"
+          noGutters={false}
+        >
+          <FriendItem
+            handleUnfollow={[Function]}
+            id="001"
+            key="001"
+            username="Username1"
+          />
+          <FriendItem
+            handleUnfollow={[Function]}
+            id="002"
+            key="002"
+            username="Username2"
+          />
+          <FriendItem
+            handleUnfollow={[Function]}
+            id="003"
+            key="003"
+            username="Username3"
+          />
+          <FriendItem
+            handleUnfollow={[Function]}
+            id="004"
+            key="004"
+            username="Username4"
+          />
+          <FriendItem
+            handleUnfollow={[Function]}
+            id="005"
+            key="005"
+            username="Username5"
+          />
+        </Row>
+      </div>
+    </Col>
+  </Row>
+</Container>
+`;
