@@ -87,9 +87,9 @@ class TestPostAPI:
         response = client.get('/author/posts')
         assert response.status_code == 200
         assert response.data["query"] == "posts"
-        assert response.data["count"] == 0
         assert response.data["posts"] is not None
-        assert len(response.data["posts"]) == 0
+        for post in response.data["posts"]:
+            assert test_post.postId != post["id"]
         client.logout()
 
         client.force_login(test_user_with_access)
