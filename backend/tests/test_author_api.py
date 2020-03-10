@@ -22,11 +22,11 @@ class TestAuthorAPI:
         assert response.data["displayName"] == test_user.username
         assert response.data["host"] is not None
         assert response.data["url"] == test_user.get_full_user_id()
-        assert response.data["Friends"] is not None
+        assert response.data["friends"] is not None
 
-        assert response.data["Friends"][0]["id"] == friend_user[0].get_full_user_id(
+        assert response.data["friends"][0]["id"] == friend_user[0].get_full_user_id(
         )
-        assert response.data["Friends"][1]["id"] == friend_user[1].get_full_user_id(
+        assert response.data["friends"][1]["id"] == friend_user[1].get_full_user_id(
         )
 
     def test_get_friends(self, client, test_user, friend_user):
