@@ -16,9 +16,6 @@ exports[`Navigation bar Component should render correctly 1`] = `
       <p>
         Username
       </p>
-      <p>
-        Local
-      </p>
     </div>
     <div
       className="row2"
