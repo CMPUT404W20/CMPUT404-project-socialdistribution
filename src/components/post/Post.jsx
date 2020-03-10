@@ -21,6 +21,7 @@ class Post extends Component {
       postTime,
       invisible,
       previewMode,
+      onEdit,
     } = this.props;
 
     if (previewMode) {
@@ -42,7 +43,7 @@ class Post extends Component {
           drop="down"
           alignRight
         >
-          <Dropdown.Item href="#">Edit</Dropdown.Item>
+          <Dropdown.Item onClick={onEdit} href="#">Edit</Dropdown.Item>
           <Dropdown.Item href="#">Delete</Dropdown.Item>
           <Dropdown.Item href="#">Copy Link</Dropdown.Item>
         </DropdownButton>
@@ -74,6 +75,7 @@ Post.propTypes = {
   content: PropTypes.string,
   invisible: PropTypes.bool,
   previewMode: PropTypes.bool,
+  onEdit: PropTypes.func.isRequired,
 };
 
 Post.defaultProps = {

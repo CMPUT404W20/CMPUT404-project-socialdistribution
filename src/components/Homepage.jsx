@@ -7,14 +7,24 @@ import NavigationBar from "./NavigationBar";
 import MakePost from "./post/MakePost";
 import Post from "./post/Post";
 import demoImage from "../images/demo-img.png";
+import EditPostModal from "./post/EditPostModal";
 
 class Homepage extends Component {
   constructor(props) {
     super(props);
     this.props = props;
+
+    this.state = {
+      editModalVisibility: false,
+    };
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  toggleEditModalVisibility = () => {
+    this.setState((prevState) => ({
+      editModalVisibility: !prevState.editModalVisibility,
+    }));
+  }
+
   renderPosts() {
     return (
       <Row className="postWrapper">
@@ -25,6 +35,7 @@ class Homepage extends Component {
             postTime={new Date()}
             imageSrc={demoImage}
             content="Some content"
+            onEdit={this.toggleEditModalVisibility}
           />
         </Col>
         <Col md={2} />
@@ -33,6 +44,8 @@ class Homepage extends Component {
   }
 
   render() {
+    const { editModalVisibility } = this.state;
+
     return (
       <Container fluid className="homepage">
         <Row>
@@ -48,6 +61,7 @@ class Homepage extends Component {
           <Col md={2} />
         </Row>
         {this.renderPosts()}
+        <EditPostModal show={editModalVisibility} onHide={this.toggleEditModalVisibility} />
       </Container>
     );
   }
