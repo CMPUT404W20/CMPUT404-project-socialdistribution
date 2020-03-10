@@ -60,24 +60,4 @@ class AuthorViewSet(viewsets.ViewSet):
             id_List.append(list(list(i.items())[0][1].items())[0][1])
 
         return Response({"query": "friends", "Author": id_List})
-    
-    def check_friends(self, request, authorId1,authorId2, *args, **kwargs):
-    
-        id1 = protocol_removed(authorId1)
-        id2 = protocol_removed(authorId2)
-        author1 = get_object_or_404(User, fullId=id1)
-        author2 = get_object_or_404(User, fullId=id2)
-        friend_ids = Friend.objects.filter(
-            fromUser_id=author1.id).values_list('toUser_id', flat=True)
-        friends_list = []
-        for id in friend_ids:
-            friends_list.append(id)
-        
-        if author2.id in friends_list:
-            friends = True
-        else: 
-            friends = False
-        
 
-
-        return Response({"query": "friends","authors":[author1.get_full_user_id(),author2.get_full_user_id()],"friends": friends})

@@ -6,12 +6,12 @@ import pytest
 
 @pytest.mark.django_db
 class TestAuthorAPI:
-
+    user_notFound_id = "https://example/20"
     def test_get_profile_by_author_id(self, client, test_user, friend_user):
         
         # Checking scenario where the user does not exist, 404 Error
         
-        nouserResponse = client.get('/author/{}/'.format("https://cmput404-socialdistribution.herokuapp.com/author/20"))
+        nouserResponse = client.get('/author/{}/'.format(self.user_notFound_id))
         assert nouserResponse.status_code == 404
 
         # Checking user's profile
@@ -65,49 +65,8 @@ class TestAuthorAPI:
 
         # Checking scenario where the user does not exist, 404 Error
         
-        nouserResponse = client.get('/author/{}/friends'.format("https://cmput404-socialdistribution.herokuapp.com/author/20"))
+        nouserResponse = client.get('/author/{}/friends'.format(self.user_notFound_id))
         assert nouserResponse.status_code == 404
 
 
-    def test_check_friends(self, client, test_user, friend_user):
-
-        Friend.objects.create(
-            fromUser=test_user, toUser=friend_user[0])
-        test_auth_id = test_user.get_full_user_id()
-
-        # Checking scenario where they are friends
-        
-        response = client.get('/author/{}/friends/{}'.format(test_auth_id,friend_user[0].get_full_user_id()))
-
-        assert response.status_code == 200
-        assert response.data["query"] == "friends"
-        assert response.data["authors"] is not None
-
-        assert response.data["authors"] == [test_user.get_full_user_id(),friend_user[0].get_full_user_id()]
-        assert response.data['friends'] == True
-
-        # Checking scenario where they are not friends
-        
-        secondResponse = client.get('/author/{}/friends/{}'.format(test_auth_id,friend_user[1].get_full_user_id()))
-
-        assert secondResponse.status_code == 200
-        assert secondResponse.data["query"] == "friends"
-        assert secondResponse.data["authors"] is not None
-  
-        assert secondResponse.data["authors"] == [test_user.get_full_user_id(),friend_user[1].get_full_user_id()]
-        assert secondResponse.data['friends'] == False
-
-        # Checking scenario where the user does not exist, 404 Error
-        
-        nouserResponse = client.get('/author/{}/friends/{}'.format(test_auth_id,"https://cmput404-socialdistribution.herokuapp.com/author/20"))
-        assert nouserResponse.status_code == 404
-
-
-
-        
-
-
-
     
-    
-        
