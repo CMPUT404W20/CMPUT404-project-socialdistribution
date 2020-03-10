@@ -1,7 +1,7 @@
-$accent-color: #4B84F2;
+@import "../common.scss";
 $type-text-color: rgba(24, 24, 24, 0.6);
 .notice-item-wrapper {
-    border: 1px solid #BFBFBF;
+    border: 1px solid $border-color;
     box-sizing: border-box;
     padding: 0 2rem 0 2rem;
     border-radius: 4px;
@@ -35,6 +35,7 @@ $type-text-color: rgba(24, 24, 24, 0.6);
     .button-wrapper {
         display: inline-flex;
         flex-direction: row;
+        justify-content: center;
     }
     .accept-button,
     .decline-button {

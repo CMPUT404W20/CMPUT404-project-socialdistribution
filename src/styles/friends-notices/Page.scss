@@ -1,4 +1,4 @@
-$background-color: #eaeaea;
+@import "../common.scss";
 .page-wrapper {
     background-color: $background-color;
     min-height: 100vh;

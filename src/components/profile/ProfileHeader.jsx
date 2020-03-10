@@ -89,7 +89,9 @@ class ProfileHeader extends Component {
   );
 
   render() {
-    const { username, remote, modalShow, isSelf } = this.state;
+    const {
+      username, remote, modalShow, isSelf,
+    } = this.state;
     return (
       <div className="profileHeader">
         <div className="image-section" />

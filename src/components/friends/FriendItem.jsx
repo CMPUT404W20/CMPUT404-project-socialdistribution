@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../styles/friends/FriendItem.scss";
+import "../../styles/friends-notices/FriendItem.scss";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import PropTypes from "prop-types";
