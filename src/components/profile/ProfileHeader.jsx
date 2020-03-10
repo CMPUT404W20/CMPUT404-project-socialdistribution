@@ -89,14 +89,14 @@ class ProfileHeader extends Component {
   );
 
   render() {
-    const { username, remote, modalShow } = this.state;
+    const { username, remote, modalShow, isSelf } = this.state;
     return (
       <div className="profileHeader">
         <div className="image-section" />
         <div className="user-section">
           <div className="row1">
             <p>{username}</p>
-            <p>{remote === true ? "Remote" : "Local"}</p>
+            {isSelf ? null : (<p>{remote === true ? "Remote" : "Local"}</p>)}
           </div>
           <div className="row2">
             {this.renderStatus()}
