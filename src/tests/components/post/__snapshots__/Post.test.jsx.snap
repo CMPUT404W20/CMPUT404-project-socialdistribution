@@ -116,7 +116,7 @@ exports[`Post Block Components should render correctly 1`] = `
       id="comment-list"
     >
       <div
-        key="0"
+        key="1"
       >
         <p>
           abc
@@ -130,7 +130,7 @@ exports[`Post Block Components should render correctly 1`] = `
         </p>
       </div>
       <div
-        key="1"
+        key="2"
       >
         <p>
           imUser2
@@ -144,7 +144,7 @@ exports[`Post Block Components should render correctly 1`] = `
         </p>
       </div>
       <div
-        key="2"
+        key="3"
       >
         <p>
           chubby bunny
@@ -159,14 +159,22 @@ exports[`Post Block Components should render correctly 1`] = `
       </div>
     </div>
   </Collapse>
-  <TextareaAutosize
-    className="post-comment-text-area"
-    inputRef={[Function]}
-    onChange={[Function]}
-    onHeightChange={[Function]}
-    placeholder="Add a comment"
-    useCacheForDOMMeasurements={false}
-  />
+  <form
+    action="submit"
+    className="make-comment-input-wrapper"
+    onSubmit={[Function]}
+  >
+    <TextareaAutosize
+      className="post-comment-text-area"
+      inputRef={[Function]}
+      onChange={[Function]}
+      onHeightChange={[Function]}
+      onKeyPress={[Function]}
+      placeholder="Add a comment"
+      useCacheForDOMMeasurements={false}
+      value=""
+    />
+  </form>
 </div>
 `;
 
@@ -318,7 +326,7 @@ Normal Text
       id="comment-list"
     >
       <div
-        key="0"
+        key="1"
       >
         <p>
           abc
@@ -332,7 +340,7 @@ Normal Text
         </p>
       </div>
       <div
-        key="1"
+        key="2"
       >
         <p>
           imUser2
@@ -346,7 +354,7 @@ Normal Text
         </p>
       </div>
       <div
-        key="2"
+        key="3"
       >
         <p>
           chubby bunny
@@ -361,13 +369,21 @@ Normal Text
       </div>
     </div>
   </Collapse>
-  <TextareaAutosize
-    className="post-comment-text-area"
-    inputRef={[Function]}
-    onChange={[Function]}
-    onHeightChange={[Function]}
-    placeholder="Add a comment"
-    useCacheForDOMMeasurements={false}
-  />
+  <form
+    action="submit"
+    className="make-comment-input-wrapper"
+    onSubmit={[Function]}
+  >
+    <TextareaAutosize
+      className="post-comment-text-area"
+      inputRef={[Function]}
+      onChange={[Function]}
+      onHeightChange={[Function]}
+      onKeyPress={[Function]}
+      placeholder="Add a comment"
+      useCacheForDOMMeasurements={false}
+      value=""
+    />
+  </form>
 </div>
 `;

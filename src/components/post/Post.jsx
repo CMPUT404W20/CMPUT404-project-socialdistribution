@@ -16,9 +16,10 @@ class Post extends Component {
     super(props);
     this.state = {
       commentsOpen: false,
-      comments: [{ username: "abc", content: "good!" },
-        { username: "imUser2", content: "This HTML file is a template.If you open it directly in the browser, you will see an empty page. You can add webfonts, meta tags, or analytics to this file." },
-        { username: "chubby bunny", content: "ahhhhhhhh i want bubble tttttttt!!!" }],
+      commentList: [{ id: "1", username: "abc", content: "good!" },
+        { id: "2", username: "imUser2", content: "This HTML file is a template.If you open it directly in the browser, you will see an empty page. You can add webfonts, meta tags, or analytics to this file." },
+        { id: "3", username: "chubby bunny", content: "ahhhhhhhh i want bubble tttttttt!!!" }],
+      newComment: "",
     };
   }
 
@@ -59,11 +60,11 @@ class Post extends Component {
   }
 
   renderComments = () => {
-    const { comments } = this.state;
+    const { commentList } = this.state;
     return (
       <div id="comment-list">
-        {comments.map((comment, index) => (
-          <div key={index}>
+        {commentList.map((comment) => (
+          <div key={comment.id}>
             <p>
               {comment.username}
               {" "}
@@ -77,12 +78,28 @@ class Post extends Component {
     );
   }
 
+  handleTextChange = (event) => {
+    this.setState({ newComment: event.target.value });
+  }
+
+  handleSubmitNewComment = () => {
+    // todo: post new comment to api
+    this.setState({ newComment: "" });
+  }
+
+  keyPressed = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      this.handleSubmitNewComment();
+    }
+  }
+
   render() {
     const {
       content,
       imageSrc,
     } = this.props;
-    const { commentsOpen, comments } = this.state;
+    const { commentsOpen, commentList, newComment } = this.state;
     return (
       <div className="post-block">
         {this.renderMenu()}
@@ -95,17 +112,22 @@ class Post extends Component {
           aria-expanded={commentsOpen}
           type="button"
         >
-          {comments.length}
+          {commentList.length}
           {" "}
           comments
         </button>
         <Collapse in={commentsOpen}>
           {this.renderComments()}
         </Collapse>
-        <TextareaAutosize
-          placeholder="Add a comment"
-          className="post-comment-text-area"
-        />
+        <form className="make-comment-input-wrapper" action="submit" onSubmit={this.handleSubmitNewComment}>
+          <TextareaAutosize
+            placeholder="Add a comment"
+            className="post-comment-text-area"
+            onChange={this.handleTextChange}
+            onKeyPress={this.keyPressed}
+            value={newComment}
+          />
+        </form>
       </div>
     );
   }
