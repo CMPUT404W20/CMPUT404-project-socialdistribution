@@ -92,6 +92,8 @@ class Homepage extends Component {
                 defaultPostContent={post.content}
                 defaultPostImage={post.imageSrc}
                 onSubmit={this.handlePostUpdate}
+                // set the current post being edited to null -> close the edit dialog
+                onDiscard={() => this.handleEditToggle(null)}
               />
             </Col>
             <Col md={2} />

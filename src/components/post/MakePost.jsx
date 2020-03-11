@@ -41,14 +41,6 @@ class MakePost extends Component {
     // alert(postContent);
   };
 
-  handleDiscard = (event) => {
-    // TODO: finish this
-    event.preventDefault();
-
-    // eslint-disable-next-line no-alert
-    alert("discard");
-  }
-
   toggleUploadModalVisibility = () => {
     this.setState((prevState) => ({
       uploadModalVisibility: !prevState.uploadModalVisibility,
@@ -69,7 +61,7 @@ class MakePost extends Component {
       postImage,
     } = this.state;
 
-    const { editMode } = this.props;
+    const { editMode, onDiscard } = this.props;
 
     // Marcos, https://stackoverflow.com/questions/2476382/how-to-check-if-a-textarea-is-empty-in-javascript-or-jquery
     const postLength = postContent.replace(/^\s+|\s+$/g, "").length;
@@ -133,7 +125,7 @@ class MakePost extends Component {
                   <button
                     type="submit"
                     className="discard-button"
-                    onClick={this.handleDiscard}
+                    onClick={onDiscard}
                   >
                     Discard
                   </button>
@@ -167,6 +159,7 @@ MakePost.propTypes = {
   defaultPostContent: PropTypes.string,
   defaultPostImage: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
+  onDiscard: PropTypes.func,
 };
 
 MakePost.defaultProps = {
@@ -174,6 +167,7 @@ MakePost.defaultProps = {
   originalPost: {},
   defaultPostContent: "",
   defaultPostImage: "",
+  onDiscard: () => {},
 };
 
 export default MakePost;
