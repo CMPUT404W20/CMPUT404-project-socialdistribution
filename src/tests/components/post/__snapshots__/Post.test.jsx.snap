@@ -92,6 +92,89 @@ exports[`Post Block Components should render correctly 1`] = `
     sourcePos={false}
     transformLinkUri={[Function]}
   />
+  <button
+    aria-controls="post-comments"
+    aria-expanded={false}
+    className="post-show-comment"
+    onClick={[Function]}
+    type="button"
+  >
+    3
+     
+    comments
+  </button>
+  <Collapse
+    appear={false}
+    dimension="height"
+    getDimensionValue={[Function]}
+    in={false}
+    mountOnEnter={false}
+    timeout={300}
+    unmountOnExit={false}
+  >
+    <div
+      id="comment-list"
+    >
+      <div
+        key="1"
+      >
+        <p>
+          abc
+           
+          :
+          <span
+            className="comment-content"
+          >
+            good!
+          </span>
+        </p>
+      </div>
+      <div
+        key="2"
+      >
+        <p>
+          imUser2
+           
+          :
+          <span
+            className="comment-content"
+          >
+            This HTML file is a template.If you open it directly in the browser, you will see an empty page. You can add webfonts, meta tags, or analytics to this file.
+          </span>
+        </p>
+      </div>
+      <div
+        key="3"
+      >
+        <p>
+          chubby bunny
+           
+          :
+          <span
+            className="comment-content"
+          >
+            ahhhhhhhh i want bubble tttttttt!!!
+          </span>
+        </p>
+      </div>
+    </div>
+  </Collapse>
+  <form
+    action="submit"
+    className="make-comment-input-wrapper"
+    onSubmit={[Function]}
+  >
+    <TextareaAutosize
+      className="post-comment-text-area"
+      inputRef={[Function]}
+      onChange={[Function]}
+      onHeightChange={[Function]}
+      onKeyPress={[Function]}
+      placeholder="Add a comment"
+      useCacheForDOMMeasurements={false}
+      value=""
+    />
+  </form>
 </div>
 `;
 
@@ -219,5 +302,88 @@ Normal Text
     sourcePos={false}
     transformLinkUri={[Function]}
   />
+  <button
+    aria-controls="post-comments"
+    aria-expanded={false}
+    className="post-show-comment"
+    onClick={[Function]}
+    type="button"
+  >
+    3
+     
+    comments
+  </button>
+  <Collapse
+    appear={false}
+    dimension="height"
+    getDimensionValue={[Function]}
+    in={false}
+    mountOnEnter={false}
+    timeout={300}
+    unmountOnExit={false}
+  >
+    <div
+      id="comment-list"
+    >
+      <div
+        key="1"
+      >
+        <p>
+          abc
+           
+          :
+          <span
+            className="comment-content"
+          >
+            good!
+          </span>
+        </p>
+      </div>
+      <div
+        key="2"
+      >
+        <p>
+          imUser2
+           
+          :
+          <span
+            className="comment-content"
+          >
+            This HTML file is a template.If you open it directly in the browser, you will see an empty page. You can add webfonts, meta tags, or analytics to this file.
+          </span>
+        </p>
+      </div>
+      <div
+        key="3"
+      >
+        <p>
+          chubby bunny
+           
+          :
+          <span
+            className="comment-content"
+          >
+            ahhhhhhhh i want bubble tttttttt!!!
+          </span>
+        </p>
+      </div>
+    </div>
+  </Collapse>
+  <form
+    action="submit"
+    className="make-comment-input-wrapper"
+    onSubmit={[Function]}
+  >
+    <TextareaAutosize
+      className="post-comment-text-area"
+      inputRef={[Function]}
+      onChange={[Function]}
+      onHeightChange={[Function]}
+      onKeyPress={[Function]}
+      placeholder="Add a comment"
+      useCacheForDOMMeasurements={false}
+      value=""
+    />
+  </form>
 </div>
 `;

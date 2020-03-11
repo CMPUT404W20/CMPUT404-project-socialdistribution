@@ -5,14 +5,22 @@ import "../../styles/post/Post.scss";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import TextareaAutosize from "react-textarea-autosize";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
+import Collapse from "react-bootstrap/Collapse";
 import moreIcon from "../../images/more-icon.svg";
 
 class Post extends Component {
-  // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
+    this.state = {
+      commentsOpen: false,
+      commentList: [{ id: "1", username: "abc", content: "good!" },
+        { id: "2", username: "imUser2", content: "This HTML file is a template.If you open it directly in the browser, you will see an empty page. You can add webfonts, meta tags, or analytics to this file." },
+        { id: "3", username: "chubby bunny", content: "ahhhhhhhh i want bubble tttttttt!!!" }],
+      newComment: "",
+    };
   }
 
   renderMenu = () => {
@@ -51,14 +59,72 @@ class Post extends Component {
     );
   }
 
+  renderComments = () => {
+    const { commentList } = this.state;
+    return (
+      <div id="comment-list">
+        {commentList.map((comment) => (
+          <div key={comment.id}>
+            <p>
+              {comment.username}
+              {" "}
+              :
+              <span className="comment-content">{comment.content}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+
+    );
+  }
+
+  handleTextChange = (event) => {
+    this.setState({ newComment: event.target.value });
+  }
+
+  handleSubmitNewComment = () => {
+    // todo: post new comment to api
+    this.setState({ newComment: "" });
+  }
+
+  keyPressed = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      this.handleSubmitNewComment();
+    }
+  }
+
   render() {
     const { post } = this.props;
-
+    const { commentsOpen, commentList, newComment } = this.state;
     return (
       <div className="post-block">
         {this.renderMenu()}
         { post.imageSrc ? <img className="post-img" src={post.imageSrc} alt="more-icon" /> : null }
         <ReactMarkdown className="post-content" plugins={[breaks]} source={post.content} />
+        <button
+          className="post-show-comment"
+          onClick={() => this.setState({ commentsOpen: !commentsOpen })}
+          aria-controls="post-comments"
+          aria-expanded={commentsOpen}
+          type="button"
+        >
+          {commentList.length}
+          {" "}
+          comments
+        </button>
+        <Collapse in={commentsOpen}>
+          {this.renderComments()}
+        </Collapse>
+        <form className="make-comment-input-wrapper" action="submit" onSubmit={this.handleSubmitNewComment}>
+          <TextareaAutosize
+            placeholder="Add a comment"
+            className="post-comment-text-area"
+            onChange={this.handleTextChange}
+            onKeyPress={this.keyPressed}
+            value={newComment}
+          />
+        </form>
       </div>
     );
   }

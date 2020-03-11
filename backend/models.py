@@ -49,6 +49,15 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         # save twice to get auto-increment id
         super().save(*args, **kwargs)
+
+        if not self.host:
+            current_host = settings.APP_HOST
+            if Host.objects.filter(url=current_host).exists():
+                host_obj = Host.objects.get(url=current_host)
+            else:
+                host_obj = Host.objects.create(url=current_host)
+            self.host = host_obj
+
         fullId = self.get_full_user_id()
         fullId = protocol_removed(fullId)
         self.fullId = fullId
