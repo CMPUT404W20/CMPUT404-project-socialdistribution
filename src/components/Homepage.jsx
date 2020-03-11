@@ -74,7 +74,7 @@ class Homepage extends Component {
           <Row className="postWrapper">
             <Col md={2} />
             <Col md={8}>
-              <MakePost editMode />
+              <MakePost editMode defaultPostContent={post.content} defaultPostImage={post.imageSrc} />
             </Col>
             <Col md={2} />
           </Row>,

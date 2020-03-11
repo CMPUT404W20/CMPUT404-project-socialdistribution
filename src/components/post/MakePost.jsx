@@ -13,8 +13,8 @@ class MakePost extends Component {
     this.state = {
       uploadModalVisibility: false,
       previewModalVisibility: false,
-      postContent: "",
-      postImage: "",
+      postContent: props.defaultPostContent,
+      postImage: props.defaultPostImage,
     };
   }
 
@@ -94,6 +94,7 @@ class MakePost extends Component {
               placeholder="What's on your mind?"
               className="post-text-area"
               onChange={this.handleTextChange}
+              value={postContent}
             />
             {
               postImage ? (
@@ -132,10 +133,14 @@ class MakePost extends Component {
 
 MakePost.propTypes = {
   editMode: PropTypes.bool,
+  defaultPostContent: PropTypes.string,
+  defaultPostImage: PropTypes.string,
 };
 
 MakePost.defaultProps = {
   editMode: false,
+  defaultPostContent: "",
+  defaultPostImage: "",
 };
 
 export default MakePost;
