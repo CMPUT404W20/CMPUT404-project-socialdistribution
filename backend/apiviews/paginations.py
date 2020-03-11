@@ -16,3 +16,16 @@ class PostPagination(PageNumberPagination):
             ('previous', self.get_previous_link()),
             ('posts', data)
         ]))
+
+class CommentPagination(PageNumberPagination):
+    page_size = 50
+
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('query', 'comments'),
+            ('count', self.page.paginator.count),
+            ('size', self.page_size),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('comments', data)
+        ]))
