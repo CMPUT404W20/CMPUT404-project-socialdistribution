@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../../styles/post/MakePost.scss";
+import PropTypes from "prop-types";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import VisibilityRoundedIcon from "@material-ui/icons/VisibilityRounded";
 import TextareaAutosize from "react-textarea-autosize";
@@ -12,8 +13,9 @@ class MakePost extends Component {
     this.state = {
       uploadModalVisibility: false,
       previewModalVisibility: false,
-      postContent: "",
-      postImage: "",
+      originalPost: props.originalPost,
+      postContent: props.defaultPostContent,
+      postImage: props.defaultPostImage,
     };
   }
 
@@ -28,9 +30,15 @@ class MakePost extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    const { postContent } = this.state;
+    const { originalPost, postContent, postImage } = this.state;
+    const { onSubmit } = this.props;
+
+    originalPost.content = postContent;
+    originalPost.imageSrc = postImage;
+
+    onSubmit(originalPost);
     // eslint-disable-next-line no-alert
-    alert(postContent);
+    // alert(postContent);
   };
 
   toggleUploadModalVisibility = () => {
@@ -53,33 +61,45 @@ class MakePost extends Component {
       postImage,
     } = this.state;
 
+    const { editMode, onDiscard } = this.props;
+
     // Marcos, https://stackoverflow.com/questions/2476382/how-to-check-if-a-textarea-is-empty-in-javascript-or-jquery
     const postLength = postContent.replace(/^\s+|\s+$/g, "").length;
     const validPost = postLength > 0 || postImage !== "";
+
+    const title = editMode ? "EDIT POST" : "NEW POST";
 
     return (
       <div className="make-post-wrapper">
         <div className="make-post-content">
           <div className="make-post-header">
-            <b>NEW POST</b>
-            <select className="privacy-select">
-              <option selected value="public">
-                Anyone
-              </option>
-              <option value="another author">Specific author</option>
+            <b>{title}</b>
+            <select className="privacy-select" defaultValue="public">
+              <option value="public">Anyone</option>
+              <option value="another-author">Specific author</option>
               <option value="friends">Friends</option>
-              <option value="mutual friends">Mutual friends</option>
-              <option value="local friends">Local friends</option>
+              <option value="mutual-friends">Mutual friends</option>
+              <option value="local-friends">Local friends</option>
               <option value="private">Private</option>
             </select>
           </div>
-          <UploadImageModal show={uploadModalVisibility} onHide={this.toggleUploadModalVisibility} onUpload={this.handleImageUpload} />
-          <PostPreviewModal show={previewModalVisibility} onHide={this.togglePreviewModalVisibility} postContent={postContent} imageObjectUrl={postImage} />
+          <UploadImageModal
+            show={uploadModalVisibility}
+            onHide={this.toggleUploadModalVisibility}
+            onUpload={this.handleImageUpload}
+          />
+          <PostPreviewModal
+            show={previewModalVisibility}
+            onHide={this.togglePreviewModalVisibility}
+            postContent={postContent}
+            imageObjectUrl={postImage}
+          />
           <form className="make-post-input-wrapper" action="submit">
             <TextareaAutosize
               placeholder="What's on your mind?"
               className="post-text-area"
               onChange={this.handleTextChange}
+              value={postContent}
             />
             {
               postImage ? (
@@ -100,13 +120,24 @@ class MakePost extends Component {
                 className="icon"
                 onClick={this.toggleUploadModalVisibility}
               />
+              {
+                editMode ? (
+                  <button
+                    type="submit"
+                    className="discard-button"
+                    onClick={onDiscard}
+                  >
+                    Discard
+                  </button>
+                ) : null
+              }
               <button
                 type="submit"
                 className="post-button"
                 onClick={this.handleSubmit}
                 disabled={!validPost}
               >
-                Post
+                { editMode ? "Update" : "Post" }
               </button>
             </div>
           </form>
@@ -115,4 +146,28 @@ class MakePost extends Component {
     );
   }
 }
+
+MakePost.propTypes = {
+  editMode: PropTypes.bool,
+  originalPost: PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string,
+    postTime: PropTypes.instanceOf(Date),
+    imageSrc: PropTypes.string,
+    content: PropTypes.string,
+  }),
+  defaultPostContent: PropTypes.string,
+  defaultPostImage: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired,
+  onDiscard: PropTypes.func,
+};
+
+MakePost.defaultProps = {
+  editMode: false,
+  originalPost: {},
+  defaultPostContent: "",
+  defaultPostImage: "",
+  onDiscard: () => {},
+};
+
 export default MakePost;

@@ -25,10 +25,10 @@ class Post extends Component {
 
   renderMenu = () => {
     const {
-      username,
-      postTime,
+      post,
       invisible,
       previewMode,
+      onEdit,
     } = this.props;
 
     if (previewMode) {
@@ -36,12 +36,12 @@ class Post extends Component {
     }
 
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
-    const formattedTime = moment(postTime).fromNow();
+    const formattedTime = moment(post.postTime).fromNow();
 
     return (
       <div className="post-info">
         <span className="post-user-and-visibility">
-          {username}
+          {post.username}
           { invisible ? <VisibilityOffIcon fontSize="inherit" /> : null }
         </span>
         <DropdownButton
@@ -50,7 +50,7 @@ class Post extends Component {
           drop="down"
           alignRight
         >
-          <Dropdown.Item href="#">Edit</Dropdown.Item>
+          <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
           <Dropdown.Item href="#">Delete</Dropdown.Item>
           <Dropdown.Item href="#">Copy Link</Dropdown.Item>
         </DropdownButton>
@@ -78,33 +78,14 @@ class Post extends Component {
     );
   }
 
-  handleTextChange = (event) => {
-    this.setState({ newComment: event.target.value });
-  }
-
-  handleSubmitNewComment = () => {
-    // todo: post new comment to api
-    this.setState({ newComment: "" });
-  }
-
-  keyPressed = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      this.handleSubmitNewComment();
+  renderCommentSection = () => {
+    const { previewMode } = this.props;
+    if (previewMode) {
+      return null;
     }
-  }
-
-  render() {
-    const {
-      content,
-      imageSrc,
-    } = this.props;
     const { commentsOpen, commentList, newComment } = this.state;
     return (
-      <div className="post-block">
-        {this.renderMenu()}
-        { imageSrc ? <img className="post-img" src={imageSrc} alt="more-icon" /> : null }
-        <ReactMarkdown className="post-content" plugins={[breaks]} source={content} />
+      <div>
         <button
           className="post-show-comment"
           onClick={() => this.setState({ commentsOpen: !commentsOpen })}
@@ -131,22 +112,53 @@ class Post extends Component {
       </div>
     );
   }
+
+  handleTextChange = (event) => {
+    this.setState({ newComment: event.target.value });
+  }
+
+  handleSubmitNewComment = () => {
+    // todo: post new comment to api
+    this.setState({ newComment: "" });
+  }
+
+  keyPressed = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      this.handleSubmitNewComment();
+    }
+  }
+
+  render() {
+    const { post } = this.props;
+    return (
+      <div className="post-block">
+        {this.renderMenu()}
+        { post.imageSrc ? <img className="post-img" src={post.imageSrc} alt="more-icon" /> : null }
+        <ReactMarkdown className="post-content" plugins={[breaks]} source={post.content} />
+        {this.renderCommentSection()}
+      </div>
+    );
+  }
 }
 
 Post.propTypes = {
-  username: PropTypes.string.isRequired,
-  postTime: PropTypes.instanceOf(Date).isRequired,
-  imageSrc: PropTypes.node,
-  content: PropTypes.string,
+  post: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+    postTime: PropTypes.instanceOf(Date).isRequired,
+    imageSrc: PropTypes.string,
+    content: PropTypes.string,
+  }).isRequired,
   invisible: PropTypes.bool,
   previewMode: PropTypes.bool,
+  onEdit: PropTypes.func,
 };
 
 Post.defaultProps = {
-  content: "",
-  imageSrc: null,
   invisible: false,
   previewMode: false,
+  onEdit: null,
 };
 
 export default Post;

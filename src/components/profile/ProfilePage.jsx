@@ -22,10 +22,13 @@ class ProfilePage extends Component {
         <Col md={2} />
         <Col md={8}>
           <Post
-            username="username"
-            postTime={new Date()}
-            imageSrc={demoImage}
-            content="Some content"
+            post={{
+              id: "1",
+              username: "username",
+              postTime: new Date(),
+              imageSrc: demoImage,
+              content: "Some Content",
+            }}
           />
         </Col>
         <Col md={2} />
