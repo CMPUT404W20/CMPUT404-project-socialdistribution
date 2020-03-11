@@ -17,7 +17,7 @@ import json
 from backend.utils import *
 
 
-class FriendViewSet(views.APIView):
+class FriendViewSet(viewsets.ViewSet):
     """Friendships between two users"""
     serializer_class = FriendSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -33,8 +33,23 @@ class FriendViewSet(views.APIView):
         # delete the friend request
         FriendRequest.objects.filter(
             fromUser__fullId=user.fullId).delete()
+    
+    def check_friends(self, request, authorId1 , authorId2, *args, **kwargs):
+        
+        id1 = protocol_removed(authorId1)
+        id2 = protocol_removed(authorId2)
+        author1 = get_object_or_404(User, fullId=id1)
+        author2 = get_object_or_404(User, fullId=id2)
+        friend_ids = Friend.objects.filter(
+            fromUser_id=author1.id).values_list('toUser_id', flat=True)
+        if author2.id in friend_ids:
+            friends = True
+        else: 
+            friends = False
+        
+        return Response({"query": "friends","authors":[author1.get_full_user_id(),author2.get_full_user_id()],"friends": friends})
 
-    def post(self, request):
+    def post_friendship(self, request):
         '''
         /friend/accept: Set freindship between author and friend
         '''

@@ -60,3 +60,4 @@ class AuthorViewSet(viewsets.ViewSet):
             id_List.append(list(list(i.items())[0][1].items())[0][1])
 
         return Response({"query": "friends", "Author": id_List})
+
