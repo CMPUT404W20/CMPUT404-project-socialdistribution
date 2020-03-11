@@ -58,6 +58,11 @@ class PostSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         response = super().to_representation(instance)
         response['author'] = UserSerializer(instance.author).data
+
+        comments = Comments.objects.filter(post=instance.postId)
+        comments_data = CommentSerializer(comments, many=True).data
+        response['comments'] = comments_data
+
         return response
 
     class Meta:
@@ -123,3 +128,32 @@ class FriendRequestSerializer(serializers.ModelSerializer):
         req = FriendRequest.objects.create(fromUser=user, toUser=friend)
         req.save()
         return req
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(source="commentId", read_only=True)
+    comment = serializers.CharField(source="content", read_only=True)
+
+    class Meta:
+        model = Comments
+        exclude = ["commentId", "postedBy", "post"]
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        author_data = UserSerializer(instance.postedBy).data
+        # Remove unused fields
+        del author_data["github"]
+        del author_data["url"]
+        response['author'] = author_data
+
+        del response['content']
+
+        return response
+
+    def create(self, validated_data):
+        target_post = Post.objects.get(pk=self.context["postId"])
+
+        new_comment = Comments(
+            content=validated_data["content"], postedBy=self.context["request"].user, post=target_post)
+        new_comment.save()
+        return new_comment
