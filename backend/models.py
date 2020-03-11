@@ -56,7 +56,9 @@ class User(AbstractUser):
                 host_obj = Host.objects.get(url=current_host)
             else:
                 host_obj = Host.objects.create(url=current_host)
+                host_obj.save()
             self.host = host_obj
+        super().save(*args, **kwargs)
 
         fullId = self.get_full_user_id()
         fullId = protocol_removed(fullId)
