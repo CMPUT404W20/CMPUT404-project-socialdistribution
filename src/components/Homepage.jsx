@@ -36,10 +36,28 @@ class Homepage extends Component {
     return posts;
   }
 
-  handleEdit = (id) => {
+  handlePostCreation = (post) => {
+    // eslint-disable-next-line no-console
+    console.log(post);
+    // eslint-disable-next-line no-alert
+    alert("Post Created - Check Console");
+  }
+
+  handleEditToggle = (id) => {
     this.setState({
       editingPostId: id,
     });
+  }
+
+  handlePostUpdate = (post) => {
+    this.setState((prevState) => ({
+      // no longer editing the post
+      editingPostId: null,
+      // update post that got edited
+      posts: prevState.posts.map(
+        (p) => (p.id === post.id ? Object.assign(p, post) : p),
+      ),
+    }));
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -52,14 +70,12 @@ class Homepage extends Component {
 
       if (post.id !== editingPostId) {
         renderedPosts.push(
-          <Row className="postWrapper">
+          <Row className="postWrapper" key={post.id}>
             <Col md={2} />
             <Col md={8}>
-
-              {/* TODO: make this take in the entire post object */}
               <Post
                 post={post}
-                onEdit={this.handleEdit}
+                onEdit={this.handleEditToggle}
               />
             </Col>
             <Col md={2} />
@@ -67,13 +83,15 @@ class Homepage extends Component {
         );
       } else {
         renderedPosts.push(
-          <Row className="postWrapper">
+          <Row className="postWrapper" key={-1}>
             <Col md={2} />
             <Col md={8}>
               <MakePost
                 editMode
+                originalPost={post}
                 defaultPostContent={post.content}
                 defaultPostImage={post.imageSrc}
+                onSubmit={this.handlePostUpdate}
               />
             </Col>
             <Col md={2} />
@@ -96,7 +114,9 @@ class Homepage extends Component {
         <Row className="makePostWrapper">
           <Col md={2} />
           <Col md={8}>
-            <MakePost />
+            <MakePost
+              onSubmit={this.handlePostCreation}
+            />
           </Col>
           <Col md={2} />
         </Row>

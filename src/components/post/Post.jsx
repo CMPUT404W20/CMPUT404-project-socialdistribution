@@ -65,7 +65,13 @@ class Post extends Component {
 }
 
 Post.propTypes = {
-  post: PropTypes.objectOf(PropTypes.object).isRequired,
+  post: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+    postTime: PropTypes.instanceOf(Date).isRequired,
+    imageSrc: PropTypes.string,
+    content: PropTypes.string,
+  }).isRequired,
   invisible: PropTypes.bool,
   previewMode: PropTypes.bool,
   onEdit: PropTypes.func,

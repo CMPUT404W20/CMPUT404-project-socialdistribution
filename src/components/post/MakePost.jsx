@@ -13,6 +13,7 @@ class MakePost extends Component {
     this.state = {
       uploadModalVisibility: false,
       previewModalVisibility: false,
+      originalPost: props.originalPost,
       postContent: props.defaultPostContent,
       postImage: props.defaultPostImage,
     };
@@ -29,12 +30,19 @@ class MakePost extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    const { postContent } = this.state;
+    const { originalPost, postContent, postImage } = this.state;
+    const { onSubmit } = this.props;
+
+    originalPost.content = postContent;
+    originalPost.imageSrc = postImage;
+
+    onSubmit(originalPost);
     // eslint-disable-next-line no-alert
-    alert(postContent);
+    // alert(postContent);
   };
 
   handleDiscard = (event) => {
+    // TODO: finish this
     event.preventDefault();
 
     // eslint-disable-next-line no-alert
@@ -74,14 +82,12 @@ class MakePost extends Component {
         <div className="make-post-content">
           <div className="make-post-header">
             <b>{title}</b>
-            <select className="privacy-select">
-              <option selected value="public">
-                Anyone
-              </option>
-              <option value="another author">Specific author</option>
+            <select className="privacy-select" defaultValue="public">
+              <option value="public">Anyone</option>
+              <option value="another-author">Specific author</option>
               <option value="friends">Friends</option>
-              <option value="mutual friends">Mutual friends</option>
-              <option value="local friends">Local friends</option>
+              <option value="mutual-friends">Mutual friends</option>
+              <option value="local-friends">Local friends</option>
               <option value="private">Private</option>
             </select>
           </div>
@@ -151,12 +157,21 @@ class MakePost extends Component {
 
 MakePost.propTypes = {
   editMode: PropTypes.bool,
+  originalPost: PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string,
+    postTime: PropTypes.instanceOf(Date),
+    imageSrc: PropTypes.string,
+    content: PropTypes.string,
+  }),
   defaultPostContent: PropTypes.string,
   defaultPostImage: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 MakePost.defaultProps = {
   editMode: false,
+  originalPost: {},
   defaultPostContent: "",
   defaultPostImage: "",
 };
