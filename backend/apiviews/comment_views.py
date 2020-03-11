@@ -60,7 +60,7 @@ class CommentViewSet(viewsets.ModelViewSet):
                         return Response({"query": "addComment", "success": False, "message": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
                 else:
-                    Response({"query": "addComment", "success": False, "message": "Comment not allowed"},
+                    return Response({"query": "addComment", "success": False, "message": "Comment not allowed"},
                              status=status.HTTP_403_FORBIDDEN)
 
             else:
