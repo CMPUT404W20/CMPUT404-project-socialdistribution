@@ -22,7 +22,7 @@ class CommentPagination(PageNumberPagination):
 
     def get_paginated_response(self, data):
         return Response(OrderedDict([
-            ('query', 'posts'),
+            ('query', 'comments'),
             ('count', self.page.paginator.count),
             ('size', self.page_size),
             ('next', self.get_next_link()),

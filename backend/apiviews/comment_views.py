@@ -10,8 +10,6 @@ from rest_framework.decorators import permission_classes
 
 from backend.serializers import CommentSerializer
 from backend.models import Comments, Post, User
-from backend.permissions import *
-from backend.utils import *
 from backend.apiviews.paginations import CommentPagination
 
 
@@ -21,16 +19,21 @@ class CommentViewSet(viewsets.ModelViewSet):
     """
     queryset = Comments.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
     pagination_class = CommentPagination
 
     def get_post_comment(self, request, postId):
-        queryset = self.get_queryset().filter(post__postId=postId)
+        request_post = Post.objects.get(postId=postId)
+        if self.request.user in request_post.get_visible_users():
+            queryset = self.get_queryset().filter(post__postId=postId).order_by("-published")
 
-        page = self.paginate_queryset(queryset)
-        serializer = self.get_serializer(page, many=True)
+            page = self.paginate_queryset(queryset)
+            serializer = self.get_serializer(page, many=True)
 
-        return self.get_paginated_response(serializer.data)
+            return self.get_paginated_response(serializer.data)
+        else:
+            return Response({"message": "Not Authorized to view the comments"},
+                         status=status.HTTP_401_UNAUTHORIZED)
 
     def add_comment(self, request, postId):
         request_user = request.user

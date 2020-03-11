@@ -127,6 +127,7 @@ class FriendRequestSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(source="commentId", read_only=True)
+    comment = serializers.CharField(source="content", read_only=True)
 
     class Meta:
         model = Comments
