@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../../styles/post/MakePost.scss";
+import PropTypes from "prop-types";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import VisibilityRoundedIcon from "@material-ui/icons/VisibilityRounded";
 import TextareaAutosize from "react-textarea-autosize";
@@ -53,15 +54,19 @@ class MakePost extends Component {
       postImage,
     } = this.state;
 
+    const { editMode } = this.props;
+
     // Marcos, https://stackoverflow.com/questions/2476382/how-to-check-if-a-textarea-is-empty-in-javascript-or-jquery
     const postLength = postContent.replace(/^\s+|\s+$/g, "").length;
     const validPost = postLength > 0 || postImage !== "";
+
+    const title = editMode ? "EDIT POST" : "NEW POST";
 
     return (
       <div className="make-post-wrapper">
         <div className="make-post-content">
           <div className="make-post-header">
-            <b>NEW POST</b>
+            <b>{title}</b>
             <select className="privacy-select">
               <option selected value="public">
                 Anyone
@@ -124,4 +129,13 @@ class MakePost extends Component {
     );
   }
 }
+
+MakePost.propTypes = {
+  editMode: PropTypes.bool,
+};
+
+MakePost.defaultProps = {
+  editMode: false,
+};
+
 export default MakePost;

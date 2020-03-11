@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 import React, { Component } from "react";
 import "../styles/Homepage.scss";
 import Container from "react-bootstrap/Container";
@@ -7,45 +8,84 @@ import NavigationBar from "./NavigationBar";
 import MakePost from "./post/MakePost";
 import Post from "./post/Post";
 import demoImage from "../images/demo-img.png";
-import EditPostModal from "./post/EditPostModal";
 
 class Homepage extends Component {
   constructor(props) {
     super(props);
-    this.props = props;
 
+    const posts = this.loadPosts();
     this.state = {
-      editModalVisibility: false,
+      posts,
+      editingPostId: null,
     };
   }
 
-  toggleEditModalVisibility = () => {
-    this.setState((prevState) => ({
-      editModalVisibility: !prevState.editModalVisibility,
-    }));
+  // eslint-disable-next-line class-methods-use-this
+  loadPosts() {
+    const posts = [];
+    for (let i = 0; i < 4; i += 1) {
+      posts.push({
+        id: i,
+        username: "username",
+        postTime: new Date(),
+        imageSrc: demoImage,
+        content: "Some Content",
+      });
+    }
+
+    return posts;
   }
 
+  handleEdit = (id) => {
+    this.setState({
+      editingPostId: id,
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   renderPosts() {
-    return (
-      <Row className="postWrapper">
-        <Col md={2} />
-        <Col md={8}>
-          <Post
-            username="username"
-            postTime={new Date()}
-            imageSrc={demoImage}
-            content="Some content"
-            onEdit={this.toggleEditModalVisibility}
-          />
-        </Col>
-        <Col md={2} />
-      </Row>
-    );
+    const { editingPostId, posts } = this.state;
+
+    const renderedPosts = [];
+    for (let i = 0; i < posts.length; i += 1) {
+      const post = posts[i];
+
+      if (post.id !== editingPostId) {
+        renderedPosts.push(
+          <Row className="postWrapper">
+            <Col md={2} />
+            <Col md={8}>
+
+              {/* TODO: make this take in the entire post object */}
+              <Post
+                id={post.id}
+                username={post.username}
+                postTime={post.postTime}
+                imageSrc={post.imageSrc}
+                content={post.content}
+                onEdit={this.handleEdit}
+              />
+            </Col>
+            <Col md={2} />
+          </Row>,
+        );
+      } else {
+        renderedPosts.push(
+          <Row className="postWrapper">
+            <Col md={2} />
+            <Col md={8}>
+              <MakePost editMode />
+            </Col>
+            <Col md={2} />
+          </Row>,
+        );
+      }
+    }
+
+    return renderedPosts;
   }
 
   render() {
-    const { editModalVisibility } = this.state;
-
     return (
       <Container fluid className="homepage">
         <Row>
@@ -61,7 +101,6 @@ class Homepage extends Component {
           <Col md={2} />
         </Row>
         {this.renderPosts()}
-        <EditPostModal show={editModalVisibility} onHide={this.toggleEditModalVisibility} />
       </Container>
     );
   }

@@ -10,13 +10,14 @@ import breaks from "remark-breaks";
 import moreIcon from "../../images/more-icon.svg";
 
 class Post extends Component {
+  // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   renderMenu = () => {
     const {
+      id,
       username,
       postTime,
       invisible,
@@ -43,7 +44,7 @@ class Post extends Component {
           drop="down"
           alignRight
         >
-          <Dropdown.Item onClick={onEdit} href="#">Edit</Dropdown.Item>
+          <Dropdown.Item onClick={() => onEdit(id)}>Edit</Dropdown.Item>
           <Dropdown.Item href="#">Delete</Dropdown.Item>
           <Dropdown.Item href="#">Copy Link</Dropdown.Item>
         </DropdownButton>
@@ -69,13 +70,14 @@ class Post extends Component {
 }
 
 Post.propTypes = {
+  id: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
   postTime: PropTypes.instanceOf(Date).isRequired,
   imageSrc: PropTypes.node,
   content: PropTypes.string,
   invisible: PropTypes.bool,
   previewMode: PropTypes.bool,
-  onEdit: PropTypes.func.isRequired,
+  onEdit: PropTypes.func,
 };
 
 Post.defaultProps = {
@@ -83,6 +85,7 @@ Post.defaultProps = {
   imageSrc: null,
   invisible: false,
   previewMode: false,
+  onEdit: null,
 };
 
 export default Post;
