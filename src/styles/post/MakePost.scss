@@ -73,5 +73,17 @@
       @extend %button;
       margin-left: 0.8rem;
     }
+
+    .discard-button {
+      @extend %button;
+      background-color: #fa93a7;
+      &:not(:disabled) {
+        &:hover, &:focus {
+          outline: none;
+          background-color: #e73a5a;
+        }
+      }
+      margin-left: 0.8rem;
+    }
   }
 }

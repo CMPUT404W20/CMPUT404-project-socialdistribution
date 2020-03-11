@@ -34,6 +34,13 @@ class MakePost extends Component {
     alert(postContent);
   };
 
+  handleDiscard = (event) => {
+    event.preventDefault();
+
+    // eslint-disable-next-line no-alert
+    alert("discard");
+  }
+
   toggleUploadModalVisibility = () => {
     this.setState((prevState) => ({
       uploadModalVisibility: !prevState.uploadModalVisibility,
@@ -115,13 +122,24 @@ class MakePost extends Component {
                 className="icon"
                 onClick={this.toggleUploadModalVisibility}
               />
+              {
+                editMode ? (
+                  <button
+                    type="submit"
+                    className="discard-button"
+                    onClick={this.handleDiscard}
+                  >
+                    Discard
+                  </button>
+                ) : null
+              }
               <button
                 type="submit"
                 className="post-button"
                 onClick={this.handleSubmit}
                 disabled={!validPost}
               >
-                Post
+                { editMode ? "Update" : "Post" }
               </button>
             </div>
           </form>
