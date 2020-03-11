@@ -17,7 +17,7 @@ function PostPreviewModal(props) {
     id: "-1", // arbitrary ID for the Post object
     imageSrc: imageObjectUrl,
     content: postContent,
-    published: "2020-03-11T21:22:36.991526Z",
+    published: (new Date()).toISOString(),
     username: "username",
   };
 

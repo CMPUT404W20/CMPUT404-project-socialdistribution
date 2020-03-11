@@ -7,7 +7,7 @@ const post = {
   id: "1",
   username: "username",
   imageSrc: demoImage,
-  published: "2020-03-11T21:22:36.991526Z",
+  published: (new Date()).toISOString(),
   content: "content",
 };
 
