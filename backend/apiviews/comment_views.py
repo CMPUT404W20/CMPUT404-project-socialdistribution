@@ -14,6 +14,7 @@ from backend.permissions import *
 from backend.utils import *
 from backend.apiviews.paginations import CommentPagination
 
+
 class CommentViewSet(viewsets.ModelViewSet):
     """
     Viewset for all the operation related to Comment
@@ -31,4 +32,37 @@ class CommentViewSet(viewsets.ModelViewSet):
 
         return self.get_paginated_response(serializer.data)
 
+    def add_comment(self, request, postId):
+        request_user = request.user
 
+        if request.data and request.data["query"] == "addComment" and request.data["post"]:
+
+            if Post.objects.filter(postId=postId).exists():
+                requested_post = Post.objects.get(postId=postId)
+                viewable_users = requested_post.get_visible_users()
+
+                if request_user in viewable_users:
+                    comment_data = request.data["comment"]
+
+                    comment_data["content"] = comment_data["comment"]
+                    comment_data["author"] = request_user.id
+
+                    serializer = CommentSerializer(
+                        data=comment_data, context={"request": request, "postId": postId})
+
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response({"query": "addComment", "success": True, "message": "Comment Added"}, status=status.HTTP_201_CREATED)
+                    else:
+                        return Response({"query": "addComment", "success": False, "message": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+                else:
+                    Response({"query": "addComment", "success": False, "message": "Comment not allowed"},
+                             status=status.HTTP_403_FORBIDDEN)
+
+            else:
+                Response({"query": "addComment", "success": False, "message": "Post not Found"},
+                         status=status.HTTP_404_NOT_FOUND)
+        else:
+            Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
+                     status=status.HTTP_400_BAD_REQUEST)

@@ -141,3 +141,11 @@ class CommentSerializer(serializers.ModelSerializer):
         response['author'] = author_data
 
         return response
+
+    def create(self, validated_data):
+        target_post = Post.objects.get(pk=self.context["postId"])
+        new_comment = Comments(
+            content=validated_data["content"], postedBy=self.context["request"].user, post=target_post)
+
+        new_comment.save()
+        return new_comment
