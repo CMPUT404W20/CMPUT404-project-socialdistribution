@@ -58,11 +58,7 @@ class Homepage extends Component {
 
               {/* TODO: make this take in the entire post object */}
               <Post
-                id={post.id}
-                username={post.username}
-                postTime={post.postTime}
-                imageSrc={post.imageSrc}
-                content={post.content}
+                post={post}
                 onEdit={this.handleEdit}
               />
             </Col>

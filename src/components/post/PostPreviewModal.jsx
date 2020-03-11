@@ -12,17 +12,23 @@ function PostPreviewModal(props) {
     imageObjectUrl,
   } = props;
 
+  // Post requires a post object for rendering
+  const postObj = {
+    imageSrc: imageObjectUrl,
+    content: postContent,
+    postTime: new Date(),
+    username: "username",
+  };
+
   return (
+
     <Modal size="lg" onHide={onHide} show={show} className="post-preview-modal">
       <Modal.Header>
         <Modal.Title>Post Preview</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Post
-          username="username"
-          postTime={new Date()}
-          imageSrc={imageObjectUrl}
-          content={postContent}
+          post={postObj}
           previewMode // to prevent it from rendering the menu bar with dropdown and time
         />
       </Modal.Body>

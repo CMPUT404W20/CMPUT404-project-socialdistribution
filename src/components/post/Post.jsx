@@ -17,9 +17,7 @@ class Post extends Component {
 
   renderMenu = () => {
     const {
-      id,
-      username,
-      postTime,
+      post,
       invisible,
       previewMode,
       onEdit,
@@ -30,12 +28,12 @@ class Post extends Component {
     }
 
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
-    const formattedTime = moment(postTime).fromNow();
+    const formattedTime = moment(post.postTime).fromNow();
 
     return (
       <div className="post-info">
         <span className="post-user-and-visibility">
-          {username}
+          {post.username}
           { invisible ? <VisibilityOffIcon fontSize="inherit" /> : null }
         </span>
         <DropdownButton
@@ -44,7 +42,7 @@ class Post extends Component {
           drop="down"
           alignRight
         >
-          <Dropdown.Item onClick={() => onEdit(id)}>Edit</Dropdown.Item>
+          <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
           <Dropdown.Item href="#">Delete</Dropdown.Item>
           <Dropdown.Item href="#">Copy Link</Dropdown.Item>
         </DropdownButton>
@@ -54,35 +52,26 @@ class Post extends Component {
   }
 
   render() {
-    const {
-      content,
-      imageSrc,
-    } = this.props;
+    const { post } = this.props;
 
     return (
       <div className="post-block">
         {this.renderMenu()}
-        { imageSrc ? <img className="post-img" src={imageSrc} alt="more-icon" /> : null }
-        <ReactMarkdown className="post-content" plugins={[breaks]} source={content} />
+        { post.imageSrc ? <img className="post-img" src={post.imageSrc} alt="more-icon" /> : null }
+        <ReactMarkdown className="post-content" plugins={[breaks]} source={post.content} />
       </div>
     );
   }
 }
 
 Post.propTypes = {
-  id: PropTypes.number.isRequired,
-  username: PropTypes.string.isRequired,
-  postTime: PropTypes.instanceOf(Date).isRequired,
-  imageSrc: PropTypes.node,
-  content: PropTypes.string,
+  post: PropTypes.objectOf(PropTypes.object).isRequired,
   invisible: PropTypes.bool,
   previewMode: PropTypes.bool,
   onEdit: PropTypes.func,
 };
 
 Post.defaultProps = {
-  content: "",
-  imageSrc: null,
   invisible: false,
   previewMode: false,
   onEdit: null,
