@@ -73,8 +73,6 @@ urlpatterns = [
     }))),
   
     path('friendrequest/', FriendRequestViewSet.as_view(), name='friendrequest'),
-    
-    # path("friendrequest/all", FriendRequestViewSet.as_view({"get": "list"}))
-    # path('friend/accept', FriendViewSet.as_view(), name="friend"),
+
 
 ]
