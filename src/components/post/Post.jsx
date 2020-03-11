@@ -78,30 +78,14 @@ class Post extends Component {
     );
   }
 
-  handleTextChange = (event) => {
-    this.setState({ newComment: event.target.value });
-  }
-
-  handleSubmitNewComment = () => {
-    // todo: post new comment to api
-    this.setState({ newComment: "" });
-  }
-
-  keyPressed = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      this.handleSubmitNewComment();
+  renderCommentSection = () => {
+    const { previewMode } = this.props;
+    if (previewMode) {
+      return null;
     }
-  }
-
-  render() {
-    const { post } = this.props;
     const { commentsOpen, commentList, newComment } = this.state;
     return (
-      <div className="post-block">
-        {this.renderMenu()}
-        { post.imageSrc ? <img className="post-img" src={post.imageSrc} alt="more-icon" /> : null }
-        <ReactMarkdown className="post-content" plugins={[breaks]} source={post.content} />
+      <div>
         <button
           className="post-show-comment"
           onClick={() => this.setState({ commentsOpen: !commentsOpen })}
@@ -125,6 +109,34 @@ class Post extends Component {
             value={newComment}
           />
         </form>
+      </div>
+    );
+  }
+
+  handleTextChange = (event) => {
+    this.setState({ newComment: event.target.value });
+  }
+
+  handleSubmitNewComment = () => {
+    // todo: post new comment to api
+    this.setState({ newComment: "" });
+  }
+
+  keyPressed = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      this.handleSubmitNewComment();
+    }
+  }
+
+  render() {
+    const { post } = this.props;
+    return (
+      <div className="post-block">
+        {this.renderMenu()}
+        { post.imageSrc ? <img className="post-img" src={post.imageSrc} alt="more-icon" /> : null }
+        <ReactMarkdown className="post-content" plugins={[breaks]} source={post.content} />
+        {this.renderCommentSection()}
       </div>
     );
   }
