@@ -15,15 +15,15 @@ exports[`Post box Component should render correctly 1`] = `
       </b>
       <select
         className="privacy-select"
+        defaultValue="public"
       >
         <option
-          selected={true}
           value="public"
         >
           Anyone
         </option>
         <option
-          value="another author"
+          value="another-author"
         >
           Specific author
         </option>
@@ -33,12 +33,12 @@ exports[`Post box Component should render correctly 1`] = `
           Friends
         </option>
         <option
-          value="mutual friends"
+          value="mutual-friends"
         >
           Mutual friends
         </option>
         <option
-          value="local friends"
+          value="local-friends"
         >
           Local friends
         </option>
@@ -71,6 +71,7 @@ exports[`Post box Component should render correctly 1`] = `
         onHeightChange={[Function]}
         placeholder="What's on your mind?"
         useCacheForDOMMeasurements={false}
+        value=""
       />
       <div
         className="make-post-buttons-wrapper"

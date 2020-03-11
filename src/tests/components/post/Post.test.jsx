@@ -3,14 +3,19 @@ import { shallow } from "enzyme";
 import Post from "../../../components/post/Post";
 import demoImage from "../../../images/demo-img.png";
 
+const post = {
+  id: 1,
+  username: "username",
+  imageSrc: demoImage,
+  postTime: new Date(),
+  content: "content",
+};
+
 describe("Post Block Components", () => {
   it("should render correctly", () => {
     const component = shallow(
       <Post
-        imageSrc={demoImage}
-        username="testuser"
-        postTime={new Date()}
-        content="test blog content"
+        post={post}
       />,
     );
     expect(component).toMatchSnapshot();
@@ -50,13 +55,10 @@ alert(s);
 
 Normal Text
     `;
-
+    post.content = mdContent;
     const component = shallow(
       <Post
-        imageSrc={demoImage}
-        username="testuser"
-        postTime={new Date()}
-        content={mdContent}
+        post={post}
       />,
     );
     expect(component).toMatchSnapshot();

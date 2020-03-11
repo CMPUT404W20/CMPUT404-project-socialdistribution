@@ -10,7 +10,7 @@ exports[`Post Block Components should render correctly 1`] = `
     <span
       className="post-user-and-visibility"
     >
-      testuser
+      username
     </span>
     <DropdownButton
       alignRight={true}
@@ -33,7 +33,7 @@ exports[`Post Block Components should render correctly 1`] = `
           }
         }
         disabled={false}
-        href="#"
+        onClick={[Function]}
       >
         Edit
       </DropdownItem>
@@ -88,7 +88,7 @@ exports[`Post Block Components should render correctly 1`] = `
     rawSourcePos={false}
     renderers={Object {}}
     skipHtml={false}
-    source="test blog content"
+    source="content"
     sourcePos={false}
     transformLinkUri={[Function]}
   />
@@ -105,7 +105,7 @@ exports[`Post Block Components should render markdown content correctly 1`] = `
     <span
       className="post-user-and-visibility"
     >
-      testuser
+      username
     </span>
     <DropdownButton
       alignRight={true}
@@ -128,7 +128,7 @@ exports[`Post Block Components should render markdown content correctly 1`] = `
           }
         }
         disabled={false}
-        href="#"
+        onClick={[Function]}
       >
         Edit
       </DropdownItem>
