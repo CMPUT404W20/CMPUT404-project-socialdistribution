@@ -36,11 +36,6 @@ class ProfilePage extends Component {
   render() {
     return (
       <Container fluid className="profilePage">
-        <Row>
-          <Col md={12}>
-            <NavigationBar />
-          </Col>
-        </Row>
         <Row className="profileHeaderWapper">
           <Col md={2} />
           <Col md={8}>

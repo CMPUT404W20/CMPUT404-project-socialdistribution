@@ -30,7 +30,6 @@ class Login extends Component {
     if (!this.validateForm()) { return; }
 
     const { signup, username, password } = this.state;
-
     if (signup) {
       auth.registerUser(username, password).then((response) => {
         if (response.status === 201) {

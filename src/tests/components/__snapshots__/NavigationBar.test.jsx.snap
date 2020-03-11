@@ -48,47 +48,92 @@ exports[`Navigation bar Component should render correctly 1`] = `
       justify={false}
     >
       <NavLink
-        active={false}
         as={
           Object {
             "$$typeof": Symbol(react.forward_ref),
-            "displayName": "SafeAnchor",
+            "displayName": "NavLink",
+            "propTypes": Object {
+              "activeClassName": [Function],
+              "activeStyle": [Function],
+              "aria-current": [Function],
+              "className": [Function],
+              "exact": [Function],
+              "innerRef": [Function],
+              "isActive": [Function],
+              "location": [Function],
+              "onClick": [Function],
+              "replace": [Function],
+              "strict": [Function],
+              "style": [Function],
+              "target": [Function],
+              "to": [Function],
+            },
             "render": [Function],
           }
         }
         disabled={false}
-        href="#"
-        target="_blank"
+        exact={true}
+        to="/"
       >
         <HomeOutlinedIcon />
       </NavLink>
       <NavLink
-        active={false}
         as={
           Object {
             "$$typeof": Symbol(react.forward_ref),
-            "displayName": "SafeAnchor",
+            "displayName": "NavLink",
+            "propTypes": Object {
+              "activeClassName": [Function],
+              "activeStyle": [Function],
+              "aria-current": [Function],
+              "className": [Function],
+              "exact": [Function],
+              "innerRef": [Function],
+              "isActive": [Function],
+              "location": [Function],
+              "onClick": [Function],
+              "replace": [Function],
+              "strict": [Function],
+              "style": [Function],
+              "target": [Function],
+              "to": [Function],
+            },
             "render": [Function],
           }
         }
         disabled={false}
-        href="#"
-        target="_blank"
+        exact={true}
+        to="/friends"
       >
         <PeopleAltOutlinedIcon />
       </NavLink>
       <NavLink
-        active={false}
         as={
           Object {
             "$$typeof": Symbol(react.forward_ref),
-            "displayName": "SafeAnchor",
+            "displayName": "NavLink",
+            "propTypes": Object {
+              "activeClassName": [Function],
+              "activeStyle": [Function],
+              "aria-current": [Function],
+              "className": [Function],
+              "exact": [Function],
+              "innerRef": [Function],
+              "isActive": [Function],
+              "location": [Function],
+              "onClick": [Function],
+              "replace": [Function],
+              "strict": [Function],
+              "style": [Function],
+              "target": [Function],
+              "to": [Function],
+            },
             "render": [Function],
           }
         }
         disabled={false}
-        href="#"
-        target="_blank"
+        exact={true}
+        to="/notifications"
       >
         <div
           className="notification-icon-wrapper"

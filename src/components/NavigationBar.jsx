@@ -3,12 +3,12 @@ import "../styles/NavigationBar.scss";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
-import PropTypes from "prop-types";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { NavLink } from "react-router-dom";
 import logo from "../images/logo.svg";
 
 // Example usage: <NavigationBar selected="Friends" />
@@ -32,7 +32,6 @@ class NavigationBar extends Component {
 
   render() {
     const { username, numNotifications } = this.state;
-    const { selected } = this.props;
     return (
       <Navbar collapseOnSelect expand="sm" fixed="top" className="navigationBar">
         <Navbar.Brand className="logo">
@@ -51,13 +50,13 @@ class NavigationBar extends Component {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto" />
           <Nav>
-            <Nav.Link target="_blank" href="#" active={selected === "Home"}>
+            <Nav.Link exact as={NavLink} to="/">
               <HomeOutlinedIcon />
             </Nav.Link>
-            <Nav.Link target="_blank" href="#" active={selected === "Friends"}>
+            <Nav.Link exact as={NavLink} to="/friends">
               <PeopleAltOutlinedIcon />
             </Nav.Link>
-            <Nav.Link target="_blank" href="#" active={selected === "Notifications"}>
+            <Nav.Link exact as={NavLink} to="/notifications">
               <div className="notification-icon-wrapper">
                 <NotificationsNoneOutlinedIcon />
                 <div className="notification-badge-wrapper">
@@ -79,12 +78,5 @@ class NavigationBar extends Component {
     );
   }
 }
-NavigationBar.propTypes = {
-  selected: PropTypes.string,
-};
-
-NavigationBar.defaultProps = {
-  selected: "",
-};
 
 export default NavigationBar;

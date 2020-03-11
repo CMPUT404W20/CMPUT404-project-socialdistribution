@@ -9,17 +9,6 @@ exports[`Friends Page Component should render correctly 1`] = `
     noGutters={false}
   >
     <Col
-      md={12}
-    >
-      <NavigationBar
-        selected="Friends"
-      />
-    </Col>
-  </Row>
-  <Row
-    noGutters={false}
-  >
-    <Col
       md={2}
     />
     <Col

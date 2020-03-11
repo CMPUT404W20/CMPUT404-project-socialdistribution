@@ -43,11 +43,6 @@ class FriendsPage extends Component {
     return (
       <Container fluid className="page-wrapper">
         <Row>
-          <Col md={12}>
-            <NavigationBar selected="Friends" />
-          </Col>
-        </Row>
-        <Row>
           <Col md={2} />
           <Col md={8}>
             <div className="content-wrapper">
