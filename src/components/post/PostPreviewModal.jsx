@@ -24,7 +24,7 @@ function PostPreviewModal(props) {
   return (
 
     <Modal size="lg" onHide={onHide} show={show} className="post-preview-modal">
-      <Modal.Header>
+      <Modal.Header closeButton>
         <Modal.Title>Post Preview</Modal.Title>
       </Modal.Header>
       <Modal.Body>
