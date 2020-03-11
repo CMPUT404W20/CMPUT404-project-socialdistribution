@@ -5,7 +5,7 @@ exports[`Friends Page Component should render correctly 1`] = `
   className="page-wrapper"
   fluid={true}
 >
-  <ForwardRef
+  <Row
     noGutters={false}
   >
     <Col
@@ -15,8 +15,8 @@ exports[`Friends Page Component should render correctly 1`] = `
         selected="Friends"
       />
     </Col>
-  </ForwardRef>
-  <ForwardRef
+  </Row>
+  <Row
     noGutters={false}
   >
     <Col
@@ -43,7 +43,7 @@ exports[`Friends Page Component should render correctly 1`] = `
             )
           </p>
         </div>
-        <ForwardRef
+        <Row
           className="item-list"
           noGutters={false}
         >
@@ -77,9 +77,9 @@ exports[`Friends Page Component should render correctly 1`] = `
             key="005"
             username="Username5"
           />
-        </ForwardRef>
+        </Row>
       </div>
     </Col>
-  </ForwardRef>
+  </Row>
 </Container>
 `;
