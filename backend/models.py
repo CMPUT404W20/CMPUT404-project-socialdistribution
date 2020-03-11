@@ -131,6 +131,10 @@ class Comments(models.Model):
     contentType = models.CharField(
         max_length=30, choices=CONTENT_TYPES, default="text/plain")
 
+    class Meta:
+        verbose_name = "comment"
+        verbose_name_plural = "comments"
+
 
 class FriendRequest(models.Model):
     fromUser = models.ForeignKey(
