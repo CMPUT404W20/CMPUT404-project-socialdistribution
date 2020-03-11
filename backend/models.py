@@ -112,14 +112,24 @@ class Post(models.Model):
 
 
 class Comments(models.Model):
+
+    CONTENT_TYPES = (
+        ("text/plain", "text/plain"),
+        ("application/base64", "application/base64"),
+        ("text/markdown", "text/markdown"),
+        ("image/png;base64", "image/png;base64"),
+        ("image/jpeg;base64", "image/jpeg;base64"),
+    )
+
     commentId = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     content = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     postedBy = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="comment_postedBy")
-    postedTo = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="comment_postedTo")
+    published = models.DateTimeField(auto_now_add=True)
+    contentType = models.CharField(
+        max_length=30, choices=CONTENT_TYPES, default="text/plain")
 
 
 class FriendRequest(models.Model):

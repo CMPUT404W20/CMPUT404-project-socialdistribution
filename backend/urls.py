@@ -21,6 +21,7 @@ from backend.apiviews.post_views import PostViewSet
 from backend.apiviews.author_views import AuthorViewSet
 from backend.apiviews.friend_request_views import FriendRequestViewSet
 from backend.apiviews.friend_views import FriendViewSet
+from backend.apiviews.comment_views import CommentViewSet
 
 from .views import index
 router = DefaultRouter()
@@ -66,5 +67,10 @@ urlpatterns = [
     path('friendrequest/', FriendRequestViewSet.as_view(), name='friendrequest'),
     # path("friendrequest/all", FriendRequestViewSet.as_view({"get": "list"}))
     path('friend/accept', FriendViewSet.as_view(), name="friend"),
+
+    # url of Comment Operations
+    path('posts/<uuid:postId>/comments', CommentViewSet.as_view({
+        "get": "get_post_comment"
+    }))
 
 ]
