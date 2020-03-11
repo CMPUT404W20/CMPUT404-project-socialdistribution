@@ -25,7 +25,7 @@ class ProfilePage extends Component {
             post={{
               id: "1",
               username: "username",
-              postTime: new Date(),
+              published: (new Date()).toISOString(),
               imageSrc: demoImage,
               content: "Some Content",
             }}

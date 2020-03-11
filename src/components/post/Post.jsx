@@ -36,7 +36,7 @@ class Post extends Component {
     }
 
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
-    const formattedTime = moment(post.postTime).fromNow();
+    const formattedTime = moment(post.published).fromNow();
 
     return (
       <div className="post-info">
@@ -144,9 +144,9 @@ class Post extends Component {
 
 Post.propTypes = {
   post: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
-    postTime: PropTypes.instanceOf(Date).isRequired,
+    published: PropTypes.string.isRequired,
     imageSrc: PropTypes.string,
     content: PropTypes.string,
   }).isRequired,

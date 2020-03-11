@@ -1,5 +1,5 @@
 import axios from "axios";
-import * as auth from "../../services/Authentication";
+import * as auth from "../../services/AuthenticationService";
 
 describe("Authentication Service", () => {
   it("should correctly set payload on login", () => {

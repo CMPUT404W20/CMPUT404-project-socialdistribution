@@ -14,10 +14,10 @@ function PostPreviewModal(props) {
 
   // Post requires a Post object for rendering
   const postObj = {
-    id: -1, // arbitrary ID for the Post object
+    id: "-1", // arbitrary ID for the Post object
     imageSrc: imageObjectUrl,
     content: postContent,
-    postTime: new Date(),
+    published: (new Date()).toISOString(),
     username: "username",
   };
 
