@@ -150,9 +150,9 @@ class MakePost extends Component {
 MakePost.propTypes = {
   editMode: PropTypes.bool,
   originalPost: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     username: PropTypes.string,
-    postTime: PropTypes.instanceOf(Date),
+    published: PropTypes.string,
     imageSrc: PropTypes.string,
     content: PropTypes.string,
   }),

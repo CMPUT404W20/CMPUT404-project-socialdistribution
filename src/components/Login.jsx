@@ -3,7 +3,7 @@ import "../styles/Login.scss";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import * as auth from "../services/Authentication";
+import * as auth from "../services/AuthenticationService";
 import cover from "../images/cover.svg";
 
 class Login extends Component {

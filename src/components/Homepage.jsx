@@ -7,33 +7,44 @@ import Col from "react-bootstrap/Col";
 import NavigationBar from "./NavigationBar";
 import MakePost from "./post/MakePost";
 import Post from "./post/Post";
-import demoImage from "../images/demo-img.png";
+import * as postService from "../services/PostService";
 
 class Homepage extends Component {
   constructor(props) {
     super(props);
 
-    const posts = this.loadPosts();
     this.state = {
-      posts,
+      posts: [],
       editingPostId: null,
     };
+    this.loadPosts();
   }
 
   // eslint-disable-next-line class-methods-use-this
   loadPosts() {
     const posts = [];
-    for (let i = 0; i < 4; i += 1) {
-      posts.push({
-        id: i,
-        username: "username",
-        postTime: new Date(),
-        imageSrc: demoImage,
-        content: "Some Content",
-      });
-    }
 
-    return posts;
+    postService.getPosts().then((response) => {
+      for (let i = 0; i < response.posts.length; i += 1) {
+        const newPost = {};
+        const post = response.posts[i];
+
+        newPost.username = post.author.displayName;
+        newPost.content = post.content;
+        newPost.published = post.published;
+        newPost.id = post.id;
+        newPost.imageSrc = null;
+
+        posts.push(newPost);
+      }
+
+      this.setState({
+        posts,
+      });
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   handlePostCreation = (post) => {

@@ -25,7 +25,7 @@ class ProfilePage extends Component {
             post={{
               id: "1",
               username: "username",
-              postTime: new Date(),
+              published: "2020-03-11T21:22:36.991526Z",
               imageSrc: demoImage,
               content: "Some Content",
             }}

@@ -4,10 +4,10 @@ import Post from "../../../components/post/Post";
 import demoImage from "../../../images/demo-img.png";
 
 const post = {
-  id: 1,
+  id: "1",
   username: "username",
   imageSrc: demoImage,
-  postTime: new Date(),
+  published: "2020-03-11T21:22:36.991526Z",
   content: "content",
 };
 
