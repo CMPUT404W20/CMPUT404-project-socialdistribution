@@ -58,6 +58,11 @@ class PostSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         response = super().to_representation(instance)
         response['author'] = UserSerializer(instance.author).data
+
+        comments = Comments.objects.filter(post=instance.postId)
+        comments_data = CommentSerializer(comments, many=True).data
+        response['comments'] = comments_data
+
         return response
 
     class Meta:
@@ -140,6 +145,8 @@ class CommentSerializer(serializers.ModelSerializer):
         del author_data["github"]
         del author_data["url"]
         response['author'] = author_data
+
+        del response['content']
 
         return response
 
