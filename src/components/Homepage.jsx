@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import NavigationBar from "./NavigationBar";
 import MakePost from "./post/MakePost";
+import PostView from "./post/PostView";
 import Post from "./post/Post";
 import * as postService from "../services/PostService";
 
@@ -134,6 +135,7 @@ class Homepage extends Component {
           <Col md={2} />
         </Row>
         {this.renderPosts()}
+        <PostView />
       </Container>
     );
   }
