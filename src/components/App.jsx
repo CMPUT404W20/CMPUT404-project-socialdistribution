@@ -8,7 +8,6 @@ import FriendsPage from "./friends/FriendsPage";
 import NoticesPage from "./notices/NoticesPage";
 import ProfilePage from "./profile/ProfilePage";
 
-
 function App() {
   return (
     <BrowserRouter>

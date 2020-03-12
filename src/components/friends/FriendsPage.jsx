@@ -6,14 +6,39 @@ import Col from "react-bootstrap/Col";
 import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import FriendItem from "./FriendItem";
 import NavigationBar from "../NavigationBar";
+import * as friendsService from "../../services/FriendService";
 
 class FriendsPage extends Component {
   constructor(props) {
     super(props);
     this.props = props;
     this.state = {
-      friendsList: [{ id: "001", name: "Username1" }, { id: "002", name: "Username2" }, { id: "003", name: "Username3" }, { id: "004", name: "Username4" }, { id: "005", name: "Username5" }],
+      friendsList: [],
     };
+    this.loadFriends();
+  }
+
+  loadFriends() {
+    const friendsList = [];
+
+    friendsService.getAuthorFriends("http://localhost:8000/author/1").then((response) => {
+      for (let i = 0; i < response.length; i += 1) {
+        const newFriend = {};
+        const friend = response[i];
+
+        newFriend.name = friend.displayName;
+        newFriend.id = friend.id;
+
+        friendsList.push(newFriend);
+      }
+
+      this.setState({
+        friendsList,
+      });
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   handleUnfollow(id) {

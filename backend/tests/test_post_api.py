@@ -42,13 +42,13 @@ class TestPostAPI:
             "visibility": PUBLIC
         })
 
-        response = client.post('/author/posts', data=post_body_1,
+        response = client.post('/author/posts/', data=post_body_1,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 401
 
         # Post should only be created after user is authenticated
         client.force_login(test_user)
-        response = client.post('/author/posts', data=post_body_1,
+        response = client.post('/author/posts/', data=post_body_1,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 201
 
@@ -85,7 +85,7 @@ class TestPostAPI:
             author=test_user, title="post title", content="post content", visibility=PRIVATE, visibleTo=[test_user_with_access.get_full_user_id()])
 
         client.force_login(test_user_no_access)
-        response = client.get('/author/posts')
+        response = client.get('/author/posts/')
         assert response.status_code == 200
         assert response.data["query"] == "posts"
         assert response.data["count"] == 0
@@ -94,7 +94,7 @@ class TestPostAPI:
         client.logout()
 
         client.force_login(test_user_with_access)
-        response = client.get('/author/posts')
+        response = client.get('/author/posts/')
         assert response.status_code == 200
         assert response.data["query"] == "posts"
         assert response.data["count"] >= 0
@@ -113,10 +113,10 @@ class TestPostAPI:
 
         random_user_id = "randomid"
         client.force_login(test_user_no_access)
-        response = client.get('/author/{}/posts'.format(random_user_id))
+        response = client.get('/author/{}/posts/'.format(random_user_id))
         assert response.status_code == 400
 
-        response = client.get('/author/{}/posts'.format(test_user.fullId))
+        response = client.get('/author/{}/posts/'.format(test_user.fullId))
         assert response.status_code == 200
         assert response.data["query"] == "posts"
         assert response.data["count"] == 0
@@ -124,7 +124,7 @@ class TestPostAPI:
         client.logout()
 
         client.force_login(test_user_with_access)
-        response = client.get('/author/{}/posts'.format(test_user.fullId))
+        response = client.get('/author/{}/posts/'.format(test_user.fullId))
         assert response.status_code == 200
         assert response.data["query"] == "posts"
         assert response.data["count"] >= 0

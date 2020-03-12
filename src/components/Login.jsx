@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import * as auth from "../services/Authentication";
+import * as auth from "../services/AuthenticationService";
 import cover from "../images/cover.svg";
 
 class Login extends Component {

@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 import React, { Component } from "react";
 import "../styles/Homepage.scss";
 import Container from "react-bootstrap/Container";
@@ -5,31 +6,14 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import NavigationBar from "./NavigationBar";
 import MakePost from "./post/MakePost";
-import Post from "./post/Post";
-import demoImage from "../images/demo-img.png";
+import PostView from "./post/PostView";
 
 class Homepage extends Component {
-  constructor(props) {
-    super(props);
-    this.props = props;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  renderPosts() {
-    return (
-      <Row className="postWrapper">
-        <Col md={2} />
-        <Col md={8}>
-          <Post
-            username="username"
-            postTime={new Date()}
-            imageSrc={demoImage}
-            content="Some content"
-          />
-        </Col>
-        <Col md={2} />
-      </Row>
-    );
+  handlePostCreation = (post) => {
+    // eslint-disable-next-line no-console
+    console.log(post);
+    // eslint-disable-next-line no-alert
+    alert("Post Created - Check Console");
   }
 
   render() {
@@ -40,14 +24,18 @@ class Homepage extends Component {
             <NavigationBar />
           </Col>
         </Row>
-        <Row className="makePostWrapper">
+        <Row>
           <Col md={2} />
           <Col md={8}>
-            <MakePost />
+            <div className="makePostWrapper">
+              <MakePost
+                onSubmit={this.handlePostCreation}
+              />
+            </div>
+            <PostView />
           </Col>
           <Col md={2} />
         </Row>
-        {this.renderPosts()}
       </Container>
     );
   }

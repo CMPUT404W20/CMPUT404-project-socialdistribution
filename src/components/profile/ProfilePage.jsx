@@ -5,31 +5,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import NavigationBar from "../NavigationBar";
 import ProfileHeader from "./ProfileHeader";
-import Post from "../post/Post";
-import demoImage from "../../images/demo-img.png";
+import PostView from "../post/PostView";
 
 class ProfilePage extends Component {
   constructor(props) {
     super(props);
     this.props = props;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  renderPosts() {
-    return (
-      <Row className="postWrapper">
-        <Col md={2} />
-        <Col md={8}>
-          <Post
-            username="username"
-            postTime={new Date()}
-            imageSrc={demoImage}
-            content="Some content"
-          />
-        </Col>
-        <Col md={2} />
-      </Row>
-    );
   }
 
   render() {
@@ -44,22 +25,28 @@ class ProfilePage extends Component {
             <NavigationBar />
           </Col>
         </Row>
-        <Row className="profileHeaderWapper">
+        <Row>
           <Col md={2} />
           <Col md={8}>
-            <ProfileHeader
-              isSelf={isSelf}
-              isFriends={isFriends}
-              isFollowing={isFollowing}
-              remote={false}
-              username={username}
+            <div className="profileHeaderWrapper">
+              <ProfileHeader
+                isSelf={isSelf}
+                isFriends={isFriends}
+                isFollowing={isFollowing}
+                remote={false}
+                username={username}
+              />
+            </div>
+            <PostView
+            // TODO: change this to the current user's full id
+              userId="https://cmput404-socialdistribution.herokuapp.com/author/1"
             />
           </Col>
           <Col md={2} />
         </Row>
-        {this.renderPosts()}
       </Container>
     );
   }
 }
+
 export default ProfilePage;

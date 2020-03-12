@@ -66,11 +66,11 @@ class TestFriend:
             }
         })
 
-        response = client.post('/friend/accept', data=post_body_2,
+        response = client.post('/friend/accept/', data=post_body_2,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 401
         client.force_login(test_user2)
-        response = client.post('/friend/accept', data=post_body_2,
+        response = client.post('/friend/accept/', data=post_body_2,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 201
         assert response.data["message"] == "Friendship created"
@@ -78,7 +78,7 @@ class TestFriend:
             fromUser__fullId=test_user.fullId, toUser__fullId=test_user2.fullId).exists()
         assert Friend.objects.filter(
             fromUser__fullId=test_user2.fullId, toUser__fullId=test_user.fullId).exists()
-        response = client.post('/friend/accept', data={},
+        response = client.post('/friend/accept/', data={},
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 400
 

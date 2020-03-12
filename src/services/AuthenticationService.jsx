@@ -15,7 +15,3 @@ export const registerUser = (username, password) => {
     password2: password,
   });
 };
-
-export const getCurrentUser = () => {
-  return axios.get("/auth/user/");
-};

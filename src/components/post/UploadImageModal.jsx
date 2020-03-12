@@ -78,9 +78,6 @@ class UploadImageModal extends Component {
     const { errorMessage, imageFile } = this.state;
     return (
       <Modal onHide={this.hideModal} show={show} className="upload-image-modal">
-        <Modal.Header closeButton>
-          <Modal.Title>Upload Image</Modal.Title>
-        </Modal.Header>
         <Modal.Body>
           <ImageDropzone
             onDropAccepted={this.handleDropAccept}

@@ -59,5 +59,5 @@ class AuthorViewSet(viewsets.ViewSet):
         for i in serializer.data:
             id_List.append(list(list(i.items())[0][1].items())[0][1])
 
-        return Response({"query": "friends", "Author": id_List})
+        return Response({"query": "friends", "authors": id_List})
 

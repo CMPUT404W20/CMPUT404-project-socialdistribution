@@ -1,7 +1,6 @@
 @import "../common.scss";
 
 .make-post-wrapper {
-  margin-top: 5rem;
   background-color: white;
   box-sizing: border-box;
   box-shadow: $post-box-shadow;
@@ -71,6 +70,18 @@
   
     .post-button {
       @extend %button;
+      margin-left: 0.8rem;
+    }
+
+    .discard-button {
+      @extend %button;
+      background-color: #fa93a7;
+      &:not(:disabled) {
+        &:hover, &:focus {
+          outline: none;
+          background-color: #e73a5a;
+        }
+      }
       margin-left: 0.8rem;
     }
   }

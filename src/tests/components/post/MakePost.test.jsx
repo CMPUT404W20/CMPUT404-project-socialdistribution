@@ -4,7 +4,11 @@ import MakePost from "../../../components/post/MakePost";
 
 describe("Post box Component", () => {
   it("should render correctly", () => {
-    const component = shallow(<MakePost />);
+    const component = shallow(
+      <MakePost
+        onSubmit={() => {}}
+      />,
+    );
     expect(component).toMatchSnapshot();
   });
 });
