@@ -1,6 +1,6 @@
 /* eslint-disable arrow-body-style */
 import axios from "axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export const getPosts = () => {
   return axios.get("/author/posts/").then((response) => {

@@ -8,7 +8,6 @@ import NavigationBar from "./NavigationBar";
 import MakePost from "./post/MakePost";
 import PostView from "./post/PostView";
 import * as postService from "../services/PostService";
-import { icons } from "react-icons";
 
 class Homepage extends Component {
   constructor(props) {
