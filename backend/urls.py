@@ -46,30 +46,31 @@ urlpatterns = [
     path('posts/<uuid:postId>/', PostViewSet.as_view({
         "get": "retrieve"
     })),
-    path('author/posts', PostViewSet.as_view({
+    path('author/posts/', PostViewSet.as_view({
         "get": "get_user_visible_posts",
         "post": "create_post"
     })),
-    path('author/<path:author_id>/posts', PostViewSet.as_view({
-         "get": "visible_posts"
-         })),
-
+    path('author/<path:author_id>/posts/', PostViewSet.as_view({
+        "get": "visible_posts"
+    })),
+    
     # url of Author Operations
     path('author/', AuthorViewSet.as_view({
         "get": "get_authors"
     })),
+    path('author/<path:pk>/friends/', AuthorViewSet.as_view(({
+        "get": "get_friends"
+    }))),
     path('author/<path:pk>/', AuthorViewSet.as_view({
         "get": "get_profile"
     })),
-    path('author/<path:pk>/friends', AuthorViewSet.as_view(({
-        "get": "get_friends"
-    }))),
+    
 
 
     path('author/<path:authorId1>/friends/<path:authorId2>',FriendViewSet.as_view(({
         "get": "check_friends"
     }))),
-    path('friend/accept',FriendViewSet.as_view(({
+    path('friend/accept/',FriendViewSet.as_view(({
         "post": "post_friendship"
     }))),
   
@@ -77,7 +78,7 @@ urlpatterns = [
 
 
     # url of Comment Operations
-    path('posts/<uuid:postId>/comments', CommentViewSet.as_view({
+    path('posts/<uuid:postId>/comments/', CommentViewSet.as_view({
         "get": "get_post_comment",
         "post": "add_comment"
     }))
