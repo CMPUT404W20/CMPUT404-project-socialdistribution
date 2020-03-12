@@ -45,7 +45,7 @@ class ProfilePage extends Component {
             </div>
             <PostView
             // TODO: change this to the current user's full id
-              userId="https://cmput404-socialdistribution.herokuapp.com/author/1"
+              userId={ localStorage.getItem("userID") }
             />
           </Col>
           <Col md={2} />
@@ -56,7 +56,7 @@ class ProfilePage extends Component {
 }
 
 ProfilePage.propTypes = {
-  location: PropTypes.objectOf(PropTypes.object()).isRequired,
+  location: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
 };
 
 export default ProfilePage;
