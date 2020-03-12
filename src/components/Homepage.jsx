@@ -7,13 +7,17 @@ import Col from "react-bootstrap/Col";
 import NavigationBar from "./NavigationBar";
 import MakePost from "./post/MakePost";
 import PostView from "./post/PostView";
+import * as postService from "../services/PostService";
 
 class Homepage extends Component {
   handlePostCreation = (post) => {
     // eslint-disable-next-line no-console
-    console.log(post);
+    postService.createUserPosts(post).then(() => {
+
+
     // eslint-disable-next-line no-alert
-    alert("Post Created - Check Console");
+    // alert("Post Created - Check Console");
+    });
   }
 
   render() {

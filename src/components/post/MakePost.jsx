@@ -37,7 +37,7 @@ class MakePost extends Component {
     originalPost.content = postContent;
     originalPost.imageSrc = postImage;
     // Temporary set title to empty
-    originalPost.title = "";
+    originalPost.title = "tmp post title";
     originalPost.visibility = postVisibility;
 
     onSubmit(originalPost);
