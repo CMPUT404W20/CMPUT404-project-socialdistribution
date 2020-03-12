@@ -61,3 +61,12 @@ class AuthorViewSet(viewsets.ViewSet):
 
         return Response({"query": "friends", "authors": id_List})
 
+    def get_current_user(self, request):
+        # Return information about currently logged in user
+        if request.user.is_authenticated:
+            current_user = request.user
+            serializer = UserSerializer(current_user)
+
+            return Response(serializer.data)
+        else:
+            return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
