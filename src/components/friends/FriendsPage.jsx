@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import NavigationBar from "../NavigationBar";
 import FriendItem from "./FriendItem";
-import * as friendsService from "../../services/FriendServices";
+import * as friendsService from "../../services/FriendService";
 
 class FriendsPage extends Component {
   constructor(props) {

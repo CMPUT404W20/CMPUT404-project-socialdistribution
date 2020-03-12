@@ -14,6 +14,7 @@ export const getAuthorFriends = (authorId) => {
   });
 };
 
+// for eslint
 export const createFriend = () => {
   return null;
 };
