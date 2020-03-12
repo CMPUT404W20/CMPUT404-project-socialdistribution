@@ -3,17 +3,21 @@ import "../../styles/profile/ProfileHeader.scss";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import PropTypes from "prop-types";
 import EditProfileModal from "./EditProfileModal";
 
 class ProfileHeader extends Component {
   constructor(props) {
     super(props);
+    const {
+      remote, isFriends, isFollowing, isSelf, username,
+    } = this.props;
     this.state = {
-      username: "Username",
-      remote: false,
-      friend: true,
-      following: true,
-      isSelf: true,
+      username,
+      remote,
+      isFriends,
+      isFollowing,
+      isSelf,
       // isSelf will be changed by comparing the userID and the loggedIn user's id
       // to do: fetch the user
       modalShow: false,
@@ -35,12 +39,12 @@ class ProfileHeader extends Component {
   };
 
   renderStatus = () => {
-    const { isSelf, following, friend } = this.state;
+    const { isSelf, isFollowing, isFriends } = this.state;
     if (!isSelf) {
-      if (!friend && !following) {
+      if (!isFriends && !isFollowing) {
         return (this.renderFollowButton());
       }
-      if (!friend && following) {
+      if (!isFriends && isFollowing) {
         return (this.renderDropDown(false));
       }
       return (this.renderDropDown(true));
@@ -60,22 +64,22 @@ class ProfileHeader extends Component {
   );
 
   handleFollow = () => {
-    this.setState({ following: true });
+    this.setState({ isFollowing: true });
   };
 
-  renderDropDown = (isFriend) => (
+  renderDropDown = (isFriends) => (
     <DropdownButton
       id="friend-status"
-      title={isFriend === true ? "FRIENDS" : "FOLLOWING"}
+      title={isFriends === true ? "FRIENDS" : "FOLLOWING"}
       drop="down"
       alignRight
     >
-      <Dropdown.Item onClick={this.handleUnFollow}>{isFriend === true ? "Unfriend" : "Unfollow"}</Dropdown.Item>
+      <Dropdown.Item onClick={this.handleUnFollow}>{isFriends === true ? "Unfriend" : "Unfollow"}</Dropdown.Item>
     </DropdownButton>
   );
 
   handleUnFollow = () => {
-    this.setState({ friend: false, following: false });
+    this.setState({ isFriends: false, isFollowing: false });
   };
 
   renderFollowButton = () => (
@@ -109,4 +113,13 @@ class ProfileHeader extends Component {
     );
   }
 }
+
+ProfileHeader.propTypes = {
+  isFriends: PropTypes.bool.isRequired,
+  isFollowing: PropTypes.bool.isRequired,
+  isSelf: PropTypes.bool.isRequired,
+  remote: PropTypes.bool.isRequired,
+  username: PropTypes.string.isRequired,
+};
+
 export default ProfileHeader;

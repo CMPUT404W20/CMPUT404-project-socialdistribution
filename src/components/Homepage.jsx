@@ -21,7 +21,7 @@ class Homepage extends Component {
       <Container fluid className="homepage">
         <Row>
           <Col md={12}>
-            <NavigationBar selected="Home" />
+            <NavigationBar />
           </Col>
         </Row>
         <Row>

@@ -3,6 +3,7 @@ import "../styles/Login.scss";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { Redirect } from "react-router-dom";
 import * as auth from "../services/AuthenticationService";
 import cover from "../images/cover.svg";
 
@@ -15,6 +16,7 @@ class Login extends Component {
       username: "",
       password: "",
       passwordReentry: "",
+      isAuthed: false,
     };
   }
 
@@ -30,7 +32,6 @@ class Login extends Component {
     if (!this.validateForm()) { return; }
 
     const { signup, username, password } = this.state;
-
     if (signup) {
       auth.registerUser(username, password).then((response) => {
         if (response.status === 201) {
@@ -50,9 +51,10 @@ class Login extends Component {
     } else {
       auth.loginUser(username, password).then((response) => {
         if (response.status === 200) {
-          // TODO: success: redirect to homepage
-          // eslint-disable-next-line no-alert
-          alert("Success");
+          auth.getCurrentUser().then((UserData) => {
+            localStorage.setItem("userID", `https://cmput404-socialdistribution.herokuapp.com/author/${UserData.data.pk}`);
+            localStorage.setItem("username", UserData.data.username);
+          }).then(() => { this.setState({ isAuthed: true }); });
         }
       }).catch(() => {
         this.setState({
@@ -175,6 +177,10 @@ class Login extends Component {
   }
 
   render() {
+    const { isAuthed } = this.state;
+    if (isAuthed) {
+      return <Redirect exact to="/home" />;
+    }
     return (
       <Container fluid className="login">
         <Row>

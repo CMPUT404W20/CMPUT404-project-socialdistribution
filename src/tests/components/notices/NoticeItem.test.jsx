@@ -4,7 +4,7 @@ import NoticeItem from "../../../components/notices/NoticeItem";
 
 describe("Notice Item Component", () => {
   it("should render correctly", () => {
-    const component = shallow(<NoticeItem id="" username="" type="" handleDecline={() => {}} handleAccept={() => {}} />);
+    const component = shallow(<NoticeItem userID="" username="" type="" handleDecline={() => {}} handleAccept={() => {}} />);
     expect(component).toMatchSnapshot();
   });
 });

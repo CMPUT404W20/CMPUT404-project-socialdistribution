@@ -11,9 +11,7 @@ exports[`Notices Page Component should render correctly 1`] = `
     <Col
       md={12}
     >
-      <NavigationBar
-        selected="Notifications"
-      />
+      <NavigationBar />
     </Col>
   </Row>
   <Row
@@ -50,41 +48,41 @@ exports[`Notices Page Component should render correctly 1`] = `
           <NoticeItem
             handleAccept={[Function]}
             handleDecline={[Function]}
-            id="001"
             key="001"
             type="Local"
+            userID="001"
             username="Username1"
           />
           <NoticeItem
             handleAccept={[Function]}
             handleDecline={[Function]}
-            id="002"
             key="002"
             type="Local"
+            userID="002"
             username="Username2"
           />
           <NoticeItem
             handleAccept={[Function]}
             handleDecline={[Function]}
-            id="003"
             key="003"
             type="Local"
+            userID="003"
             username="Username3"
           />
           <NoticeItem
             handleAccept={[Function]}
             handleDecline={[Function]}
-            id="004"
             key="004"
             type="Local"
+            userID="004"
             username="Username4"
           />
           <NoticeItem
             handleAccept={[Function]}
             handleDecline={[Function]}
-            id="005"
             key="005"
             type="Local"
+            userID="005"
             username="Username5"
           />
         </Row>

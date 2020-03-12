@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-console */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
@@ -122,7 +124,8 @@ class Post extends Component {
     // todo: post new comment to api
     const { newComment } = this.state;
     const { post } = this.props;
-    commentservice.createComment(newComment,post.id).then((response) => {
+
+    commentservice.createComment(newComment, post.id).then((response) => {
       if (response.status === 201) {
         this.setState({
           newComment: "",
@@ -131,7 +134,7 @@ class Post extends Component {
     }).catch((err) => {
       const error = err.response.data;
       // eslint-disable-next-line no-console
-      console.log(error);
+      alert(error);
     });
     // this.setState({ newComment: "" });
   }

@@ -11,9 +11,7 @@ exports[`Friends Page Component should render correctly 1`] = `
     <Col
       md={12}
     >
-      <NavigationBar
-        selected="Friends"
-      />
+      <NavigationBar />
     </Col>
   </Row>
   <Row
