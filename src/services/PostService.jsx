@@ -26,3 +26,13 @@ export const getUserPosts = (fullUserId) => {
     throw new Error("Unable to retrieve posts");
   });
 };
+
+export const createUserPosts = (postData) => {
+  return axios.post("/author/posts", postData).then((response) => {
+    if (response.status === 201) {
+      return;
+    }
+
+    throw new Error("Unable to create post");
+  });
+};

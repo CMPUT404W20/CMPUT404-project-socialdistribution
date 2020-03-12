@@ -16,6 +16,7 @@ class MakePost extends Component {
       originalPost: props.originalPost,
       postContent: props.defaultPostContent,
       postImage: props.defaultPostImage,
+      postVisibility: "PUBLIC",
     };
   }
 
@@ -30,11 +31,14 @@ class MakePost extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    const { originalPost, postContent, postImage } = this.state;
+    const { originalPost, postContent, postImage, postVisibility } = this.state;
     const { onSubmit } = this.props;
 
     originalPost.content = postContent;
     originalPost.imageSrc = postImage;
+    // Temporary set title to empty
+    originalPost.title = "";
+    originalPost.visibility = postVisibility;
 
     onSubmit(originalPost);
     // eslint-disable-next-line no-alert
@@ -51,6 +55,12 @@ class MakePost extends Component {
     this.setState((prevState) => ({
       previewModalVisibility: !prevState.previewModalVisibility,
     }));
+  }
+
+  changePostVisibility = (event) => {
+    this.setState({
+      postVisibility: event.target.value,
+    });
   }
 
   render() {
@@ -74,13 +84,13 @@ class MakePost extends Component {
         <div className="make-post-content">
           <div className="make-post-header">
             <b>{title}</b>
-            <select className="privacy-select" defaultValue="public">
-              <option value="public">Anyone</option>
-              <option value="another-author">Specific author</option>
-              <option value="friends">Friends</option>
-              <option value="mutual-friends">Mutual friends</option>
-              <option value="local-friends">Local friends</option>
-              <option value="private">Private</option>
+            <select className="privacy-select" defaultValue="public" onChange={this.changePostVisibility}>
+              <option value="PUBLIC">Anyone</option>
+              <option value="PRIVATE">Specific author</option>
+              <option value="FRIENDS">Friends</option>
+              <option value="FOAF">Mutual friends</option>
+              <option value="SERVERONLY">Local friends</option>
+              <option value="UNLISTED">Private</option>
             </select>
           </div>
           <UploadImageModal
