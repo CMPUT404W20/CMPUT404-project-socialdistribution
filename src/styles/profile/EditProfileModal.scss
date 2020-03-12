@@ -12,17 +12,28 @@
             margin-bottom: 1em;
         }
     }
+
+    input {
+        width: 100%;
+        outline: 0;
+        border: 1px #EBEBEB solid;
+        border-radius: $radius;
+        font-size: 12px;
+        padding: 5px 10px;
+        
+        &:focus {
+            border: 1px #E0E0E0 solid;
+        }
+    }
+
     .save-button-wrapper {
         display: flex;
         width: 100%;
         justify-content: center;
+
         .save-button {
+            @extend %button;
             width: 100%;
-            background-color: $accent-color;
-            color: white;
-            outline: none;
-            border: 0;
-            cursor: pointer;
         }
     }
 }

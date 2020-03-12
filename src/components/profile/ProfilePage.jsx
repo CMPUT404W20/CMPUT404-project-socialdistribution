@@ -6,14 +6,14 @@ import Col from "react-bootstrap/Col";
 import NavigationBar from "../NavigationBar";
 import ProfileHeader from "./ProfileHeader";
 import Post from "../post/Post";
+import PostView from "../post/PostView";
 import demoImage from "../../images/demo-img.png";
 
 class ProfilePage extends Component {
-  constructor(props) {
-    super(props);
-    this.props = props;
-    // fetch by user id?
-  }
+  // constructor(props) {
+  //   super(props);
+  //   // fetch by user id?
+  // }
 
   // eslint-disable-next-line class-methods-use-this
   renderPosts() {
@@ -44,14 +44,19 @@ class ProfilePage extends Component {
             <NavigationBar />
           </Col>
         </Row>
-        <Row className="profileHeaderWapper">
+        <Row>
           <Col md={2} />
           <Col md={8}>
-            <ProfileHeader />
+            <div className="profileHeaderWrapper">
+              <ProfileHeader />
+            </div>
+            <PostView
+              // TODO: change this to the current user's full id
+              userId="https://cmput404-socialdistribution.herokuapp.com/author/1"
+            />
           </Col>
           <Col md={2} />
         </Row>
-        {this.renderPosts()}
       </Container>
     );
   }
