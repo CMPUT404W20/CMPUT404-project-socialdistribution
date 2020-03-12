@@ -120,8 +120,9 @@ class Post extends Component {
 
   handleSubmitNewComment = () => {
     // todo: post new comment to api
-    const newComment = this.state;
-    commentservice.createComment(newComment).then((response) => {
+    const { newComment } = this.state;
+    const { post } = this.props;
+    commentservice.createComment(newComment,post.id).then((response) => {
       if (response.status === 201) {
         this.setState({
           newComment: "",

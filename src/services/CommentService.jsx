@@ -1,8 +1,8 @@
 /* eslint-disable arrow-body-style */
 import axios from "axios";
 
-export const createComment = (newComment) => {
-  return axios.post("posts/<uuid:postId>/comments", {
+export const createComment = (newComment, postId) => {
+  return axios.post(`posts/${postId}/comments/`, {
     comment: newComment,
   });
 };
