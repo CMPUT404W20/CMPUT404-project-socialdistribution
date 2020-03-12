@@ -46,7 +46,7 @@ exports[`Post Block Components should render correctly 1`] = `
           }
         }
         disabled={false}
-        href="#"
+        onClick={[Function]}
       >
         Delete
       </DropdownItem>
@@ -226,7 +226,7 @@ exports[`Post Block Components should render markdown content correctly 1`] = `
           }
         }
         disabled={false}
-        href="#"
+        onClick={[Function]}
       >
         Delete
       </DropdownItem>
