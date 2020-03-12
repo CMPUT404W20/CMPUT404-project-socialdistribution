@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 /* eslint-disable arrow-body-style */
 import axios from "axios";
 import Cookies from 'js-cookie';
@@ -41,13 +42,19 @@ export const createUserPosts = (postData) => {
     }
 
     throw new Error("Unable to create post");
+  });
+};
+
+
 export const deleteUserPosts = (postId) => {
-  return axios.delete(`/posts/${postId}`).then((response) => {
-    if (response.status === 200) {
-      // if (response.data && response.data.posts) {
-      //   return response.data;
-      // }
-      // return {};
+  const csrf = Cookies.get("csrftoken");
+  const headers = {
+    "X-CSRFToken": csrf,
+  };
+
+  return axios.delete(`/posts/${postId}/`, { headers: headers }).then((response) => {
+    if (response.status === 204) {
+      return {};
     }
 
     throw new Error("Unable to retrieve posts");

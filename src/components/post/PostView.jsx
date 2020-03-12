@@ -66,13 +66,14 @@ class PostView extends Component {
   }
 
   handleDelete = (postID) => {
-    postService.deleteUserPosts(postID);
-    this.setState((prevState) => ({
-      // update post that got edited
-      posts: prevState.posts.filter(
-        (p) => (p.id != postID),
-      ),
-    }));
+    postService.deleteUserPosts(postID).then(() => {
+      this.setState((prevState) => ({
+        // remove delete posts from state
+        posts: prevState.posts.filter(
+          (p) => (p.id !== postID),
+        ),
+      }));
+    });
   }
 
   render() {
