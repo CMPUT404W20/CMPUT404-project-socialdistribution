@@ -39,45 +39,14 @@ exports[`Friends Page Component should render correctly 1`] = `
           </p>
           <p>
             (
-            5
+            0
             )
           </p>
         </div>
         <Row
           className="item-list"
           noGutters={false}
-        >
-          <FriendItem
-            handleUnfollow={[Function]}
-            id="001"
-            key="001"
-            username="Username1"
-          />
-          <FriendItem
-            handleUnfollow={[Function]}
-            id="002"
-            key="002"
-            username="Username2"
-          />
-          <FriendItem
-            handleUnfollow={[Function]}
-            id="003"
-            key="003"
-            username="Username3"
-          />
-          <FriendItem
-            handleUnfollow={[Function]}
-            id="004"
-            key="004"
-            username="Username4"
-          />
-          <FriendItem
-            handleUnfollow={[Function]}
-            id="005"
-            key="005"
-            username="Username5"
-          />
-        </Row>
+        />
       </div>
     </Col>
   </Row>
