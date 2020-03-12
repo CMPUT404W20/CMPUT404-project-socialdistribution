@@ -71,16 +71,16 @@ class PostView extends Component {
 
       if (post.id !== editingPostId) {
         renderedPosts.push(
-          <Row className="postWrapper" key={post.id}>
+          <div className="postWrapper" key={post.id}>
             <Post
               post={post}
               onEdit={this.handleEditToggle}
             />
-          </Row>,
+          </div>,
         );
       } else {
         renderedPosts.push(
-          <Row className="postWrapper" key={-1}>
+          <div className="postWrapper" key={-1}>
             <MakePost
               editMode
               originalPost={post}
@@ -90,19 +90,15 @@ class PostView extends Component {
               // set the current post being edited to null -> close the edit dialog
               onDiscard={() => this.handleEditToggle(null)}
             />
-          </Row>,
+          </div>,
         );
       }
     }
 
     return (
-      <Row className="postWrapper" key={-1}>
-        <Col md={2} />
-        <Col md={8}>
-          {renderedPosts}
-        </Col>
-        <Col md={2} />
-      </Row>
+      <div className="post-view" key={-1}>
+        {renderedPosts}
+      </div>
     );
   }
 }

@@ -24,16 +24,18 @@ class Homepage extends Component {
             <NavigationBar selected="Home" />
           </Col>
         </Row>
-        <Row className="makePostWrapper">
+        <Row>
           <Col md={2} />
           <Col md={8}>
-            <MakePost
-              onSubmit={this.handlePostCreation}
-            />
+            <div className="makePostWrapper">
+              <MakePost
+                onSubmit={this.handlePostCreation}
+              />
+            </div>
+            <PostView />
           </Col>
           <Col md={2} />
         </Row>
-        <PostView />
       </Container>
     );
   }
