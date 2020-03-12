@@ -73,7 +73,7 @@ exports[`Navigation bar Component should render correctly 1`] = `
         }
         disabled={false}
         exact={true}
-        to="/"
+        to="/home"
       >
         <HomeOutlinedIcon />
       </NavLink>
@@ -158,18 +158,42 @@ exports[`Navigation bar Component should render correctly 1`] = `
       <NavDropdown
         alignRight={true}
         id="username-dropdown"
-        title="Username"
+        title="User"
       >
         <DropdownItem
           as={
             Object {
               "$$typeof": Symbol(react.forward_ref),
-              "displayName": "SafeAnchor",
+              "displayName": "NavLink",
+              "propTypes": Object {
+                "activeClassName": [Function],
+                "activeStyle": [Function],
+                "aria-current": [Function],
+                "className": [Function],
+                "exact": [Function],
+                "innerRef": [Function],
+                "isActive": [Function],
+                "location": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "strict": [Function],
+                "style": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
               "render": [Function],
             }
           }
           disabled={false}
-          href="#"
+          exact={true}
+          to={
+            Object {
+              "pathname": "/profile/User",
+              "state": Object {
+                "isSelf": true,
+              },
+            }
+          }
         >
           Profile
         </DropdownItem>
@@ -193,12 +217,30 @@ exports[`Navigation bar Component should render correctly 1`] = `
           as={
             Object {
               "$$typeof": Symbol(react.forward_ref),
-              "displayName": "SafeAnchor",
+              "displayName": "NavLink",
+              "propTypes": Object {
+                "activeClassName": [Function],
+                "activeStyle": [Function],
+                "aria-current": [Function],
+                "className": [Function],
+                "exact": [Function],
+                "innerRef": [Function],
+                "isActive": [Function],
+                "location": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "strict": [Function],
+                "style": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
               "render": [Function],
             }
           }
           disabled={false}
-          href="#"
+          exact={true}
+          onSelect={[Function]}
+          to="/"
         >
           Logout
         </DropdownItem>

@@ -12,7 +12,6 @@ class ProfilePage extends Component {
   constructor(props) {
     super(props);
     this.props = props;
-    // fetch by user id?
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -34,12 +33,27 @@ class ProfilePage extends Component {
   }
 
   render() {
+    const isSelf = this.props.location.state.isSelf || false;
+    const isFriends = this.props.location.state.isFriends || false;
+    const isFollowing = this.props.location.state.isFollowing || false;
+    const username = isSelf ? localStorage.getItem("username") : this.props.location.state.username;
     return (
       <Container fluid className="profilePage">
+        <Row>
+          <Col md={12}>
+            <NavigationBar />
+          </Col>
+        </Row>
         <Row className="profileHeaderWapper">
           <Col md={2} />
           <Col md={8}>
-            <ProfileHeader />
+            <ProfileHeader
+              isSelf={isSelf}
+              isFriends={isFriends}
+              isFollowing={isFollowing}
+              remote={false}
+              username={username}
+            />
           </Col>
           <Col md={2} />
         </Row>

@@ -16,22 +16,18 @@ class NavigationBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "Username",
+      username: localStorage.getItem("username") || "User",
+      userID: localStorage.getItem("userID"),
       numNotifications: 2,
     };
   }
-  // will implement search later. Disabled eslint for this method for now
 
-  // eslint-disable-next-line class-methods-use-this
-  handleSubmit(event) {
-    if (event.key === "Enter") {
-      // eslint-disable-next-line no-alert
-      alert(event.target.value);
-    }
+  handleLogOut = () => {
+    localStorage.clear();
   }
 
   render() {
-    const { username, numNotifications } = this.state;
+    const { username, userID, numNotifications } = this.state;
     return (
       <Navbar collapseOnSelect expand="sm" fixed="top" className="navigationBar">
         <Navbar.Brand className="logo">
@@ -50,7 +46,7 @@ class NavigationBar extends Component {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto" />
           <Nav>
-            <Nav.Link exact as={NavLink} to="/">
+            <Nav.Link exact as={NavLink} to="/home">
               <HomeOutlinedIcon />
             </Nav.Link>
             <Nav.Link exact as={NavLink} to="/friends">
@@ -67,10 +63,19 @@ class NavigationBar extends Component {
           </Nav>
           <Nav>
             <NavDropdown title={username} id="username-dropdown" alignRight>
-              <NavDropdown.Item href="#">Profile</NavDropdown.Item>
+              <NavDropdown.Item
+                as={NavLink}
+                exact
+                to={{
+                  pathname: `/profile/${username}`,
+                  state: { isSelf: true },
+                }}
+              >
+                Profile
+              </NavDropdown.Item>
               <NavDropdown.Item href="#">Settings</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#">Logout</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} exact to="/" onSelect={this.handleLogOut}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

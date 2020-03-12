@@ -51,7 +51,7 @@ class NoticesPage extends Component {
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
-            <NavigationBar selected="Notifications" />
+            <NavigationBar />
           </Col>
         </Row>
         <Row>

@@ -4,8 +4,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
-import NavigationBar from "../NavigationBar";
 import FriendItem from "./FriendItem";
+import NavigationBar from "../NavigationBar";
 
 class FriendsPage extends Component {
   constructor(props) {
@@ -42,6 +42,11 @@ class FriendsPage extends Component {
     const { friendsList } = this.state;
     return (
       <Container fluid className="page-wrapper">
+        <Row>
+          <Col md={12}>
+            <NavigationBar />
+          </Col>
+        </Row>
         <Row>
           <Col md={2} />
           <Col md={8}>

@@ -11,9 +11,7 @@ exports[`Notices Page Component should render correctly 1`] = `
     <Col
       md={12}
     >
-      <NavigationBar
-        selected="Notifications"
-      />
+      <NavigationBar />
     </Col>
   </Row>
   <Row

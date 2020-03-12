@@ -7,9 +7,18 @@ exports[`FriendItem Component should render correctly 1`] = `
   <div
     className="friend-item-wrapper"
   >
-    <a
+    <Link
       className="username-link"
-      href=" "
+      to={
+        Object {
+          "pathname": "/profile/",
+          "state": Object {
+            "isFollowing": true,
+            "isFriends": true,
+            "username": "",
+          },
+        }
+      }
     />
     <DropdownButton
       alignRight={true}

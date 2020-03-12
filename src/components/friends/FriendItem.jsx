@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../../styles/friends-notices/FriendItem.scss";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Col from "react-bootstrap/Col";
 
@@ -18,7 +19,15 @@ class FriendItem extends Component {
       <Col md={6}>
         <div className="friend-item-wrapper">
           {/* need to redirect to the user's profile page */}
-          <a href=" " className="username-link">{username}</a>
+          <Link
+            to={{
+              pathname: `/profile/${username}`,
+              state: { username, isFollowing: true, isFriends: true },
+            }}
+            className="username-link"
+          >
+            {username}
+          </Link>
           <DropdownButton
             id="friend-status"
             title="FRIENDS"

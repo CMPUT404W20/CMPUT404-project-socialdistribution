@@ -3,6 +3,8 @@ import "../styles/Login.scss";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { Redirect } from "react-router-dom";
+import axios from "axios";
 import * as auth from "../services/Authentication";
 import cover from "../images/cover.svg";
 
@@ -15,6 +17,7 @@ class Login extends Component {
       username: "",
       password: "",
       passwordReentry: "",
+      isAuthed: false,
     };
   }
 
@@ -49,9 +52,7 @@ class Login extends Component {
     } else {
       auth.loginUser(username, password).then((response) => {
         if (response.status === 200) {
-          // TODO: success: redirect to homepage
-          // eslint-disable-next-line no-alert
-          alert("Success");
+          this.setState({ isAuthed: true }, () => this.saveUserID());
         }
       }).catch(() => {
         this.setState({
@@ -59,6 +60,15 @@ class Login extends Component {
         });
       });
     }
+  }
+
+  saveUserID = () => {
+    axios.get("/auth/user/").then((response) => {
+      if (response.status === 200) {
+        localStorage.setItem("userID", `${window.location.href}/author/${response.data.pk}`);
+        localStorage.setItem("username", response.data.username);
+      }
+    });
   }
 
   toggleMethod = () => {
@@ -174,6 +184,10 @@ class Login extends Component {
   }
 
   render() {
+    const { isAuthed } = this.state;
+    if (isAuthed) {
+      return <Redirect exact to="/home" />;
+    }
     return (
       <Container fluid className="login">
         <Row>
