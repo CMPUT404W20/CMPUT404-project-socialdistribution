@@ -22,16 +22,16 @@ class TestCommentAPI:
             content="test content", postedBy=comment_user, post=test_post)
         test_comment.save()
 
-        response = client.get("/posts/{}/comments".format(test_post.pk))
+        response = client.get("/posts/{}/comments/".format(test_post.pk))
         assert response.status_code == 401
 
         client.force_login(no_access_user)
-        response = client.get("/posts/{}/comments".format(test_post.pk))
+        response = client.get("/posts/{}/comments/".format(test_post.pk))
         assert response.status_code == 401
         client.logout()
 
         client.force_login(comment_user)
-        response = client.get("/posts/{}/comments".format(test_post.pk))
+        response = client.get("/posts/{}/comments/".format(test_post.pk))
         assert response.status_code == 200
         assert response.data["query"] == "comments"
         assert response.data["count"] is not None
@@ -71,12 +71,12 @@ class TestCommentAPI:
             }
         })
 
-        response = client.post('/posts/{}/comments'.format(test_post.postId), data=post_body_1,
+        response = client.post('/posts/{}/comments/'.format(test_post.postId), data=post_body_1,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 401
 
         client.force_login(no_access_user)
-        response = client.post('/posts/{}/comments'.format(test_post.postId), data=post_body_1,
+        response = client.post('/posts/{}/comments/'.format(test_post.postId), data=post_body_1,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 403
         assert response.data["success"] is not True
@@ -84,7 +84,7 @@ class TestCommentAPI:
 
 
         client.force_login(comment_user)
-        response = client.post('/posts/{}/comments'.format(test_post.postId), data=post_body_1,
+        response = client.post('/posts/{}/comments/'.format(test_post.postId), data=post_body_1,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 201
         assert response.data["success"]

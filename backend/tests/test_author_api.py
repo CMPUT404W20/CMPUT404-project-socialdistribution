@@ -43,10 +43,10 @@ class TestAuthorAPI:
 
         # Checking scenario where the user doesnt have friends
 
-        noFriendsresponse = client.get('/author/{}/friends'.format(test_auth_id))
+        noFriendsresponse = client.get('/author/{}/friends/'.format(test_auth_id))
         assert noFriendsresponse.status_code == 200
         assert noFriendsresponse.data["query"] == "friends"
-        assert noFriendsresponse.data["Author"] == []
+        assert noFriendsresponse.data["authors"] == []
 
         # checking scenario where the user has friends
 
@@ -55,17 +55,17 @@ class TestAuthorAPI:
         Friend.objects.create(
             fromUser=test_user, toUser=friend_user[1])
 
-        response = client.get('/author/{}/friends'.format(test_auth_id))
+        response = client.get('/author/{}/friends/'.format(test_auth_id))
 
         assert response.status_code == 200
         assert response.data["query"] == "friends"
-        assert response.data["Author"] is not None
-        assert response.data["Author"][0] == friend_user[0].get_full_user_id()
-        assert response.data["Author"][1] == friend_user[1].get_full_user_id()
+        assert response.data["authors"] is not None
+        assert response.data["authors"][0] == friend_user[0].get_full_user_id()
+        assert response.data["authors"][1] == friend_user[1].get_full_user_id()
 
         # Checking scenario where the user does not exist, 404 Error
         
-        nouserResponse = client.get('/author/{}/friends'.format(self.user_notFound_id))
+        nouserResponse = client.get('/author/{}/friends/'.format(self.user_notFound_id))
         assert nouserResponse.status_code == 404
 
 
