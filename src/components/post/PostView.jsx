@@ -72,38 +72,38 @@ class PostView extends Component {
       if (post.id !== editingPostId) {
         renderedPosts.push(
           <Row className="postWrapper" key={post.id}>
-            <Col md={2} />
-            <Col md={8}>
-              <Post
-                post={post}
-                onEdit={this.handleEditToggle}
-              />
-            </Col>
-            <Col md={2} />
+            <Post
+              post={post}
+              onEdit={this.handleEditToggle}
+            />
           </Row>,
         );
       } else {
         renderedPosts.push(
           <Row className="postWrapper" key={-1}>
-            <Col md={2} />
-            <Col md={8}>
-              <MakePost
-                editMode
-                originalPost={post}
-                defaultPostContent={post.content}
-                defaultPostImage={post.imageSrc}
-                onSubmit={this.handlePostUpdate}
-                // set the current post being edited to null -> close the edit dialog
-                onDiscard={() => this.handleEditToggle(null)}
-              />
-            </Col>
-            <Col md={2} />
+            <MakePost
+              editMode
+              originalPost={post}
+              defaultPostContent={post.content}
+              defaultPostImage={post.imageSrc}
+              onSubmit={this.handlePostUpdate}
+              // set the current post being edited to null -> close the edit dialog
+              onDiscard={() => this.handleEditToggle(null)}
+            />
           </Row>,
         );
       }
     }
 
-    return renderedPosts;
+    return (
+      <Row className="postWrapper" key={-1}>
+        <Col md={2} />
+        <Col md={8}>
+          {renderedPosts}
+        </Col>
+        <Col md={2} />
+      </Row>
+    );
   }
 }
 
