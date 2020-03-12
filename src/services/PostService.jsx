@@ -57,6 +57,21 @@ export const deleteUserPosts = (postId) => {
       return {};
     }
 
-    throw new Error("Unable to retrieve posts");
+    throw new Error("Unable to delete posts");
+  });
+};
+
+export const updateUserPosts = (post) => {
+  const csrf = Cookies.get("csrftoken");
+  const headers = {
+    "X-CSRFToken": csrf,
+  };
+
+  return axios.put(`/posts/${post.id}/`, post, { headers: headers }).then((response) => {
+    if (response.status === 200) {
+      return {};
+    }
+
+    throw new Error("Unable to update posts");
   });
 };

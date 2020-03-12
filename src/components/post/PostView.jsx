@@ -55,14 +55,16 @@ class PostView extends Component {
   }
 
   handlePostUpdate = (post) => {
-    this.setState((prevState) => ({
-      // no longer editing the post
-      editingPostId: null,
-      // update post that got edited
-      posts: prevState.posts.map(
-        (p) => (p.id === post.id ? Object.assign(p, post) : p),
-      ),
-    }));
+    postService.updateUserPosts(post).then(() => {
+      this.setState((prevState) => ({
+        // no longer editing the post
+        editingPostId: null,
+        // update post that got edited
+        posts: prevState.posts.map(
+          (p) => (p.id === post.id ? Object.assign(p, post) : p),
+        ),
+      }));
+    });
   }
 
   handleDelete = (postID) => {
