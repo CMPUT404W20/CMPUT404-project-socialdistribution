@@ -45,7 +45,7 @@ class ProfilePage extends Component {
             </div>
             <PostView
             // TODO: change this to the current user's full id
-              userId={ localStorage.getItem("userID") }
+              userId={localStorage.getItem("userID")}
             />
           </Col>
           <Col md={2} />
