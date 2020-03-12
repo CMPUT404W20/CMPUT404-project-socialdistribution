@@ -52,7 +52,7 @@ class Login extends Component {
       auth.loginUser(username, password).then((response) => {
         if (response.status === 200) {
           auth.getCurrentUser().then((UserData) => {
-            localStorage.setItem("userID", `${window.location.href}author/${UserData.data.pk}`);
+            localStorage.setItem("userID", `https://cmput404-socialdistribution.herokuapp.com/author/${UserData.data.pk}`);
             localStorage.setItem("username", UserData.data.username);
           }).then(() => { this.setState({ isAuthed: true }); });
         }
