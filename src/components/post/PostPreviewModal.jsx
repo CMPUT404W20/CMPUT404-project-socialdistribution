@@ -41,7 +41,11 @@ PostPreviewModal.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
   postContent: PropTypes.string.isRequired,
-  imageObjectUrl: PropTypes.string.isRequired,
+  imageObjectUrl: PropTypes.string,
+};
+
+PostPreviewModal.defaultProps = {
+  imageObjectUrl: "",
 };
 
 export default PostPreviewModal;

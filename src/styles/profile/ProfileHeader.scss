@@ -5,11 +5,12 @@ $bg-path: "../../images/profile-bg.png";
 $text-color: #181818;
 $button-border-color: #dadada;
 .profileHeader {
-    margin-top: 90px;
     background-color: white;
     margin-bottom: 50px;
     width: $header-width;
     height: $header-height;
+    border-radius: $radius;
+    overflow: hidden;
 }
 
 .image-section {
@@ -39,20 +40,11 @@ $button-border-color: #dadada;
     float: right;
     padding-right: 3rem;
     button {
-        background-color: $accent-color;
-        color: white;
+        @extend %button;
         width: 10rem;
-        height: 2rem;
-        font-size: 9pt;
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        font-style: normal;
-        text-align: center;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        border: none;
-        border-radius: $radius;
     }
     .edit-icon {
         margin-right: 2px;
@@ -60,18 +52,15 @@ $button-border-color: #dadada;
         height: 15pt;
     }
     #friend-status {
-        background-color: $accent-color;
+        @extend %button;
+        &:not(:disabled) {
+            &:hover, &:focus {
+                box-shadow: none;
+            }
+        }
         cursor: default;
     }
     .dropdown-menu {
-        border: 0;
-        box-shadow: 0px 0px 10px rgba(121, 121, 121, 0.25);
-        .dropdown-item {
-            font-size: 10pt;
-            &:hover {
-                background-color: $accent-color;
-                color: white;
-            }
-        }
+        @extend %dropdown;
     }
 }
