@@ -67,7 +67,6 @@ class PostView extends Component {
 
   render() {
     const { editingPostId, posts } = this.state;
-
     const renderedPosts = [];
     for (let i = 0; i < posts.length; i += 1) {
       const post = posts[i];
@@ -110,10 +109,12 @@ class PostView extends Component {
 PostView.propTypes = {
   // pass in the full user id to get posts for that user only
   userId: PropTypes.string,
+  reloadPosts: PropTypes.bool,
 };
 
 PostView.defaultProps = {
   userId: null,
+  reloadPosts: false,
 };
 
 export default PostView;

@@ -8,17 +8,23 @@ import NavigationBar from "./NavigationBar";
 import MakePost from "./post/MakePost";
 import PostView from "./post/PostView";
 import * as postService from "../services/PostService";
+import { icons } from "react-icons";
 
 class Homepage extends Component {
+  constructor(props) {
+    super(props);
+    this.child = React.createRef();
+  }
+
   handlePostCreation = (post) => {
     // eslint-disable-next-line no-console
-    postService.createUserPosts(post).then(() => {
-
-
-    // eslint-disable-next-line no-alert
-    // alert("Post Created - Check Console");
+    postService.createUserPosts(post).then((success) => {
+      if (success) {
+        this.child.current.loadPosts();
+      }
     });
   }
+
 
   render() {
     return (
@@ -36,7 +42,7 @@ class Homepage extends Component {
                 onSubmit={this.handlePostCreation}
               />
             </div>
-            <PostView />
+            <PostView ref={this.child} />
           </Col>
           <Col md={2} />
         </Row>

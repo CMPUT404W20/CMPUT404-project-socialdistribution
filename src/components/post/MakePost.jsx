@@ -63,6 +63,7 @@ class MakePost extends Component {
     });
   }
 
+
   render() {
     const {
       uploadModalVisibility,
