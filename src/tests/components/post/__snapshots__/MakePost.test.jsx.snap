@@ -16,34 +16,35 @@ exports[`Post box Component should render correctly 1`] = `
       <select
         className="privacy-select"
         defaultValue="public"
+        onChange={[Function]}
       >
         <option
-          value="public"
+          value="PUBLIC"
         >
           Anyone
         </option>
         <option
-          value="another-author"
+          value="PRIVATE"
         >
           Specific author
         </option>
         <option
-          value="friends"
+          value="FRIENDS"
         >
           Friends
         </option>
         <option
-          value="mutual-friends"
+          value="FOAF"
         >
           Mutual friends
         </option>
         <option
-          value="local-friends"
+          value="SERVERONLY"
         >
           Local friends
         </option>
         <option
-          value="private"
+          value="UNLISTED"
         >
           Private
         </option>
