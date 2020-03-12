@@ -14,6 +14,15 @@ export const getPosts = () => {
   });
 };
 
-export const createPost = () => {
-  return null;
+export const getUserPosts = (fullUserId) => {
+  return axios.get(`/author/${fullUserId}/posts`).then((response) => {
+    if (response.status === 200) {
+      if (response.data && response.data.posts) {
+        return response.data;
+      }
+      return {};
+    }
+
+    throw new Error("Unable to retrieve posts");
+  });
 };
