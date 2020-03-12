@@ -1,12 +1,10 @@
 /* eslint-disable react/sort-comp */
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "../../styles/post/PostView.scss";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import MakePost from "./MakePost";
 import Post from "./Post";
 import * as postService from "../../services/PostService";
-// import PropTypes from "prop-types";
 
 class PostView extends Component {
   constructor(props) {
@@ -20,9 +18,14 @@ class PostView extends Component {
   }
 
   loadPosts() {
+    const { user } = this.props;
+
+    // TODO: fix else statement
+    const getPosts = user === null ? postService.getPosts : postService.getPosts;
+
     const posts = [];
 
-    postService.getPosts().then((response) => {
+    getPosts().then((response) => {
       for (let i = 0; i < response.posts.length; i += 1) {
         const newPost = {};
         const post = response.posts[i];
@@ -105,9 +108,12 @@ class PostView extends Component {
 
 
 PostView.propTypes = {
+  // optional user field to only load posts from this user
+  user: PropTypes.string,
 };
 
 PostView.defaultProps = {
+  user: null,
 };
 
 export default PostView;
