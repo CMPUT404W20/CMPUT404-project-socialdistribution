@@ -35,7 +35,7 @@ $placeholder-text-color: #bababa;
 
   &:not(:disabled) {
     &:hover, &:focus {
-      outline: none;
+      outline: none !important;
       background-color: $secondary-color;
     }
   }
