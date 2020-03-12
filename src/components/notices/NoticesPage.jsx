@@ -23,7 +23,7 @@ class NoticesPage extends Component {
   }
 
   handleAccept(id) {
-    // accept the request
+    // TODO: accept the request
     this.handleRemoveNotice(id);
   }
 
@@ -35,7 +35,7 @@ class NoticesPage extends Component {
           <NoticeItem
             key={item.id}
             username={item.name}
-            id={item.id}
+            userID={item.id}
             type={item.type}
             handleAccept={(id) => this.handleAccept(id)}
             handleDecline={(id) => this.handleRemoveNotice(id)}

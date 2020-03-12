@@ -14,15 +14,14 @@ class FriendItem extends Component {
 
 
   render() {
-    const { username, id, handleUnfollow } = this.props;
+    const { username, userID, handleUnfollow } = this.props;
     return (
       <Col md={6}>
         <div className="friend-item-wrapper">
-          {/* need to redirect to the user's profile page */}
           <Link
             to={{
               pathname: `/profile/${username}`,
-              state: { username, isFollowing: true, isFriends: true },
+              state: { username, userID },
             }}
             className="username-link"
           >
@@ -34,7 +33,7 @@ class FriendItem extends Component {
             drop="down"
             alignRight
           >
-            <Dropdown.Item onClick={() => handleUnfollow(id)}>Unfriend</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleUnfollow(userID)}>Unfriend</Dropdown.Item>
           </DropdownButton>
         </div>
       </Col>
@@ -44,7 +43,7 @@ class FriendItem extends Component {
 
 FriendItem.propTypes = {
   username: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  userID: PropTypes.string.isRequired,
   handleUnfollow: PropTypes.func.isRequired,
 };
 

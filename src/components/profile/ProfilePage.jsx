@@ -3,6 +3,7 @@ import "../../styles/profile/ProfilePage.scss";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import PropTypes from "prop-types";
 import NavigationBar from "../NavigationBar";
 import ProfileHeader from "./ProfileHeader";
 import PostView from "../post/PostView";
@@ -10,14 +11,18 @@ import PostView from "../post/PostView";
 class ProfilePage extends Component {
   constructor(props) {
     super(props);
-    this.props = props;
+    const { location } = this.props;
+    this.state = {
+      username: location.state.username,
+      userID: location.state.userID,
+      currentUserID: localStorage.getItem("userID"),
+    };
   }
 
   render() {
-    const isSelf = this.props.location.state.isSelf || false;
-    const isFriends = this.props.location.state.isFriends || false;
-    const isFollowing = this.props.location.state.isFollowing || false;
-    const username = isSelf ? localStorage.getItem("username") : this.props.location.state.username;
+    const { username, userID, currentUserID } = this.state;
+    const isSelf = (currentUserID === userID);
+    // TODO: const isFriends, isFollowing
     return (
       <Container fluid className="profilePage">
         <Row>
@@ -30,9 +35,10 @@ class ProfilePage extends Component {
           <Col md={8}>
             <div className="profileHeaderWrapper">
               <ProfileHeader
+                // need to improve the logic
                 isSelf={isSelf}
-                isFriends={isFriends}
-                isFollowing={isFollowing}
+                isFriends={false}
+                isFollowing={false}
                 remote={false}
                 username={username}
               />
@@ -48,5 +54,9 @@ class ProfilePage extends Component {
     );
   }
 }
+
+ProfilePage.propTypes = {
+  location: PropTypes.objectOf(PropTypes.object()).isRequired,
+};
 
 export default ProfilePage;

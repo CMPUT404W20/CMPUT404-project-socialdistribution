@@ -16,7 +16,7 @@ class NavigationBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: localStorage.getItem("username") || "User",
+      username: localStorage.getItem("username") || "Username",
       userID: localStorage.getItem("userID"),
       numNotifications: 2,
     };
@@ -68,7 +68,7 @@ class NavigationBar extends Component {
                 exact
                 to={{
                   pathname: `/profile/${username}`,
-                  state: { isSelf: true },
+                  state: { userID, username },
                 }}
               >
                 Profile

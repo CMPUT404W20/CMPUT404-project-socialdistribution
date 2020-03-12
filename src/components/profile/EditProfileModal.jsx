@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 
 function EditProfileModal(props) {
   const { onHide, show } = props;
-
+  const username = localStorage.getItem("username");
   return (
     <Modal onHide={onHide} show={show} className="edit-profile-modal">
       <Modal.Header closeButton>
@@ -15,6 +15,7 @@ function EditProfileModal(props) {
         <input
           type="text"
           name="username"
+          value={username}
           placeholder="Username"
         />
 

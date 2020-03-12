@@ -4,7 +4,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Redirect } from "react-router-dom";
-import axios from "axios";
 import * as auth from "../services/AuthenticationService";
 import cover from "../images/cover.svg";
 
@@ -52,7 +51,10 @@ class Login extends Component {
     } else {
       auth.loginUser(username, password).then((response) => {
         if (response.status === 200) {
-          this.setState({ isAuthed: true }, () => this.saveUserID());
+          auth.getCurrentUser().then((UserData) => {
+            localStorage.setItem("userID", `${window.location.href}author/${UserData.data.pk}`);
+            localStorage.setItem("username", UserData.data.username);
+          }).then(() => { this.setState({ isAuthed: true }); });
         }
       }).catch(() => {
         this.setState({
@@ -60,15 +62,6 @@ class Login extends Component {
         });
       });
     }
-  }
-
-  saveUserID = () => {
-    axios.get("/auth/user/").then((response) => {
-      if (response.status === 200) {
-        localStorage.setItem("userID", `${window.location.href}/author/${response.data.pk}`);
-        localStorage.setItem("username", response.data.username);
-      }
-    });
   }
 
   toggleMethod = () => {

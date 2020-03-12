@@ -158,7 +158,7 @@ exports[`Navigation bar Component should render correctly 1`] = `
       <NavDropdown
         alignRight={true}
         id="username-dropdown"
-        title="User"
+        title="Username"
       >
         <DropdownItem
           as={
@@ -188,9 +188,10 @@ exports[`Navigation bar Component should render correctly 1`] = `
           exact={true}
           to={
             Object {
-              "pathname": "/profile/User",
+              "pathname": "/profile/Username",
               "state": Object {
-                "isSelf": true,
+                "userID": null,
+                "username": "Username",
               },
             }
           }

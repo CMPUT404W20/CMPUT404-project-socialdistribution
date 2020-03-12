@@ -10,12 +10,11 @@ class PrivateRoute extends Component {
     };
   }
   // To do: Fix the 401 response header to disable popup auth
+
   // componentDidMount() {
-  //   axios.get("/auth/user", { headers: { "WWW-Authenticate":
-  // "xxx", Authorization: "BasicCustom", "X-Requested-With": "XMLHttpRequest" } }).
+  //   axios.get("/auth/user").
   // then(((response) => {
   //     if (response.status === 200) {
-  //       // TODO: success: redirect to homepage
   //       // eslint-disable-next-line no-alert
   //       this.setState({ isAuthed: true });
   //     }
@@ -28,10 +27,10 @@ class PrivateRoute extends Component {
       <Route
         exact
         path="/"
-        render={(props) => (isAuthed ? (
+        render={() => (isAuthed ? (
           <Redirect to={{ pathname: "/home" }} />
         ) : (
-          <Login {...props} />
+          <Login />
         ))}
       />
     );

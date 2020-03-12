@@ -20,8 +20,8 @@ class FriendsPage extends Component {
 
   loadFriends() {
     const friendsList = [];
-
-    friendsService.getAuthorFriends("http://localhost:8000/author/1").then((response) => {
+    const userID = localStorage.getItem("userID");
+    friendsService.getAuthorFriends(userID).then((response) => {
       for (let i = 0; i < response.length; i += 1) {
         const newFriend = {};
         const friend = response[i];
@@ -41,9 +41,9 @@ class FriendsPage extends Component {
     });
   }
 
-  handleUnfollow(id) {
+  handleUnfollow(userID) {
     const { friendsList } = this.state;
-    const filteredList = friendsList.filter((item) => item.id !== id);
+    const filteredList = friendsList.filter((item) => item.id !== userID);
     this.setState({ friendsList: filteredList });
   }
 
@@ -55,7 +55,7 @@ class FriendsPage extends Component {
           <FriendItem
             key={item.id}
             username={item.name}
-            id={item.id}
+            userID={item.id}
             handleUnfollow={(id) => this.handleUnfollow(id)}
           />
         ))}

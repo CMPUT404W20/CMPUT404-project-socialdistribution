@@ -13,8 +13,7 @@ exports[`FriendItem Component should render correctly 1`] = `
         Object {
           "pathname": "/profile/",
           "state": Object {
-            "isFollowing": true,
-            "isFriends": true,
+            "userID": "",
             "username": "",
           },
         }
