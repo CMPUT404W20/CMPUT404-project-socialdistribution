@@ -18,14 +18,14 @@ class PostView extends Component {
   }
 
   loadPosts() {
-    const { user } = this.props;
+    const { userId } = this.props;
 
     // TODO: fix else statement
-    const getPosts = user === null ? postService.getPosts : postService.getPosts;
+    const getPosts = userId === null ? postService.getPosts() : postService.getUserPosts(userId);
 
     const posts = [];
 
-    getPosts().then((response) => {
+    getPosts.then((response) => {
       for (let i = 0; i < response.posts.length; i += 1) {
         const newPost = {};
         const post = response.posts[i];
@@ -108,12 +108,12 @@ class PostView extends Component {
 
 
 PostView.propTypes = {
-  // optional user field to only load posts from this user
-  user: PropTypes.string,
+  // pass in the full user id to get posts for that user only
+  userId: PropTypes.string,
 };
 
 PostView.defaultProps = {
-  user: null,
+  userId: null,
 };
 
 export default PostView;
