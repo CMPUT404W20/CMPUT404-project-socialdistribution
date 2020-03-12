@@ -29,6 +29,7 @@ class Post extends Component {
       invisible,
       previewMode,
       onEdit,
+      onDelete,
     } = this.props;
 
     if (previewMode) {
@@ -51,7 +52,7 @@ class Post extends Component {
           alignRight
         >
           <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
-          <Dropdown.Item href="#">Delete</Dropdown.Item>
+          <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
           <Dropdown.Item href="#">Copy Link</Dropdown.Item>
         </DropdownButton>
         <div className="post-time">{formattedTime}</div>
@@ -153,12 +154,14 @@ Post.propTypes = {
   invisible: PropTypes.bool,
   previewMode: PropTypes.bool,
   onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
 };
 
 Post.defaultProps = {
   invisible: false,
   previewMode: false,
   onEdit: null,
+  onDelete: null,
 };
 
 export default Post;

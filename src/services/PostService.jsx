@@ -41,5 +41,15 @@ export const createUserPosts = (postData) => {
     }
 
     throw new Error("Unable to create post");
+export const deleteUserPosts = (postId) => {
+  return axios.delete(`/posts/${postId}`).then((response) => {
+    if (response.status === 200) {
+      // if (response.data && response.data.posts) {
+      //   return response.data;
+      // }
+      // return {};
+    }
+
+    throw new Error("Unable to retrieve posts");
   });
 };

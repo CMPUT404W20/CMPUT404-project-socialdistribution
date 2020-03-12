@@ -65,6 +65,16 @@ class PostView extends Component {
     }));
   }
 
+  handleDelete = (postID) => {
+    postService.deleteUserPosts(postID);
+    this.setState((prevState) => ({
+      // update post that got edited
+      posts: prevState.posts.filter(
+        (p) => (p.id != postID),
+      ),
+    }));
+  }
+
   render() {
     const { editingPostId, posts } = this.state;
     const renderedPosts = [];
@@ -77,6 +87,7 @@ class PostView extends Component {
             <Post
               post={post}
               onEdit={this.handleEditToggle}
+              onDelete={this.handleDelete}
             />
           </div>,
         );
