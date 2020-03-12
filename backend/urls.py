@@ -58,6 +58,12 @@ urlpatterns = [
     path('author/', AuthorViewSet.as_view({
         "get": "get_authors"
     })),
+
+    # get current authenticated user information
+    path('author/current/', AuthorViewSet.as_view({
+        "get": "get_current_user"
+    })),
+
     path('author/<path:pk>/friends/', AuthorViewSet.as_view(({
         "get": "get_friends"
     }))),
