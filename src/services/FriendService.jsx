@@ -14,6 +14,15 @@ export const getAuthorFriends = (authorId) => {
   });
 };
 
+export const checkFriendStatus = (authorId1, authorId2) => {
+  return axios.get(`/author/${authorId1}/friends/${authorId2}`).then((response) => {
+    if (response.status === 200) {
+      return response.data.friends;
+    }
+    return false;
+  });
+};
+
 // for eslint
 export const createFriend = () => {
   return null;

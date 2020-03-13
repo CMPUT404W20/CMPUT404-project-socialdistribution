@@ -4,8 +4,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
-import NavigationBar from "../NavigationBar";
 import FriendItem from "./FriendItem";
+import NavigationBar from "../NavigationBar";
 import * as friendsService from "../../services/FriendService";
 
 class FriendsPage extends Component {
@@ -20,8 +20,8 @@ class FriendsPage extends Component {
 
   loadFriends() {
     const friendsList = [];
-
-    friendsService.getAuthorFriends("http://localhost:8000/author/1").then((response) => {
+    const userID = localStorage.getItem("userID");
+    friendsService.getAuthorFriends(userID).then((response) => {
       for (let i = 0; i < response.length; i += 1) {
         const newFriend = {};
         const friend = response[i];
@@ -41,9 +41,9 @@ class FriendsPage extends Component {
     });
   }
 
-  handleUnfollow(id) {
+  handleUnfollow(userID) {
     const { friendsList } = this.state;
-    const filteredList = friendsList.filter((item) => item.id !== id);
+    const filteredList = friendsList.filter((item) => item.id !== userID);
     this.setState({ friendsList: filteredList });
   }
 
@@ -55,7 +55,7 @@ class FriendsPage extends Component {
           <FriendItem
             key={item.id}
             username={item.name}
-            id={item.id}
+            userID={item.id}
             handleUnfollow={(id) => this.handleUnfollow(id)}
           />
         ))}
@@ -69,7 +69,7 @@ class FriendsPage extends Component {
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
-            <NavigationBar selected="Friends" />
+            <NavigationBar />
           </Col>
         </Row>
         <Row>

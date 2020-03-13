@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../../styles/friends-notices/NoticeItem.scss";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import Col from "react-bootstrap/Col";
 
 class NoticeItem extends Component {
@@ -12,14 +13,21 @@ class NoticeItem extends Component {
 
   render() {
     const {
-      username, id, type, handleAccept, handleDecline,
+      username, userID, type, handleAccept, handleDecline,
     } = this.props;
     return (
       <Col>
         <div className="notice-item-wrapper">
-          {/* need to redirect to the user's profile page */}
           <Col sm={3} md={4}>
-            <a href=" " className="username-link">{username}</a>
+            <Link
+              to={{
+                pathname: `/profile/${username}`,
+                state: { username, userID },
+              }}
+              className="username-link"
+            >
+              {username}
+            </Link>
           </Col>
           <Col sm={3} md={4}>
             <div className="type-wrapper">
@@ -28,8 +36,8 @@ class NoticeItem extends Component {
           </Col>
           <Col>
             <div className="button-wrapper">
-              <button type="button" className="accept-button" onClick={() => handleAccept(id)}>ACCEPT</button>
-              <button type="button" className="decline-button" onClick={() => handleDecline(id)}>DECLINE</button>
+              <button type="button" className="accept-button" onClick={() => handleAccept(userID)}>ACCEPT</button>
+              <button type="button" className="decline-button" onClick={() => handleDecline(userID)}>DECLINE</button>
             </div>
           </Col>
         </div>
@@ -41,7 +49,7 @@ class NoticeItem extends Component {
 
 NoticeItem.propTypes = {
   username: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  userID: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   handleAccept: PropTypes.func.isRequired,
   handleDecline: PropTypes.func.isRequired,

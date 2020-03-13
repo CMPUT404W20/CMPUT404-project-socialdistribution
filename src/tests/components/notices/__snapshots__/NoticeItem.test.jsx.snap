@@ -9,9 +9,17 @@ exports[`Notice Item Component should render correctly 1`] = `
       md={4}
       sm={3}
     >
-      <a
+      <Link
         className="username-link"
-        href=" "
+        to={
+          Object {
+            "pathname": "/profile/",
+            "state": Object {
+              "userID": "",
+              "username": "",
+            },
+          }
+        }
       />
     </Col>
     <Col
