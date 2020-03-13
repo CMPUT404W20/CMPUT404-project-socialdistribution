@@ -16,7 +16,8 @@ class PrivateRoute extends Component {
     auth.getCurrentUser()
       .then(((response) => {
         if (response.status === 200) {
-        // eslint-disable-next-line no-alert
+          localStorage.setItem("userID", response.data.id);
+          localStorage.setItem("username", response.data.displayName);
           this.setState({ isAuthed: true, isLoading: false });
         }
       }));

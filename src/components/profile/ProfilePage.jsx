@@ -29,13 +29,7 @@ class ProfilePage extends Component {
     if (!isSelf) {
       friendsService.checkFriendStatus(currentUserID, userID).then((response) => {
         if (response) {
-          friendsService.checkFriendStatus(userID, currentUserID).then((response2) => {
-            if (response2) {
-              this.setState({ isFriends: true, isFollowing: true, loading: false });
-            } else {
-              this.setState({ isFollowing: true, loading: false });
-            }
-          });
+          this.setState({ isFriends: true, loading: false });
         }
       }).catch((error) => {
       // eslint-disable-next-line no-alert

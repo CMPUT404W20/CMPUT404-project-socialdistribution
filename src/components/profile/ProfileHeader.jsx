@@ -44,10 +44,10 @@ class ProfileHeader extends Component {
       if (!isFriends && !isFollowing) {
         return (this.renderFollowButton());
       }
-      if (!isFriends && isFollowing) {
-        return (this.renderDropDown(false));
+      if (isFriends) {
+        return (this.renderDropDown(true));
       }
-      return (this.renderDropDown(true));
+      return (this.renderDropDown(false));
     }
     return (this.renderEditProfileButton());
   };

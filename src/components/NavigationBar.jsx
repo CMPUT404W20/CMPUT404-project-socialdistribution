@@ -11,7 +11,6 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { NavLink } from "react-router-dom";
 import logo from "../images/logo.svg";
 
-// Example usage: <NavigationBar selected="Friends" />
 class NavigationBar extends Component {
   constructor(props) {
     super(props);
