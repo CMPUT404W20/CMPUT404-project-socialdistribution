@@ -43,6 +43,7 @@ class MakePost extends Component {
     onSubmit(originalPost);
     this.setState({
       postContent:"",
+      postImage:"",
     });
     // eslint-disable-next-line no-alert
     // alert(postContent);
