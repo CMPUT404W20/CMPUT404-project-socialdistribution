@@ -100,7 +100,7 @@ class MakePost extends Component {
               <option value="PRIVATE">Specific author</option>
               <option value="FRIENDS">Friends</option>
               <option value="FOAF">Mutual friends</option>
-              <option value="SERVERONLY">Local friends</option>
+              <option value="SERVERONLY">Server Only</option>
               <option value="UNLISTED">Private</option>
             </select>
           </div>
