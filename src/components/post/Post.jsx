@@ -16,9 +16,6 @@ class Post extends Component {
     super(props);
     this.state = {
       commentsOpen: false,
-      commentList: [{ id: "1", username: "abc", content: "good!" },
-        { id: "2", username: "imUser2", content: "This HTML file is a template.If you open it directly in the browser, you will see an empty page. You can add webfonts, meta tags, or analytics to this file." },
-        { id: "3", username: "chubby bunny", content: "ahhhhhhhh i want bubble tttttttt!!!" }],
       newComment: "",
     };
   }
@@ -60,16 +57,17 @@ class Post extends Component {
   }
 
   renderComments = () => {
-    const { commentList } = this.state;
+    const { post } = this.props;
+
     return (
       <div id="comment-list">
-        {commentList.map((comment) => (
+        {post.comments.map((comment) => (
           <div key={comment.id}>
             <p>
-              {comment.username}
+              {comment.author.displayName}
               {" "}
               :
-              <span className="comment-content">{comment.content}</span>
+              <span className="comment-content">{comment.comment}</span>
             </p>
           </div>
         ))}
@@ -83,7 +81,8 @@ class Post extends Component {
     if (previewMode) {
       return null;
     }
-    const { commentsOpen, commentList, newComment } = this.state;
+    const { commentsOpen, newComment } = this.state;
+    const { post } = this.props;
     return (
       <div>
         <button
@@ -93,9 +92,9 @@ class Post extends Component {
           aria-expanded={commentsOpen}
           type="button"
         >
-          {commentList.length}
+          {post.comments.length}
           {" "}
-          comments
+          {post.comments.length === 1 ? "comment" : "comments"}
         </button>
         <Collapse in={commentsOpen}>
           {this.renderComments()}
@@ -149,6 +148,7 @@ Post.propTypes = {
     published: PropTypes.string.isRequired,
     imageSrc: PropTypes.string,
     content: PropTypes.string,
+    comments: PropTypes.array,
   }).isRequired,
   invisible: PropTypes.bool,
   previewMode: PropTypes.bool,
