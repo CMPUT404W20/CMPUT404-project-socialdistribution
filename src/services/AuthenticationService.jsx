@@ -17,5 +17,5 @@ export const registerUser = (username, password) => {
 };
 
 export const getCurrentUser = () => {
-  return axios.get("/author/current");
+  return axios.get("/author/current/");
 };
