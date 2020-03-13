@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import NavigationBar from "../NavigationBar";
 import ProfileHeader from "./ProfileHeader";
 import PostView from "../post/PostView";
+import * as friendsService from "../../services/FriendService";
 
 class ProfilePage extends Component {
   constructor(props) {
@@ -16,13 +17,54 @@ class ProfilePage extends Component {
       username: location.state.username,
       userID: location.state.userID,
       currentUserID: localStorage.getItem("userID"),
+      isFollowing: false,
+      isFriends: false,
+      isSelf: (location.state.userID === localStorage.getItem("userID")),
+      loading: true,
     };
   }
 
+  componentDidMount() {
+    const { userID, currentUserID, isSelf } = this.state;
+    if (!isSelf) {
+      friendsService.checkFriendStatus(currentUserID, userID).then((response) => {
+        if (response) {
+          friendsService.checkFriendStatus(userID, currentUserID).then((response2) => {
+            if (response2) {
+              this.setState({ isFriends: true, isFollowing: true, loading: false });
+            } else {
+              this.setState({ isFollowing: true, loading: false });
+            }
+          });
+        }
+      }).catch((error) => {
+      // eslint-disable-next-line no-alert
+        alert(error);
+      });
+    } else {
+      this.setState({ loading: false });
+    }
+  }
+
+  renderHeader = () => {
+    const {
+      username, isFollowing, isFriends, userID, currentUserID, loading,
+    } = this.state;
+    const isSelf = (userID === currentUserID);
+    return (
+      !loading && (
+      <ProfileHeader
+        isSelf={isSelf}
+        isFriends={isFriends}
+        isFollowing={isFollowing}
+        remote={false}
+        username={username}
+      />
+      )
+    );
+  }
+
   render() {
-    const { username, userID, currentUserID } = this.state;
-    const isSelf = (currentUserID === userID);
-    // TODO: const isFriends, isFollowing
     return (
       <Container fluid className="profilePage">
         <Row>
@@ -34,14 +76,7 @@ class ProfilePage extends Component {
           <Col md={2} />
           <Col md={8}>
             <div className="profileHeaderWrapper">
-              <ProfileHeader
-                // need to improve the logic
-                isSelf={isSelf}
-                isFriends={false}
-                isFollowing={false}
-                remote={false}
-                username={username}
-              />
+              {this.renderHeader()}
             </div>
             <PostView
             // TODO: change this to the current user's full id

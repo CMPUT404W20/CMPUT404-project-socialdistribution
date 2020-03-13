@@ -12,13 +12,13 @@ class PrivateRoute extends Component {
   // To do: Fix the 401 response header to disable popup auth
 
   // componentDidMount() {
-  //   axios.get("/auth/user").
-  // then(((response) => {
-  //     if (response.status === 200) {
+  //   auth.getCurrentUser()
+  //     .then(((response) => {
+  //       if (response.status === 200) {
   //       // eslint-disable-next-line no-alert
-  //       this.setState({ isAuthed: true });
-  //     }
-  //   }));
+  //         this.setState({ isAuthed: true });
+  //       }
+  //     }));
   // }
 
   render() {

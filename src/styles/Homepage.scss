@@ -1,12 +1,9 @@
 @import "./common.scss";
-
 .homepage {
-  background-color: $background-color;
-  padding: 0 0 20px 0;
-  min-height: 100vh;
-  
-  .makePostWrapper {
-    padding: 15px 10px;
-    margin-top: 5rem;
-  }
+    background-color: $background-color;
+    min-height: 100vh;
+    .makePostWrapper {
+        padding: 15px 10px;
+        margin-top: 5rem;
+    }
 }
