@@ -121,7 +121,6 @@ class Post extends Component {
   }
 
   handleSubmitNewComment = () => {
-    // todo: post new comment to api
     const { newComment } = this.state;
     const { post } = this.props;
     const comment = {

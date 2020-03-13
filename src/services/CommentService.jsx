@@ -11,7 +11,7 @@ export const createComment = (newComment) => {
   // eslint-disable-next-line object-shorthand
   return axios.post(`posts/${newComment.post}/comments/`, newComment, { headers }).then((response) => {
     if (response.status === 201) {
-      return response.data.success;
+      return response;
     }
     throw new Error("Unable to create comment");
   });
