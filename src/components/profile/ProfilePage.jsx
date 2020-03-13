@@ -59,6 +59,7 @@ class ProfilePage extends Component {
   }
 
   render() {
+    const { userID } = this.state;
     return (
       <Container fluid className="profilePage">
         <Row>
@@ -73,7 +74,7 @@ class ProfilePage extends Component {
               {this.renderHeader()}
             </div>
             <PostView
-              userId={localStorage.getItem("userID")}
+              userId={userID}
             />
           </Col>
           <Col md={2} />
