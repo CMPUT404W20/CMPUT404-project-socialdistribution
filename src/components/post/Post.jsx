@@ -116,7 +116,10 @@ class Post extends Component {
           {post.comments.length === 1 ? "comment" : "comments"}
         </button>
         <Collapse in={commentSectionVisisble}>
-          {this.renderComments()}
+          {/* this div is necessary to prevent a choppy animation when opening the comments */}
+          <div>
+            {this.renderComments()}
+          </div>
         </Collapse>
         <form className="make-comment-input-wrapper" action="submit" onSubmit={this.handleSubmitNewComment}>
           <TextareaAutosize
