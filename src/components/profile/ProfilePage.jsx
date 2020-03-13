@@ -79,7 +79,6 @@ class ProfilePage extends Component {
               {this.renderHeader()}
             </div>
             <PostView
-            // TODO: change this to the current user's full id
               userId={localStorage.getItem("userID")}
             />
           </Col>
