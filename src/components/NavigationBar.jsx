@@ -8,8 +8,11 @@ import Nav from "react-bootstrap/Nav";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { NavLink } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 import logo from "../images/logo.svg";
+import * as auth from "../services/AuthenticationService";
+
+
 
 class NavigationBar extends Component {
   constructor(props) {
@@ -22,7 +25,12 @@ class NavigationBar extends Component {
   }
 
   handleLogOut = () => {
-    localStorage.clear();
+    auth.logoutUser().then((response) => {
+      if (response.status === 200) {
+        localStorage.clear();
+        return <Redirect to="/" />;
+      }
+    });
   }
 
   render() {
