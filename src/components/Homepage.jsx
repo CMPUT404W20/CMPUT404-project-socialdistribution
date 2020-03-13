@@ -8,7 +8,6 @@ import NavigationBar from "./NavigationBar";
 import MakePost from "./post/MakePost";
 import PostView from "./post/PostView";
 import * as postService from "../services/PostService";
-import { icons } from "react-icons";
 
 class Homepage extends Component {
   constructor(props) {
@@ -22,6 +21,9 @@ class Homepage extends Component {
       if (success) {
         this.child.current.loadPosts();
       }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
     });
   }
 

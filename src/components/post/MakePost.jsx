@@ -41,6 +41,9 @@ class MakePost extends Component {
     originalPost.visibility = postVisibility;
 
     onSubmit(originalPost);
+    this.setState({
+      postContent:"",
+    });
     // eslint-disable-next-line no-alert
     // alert(postContent);
   };
@@ -85,7 +88,7 @@ class MakePost extends Component {
         <div className="make-post-content">
           <div className="make-post-header">
             <b>{title}</b>
-            <select className="privacy-select" defaultValue="public" onChange={this.changePostVisibility}>
+            <select className="privacy-select" defaultValue="PUBLIC" onChange={this.changePostVisibility}>
               <option value="PUBLIC">Anyone</option>
               <option value="PRIVATE">Specific author</option>
               <option value="FRIENDS">Friends</option>
@@ -107,6 +110,7 @@ class MakePost extends Component {
           />
           <form className="make-post-input-wrapper" action="submit">
             <TextareaAutosize
+              ref="postTextArea"
               placeholder="What's on your mind?"
               className="post-text-area"
               onChange={this.handleTextChange}

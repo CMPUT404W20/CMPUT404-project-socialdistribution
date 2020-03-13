@@ -64,6 +64,9 @@ class PostView extends Component {
           (p) => (p.id === post.id ? Object.assign(p, post) : p),
         ),
       }));
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
     });
   }
 
@@ -75,6 +78,9 @@ class PostView extends Component {
           (p) => (p.id !== postID),
         ),
       }));
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
     });
   }
 
