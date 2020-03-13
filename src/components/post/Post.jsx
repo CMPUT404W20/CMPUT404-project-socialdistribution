@@ -15,7 +15,7 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      commentsOpen: false,
+      commentSectionVisisble: false,
       newComment: "",
     };
   }
@@ -64,16 +64,35 @@ class Post extends Component {
         {post.comments.map((comment) => (
           <div key={comment.id}>
             <p>
-              {comment.author.displayName}
-              {" "}
-              :
+              {`${comment.author.displayName}:`}
               <span className="comment-content">{comment.comment}</span>
             </p>
           </div>
         ))}
       </div>
-
     );
+  }
+
+  handleCommentTextChange = (event) => {
+    this.setState({ newComment: event.target.value });
+  }
+
+  handleSubmitNewComment = () => {
+    // TODO: post new comment to api and refresh the list of comments
+    this.setState({ newComment: "" });
+  }
+
+  handleCommentKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      this.handleSubmitNewComment();
+    }
+  }
+
+  toggleCommentSection = () => {
+    this.setState((prevState) => ({
+      commentSectionVisisble: !prevState.commentSectionVisisble,
+    }));
   }
 
   renderCommentSection = () => {
@@ -81,51 +100,35 @@ class Post extends Component {
     if (previewMode) {
       return null;
     }
-    const { commentsOpen, newComment } = this.state;
+    const { commentSectionVisisble, newComment } = this.state;
     const { post } = this.props;
     return (
       <div>
         <button
           className="post-show-comment"
-          onClick={() => this.setState({ commentsOpen: !commentsOpen })}
+          onClick={this.toggleCommentSection}
           aria-controls="post-comments"
-          aria-expanded={commentsOpen}
+          aria-expanded={commentSectionVisisble}
           type="button"
         >
           {post.comments.length}
           {" "}
           {post.comments.length === 1 ? "comment" : "comments"}
         </button>
-        <Collapse in={commentsOpen}>
+        <Collapse in={commentSectionVisisble}>
           {this.renderComments()}
         </Collapse>
         <form className="make-comment-input-wrapper" action="submit" onSubmit={this.handleSubmitNewComment}>
           <TextareaAutosize
             placeholder="Add a comment"
             className="post-comment-text-area"
-            onChange={this.handleTextChange}
-            onKeyPress={this.keyPressed}
+            onChange={this.handleCommentTextChange}
+            onKeyPress={this.handleCommentKeyPress}
             value={newComment}
           />
         </form>
       </div>
     );
-  }
-
-  handleTextChange = (event) => {
-    this.setState({ newComment: event.target.value });
-  }
-
-  handleSubmitNewComment = () => {
-    // todo: post new comment to api
-    this.setState({ newComment: "" });
-  }
-
-  keyPressed = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      this.handleSubmitNewComment();
-    }
   }
 
   render() {
