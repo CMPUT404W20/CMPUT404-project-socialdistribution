@@ -31,7 +31,13 @@ class MakePost extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    const { originalPost, postContent, postImage, postVisibility } = this.state;
+    const {
+      originalPost,
+      postContent,
+      postImage,
+      postVisibility,
+    } = this.state;
+
     const { onSubmit } = this.props;
 
     originalPost.content = postContent;

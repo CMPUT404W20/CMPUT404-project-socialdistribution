@@ -15,10 +15,7 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      commentsOpen: false,
-      commentList: [{ id: "1", username: "abc", content: "good!" },
-        { id: "2", username: "imUser2", content: "This HTML file is a template.If you open it directly in the browser, you will see an empty page. You can add webfonts, meta tags, or analytics to this file." },
-        { id: "3", username: "chubby bunny", content: "ahhhhhhhh i want bubble tttttttt!!!" }],
+      commentSectionVisisble: false,
       newComment: "",
     };
   }
@@ -61,22 +58,45 @@ class Post extends Component {
   }
 
   renderComments = () => {
-    const { commentList } = this.state;
+    const { post } = this.props;
+
     return (
       <div id="comment-list">
-        {commentList.map((comment) => (
+        {post.comments.map((comment) => (
           <div key={comment.id}>
             <p>
-              {comment.username}
-              {" "}
-              :
-              <span className="comment-content">{comment.content}</span>
+              {`${comment.author.displayName}:`}
+              <span className="comment-content">{comment.comment}</span>
             </p>
           </div>
         ))}
       </div>
-
     );
+  }
+
+  handleCommentTextChange = (event) => {
+    this.setState({ newComment: event.target.value });
+  }
+
+  handleSubmitNewComment = () => {
+    // TODO: post new comment to api and refresh the list of comments
+    this.setState({ newComment: "" });
+  }
+
+  handleCommentKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      this.handleSubmitNewComment();
+    }
+  }
+
+  toggleCommentSection = () => {
+    const { post } = this.props;
+    if (post.comments.length > 0) {
+      this.setState((prevState) => ({
+        commentSectionVisisble: !prevState.commentSectionVisisble,
+      }));
+    }
   }
 
   renderCommentSection = () => {
@@ -84,50 +104,38 @@ class Post extends Component {
     if (previewMode) {
       return null;
     }
-    const { commentsOpen, commentList, newComment } = this.state;
+    const { commentSectionVisisble, newComment } = this.state;
+    const { post } = this.props;
     return (
       <div>
         <button
           className="post-show-comment"
-          onClick={() => this.setState({ commentsOpen: !commentsOpen })}
+          onClick={this.toggleCommentSection}
           aria-controls="post-comments"
-          aria-expanded={commentsOpen}
+          aria-expanded={commentSectionVisisble}
           type="button"
         >
-          {commentList.length}
+          {post.comments.length}
           {" "}
-          comments
+          {post.comments.length === 1 ? "comment" : "comments"}
         </button>
-        <Collapse in={commentsOpen}>
-          {this.renderComments()}
+        <Collapse in={commentSectionVisisble}>
+          {/* this div is necessary to prevent a choppy animation when opening the comments */}
+          <div>
+            {this.renderComments()}
+          </div>
         </Collapse>
         <form className="make-comment-input-wrapper" action="submit" onSubmit={this.handleSubmitNewComment}>
           <TextareaAutosize
             placeholder="Add a comment"
             className="post-comment-text-area"
-            onChange={this.handleTextChange}
-            onKeyPress={this.keyPressed}
+            onChange={this.handleCommentTextChange}
+            onKeyPress={this.handleCommentKeyPress}
             value={newComment}
           />
         </form>
       </div>
     );
-  }
-
-  handleTextChange = (event) => {
-    this.setState({ newComment: event.target.value });
-  }
-
-  handleSubmitNewComment = () => {
-    // todo: post new comment to api
-    this.setState({ newComment: "" });
-  }
-
-  keyPressed = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      this.handleSubmitNewComment();
-    }
   }
 
   render() {
@@ -150,6 +158,7 @@ Post.propTypes = {
     published: PropTypes.string.isRequired,
     imageSrc: PropTypes.string,
     content: PropTypes.string,
+    comments: PropTypes.array,
   }).isRequired,
   invisible: PropTypes.bool,
   previewMode: PropTypes.bool,
