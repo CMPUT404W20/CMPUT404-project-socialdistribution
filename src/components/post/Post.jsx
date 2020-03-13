@@ -124,19 +124,21 @@ class Post extends Component {
     // todo: post new comment to api
     const { newComment } = this.state;
     const { post } = this.props;
-
-    commentservice.createComment(newComment, post.id).then((response) => {
+    const comment = {
+      query: "addComment",
+      post: post.id,
+      comment: {
+        comment: newComment,
+      },
+    };
+    commentservice.createComment(comment).then((response) => {
       if (response.status === 201) {
-        this.setState({
-          newComment: "",
-        });
+        this.setState({ newComment: "" });
       }
     }).catch((err) => {
       const error = err.response.data;
-      // eslint-disable-next-line no-console
       console.log(error);
     });
-    // this.setState({ newComment: "" });
   }
 
   keyPressed = (event) => {
