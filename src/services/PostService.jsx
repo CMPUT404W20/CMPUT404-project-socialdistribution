@@ -1,7 +1,7 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable arrow-body-style */
 import axios from "axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export const getPosts = () => {
   return axios.get("/author/posts/").then((response) => {
@@ -45,7 +45,6 @@ export const createUserPosts = (postData) => {
   });
 };
 
-
 export const deleteUserPosts = (postId) => {
   const csrf = Cookies.get("csrftoken");
   const headers = {
@@ -75,3 +74,4 @@ export const updateUserPosts = (post) => {
     throw new Error("Unable to update posts");
   });
 };
+
