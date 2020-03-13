@@ -34,18 +34,13 @@ class FriendViewSet(viewsets.ViewSet):
             fromUser__fullId=user.fullId).delete()
 
     def check_friends(self, request, authorId1, authorId2, *args, **kwargs):
-
+        # author/<path:authorId1>/friends/<path:authorId2>
         id1 = protocol_removed(authorId1)
         id2 = protocol_removed(authorId2)
         author1 = get_object_or_404(User, fullId=id1)
         author2 = get_object_or_404(User, fullId=id2)
-        friend_ids = Friend.objects.filter(
-            fromUser_id=author1.id).values_list('toUser_id', flat=True)
-        if author2.id in friend_ids:
-            friends = True
-        else:
-            friends = False
-
+        # check for two-way friendship
+        friends = Friend.objects.filter(toUser__fullId=id1, fromUser__fullId=id2).exists() and Friend.objects.filter(fromUser__fullId=id1, toUser__fullId=id2).exists()
         return Response({"query": "friends", "authors": [author1.get_full_user_id(), author2.get_full_user_id()], "friends": friends})
 
     def post_query_friends(self, request, authorId, *args, **kwargs):
@@ -93,8 +88,6 @@ class FriendViewSet(viewsets.ViewSet):
                 return Response({"query": "createFriend", "success": False, "message": "No Friend Request"}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         else:
             return Response({"query": "createFriend", "success": False, "message": "wrong request"}, status=status.HTTP_400_BAD_REQUEST)
-
-
 
     def unfriend(self, request, *args, **kwargs):
         # friend/unfriend
