@@ -90,9 +90,12 @@ class Post extends Component {
   }
 
   toggleCommentSection = () => {
-    this.setState((prevState) => ({
-      commentSectionVisisble: !prevState.commentSectionVisisble,
-    }));
+    const { post } = this.props;
+    if (post.comments.length > 0) {
+      this.setState((prevState) => ({
+        commentSectionVisisble: !prevState.commentSectionVisisble,
+      }));
+    }
   }
 
   renderCommentSection = () => {
