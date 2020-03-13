@@ -35,6 +35,7 @@ class PostView extends Component {
         newPost.published = post.published;
         newPost.id = post.id;
         newPost.imageSrc = null;
+        newPost.comments = post.comments || [];
 
         posts.push(newPost);
       }

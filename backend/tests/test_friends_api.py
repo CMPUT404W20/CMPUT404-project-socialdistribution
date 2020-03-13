@@ -4,6 +4,7 @@ from backend.utils import *
 import json
 import pytest
 
+
 @pytest.mark.django_db
 class TestFriend:
     user_notFound_id = "https://example/20"
@@ -71,6 +72,7 @@ class TestFriend:
 
     def test_check_friends(self, client, test_user, friend_user):
 
+        # check one way friends
         Friend.objects.create(
             fromUser=test_user, toUser=friend_user[0])
         test_auth_id = test_user.get_full_user_id()
@@ -80,6 +82,21 @@ class TestFriend:
         response = client.get(
             '/author/{}/friends/{}'.format(test_auth_id, friend_user[0].get_full_user_id()))
 
+        assert response.status_code == 200
+        assert response.data["query"] == "friends"
+        assert response.data["authors"] is not None
+
+        assert response.data["authors"] == [
+            test_user.get_full_user_id(), friend_user[0].get_full_user_id()]
+        assert response.data['friends'] == False
+
+        Friend.objects.create(
+            toUser=test_user, fromUser=friend_user[0])
+
+        response = client.get(
+            '/author/{}/friends/{}'.format(test_auth_id, friend_user[0].get_full_user_id()))
+
+        # check two way friendship
         assert response.status_code == 200
         assert response.data["query"] == "friends"
         assert response.data["authors"] is not None
@@ -105,8 +122,6 @@ class TestFriend:
         nouserResponse = client.get(
             '/author/{}/friends/{}'.format(test_auth_id, self.user_notFound_id))
         assert nouserResponse.status_code == 404
-
-
 
     def test_reject_friend_request(self, client, test_user, friend_user, test_host):
         # checking scenario where a friend request is rejected
@@ -175,7 +190,7 @@ class TestFriend:
         for author in response.data["authors"]:
             assert Friend.objects.filter(
                 fromUser__fullId=test_user.fullId, toUser__fullId=protocol_removed(author)).exists()
-        
+
         # check for invalid data
         response = client.post(url, data={},
                                content_type='application/json', charset='UTF-8')
@@ -212,5 +227,3 @@ class TestFriend:
             fromUser__fullId=test_user.fullId, toUser__fullId=friend_user[0].fullId).exists()
         assert not Friend.objects.filter(
             toUser__fullId=test_user.fullId, fromUser__fullId=friend_user[0].fullId).exists()
-
-        

@@ -100,9 +100,9 @@ exports[`Post Block Components should render correctly 1`] = `
       onClick={[Function]}
       type="button"
     >
-      3
+      1
        
-      comments
+      comment
     </button>
     <Collapse
       appear={false}
@@ -113,50 +113,22 @@ exports[`Post Block Components should render correctly 1`] = `
       timeout={300}
       unmountOnExit={false}
     >
-      <div
-        id="comment-list"
-      >
+      <div>
         <div
-          key="1"
+          id="comment-list"
         >
-          <p>
-            abc
-             
-            :
-            <span
-              className="comment-content"
-            >
-              good!
-            </span>
-          </p>
-        </div>
-        <div
-          key="2"
-        >
-          <p>
-            imUser2
-             
-            :
-            <span
-              className="comment-content"
-            >
-              This HTML file is a template.If you open it directly in the browser, you will see an empty page. You can add webfonts, meta tags, or analytics to this file.
-            </span>
-          </p>
-        </div>
-        <div
-          key="3"
-        >
-          <p>
-            chubby bunny
-             
-            :
-            <span
-              className="comment-content"
-            >
-              ahhhhhhhh i want bubble tttttttt!!!
-            </span>
-          </p>
+          <div
+            key="95c76f63-5579-45f6-810f-e0665f2ea588"
+          >
+            <p>
+              commentAuthor:
+              <span
+                className="comment-content"
+              >
+                Sample Comment
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </Collapse>
@@ -312,9 +284,9 @@ Normal Text
       onClick={[Function]}
       type="button"
     >
-      3
+      1
        
-      comments
+      comment
     </button>
     <Collapse
       appear={false}
@@ -325,50 +297,22 @@ Normal Text
       timeout={300}
       unmountOnExit={false}
     >
-      <div
-        id="comment-list"
-      >
+      <div>
         <div
-          key="1"
+          id="comment-list"
         >
-          <p>
-            abc
-             
-            :
-            <span
-              className="comment-content"
-            >
-              good!
-            </span>
-          </p>
-        </div>
-        <div
-          key="2"
-        >
-          <p>
-            imUser2
-             
-            :
-            <span
-              className="comment-content"
-            >
-              This HTML file is a template.If you open it directly in the browser, you will see an empty page. You can add webfonts, meta tags, or analytics to this file.
-            </span>
-          </p>
-        </div>
-        <div
-          key="3"
-        >
-          <p>
-            chubby bunny
-             
-            :
-            <span
-              className="comment-content"
-            >
-              ahhhhhhhh i want bubble tttttttt!!!
-            </span>
-          </p>
+          <div
+            key="95c76f63-5579-45f6-810f-e0665f2ea588"
+          >
+            <p>
+              commentAuthor:
+              <span
+                className="comment-content"
+              >
+                Sample Comment
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </Collapse>
