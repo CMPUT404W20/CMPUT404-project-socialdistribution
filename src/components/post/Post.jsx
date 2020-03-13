@@ -134,7 +134,7 @@ class Post extends Component {
     }).catch((err) => {
       const error = err.response.data;
       // eslint-disable-next-line no-console
-      alert(error);
+      console.log(error);
     });
     // this.setState({ newComment: "" });
   }
