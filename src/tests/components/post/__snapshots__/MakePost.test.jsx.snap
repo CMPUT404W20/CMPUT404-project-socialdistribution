@@ -41,7 +41,7 @@ exports[`Post box Component should render correctly 1`] = `
         <option
           value="SERVERONLY"
         >
-          Local friends
+          Server Only
         </option>
         <option
           value="UNLISTED"
