@@ -15,7 +15,7 @@ exports[`Post box Component should render correctly 1`] = `
       </b>
       <select
         className="privacy-select"
-        defaultValue="public"
+        defaultValue="PUBLIC"
         onChange={[Function]}
       >
         <option

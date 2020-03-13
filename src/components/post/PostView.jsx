@@ -56,14 +56,33 @@ class PostView extends Component {
   }
 
   handlePostUpdate = (post) => {
-    this.setState((prevState) => ({
-      // no longer editing the post
-      editingPostId: null,
-      // update post that got edited
-      posts: prevState.posts.map(
-        (p) => (p.id === post.id ? Object.assign(p, post) : p),
-      ),
-    }));
+    postService.updateUserPosts(post).then(() => {
+      this.setState((prevState) => ({
+        // no longer editing the post
+        editingPostId: null,
+        // update post that got edited
+        posts: prevState.posts.map(
+          (p) => (p.id === post.id ? Object.assign(p, post) : p),
+        ),
+      }));
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
+  handleDelete = (postID) => {
+    postService.deleteUserPosts(postID).then(() => {
+      this.setState((prevState) => ({
+        // remove delete posts from state
+        posts: prevState.posts.filter(
+          (p) => (p.id !== postID),
+        ),
+      }));
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   render() {
@@ -78,6 +97,7 @@ class PostView extends Component {
             <Post
               post={post}
               onEdit={this.handleEditToggle}
+              onDelete={this.handleDelete}
             />
           </div>,
         );

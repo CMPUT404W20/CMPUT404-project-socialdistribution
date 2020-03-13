@@ -21,6 +21,9 @@ class Homepage extends Component {
       if (success) {
         this.child.current.loadPosts();
       }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
     });
   }
 
