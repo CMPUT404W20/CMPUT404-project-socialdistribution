@@ -1,7 +1,7 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable arrow-body-style */
 import axios from "axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export const getPosts = () => {
   return axios.get("/author/posts/").then((response) => {
@@ -44,7 +44,6 @@ export const createUserPosts = (postData) => {
     throw new Error("Unable to create post");
   });
 };
-
 
 export const deleteUserPosts = (postId) => {
   const csrf = Cookies.get("csrftoken");
