@@ -1,29 +1,32 @@
 import React, { Component } from "react";
 import { Redirect, Route } from "react-router-dom";
 import Login from "./Login";
+import * as auth from "../services/AuthenticationService";
 
 class PrivateRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isAuthed: false,
+      isLoading: true,
     };
   }
-  // To do: Fix the 401 response header to disable popup auth
 
-  // componentDidMount() {
-  //   auth.getCurrentUser()
-  //     .then(((response) => {
-  //       if (response.status === 200) {
-  //       // eslint-disable-next-line no-alert
-  //         this.setState({ isAuthed: true });
-  //       }
-  //     }));
-  // }
+  componentDidMount() {
+    auth.getCurrentUser()
+      .then(((response) => {
+        if (response.status === 200) {
+        // eslint-disable-next-line no-alert
+          this.setState({ isAuthed: true, isLoading: false });
+        }
+      }));
+    this.setState({ isLoading: false });
+  }
 
   render() {
-    const { isAuthed } = this.state;
+    const { isAuthed, isLoading } = this.state;
     return (
+      !isLoading && (
       <Route
         exact
         path="/"
@@ -33,6 +36,7 @@ class PrivateRoute extends Component {
           <Login />
         ))}
       />
+      )
     );
   }
 }

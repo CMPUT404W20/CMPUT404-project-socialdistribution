@@ -51,9 +51,9 @@ class Login extends Component {
     } else {
       auth.loginUser(username, password).then((response) => {
         if (response.status === 200) {
-          auth.getCurrentUser().then((UserData) => {
-            localStorage.setItem("userID", `https://cmput404-socialdistribution.herokuapp.com/author/${UserData.data.pk}`);
-            localStorage.setItem("username", UserData.data.username);
+          auth.getCurrentUser().then((userData) => {
+            localStorage.setItem("userID", userData.data.id);
+            localStorage.setItem("username", userData.data.displayName);
           }).then(() => { this.setState({ isAuthed: true }); });
         }
       }).catch(() => {
