@@ -67,7 +67,6 @@ class PostView extends Component {
 
   render() {
     const { editingPostId, posts } = this.state;
-
     const renderedPosts = [];
     for (let i = 0; i < posts.length; i += 1) {
       const post = posts[i];

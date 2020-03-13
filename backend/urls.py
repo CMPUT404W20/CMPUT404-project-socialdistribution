@@ -58,6 +58,12 @@ urlpatterns = [
     path('author/', AuthorViewSet.as_view({
         "get": "get_authors"
     })),
+
+    # get current authenticated user information
+    path('author/current/', AuthorViewSet.as_view({
+        "get": "get_current_user"
+    })),
+
     path('author/<path:pk>/friends/', AuthorViewSet.as_view(({
         "get": "get_friends"
     }))),
@@ -67,15 +73,27 @@ urlpatterns = [
     
 
 
-    path('author/<path:authorId1>/friends/<path:authorId2>',FriendViewSet.as_view(({
+    path('author/<path:authorId1>/friends/<path:authorId2>', FriendViewSet.as_view(({
         "get": "check_friends"
     }))),
-    path('friend/accept/',FriendViewSet.as_view(({
+    path('friend/accept/', FriendViewSet.as_view(({
         "post": "post_friendship"
     }))),
-  
-    path('friendrequest/', FriendRequestViewSet.as_view(), name='friendrequest'),
 
+    path('friend/unfriend/', FriendViewSet.as_view(({
+        "post": "unfriend"
+    }))),
+
+    path('author/<path:authorId>/friend', FriendViewSet.as_view(({
+        "post": "post_query_friends"
+    }))),
+
+    path('friendrequest/', FriendRequestViewSet.as_view(({
+        "post": "send_friend_request"
+    }))),
+    path('friendrequest/reject/', FriendRequestViewSet.as_view(({
+        "post": "delete_friend_request"
+    }))),
 
     # url of Comment Operations
     path('posts/<uuid:postId>/comments/', CommentViewSet.as_view({
