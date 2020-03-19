@@ -2,6 +2,10 @@
 [![Build Status](https://travis-ci.com/CMPUT404W20/CMPUT404-project-socialdistribution.svg?branch=master)](https://travis-ci.com/CMPUT404W20/CMPUT404-project-socialdistribution)
 ## Overview
 
+### Admin Account:
+Username: admindemo
+Password: ualberta01!
+
 ### Technologies
 * Django
 * ReactJS
