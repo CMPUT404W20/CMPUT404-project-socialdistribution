@@ -3,7 +3,7 @@
 ## Overview
 
 ### Admin Account:
-Username: admindemo
+Username: admindemo <br>
 Password: ualberta01!
 
 ### Technologies
