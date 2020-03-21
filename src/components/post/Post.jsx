@@ -51,9 +51,18 @@ class Post extends Component {
           alignRight
         >
           <Fade left duration={500} distance="5px">
-            <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
-            <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
-            <Dropdown.Item href="#">Copy Link</Dropdown.Item>
+            {/* the following enclosing tag is required for the fade to work properly */}
+            <>
+              {
+                post.username === localStorage.getItem("username") ? (
+                  <>
+                    <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
+                    <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
+                  </>
+                ) : null
+              }
+              <Dropdown.Item href="#">Copy Link</Dropdown.Item>
+            </>
           </Fade>
         </DropdownButton>
         <div className="post-time">{formattedTime}</div>
