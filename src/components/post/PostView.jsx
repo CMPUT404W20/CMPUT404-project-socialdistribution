@@ -1,6 +1,7 @@
 /* eslint-disable react/sort-comp */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Fade from "react-reveal/Fade";
 import Pulse from "react-reveal/Pulse";
 import "../../styles/post/PostView.scss";
 import EditablePost from "./EditablePost";
@@ -122,9 +123,11 @@ class PostView extends Component {
     }
 
     return (
-      <div className="post-view" key={-1}>
-        {renderedPosts}
-      </div>
+      <Fade bottom duration={1000} distance="100px">
+        <div className="post-view" key={-1}>
+          {renderedPosts}
+        </div>
+      </Fade>
     );
   }
 }
