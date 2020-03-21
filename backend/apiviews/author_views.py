@@ -70,3 +70,8 @@ class AuthorViewSet(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
+
+    def get_githubActivity(self, request, pk, *args, **kwargs):
+        return None
+
+
