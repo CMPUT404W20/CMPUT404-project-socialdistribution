@@ -14,6 +14,8 @@ from backend.permissions import *
 from backend.utils import *
 from django.db.models import Q
 
+import requests
+
 
 class AuthorViewSet(viewsets.ViewSet):
 
@@ -21,9 +23,24 @@ class AuthorViewSet(viewsets.ViewSet):
         '''
         Get all the authors
         '''
+        for host in Host.objects.all():
+            if host.serviceAccountUsername and host.serviceAccountPassword:
+                response = requests.get(
+                    host.url+"author/",
+                    auth=(host.serviceAccountUsername,
+                          host.serviceAccountPassword)
+                )
+                if response.status_code == 200:
+                    response_data = response.json()
+
+                    if "data" in response_data:
+                        author_data = response_data["data"]
+                    else:
+                        author_data += author_data
+        
         author = User.objects.all()
         serializer = UserSerializer(author, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data+author_data)
 
     def get_profile(self, request, pk, *args, **kwargs):
         '''
