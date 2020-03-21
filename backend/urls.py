@@ -53,7 +53,7 @@ urlpatterns = [
     path('author/<path:author_id>/posts/', PostViewSet.as_view({
         "get": "visible_posts"
     })),
-    
+
     # url of Author Operations
     path('author/', AuthorViewSet.as_view({
         "get": "get_authors"
@@ -74,6 +74,12 @@ urlpatterns = [
     path('author/<path:authorId1>/friends/<path:authorId2>', FriendViewSet.as_view(({
         "get": "check_friends"
     }))),
+
+    # url of github activity
+    path('author/github', AuthorViewSet.as_view(({
+        "get": "get_github_activity"
+    }))),
+
     path('friend/accept/', FriendViewSet.as_view(({
         "post": "post_friendship"
     }))),
@@ -99,6 +105,8 @@ urlpatterns = [
         "post": "add_comment"
     })),
 
-    # Everything 
-    re_path(r'^(?:.*)/?$', index),
+
+
+    # Everything
+    # re_path(r'^(?:.*)/?$', index),
 ]

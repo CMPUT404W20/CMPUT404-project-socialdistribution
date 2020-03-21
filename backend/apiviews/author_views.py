@@ -13,7 +13,8 @@ from backend.models import User, Friend
 from backend.permissions import *
 from backend.utils import *
 from django.db.models import Q
-
+import requests
+import json
 
 class AuthorViewSet(viewsets.ViewSet):
 
@@ -71,7 +72,30 @@ class AuthorViewSet(viewsets.ViewSet):
         else:
             return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
 
-    def get_githubActivity(self, request, pk, *args, **kwargs):
-        return None
+    def get_github_activity(self, request):
+        print("TESTING")
+        headers = {
+            # replace <TOKEN> with your token
+            'Authorization': 'token  3e48a2aeb3eb0a1c1804ccb412f39569fed8b100',
+        }
+        response = requests.get('https://api.github.com/users/<username>/received_events',
+                                headers=headers)  # replace <username> with your user name
+        data = response.json()
+        print(data)
+        return Response({"data": data})
+    # event_actions = {'WatchEvent': 'starred', 'PushEvent': 'pushed to'}
 
+    # for event in data:
+    #     if event['type'] in event_actions:
+    #         name = event['actor']['display_login']
+    #         action = event_actions[event['type']]
+    #         repo = event['repo']['name']
+    #         print('{name} {action} {repo}'.format(
+    #             name=name, action=action, repo=repo))
 
+    #     if event['type'] == 'ForkEvent':
+    #         name = event['actor']['display_login']
+    #         repo = event['repo']['name']
+    #         forked_repo = event['payload']['forkee']['full_name']
+    #         print('{name} forked {forked_repo} from {repo}'.format(
+    #             name=name, forked_repo=forked_repo, repo=repo))

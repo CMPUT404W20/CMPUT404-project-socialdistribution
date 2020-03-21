@@ -69,4 +69,4 @@ class TestAuthorAPI:
         assert nouserResponse.status_code == 404
 
 
-    
+    # def test_github(self, client, test_user, friend_user):
