@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import Fade from "react-reveal/Fade";
 import "../../styles/post/Post.scss";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -49,9 +50,11 @@ class Post extends Component {
           drop="down"
           alignRight
         >
-          <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
-          <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
-          <Dropdown.Item href="#">Copy Link</Dropdown.Item>
+          <Fade left duration={500} distance="5px">
+            <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
+            <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
+            <Dropdown.Item href="#">Copy Link</Dropdown.Item>
+          </Fade>
         </DropdownButton>
         <div className="post-time">{formattedTime}</div>
       </div>

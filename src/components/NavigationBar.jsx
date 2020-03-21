@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Fade from "react-reveal/Fade";
 import "../styles/NavigationBar.scss";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
@@ -68,19 +69,21 @@ class NavigationBar extends Component {
           </Nav>
           <Nav>
             <NavDropdown title={username} id="username-dropdown" alignRight>
-              <NavDropdown.Item
-                as={NavLink}
-                exact
-                to={{
-                  pathname: `/profile/${username}`,
-                  state: { userID, username },
-                }}
-              >
-                Profile
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#">Settings</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item as={NavLink} exact to="/" onSelect={this.handleLogOut}>Logout</NavDropdown.Item>
+              <Fade left duration={500} distance="5px">
+                <NavDropdown.Item
+                  as={NavLink}
+                  exact
+                  to={{
+                    pathname: `/profile/${username}`,
+                    state: { userID, username },
+                  }}
+                >
+                  Profile
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#">Settings</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={NavLink} exact to="/" onSelect={this.handleLogOut}>Logout</NavDropdown.Item>
+              </Fade>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
