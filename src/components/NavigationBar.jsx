@@ -12,8 +12,6 @@ import { NavLink, Redirect } from "react-router-dom";
 import logo from "../images/logo.svg";
 import * as auth from "../services/AuthenticationService";
 
-
-
 class NavigationBar extends Component {
   constructor(props) {
     super(props);

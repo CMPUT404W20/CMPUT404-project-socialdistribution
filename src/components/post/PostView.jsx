@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "../../styles/post/PostView.scss";
-import MakePost from "./MakePost";
+import EditablePost from "./EditablePost";
 import Post from "./Post";
 import * as postService from "../../services/PostService";
 
@@ -104,7 +104,7 @@ class PostView extends Component {
       } else {
         renderedPosts.push(
           <div className="postWrapper" key={-1}>
-            <MakePost
+            <EditablePost
               editMode
               originalPost={post}
               defaultPostContent={post.content}
