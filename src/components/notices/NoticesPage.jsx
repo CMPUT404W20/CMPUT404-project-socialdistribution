@@ -28,21 +28,23 @@ class NoticesPage extends Component {
   }
 
   renderNoticeItems = () => {
+    const notices = [];
     const { noticesList } = this.state;
-    return (
-      <Row className="item-list">
-        {noticesList.map((item) => (
-          <NoticeItem
-            key={item.id}
-            username={item.name}
-            userID={item.id}
-            type={item.type}
-            handleAccept={(id) => this.handleAccept(id)}
-            handleDecline={(id) => this.handleRemoveNotice(id)}
-          />
-        ))}
-      </Row>
-    );
+
+    noticesList.forEach((item) => {
+      notices.push(
+        <NoticeItem
+          key={item.id}
+          username={item.name}
+          userID={item.id}
+          type={item.type}
+          handleAccept={(id) => this.handleAccept(id)}
+          handleDecline={(id) => this.handleRemoveNotice(id)}
+        />,
+      );
+    });
+
+    return notices;
   }
 
   render() {

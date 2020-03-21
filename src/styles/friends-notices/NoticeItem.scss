@@ -1,64 +1,68 @@
 @import "../common.scss";
-$type-text-color: rgba(24, 24, 24, 0.6);
-.notice-item-wrapper {
+
+.wrapper {
     border: 1px solid $border-color;
-    box-sizing: border-box;
-    padding: 0 2rem 0 2rem;
-    border-radius: 4px;
-    height: 4rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 1rem;
+    margin: 10px;
+    padding: 10px 20px 10px 20px;
+    border-radius: $radius;
+}
+
+.leftColumn {
+    height: 50px;
+
     .username-link {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
         text-decoration: none;
         font-weight: 600;
         font-size: 12pt;
         color: black;
-        width: 20%;
     }
-    .username-link:hover {
-        color: $accent-color;
-    }
+}
+
+.middleColumn {
+    height: 50px;
+
     .type-wrapper {
-        display: inline-flex;
-        align-items: center;
-        padding-left: 2rem;
-        height: 2rem;
-        width: 30%;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        padding-left: 1rem;
         border-left: 2px solid $accent-color;
-        >p {
-            margin: 0 0 0 0;
-            color: $type-text-color;
-        }
     }
+}
+
+.rightColumn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+
     .button-wrapper {
-        display: inline-flex;
-        flex-direction: row;
-        justify-content: center;
+        position: absolute;
+        margin-right: 20px;
+        right: 0;
     }
-    .accept-button,
-    .decline-button {
-        background-color: $accent-color;
-        color: white;
-        width: 40%;
-        height: 2rem;
-        font-size: 9pt;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        font-style: normal;
-        text-align: center;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        border: none;
-        border-radius: 4px;
+
+    .accept-button, .decline-button {
+        @extend %button;
+        font-size: 16px;
     }
+    
     .decline-button {
-        margin-left: 1rem;
-        background-color: white;
-        color: #B7B7B7;
-        border: 1px solid #EAEAEA;
-        box-sizing: border-box;
+        margin: 0 0 0 20px;
+        @extend %button;
+        background-color: #fa93a7;
+        &:not(:disabled) {
+            &:hover, &:focus {
+                outline: none;
+                background-color: #e73a5a;
+            }
+        }
     }
 }

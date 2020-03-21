@@ -50,7 +50,7 @@ class FriendsPage extends Component {
   renderFriendItems = () => {
     const { friendsList } = this.state;
     return (
-      <Row className="item-list">
+      <Row>
         {friendsList.map((item) => (
           <FriendItem
             key={item.id}
