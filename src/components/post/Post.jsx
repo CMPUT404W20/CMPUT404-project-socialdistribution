@@ -11,7 +11,7 @@ import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
 import Collapse from "react-bootstrap/Collapse";
 import moreIcon from "../../images/more-icon.svg";
-import * as commentservice from "../../services/CommentService";
+import * as CommentService from "../../services/CommentService";
 
 class Post extends Component {
   constructor(props) {
@@ -85,16 +85,12 @@ class Post extends Component {
   handleSubmitNewComment = () => {
     const { newComment } = this.state;
     const { post } = this.props;
-    const comment = {
-      query: "addComment",
-      post: post.id,
-      comment: {
-        comment: newComment,
-      },
-    };
-    commentservice.createComment(comment).then((response) => {
-      if (response.status === 201) {
-        this.setState({ newComment: "" });
+
+    CommentService.createComment(post.id, newComment).then((success) => {
+      if (success) {
+        this.setState({
+          newComment: "",
+        });
       }
     }).catch((err) => {
       const error = err.response.data;
