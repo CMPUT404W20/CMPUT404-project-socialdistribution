@@ -1,57 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Notice Item Component should render correctly 1`] = `
-<Col>
-  <div
-    className="notice-item-wrapper"
+<Row
+  className="wrapper"
+  noGutters={false}
+>
+  <Col
+    className="leftColumn"
+    lg={4}
+    md={12}
   >
-    <Col
-      md={4}
-      sm={3}
-    >
-      <Link
-        className="username-link"
-        to={
-          Object {
-            "pathname": "/profile/",
-            "state": Object {
-              "userID": "",
-              "username": "",
-            },
-          }
+    <Link
+      className="username-link"
+      to={
+        Object {
+          "pathname": "/profile/",
+          "state": Object {
+            "userID": "",
+            "username": "",
+          },
         }
-      />
-    </Col>
-    <Col
-      md={4}
-      sm={3}
+      }
+    />
+  </Col>
+  <Col
+    className="middleColumn"
+    lg={3}
+    md={12}
+  >
+    <div
+      className="type-wrapper"
     >
-      <div
-        className="type-wrapper"
+      Local
+    </div>
+  </Col>
+  <Col
+    className="rightColumn"
+    lg={5}
+    md={12}
+  >
+    <div
+      className="button-wrapper"
+    >
+      <button
+        className="accept-button"
+        onClick={[Function]}
+        type="button"
       >
-        <p />
-      </div>
-    </Col>
-    <Col>
-      <div
-        className="button-wrapper"
+        Accept
+      </button>
+      <button
+        className="decline-button"
+        onClick={[Function]}
+        type="button"
       >
-        <button
-          className="accept-button"
-          onClick={[Function]}
-          type="button"
-        >
-          ACCEPT
-        </button>
-        <button
-          className="decline-button"
-          onClick={[Function]}
-          type="button"
-        >
-          DECLINE
-        </button>
-      </div>
-    </Col>
-  </div>
-</Col>
+        Decline
+      </button>
+    </div>
+  </Col>
+</Row>
 `;

@@ -24,45 +24,25 @@ exports[`Post Block Components should render correctly 1`] = `
         />
       }
     >
-      <DropdownItem
-        as={
-          Object {
-            "$$typeof": Symbol(react.forward_ref),
-            "displayName": "SafeAnchor",
-            "render": [Function],
-          }
-        }
-        disabled={false}
-        onClick={[Function]}
+      <Fade
+        distance="5px"
+        duration={500}
+        left={true}
       >
-        Edit
-      </DropdownItem>
-      <DropdownItem
-        as={
-          Object {
-            "$$typeof": Symbol(react.forward_ref),
-            "displayName": "SafeAnchor",
-            "render": [Function],
+        <DropdownItem
+          as={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "displayName": "SafeAnchor",
+              "render": [Function],
+            }
           }
-        }
-        disabled={false}
-        onClick={[Function]}
-      >
-        Delete
-      </DropdownItem>
-      <DropdownItem
-        as={
-          Object {
-            "$$typeof": Symbol(react.forward_ref),
-            "displayName": "SafeAnchor",
-            "render": [Function],
-          }
-        }
-        disabled={false}
-        href="#"
-      >
-        Copy Link
-      </DropdownItem>
+          disabled={false}
+          href="#"
+        >
+          Copy Link
+        </DropdownItem>
+      </Fade>
     </DropdownButton>
     <div
       className="post-time"
@@ -176,45 +156,25 @@ exports[`Post Block Components should render markdown content correctly 1`] = `
         />
       }
     >
-      <DropdownItem
-        as={
-          Object {
-            "$$typeof": Symbol(react.forward_ref),
-            "displayName": "SafeAnchor",
-            "render": [Function],
-          }
-        }
-        disabled={false}
-        onClick={[Function]}
+      <Fade
+        distance="5px"
+        duration={500}
+        left={true}
       >
-        Edit
-      </DropdownItem>
-      <DropdownItem
-        as={
-          Object {
-            "$$typeof": Symbol(react.forward_ref),
-            "displayName": "SafeAnchor",
-            "render": [Function],
+        <DropdownItem
+          as={
+            Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "displayName": "SafeAnchor",
+              "render": [Function],
+            }
           }
-        }
-        disabled={false}
-        onClick={[Function]}
-      >
-        Delete
-      </DropdownItem>
-      <DropdownItem
-        as={
-          Object {
-            "$$typeof": Symbol(react.forward_ref),
-            "displayName": "SafeAnchor",
-            "render": [Function],
-          }
-        }
-        disabled={false}
-        href="#"
-      >
-        Copy Link
-      </DropdownItem>
+          disabled={false}
+          href="#"
+        >
+          Copy Link
+        </DropdownItem>
+      </Fade>
     </DropdownButton>
     <div
       className="post-time"
