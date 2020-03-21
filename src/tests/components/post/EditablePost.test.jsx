@@ -1,11 +1,11 @@
 import React from "react";
 import { shallow } from "enzyme";
-import MakePost from "../../../components/post/MakePost";
+import EditablePost from "../../../components/post/EditablePost";
 
 describe("Post box Component", () => {
   it("should render correctly", () => {
     const component = shallow(
-      <MakePost
+      <EditablePost
         onSubmit={() => {}}
       />,
     );

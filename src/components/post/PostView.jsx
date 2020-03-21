@@ -1,8 +1,10 @@
 /* eslint-disable react/sort-comp */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Fade from "react-reveal/Fade";
+import Pulse from "react-reveal/Pulse";
 import "../../styles/post/PostView.scss";
-import MakePost from "./MakePost";
+import EditablePost from "./EditablePost";
 import Post from "./Post";
 import * as postService from "../../services/PostService";
 
@@ -103,25 +105,29 @@ class PostView extends Component {
         );
       } else {
         renderedPosts.push(
-          <div className="postWrapper" key={-1}>
-            <MakePost
-              editMode
-              originalPost={post}
-              defaultPostContent={post.content}
-              defaultPostImage={post.imageSrc}
-              onSubmit={this.handlePostUpdate}
-              // set the current post being edited to null -> close the edit dialog
-              onDiscard={() => this.handleEditToggle(null)}
-            />
-          </div>,
+          <Pulse duration={200}>
+            <div className="postWrapper" key={-1}>
+              <EditablePost
+                editMode
+                originalPost={post}
+                defaultPostContent={post.content}
+                defaultPostImage={post.imageSrc}
+                onSubmit={this.handlePostUpdate}
+                // set the current post being edited to null -> close the edit dialog
+                onDiscard={() => this.handleEditToggle(null)}
+              />
+            </div>
+          </Pulse>,
         );
       }
     }
 
     return (
-      <div className="post-view" key={-1}>
-        {renderedPosts}
-      </div>
+      <Fade bottom duration={1000} distance="100px">
+        <div className="post-view" key={-1}>
+          {renderedPosts}
+        </div>
+      </Fade>
     );
   }
 }

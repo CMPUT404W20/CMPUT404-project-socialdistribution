@@ -160,91 +160,97 @@ exports[`Navigation bar Component should render correctly 1`] = `
         id="username-dropdown"
         title="Username"
       >
-        <DropdownItem
-          as={
-            Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "displayName": "NavLink",
-              "propTypes": Object {
-                "activeClassName": [Function],
-                "activeStyle": [Function],
-                "aria-current": [Function],
-                "className": [Function],
-                "exact": [Function],
-                "innerRef": [Function],
-                "isActive": [Function],
-                "location": [Function],
-                "onClick": [Function],
-                "replace": [Function],
-                "strict": [Function],
-                "style": [Function],
-                "target": [Function],
-                "to": [Function],
-              },
-              "render": [Function],
-            }
-          }
-          disabled={false}
-          exact={true}
-          to={
-            Object {
-              "pathname": "/profile/Username",
-              "state": Object {
-                "userID": null,
-                "username": "Username",
-              },
-            }
-          }
+        <Fade
+          distance="5px"
+          duration={500}
+          left={true}
         >
-          Profile
-        </DropdownItem>
-        <DropdownItem
-          as={
-            Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "displayName": "SafeAnchor",
-              "render": [Function],
+          <DropdownItem
+            as={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "displayName": "NavLink",
+                "propTypes": Object {
+                  "activeClassName": [Function],
+                  "activeStyle": [Function],
+                  "aria-current": [Function],
+                  "className": [Function],
+                  "exact": [Function],
+                  "innerRef": [Function],
+                  "isActive": [Function],
+                  "location": [Function],
+                  "onClick": [Function],
+                  "replace": [Function],
+                  "strict": [Function],
+                  "style": [Function],
+                  "target": [Function],
+                  "to": [Function],
+                },
+                "render": [Function],
+              }
             }
-          }
-          disabled={false}
-          href="#"
-        >
-          Settings
-        </DropdownItem>
-        <DropdownDivider
-          role="separator"
-        />
-        <DropdownItem
-          as={
-            Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "displayName": "NavLink",
-              "propTypes": Object {
-                "activeClassName": [Function],
-                "activeStyle": [Function],
-                "aria-current": [Function],
-                "className": [Function],
-                "exact": [Function],
-                "innerRef": [Function],
-                "isActive": [Function],
-                "location": [Function],
-                "onClick": [Function],
-                "replace": [Function],
-                "strict": [Function],
-                "style": [Function],
-                "target": [Function],
-                "to": [Function],
-              },
-              "render": [Function],
+            disabled={false}
+            exact={true}
+            to={
+              Object {
+                "pathname": "/profile/Username",
+                "state": Object {
+                  "userID": null,
+                  "username": "Username",
+                },
+              }
             }
-          }
-          disabled={false}
-          exact={true}
-          onSelect={[Function]}
-          to="/"
-        >
-          Logout
-        </DropdownItem>
+          >
+            Profile
+          </DropdownItem>
+          <DropdownItem
+            as={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "displayName": "SafeAnchor",
+                "render": [Function],
+              }
+            }
+            disabled={false}
+            href="#"
+          >
+            Settings
+          </DropdownItem>
+          <DropdownDivider
+            role="separator"
+          />
+          <DropdownItem
+            as={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "displayName": "NavLink",
+                "propTypes": Object {
+                  "activeClassName": [Function],
+                  "activeStyle": [Function],
+                  "aria-current": [Function],
+                  "className": [Function],
+                  "exact": [Function],
+                  "innerRef": [Function],
+                  "isActive": [Function],
+                  "location": [Function],
+                  "onClick": [Function],
+                  "replace": [Function],
+                  "strict": [Function],
+                  "style": [Function],
+                  "target": [Function],
+                  "to": [Function],
+                },
+                "render": [Function],
+              }
+            }
+            disabled={false}
+            exact={true}
+            onSelect={[Function]}
+            to="/"
+          >
+            Logout
+          </DropdownItem>
+        </Fade>
       </NavDropdown>
     </Nav>
   </NavbarCollapse>
