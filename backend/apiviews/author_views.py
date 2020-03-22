@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -12,7 +13,8 @@ from backend.serializers import *
 from backend.models import User, Friend
 from backend.permissions import *
 from backend.utils import *
-from django.db.models import Q
+from backend.server import *
+
 
 import requests
 
@@ -23,6 +25,7 @@ class AuthorViewSet(viewsets.ViewSet):
         '''
         Get all the authors
         '''
+        author_data = []
         for host in Host.objects.all():
             if host.serviceAccountUsername and host.serviceAccountPassword:
                 response = requests.get(
@@ -30,14 +33,15 @@ class AuthorViewSet(viewsets.ViewSet):
                     auth=(host.serviceAccountUsername,
                           host.serviceAccountPassword)
                 )
+
                 if response.status_code == 200:
                     response_data = response.json()
-
+                    # if they followe swagger format, then use "data" as key
                     if "data" in response_data:
                         author_data = response_data["data"]
                     else:
                         author_data += author_data
-        
+
         author = User.objects.all()
         serializer = UserSerializer(author, many=True)
         return Response(serializer.data+author_data)
@@ -67,16 +71,34 @@ class AuthorViewSet(viewsets.ViewSet):
         '''
         /author/{author_id}/friends: Get all the friends of the author
         '''
-        fullId = protocol_removed(pk)
-        author = get_object_or_404(User, fullId=fullId)
-        pk = protocol_removed(pk)
-        friends = Friend.objects.filter(fromUser__fullId=author.fullId)
-        serializer = FriendSerializer(friends, many=True)
-        id_List = []
-        for i in serializer.data:
-            id_List.append(list(list(i.items())[0][1].items())[0][1])
 
-        return Response({"query": "friends", "authors": id_List})
+        url = get_host_from_id(pk)
+        if url != settings.APP_HOST:
+            if Host.objects.filter(url=url).exists():
+                host = Host.objects.get(url=url)
+                endpoint = get_url_path(pk)
+
+                response = get_from_host("{}/friends/".format(endpoint), host)
+
+                if response.status_code == 200:
+                    return Response(response.json())
+                else:
+                    return Response({"query": "friends", "authors": [], "message": "can't fetch friend information about the user"}, status=status.HTTP_404_NOT_FOUND)
+
+            else:
+                return Response({"query": "friends", "authors": [], "message": "no such user"}, status=status.HTTP_404_NOT_FOUND)
+
+        else:
+            fullId = protocol_removed(pk)
+            author = get_object_or_404(User, fullId=fullId)
+            pk = protocol_removed(pk)
+            friends = Friend.objects.filter(fromUser__fullId=author.fullId)
+            serializer = FriendSerializer(friends, many=True)
+            id_List = []
+            for i in serializer.data:
+                id_List.append(list(list(i.items())[0][1].items())[0][1])
+
+            return Response({"query": "friends", "authors": id_List})
 
     def get_current_user(self, request):
         # Return information about currently logged in user
