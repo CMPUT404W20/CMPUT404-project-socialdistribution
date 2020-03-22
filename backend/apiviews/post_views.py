@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -12,7 +13,10 @@ from backend.serializers import PostSerializer
 from backend.models import Post, User
 from backend.permissions import *
 from backend.utils import *
+from backend.server import *
 from backend.apiviews.paginations import PostPagination
+
+import json
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -92,7 +96,31 @@ class PostViewSet(viewsets.ModelViewSet):
         page = self.paginate_queryset(visible_posts.order_by('-timestamp'))
         serializer = self.get_serializer(page, many=True)
 
-        return self.get_paginated_response(serializer.data)
+        # get foreign users' posts
+        user_friends = user.get_friends().exclude(host__url=settings.APP_HOST)
+        foreign_posts = []
+
+        for friend in user_friends:
+            print("author/{}/posts".format("https://"+friend.fullId))
+            response = get_from_host(
+                "author/{}/posts/".format("https://"+friend.fullId), friend.host)
+            if response.status_code == 404:
+                print(friend.fullId.split("/"))
+                friend_uid = friend.fullId.split("/")[-1]
+                response = get_from_host(
+                    "author/{}/posts/".format(friend_uid), friend.host)
+            try:
+                response_data = response.json()
+            except:
+                continue
+            else:
+                foreign_posts += response_data["posts"]
+
+        post_data = json.dumps(serializer.data)
+        post_data = json.loads(post_data)
+        post_data += foreign_posts
+
+        return self.get_paginated_response(post_data)
 
     def visible_posts(self, request, author_id):
         '''
@@ -110,7 +138,8 @@ class PostViewSet(viewsets.ModelViewSet):
                 if user in visible_users:
                     viewable_posts |= Post.objects.filter(postId=post.postId)
 
-            page = self.paginate_queryset(viewable_posts.order_by('-timestamp'))
+            page = self.paginate_queryset(
+                viewable_posts.order_by('-timestamp'))
             serializer = self.get_serializer(page, many=True)
 
             return self.get_paginated_response(serializer.data)
