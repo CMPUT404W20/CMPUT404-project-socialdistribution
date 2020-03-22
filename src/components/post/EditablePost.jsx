@@ -14,7 +14,7 @@ class EditablePost extends Component {
       uploadModalVisibility: false,
       previewModalVisibility: false,
       originalPost: props.originalPost,
-      title: props.defaultTitle,
+      postTitle: props.defaultPostTitle,
       postContent: props.defaultPostContent,
       postImage: props.defaultPostImage,
       postVisibility: "PUBLIC",
@@ -22,7 +22,7 @@ class EditablePost extends Component {
   }
 
   handleTitleChange = (event) => {
-    this.setState({ title: event.target.value });
+    this.setState({ postTitle: event.target.value });
   };
 
   handleTextChange = (event) => {
@@ -38,6 +38,7 @@ class EditablePost extends Component {
 
     const {
       originalPost,
+      postTitle,
       postContent,
       postImage,
       postVisibility,
@@ -47,12 +48,12 @@ class EditablePost extends Component {
 
     originalPost.content = postContent;
     originalPost.imageSrc = postImage;
-    // Temporary set title to empty
-    originalPost.title = "tmp post title";
+    originalPost.title = postTitle;
     originalPost.visibility = postVisibility;
 
     onSubmit(originalPost);
     this.setState({
+      postTitle: "",
       postContent: "",
       postImage: "",
     });
@@ -83,7 +84,7 @@ class EditablePost extends Component {
     const {
       uploadModalVisibility,
       previewModalVisibility,
-      title,
+      postTitle,
       postContent,
       postImage,
     } = this.state;
@@ -91,8 +92,9 @@ class EditablePost extends Component {
     const { editMode, onDiscard } = this.props;
 
     // Marcos, https://stackoverflow.com/questions/2476382/how-to-check-if-a-textarea-is-empty-in-javascript-or-jquery
+    const titleLength = postTitle.replace(/^\s+|\s+$/g, "").length;
     const postLength = postContent.replace(/^\s+|\s+$/g, "").length;
-    const validPost = postLength > 0 || postImage !== "";
+    const validPost = titleLength > 0 && (postLength > 0 || postImage !== "");
 
     const componentTitle = editMode ? "EDIT POST" : "NEW POST";
 
@@ -126,7 +128,7 @@ class EditablePost extends Component {
               placeholder="Title"
               className="title-text-area"
               onChange={this.handleTitleChange}
-              value={title}
+              value={postTitle}
             />
             <TextareaAutosize
               placeholder="What's on your mind?"
@@ -184,12 +186,13 @@ EditablePost.propTypes = {
   editMode: PropTypes.bool,
   originalPost: PropTypes.shape({
     id: PropTypes.string,
+    title: PropTypes.string,
     username: PropTypes.string,
     published: PropTypes.string,
     imageSrc: PropTypes.string,
     content: PropTypes.string,
   }),
-  defaultTitle: PropTypes.string,
+  defaultPostTitle: PropTypes.string,
   defaultPostContent: PropTypes.string,
   defaultPostImage: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
@@ -199,7 +202,7 @@ EditablePost.propTypes = {
 EditablePost.defaultProps = {
   editMode: false,
   originalPost: {},
-  defaultTitle: "",
+  defaultPostTitle: "",
   defaultPostContent: "",
   defaultPostImage: "",
   onDiscard: () => {},

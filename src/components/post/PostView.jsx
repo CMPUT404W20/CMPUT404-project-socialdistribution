@@ -111,6 +111,7 @@ class PostView extends Component {
               <EditablePost
                 editMode
                 originalPost={post}
+                defaultPostTitle={post.title}
                 defaultPostContent={post.content}
                 defaultPostImage={post.imageSrc}
                 onSubmit={this.handlePostUpdate}
