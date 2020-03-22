@@ -129,7 +129,6 @@ class EditablePost extends Component {
               value={title}
             />
             <TextareaAutosize
-              ref="postTextArea"
               placeholder="What's on your mind?"
               className="post-text-area"
               onChange={this.handleTextChange}

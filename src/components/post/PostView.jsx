@@ -33,6 +33,7 @@ class PostView extends Component {
         const post = response.posts[i];
 
         newPost.username = post.author.displayName;
+        newPost.title = post.title;
         newPost.content = post.content;
         newPost.published = post.published;
         newPost.id = post.id;

@@ -73,15 +73,19 @@
         width: 100%;
         min-height: 40px;
         font-size: 10pt;
-        padding: 10px 15pt 5px 15pt;
+        padding: 10pt 15pt 5pt 15pt;
         border: none;
         outline: none;
         border-top: 0.4px solid #E5E5E5;
         resize: none;
     }
+    .post-title {
+        padding: 10pt 15pt 0 15pt;
+        letter-spacing: -0.02em;
+    }
     .post-content {
         text-align: left;
-        padding: 15px 15pt 5px 15pt;
+        padding: 0px 15pt 5px 15pt;
         line-height: normal;
         // markdown styles below
         h1 {
