@@ -1,15 +1,13 @@
 @import "../common.scss";
-
 .wrapper {
     border: 1px solid $border-color;
-    margin: 10px;
-    padding: 10px 20px 10px 20px;
+    margin: 0rem 0.5rem 1rem 0.5rem;
+    padding: 10px 1rem 10px 1rem;
     border-radius: $radius;
 }
 
 .leftColumn {
     height: 50px;
-
     .username-link {
         margin: 0;
         position: absolute;
@@ -25,7 +23,6 @@
 
 .middleColumn {
     height: 50px;
-
     .type-wrapper {
         margin: 0;
         position: absolute;
@@ -42,24 +39,23 @@
     align-items: center;
     justify-content: center;
     height: 50px;
-
     .button-wrapper {
         position: absolute;
         margin-right: 20px;
         right: 0;
     }
-
-    .accept-button, .decline-button {
+    .accept-button,
+    .decline-button {
         @extend %button;
         font-size: 16px;
     }
-    
     .decline-button {
         margin: 0 0 0 20px;
         @extend %button;
         background-color: #fa93a7;
         &:not(:disabled) {
-            &:hover, &:focus {
+            &:hover,
+            &:focus {
                 outline: none;
                 background-color: #e73a5a;
             }

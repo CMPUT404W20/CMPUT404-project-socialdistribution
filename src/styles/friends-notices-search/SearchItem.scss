@@ -39,26 +39,8 @@
     align-items: center;
     justify-content: center;
     height: 50px;
-    .button-wrapper {
-        position: absolute;
-        margin-right: 20px;
-        right: 0;
-    }
-    .accept-button,
-    .decline-button {
+    .view-profile-button {
         @extend %button;
         font-size: 16px;
-    }
-    .decline-button {
-        margin: 0 0 0 20px;
-        @extend %button;
-        background-color: #fa93a7;
-        &:not(:disabled) {
-            &:hover,
-            &:focus {
-                outline: none;
-                background-color: #e73a5a;
-            }
-        }
     }
 }

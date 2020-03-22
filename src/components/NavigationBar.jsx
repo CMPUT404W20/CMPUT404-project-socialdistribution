@@ -20,6 +20,7 @@ class NavigationBar extends Component {
       username: localStorage.getItem("username") || "Username",
       userID: localStorage.getItem("userID"),
       numNotifications: 2,
+      keyword: "",
     };
   }
 
@@ -30,6 +31,17 @@ class NavigationBar extends Component {
         return <Redirect to="/" />;
       }
     });
+  }
+
+  handleSearchTextChange = (event) => {
+    this.setState({ keyword: event.target.value });
+  }
+
+  handleSearchKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      // return <Redirect to={`/search?username=${this.state.keyword}`} />;
+    }
   }
 
   render() {
@@ -45,6 +57,8 @@ class NavigationBar extends Component {
               placeholder="Search"
               aria-label="Search"
               aria-describedby="basic-addon1"
+              onChange={this.handleSearchTextChange}
+              onKeyPress={this.handleSearchKeyPress}
             />
           </InputGroup>
         </div>

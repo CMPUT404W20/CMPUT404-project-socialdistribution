@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../styles/friends-notices/NoticeItem.scss";
+import "../../styles/friends-notices-search/NoticeItem.scss";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";

@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 import FriendsPage from "./friends/FriendsPage";
 import NoticesPage from "./notices/NoticesPage";
 import ProfilePage from "./profile/ProfilePage";
+import SearchPage from "./search/SearchPage";
 
 function App() {
   return (
@@ -16,6 +17,12 @@ function App() {
       <Route exact path="/home" component={Homepage} />
       <Route exact path="/friends" component={FriendsPage} />
       <Route exact path="/notifications" component={NoticesPage} />
+      <Route
+        path="/search?username=:query"
+        render={(props) => (
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          <SearchPage key={props.match.params.query} {...props} />)}
+      />
       <Route
         path="/profile/:username"
         render={(props) => (
