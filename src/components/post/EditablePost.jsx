@@ -25,6 +25,14 @@ class EditablePost extends Component {
     this.setState({ postTitle: event.target.value });
   };
 
+  handleTitleKeyPress = (event) => {
+    // disable the enter key so the user can't have multi-line comments
+    // can still have long text that spans multiple lines though
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  }
+
   handleTextChange = (event) => {
     this.setState({ postContent: event.target.value });
   };
@@ -129,6 +137,7 @@ class EditablePost extends Component {
               placeholder="Title"
               className="title-text-area"
               onChange={this.handleTitleChange}
+              onKeyPress={this.handleTitleKeyPress}
               value={postTitle}
             />
             <TextareaAutosize
