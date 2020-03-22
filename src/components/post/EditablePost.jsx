@@ -14,11 +14,16 @@ class EditablePost extends Component {
       uploadModalVisibility: false,
       previewModalVisibility: false,
       originalPost: props.originalPost,
+      title: props.defaultTitle,
       postContent: props.defaultPostContent,
       postImage: props.defaultPostImage,
       postVisibility: "PUBLIC",
     };
   }
+
+  handleTitleChange = (event) => {
+    this.setState({ title: event.target.value });
+  };
 
   handleTextChange = (event) => {
     this.setState({ postContent: event.target.value });
@@ -78,6 +83,7 @@ class EditablePost extends Component {
     const {
       uploadModalVisibility,
       previewModalVisibility,
+      title,
       postContent,
       postImage,
     } = this.state;
@@ -88,13 +94,13 @@ class EditablePost extends Component {
     const postLength = postContent.replace(/^\s+|\s+$/g, "").length;
     const validPost = postLength > 0 || postImage !== "";
 
-    const title = editMode ? "EDIT POST" : "NEW POST";
+    const componentTitle = editMode ? "EDIT POST" : "NEW POST";
 
     return (
       <div className="editable-post-wrapper">
         <div className="editable-post-content">
           <div className="editable-post-header">
-            <b>{title}</b>
+            <b>{componentTitle}</b>
             <select className="privacy-select" defaultValue="PUBLIC" onChange={this.changePostVisibility}>
               <option value="PUBLIC">Anyone</option>
               <option value="PRIVATE">Specific author</option>
@@ -116,6 +122,12 @@ class EditablePost extends Component {
             imageObjectUrl={postImage}
           />
           <form className="editable-post-input-wrapper" action="submit">
+            <TextareaAutosize
+              placeholder="Title"
+              className="title-text-area"
+              onChange={this.handleTitleChange}
+              value={title}
+            />
             <TextareaAutosize
               ref="postTextArea"
               placeholder="What's on your mind?"
@@ -178,6 +190,7 @@ EditablePost.propTypes = {
     imageSrc: PropTypes.string,
     content: PropTypes.string,
   }),
+  defaultTitle: PropTypes.string,
   defaultPostContent: PropTypes.string,
   defaultPostImage: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
@@ -187,6 +200,7 @@ EditablePost.propTypes = {
 EditablePost.defaultProps = {
   editMode: false,
   originalPost: {},
+  defaultTitle: "",
   defaultPostContent: "",
   defaultPostImage: "",
   onDiscard: () => {},
