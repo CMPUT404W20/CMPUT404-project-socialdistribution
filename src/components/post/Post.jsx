@@ -72,19 +72,22 @@ class Post extends Component {
 
   renderComments = () => {
     const { post } = this.props;
+    const comments = [];
 
-    return (
-      <div id="comment-list">
-        {post.comments.map((comment) => (
-          <div key={comment.id}>
-            <p>
-              {`${comment.author.displayName}:`}
-              <span className="comment-content">{comment.comment}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    );
+    post.comments.forEach((comment) => {
+      const opComment = comment.author.displayName === post.username;
+
+      comments.push(
+        <div key={comment.id}>
+          <p>
+            <span className={opComment ? "op" : ""}>{`${comment.author.displayName}:`}</span>
+            <span className="comment-content">{comment.comment}</span>
+          </p>
+        </div>,
+      );
+    });
+
+    return comments;
   }
 
   handleCommentTextChange = (event) => {
@@ -147,7 +150,9 @@ class Post extends Component {
         <Collapse in={commentSectionVisisble}>
           {/* this div is necessary to prevent a choppy animation when opening the comments */}
           <div>
-            {this.renderComments()}
+            <div className="comment-list">
+              {this.renderComments()}
+            </div>
           </div>
         </Collapse>
         <form className="make-comment-input-wrapper" action="submit" onSubmit={this.handleSubmitNewComment}>
