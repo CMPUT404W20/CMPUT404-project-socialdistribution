@@ -59,11 +59,11 @@ class User(AbstractUser):
                 host_obj.save()
             self.host = host_obj
         super().save(*args, **kwargs)
-
-        fullId = self.get_full_user_id()
-        fullId = protocol_removed(fullId)
-        self.fullId = fullId
-        super().save(*args, **kwargs)
+        if not self.fullId:
+            fullId = self.get_full_user_id()
+            fullId = protocol_removed(fullId)
+            self.fullId = fullId
+            super().save(*args, **kwargs)
 
 
 class Post(models.Model):
