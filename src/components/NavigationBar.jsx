@@ -40,7 +40,7 @@ class NavigationBar extends Component {
   handleSearchKeyPress = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      // return <Redirect to={`/search?username=${this.state.keyword}`} />;
+      alert(this.state.keyword);
     }
   }
 

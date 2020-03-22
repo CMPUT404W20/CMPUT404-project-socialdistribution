@@ -27,6 +27,8 @@ exports[`Navigation bar Component should render correctly 1`] = `
       <FormControl
         aria-describedby="basic-addon1"
         aria-label="Search"
+        onChange={[Function]}
+        onKeyPress={[Function]}
         placeholder="Search"
       />
     </InputGroup>
