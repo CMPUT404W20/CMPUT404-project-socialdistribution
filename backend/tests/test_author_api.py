@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from backend.utils import *
 from backend.models import User, Friend, Host
 
 import pytest
@@ -69,4 +70,8 @@ class TestAuthorAPI:
         assert nouserResponse.status_code == 404
 
 
-    # def test_github(self, client, test_user, friend_user):
+    def test_github(self, client, test_user):
+        client.force_login(test_user)
+        response = client.get('/author/github')
+
+        print(response)

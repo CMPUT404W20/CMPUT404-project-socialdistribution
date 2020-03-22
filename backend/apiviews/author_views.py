@@ -73,29 +73,29 @@ class AuthorViewSet(viewsets.ViewSet):
             return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
 
     def get_github_activity(self, request):
-        print("TESTING")
         headers = {
-            # replace <TOKEN> with your token
-            'Authorization': 'token  3e48a2aeb3eb0a1c1804ccb412f39569fed8b100',
+            'Authorization': 'token  00b756a11f0a49462c56f88b154e44c41fc7ab44',
         }
-        response = requests.get('https://api.github.com/users/<username>/received_events',
-                                headers=headers)  # replace <username> with your user name
+        response = requests.get('https://api.github.com/users/roychowd/received_events',
+                                headers=headers)
         data = response.json()
-        print(data)
-        return Response({"data": data})
-    # event_actions = {'WatchEvent': 'starred', 'PushEvent': 'pushed to'}
+        # actions = {'WatchEvent': 'starred', 'PushEvent': 'pushed to'}
 
-    # for event in data:
-    #     if event['type'] in event_actions:
-    #         name = event['actor']['display_login']
-    #         action = event_actions[event['type']]
-    #         repo = event['repo']['name']
-    #         print('{name} {action} {repo}'.format(
-    #             name=name, action=action, repo=repo))
+        parsed_data = {}
+        parsed_list = []
+        for item in data:
+            if item['type'] == 'ForkEvent':
+                parsed_data["name"] = item['actor']['display_login']
+                parsed_data["event"] = item['type']
+                parsed_data["Forked_Repo"] = item['payload']['forkee']['full_name']
+                parsed_data["repo"] = item['repo']['name']
+                
+            else:
+                parsed_data["name"] = item['actor']['display_login']
+                parsed_data["event"] = item['type']
+                parsed_data["repo"] = item['repo']['name']
+                parsed_data.pop("Forked_Repo",None)
 
-    #     if event['type'] == 'ForkEvent':
-    #         name = event['actor']['display_login']
-    #         repo = event['repo']['name']
-    #         forked_repo = event['payload']['forkee']['full_name']
-    #         print('{name} forked {forked_repo} from {repo}'.format(
-    #             name=name, forked_repo=forked_repo, repo=repo))
+            parsed_list.append(parsed_data.copy())
+
+        return Response({"data": parsed_list})
