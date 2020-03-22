@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../styles/friends-notices-search/NoticeItem.scss";
+import "../../styles/friends-notices-search/SearchItem.scss";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
@@ -28,12 +28,13 @@ class SearchItem extends Component {
         <Col md={12} lg={5} className="rightColumn">
           <div className="button-wrapper">
             <Link
+              className="view-profile-button"
               to={{
                 pathname: `/profile/${username}`,
                 state: { username, userID },
               }}
             >
-              <button type="button" className="view-profile-button">View Profile</button>
+              View Profile
             </Link>
           </div>
         </Col>

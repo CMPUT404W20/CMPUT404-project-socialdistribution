@@ -3,7 +3,9 @@ import "../../styles/friends-notices-search/Page.scss";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import PropTypes from "prop-types";
 import Fade from "react-reveal/Fade";
+import queryString from "query-string";
 import NavigationBar from "../NavigationBar";
 import SearchItem from "./SearchItem";
 
@@ -12,7 +14,9 @@ class SearchPage extends Component {
     super(props);
     this.props = props;
     this.state = {
+      // Todo: query on api
       resultsList: [{ id: "001", name: "Username1", type: "Local" }, { id: "002", name: "Username2", type: "Local" }, { id: "003", name: "Username3", type: "Local" }, { id: "004", name: "Username4", type: "Local" }, { id: "005", name: "Username5", type: "Local" }],
+      keyword: queryString.parse(props.location.search).username,
     };
   }
 
@@ -35,7 +39,7 @@ class SearchPage extends Component {
   }
 
   render() {
-    const { resultsList } = this.state;
+    const { resultsList, keyword } = this.state;
     return (
       <Container fluid className="page-wrapper">
         <Row>
@@ -51,7 +55,9 @@ class SearchPage extends Component {
                 <p>
                   Showing&nbsp;
                   {resultsList.length}
-                  &nbsp;results
+                  &nbsp;results for &quot;
+                  {keyword}
+                  &quot;
                 </p>
               </div>
               <Fade bottom duration={1000} distance="100px">
@@ -64,4 +70,9 @@ class SearchPage extends Component {
     );
   }
 }
+
+SearchPage.propTypes = {
+  location: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
+};
+
 export default SearchPage;

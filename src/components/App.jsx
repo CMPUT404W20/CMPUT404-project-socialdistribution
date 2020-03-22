@@ -18,10 +18,10 @@ function App() {
       <Route exact path="/friends" component={FriendsPage} />
       <Route exact path="/notifications" component={NoticesPage} />
       <Route
-        path="/search?username=:query"
+        path="/search"
         render={(props) => (
           // eslint-disable-next-line react/jsx-props-no-spreading
-          <SearchPage key={props.match.params.query} {...props} />)}
+          <SearchPage key={props.location.search} {...props} />)}
       />
       <Route
         path="/profile/:username"
@@ -35,6 +35,7 @@ function App() {
 
 App.propTypes = {
   match: PropTypes.objectOf(PropTypes.checkPropTypes()),
+  location: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
 };
 App.defaultProps = {
   match: null,
