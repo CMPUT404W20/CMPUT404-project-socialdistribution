@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from backend.utils import *
 from backend.models import User, Friend, Host
-
 import pytest
 
 

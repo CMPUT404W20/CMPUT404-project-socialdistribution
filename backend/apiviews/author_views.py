@@ -13,8 +13,10 @@ from backend.models import User, Friend
 from backend.permissions import *
 from backend.utils import *
 from django.db.models import Q
+from django.conf import settings
 import requests
 import json
+
 
 class AuthorViewSet(viewsets.ViewSet):
 
@@ -73,8 +75,9 @@ class AuthorViewSet(viewsets.ViewSet):
             return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
 
     def get_github_activity(self, request):
+        github_token = 'token  ' + settings.GITHUB_TOKEN
         headers = {
-            'Authorization': 'token  00b756a11f0a49462c56f88b154e44c41fc7ab44',
+            'Authorization': github_token,
         }
         response = requests.get('https://api.github.com/users/roychowd/received_events',
                                 headers=headers)
@@ -89,12 +92,12 @@ class AuthorViewSet(viewsets.ViewSet):
                 parsed_data["event"] = item['type']
                 parsed_data["Forked_Repo"] = item['payload']['forkee']['full_name']
                 parsed_data["repo"] = item['repo']['name']
-                
+
             else:
                 parsed_data["name"] = item['actor']['display_login']
                 parsed_data["event"] = item['type']
                 parsed_data["repo"] = item['repo']['name']
-                parsed_data.pop("Forked_Repo",None)
+                parsed_data.pop("Forked_Repo", None)
 
             parsed_list.append(parsed_data.copy())
 
