@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../styles/post/MakePost.scss";
+import "../../styles/post/EditablePost.scss";
 import PropTypes from "prop-types";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import VisibilityRoundedIcon from "@material-ui/icons/VisibilityRounded";
@@ -7,7 +7,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import UploadImageModal from "./UploadImageModal";
 import PostPreviewModal from "./PostPreviewModal";
 
-class MakePost extends Component {
+class EditablePost extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,8 +48,8 @@ class MakePost extends Component {
 
     onSubmit(originalPost);
     this.setState({
-      postContent:"",
-      postImage:"",
+      postContent: "",
+      postImage: "",
     });
     // eslint-disable-next-line no-alert
     // alert(postContent);
@@ -91,9 +91,9 @@ class MakePost extends Component {
     const title = editMode ? "EDIT POST" : "NEW POST";
 
     return (
-      <div className="make-post-wrapper">
-        <div className="make-post-content">
-          <div className="make-post-header">
+      <div className="editable-post-wrapper">
+        <div className="editable-post-content">
+          <div className="editable-post-header">
             <b>{title}</b>
             <select className="privacy-select" defaultValue="PUBLIC" onChange={this.changePostVisibility}>
               <option value="PUBLIC">Anyone</option>
@@ -115,7 +115,7 @@ class MakePost extends Component {
             postContent={postContent}
             imageObjectUrl={postImage}
           />
-          <form className="make-post-input-wrapper" action="submit">
+          <form className="editable-post-input-wrapper" action="submit">
             <TextareaAutosize
               ref="postTextArea"
               placeholder="What's on your mind?"
@@ -128,7 +128,7 @@ class MakePost extends Component {
                 <img src={postImage} className="preview-image" alt="preview" />
               ) : null
             }
-            <div className="make-post-buttons-wrapper">
+            <div className="editable-post-buttons-wrapper">
               {
                 validPost ? (
                   <VisibilityRoundedIcon
@@ -169,7 +169,7 @@ class MakePost extends Component {
   }
 }
 
-MakePost.propTypes = {
+EditablePost.propTypes = {
   editMode: PropTypes.bool,
   originalPost: PropTypes.shape({
     id: PropTypes.string,
@@ -184,7 +184,7 @@ MakePost.propTypes = {
   onDiscard: PropTypes.func,
 };
 
-MakePost.defaultProps = {
+EditablePost.defaultProps = {
   editMode: false,
   originalPost: {},
   defaultPostContent: "",
@@ -192,4 +192,4 @@ MakePost.defaultProps = {
   onDiscard: () => {},
 };
 
-export default MakePost;
+export default EditablePost;

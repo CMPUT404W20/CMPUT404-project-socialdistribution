@@ -1,6 +1,6 @@
 @import "../common.scss";
 
-.make-post-wrapper {
+.editable-post-wrapper {
   background-color: white;
   box-sizing: border-box;
   box-shadow: $post-box-shadow;
@@ -9,14 +9,14 @@
   display: flex;
   justify-content: center;
 
-  .make-post-content {
+  .editable-post-content {
     display: flex;
     flex-direction: column;
     width: 100%;
     padding: 0 15pt;
   }
 
-  .make-post-header {
+  .editable-post-header {
     display: flexbox;
     flex-direction: row;
     justify-content: center;
@@ -40,7 +40,7 @@
     }  
   }
 
-  .make-post-input-wrapper {
+  .editable-post-input-wrapper {
     margin-top: 1.0rem;
   
     .post-text-area {
@@ -58,7 +58,7 @@
     }
   }  
 
-  .make-post-buttons-wrapper {
+  .editable-post-buttons-wrapper {
     display: flex;
     float: right;
     padding-bottom: 15pt;

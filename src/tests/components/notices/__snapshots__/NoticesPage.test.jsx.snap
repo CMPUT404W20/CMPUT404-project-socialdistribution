@@ -41,9 +41,10 @@ exports[`Notices Page Component should render correctly 1`] = `
             )
           </p>
         </div>
-        <Row
-          className="item-list"
-          noGutters={false}
+        <Fade
+          bottom={true}
+          distance="100px"
+          duration={1000}
         >
           <NoticeItem
             handleAccept={[Function]}
@@ -85,7 +86,7 @@ exports[`Notices Page Component should render correctly 1`] = `
             userID="005"
             username="Username5"
           />
-        </Row>
+        </Fade>
       </div>
     </Col>
   </Row>

@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import NavigationBar from "./NavigationBar";
-import MakePost from "./post/MakePost";
+import EditablePost from "./post/EditablePost";
 import PostView from "./post/PostView";
 import * as postService from "../services/PostService";
 
@@ -39,8 +39,8 @@ class Homepage extends Component {
         <Row>
           <Col md={2} />
           <Col md={8}>
-            <div className="makePostWrapper">
-              <MakePost
+            <div className="editablePostWrapper">
+              <EditablePost
                 onSubmit={this.handlePostCreation}
               />
             </div>
