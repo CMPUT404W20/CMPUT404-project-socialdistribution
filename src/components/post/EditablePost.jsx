@@ -120,6 +120,7 @@ class EditablePost extends Component {
           <PostPreviewModal
             show={previewModalVisibility}
             onHide={this.togglePreviewModalVisibility}
+            postTitle={postTitle}
             postContent={postContent}
             imageObjectUrl={postImage}
           />
