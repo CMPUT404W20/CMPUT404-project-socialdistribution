@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from django.conf import settings
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -28,19 +29,21 @@ class AuthorViewSet(viewsets.ViewSet):
         author_data = []
         for host in Host.objects.all():
             if host.serviceAccountUsername and host.serviceAccountPassword:
+                print(host.url+"author")
                 response = requests.get(
-                    host.url+"author/",
+                    host.url+"author",
                     auth=(host.serviceAccountUsername,
-                          host.serviceAccountPassword)
+                        host.serviceAccountPassword)
                 )
 
                 if response.status_code == 200:
+                    
                     response_data = response.json()
                     # if they followe swagger format, then use "data" as key
                     if "data" in response_data:
                         author_data = response_data["data"]
                     else:
-                        author_data += author_data
+                        author_data += response_data
 
         author = User.objects.all()
         serializer = UserSerializer(author, many=True)
