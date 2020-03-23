@@ -9,10 +9,14 @@
         padding: 0 2rem 0 2rem;
     }
     .title {
-        margin: 1rem 0 1rem 0;
+        margin: 2rem 0 1rem 0.5rem;
         display: inline-flex;
         flex-direction: row;
+        font-size: 1.1em;
+        font-weight: 500;
+        letter-spacing: -0.04em;
         .icon {
+            font-size: 1.4em;
             margin-right: 1rem;
         }
     }

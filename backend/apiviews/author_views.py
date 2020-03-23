@@ -77,12 +77,11 @@ class AuthorViewSet(viewsets.ViewSet):
     def get_github_activity(self, request):
         github_token = 'token  ' + settings.GITHUB_TOKEN
 
-        #If the url field is empty
+        #If the url field is empty, returns HTTP 400.
         if request.user.githubUrl == "":
             return Response("No gitHub url provided",status=status.HTTP_400_BAD_REQUEST)
 
         id = github_urlparser(request.user.githubUrl)
-        print(id)
         request_url = 'https://api.github.com/users/{}/received_events'.format(id)
         headers = {
             'Authorization': github_token,

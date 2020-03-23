@@ -2,13 +2,13 @@
 
 exports[`Post box Component should render correctly 1`] = `
 <div
-  className="make-post-wrapper"
+  className="editable-post-wrapper"
 >
   <div
-    className="make-post-content"
+    className="editable-post-content"
   >
     <div
-      className="make-post-header"
+      className="editable-post-header"
     >
       <b>
         NEW POST
@@ -59,12 +59,23 @@ exports[`Post box Component should render correctly 1`] = `
       imageObjectUrl=""
       onHide={[Function]}
       postContent=""
+      postTitle=""
       show={false}
     />
     <form
       action="submit"
-      className="make-post-input-wrapper"
+      className="editable-post-input-wrapper"
     >
+      <TextareaAutosize
+        className="title-text-area"
+        inputRef={[Function]}
+        onChange={[Function]}
+        onHeightChange={[Function]}
+        onKeyPress={[Function]}
+        placeholder="Title"
+        useCacheForDOMMeasurements={false}
+        value=""
+      />
       <TextareaAutosize
         className="post-text-area"
         inputRef={[Function]}
@@ -75,7 +86,7 @@ exports[`Post box Component should render correctly 1`] = `
         value=""
       />
       <div
-        className="make-post-buttons-wrapper"
+        className="editable-post-buttons-wrapper"
       >
         <ImageOutlinedIcon
           className="icon"

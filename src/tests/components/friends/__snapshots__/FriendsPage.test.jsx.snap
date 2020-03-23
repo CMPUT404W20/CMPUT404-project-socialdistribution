@@ -11,7 +11,7 @@ exports[`Friends Page Component should render correctly 1`] = `
     <Col
       md={12}
     >
-      <NavigationBar />
+      <withRouter(NavigationBar) />
     </Col>
   </Row>
   <Row
@@ -42,7 +42,6 @@ exports[`Friends Page Component should render correctly 1`] = `
           </p>
         </div>
         <Row
-          className="item-list"
           noGutters={false}
         />
       </div>

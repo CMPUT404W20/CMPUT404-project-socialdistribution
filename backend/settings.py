@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     # Django rest_auth
     'rest_auth',
     'rest_auth.registration',
+     'drf_yasg',
 
 ]
 

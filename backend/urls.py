@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.urls import include, path, re_path
 from django.contrib import admin
+from django.conf.urls import url
 
 from rest_framework.routers import DefaultRouter
 from backend.apiviews.post_views import PostViewSet
@@ -22,9 +23,26 @@ from backend.apiviews.author_views import AuthorViewSet
 from backend.apiviews.friend_request_views import FriendRequestViewSet
 from backend.apiviews.friend_views import FriendViewSet
 from backend.apiviews.comment_views import CommentViewSet
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
 
 from .views import index
 router = DefaultRouter()
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Snippets API",
+      default_version='v1',
+      description="Test description",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="contact@snippets.local"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     path('', index, name='index'),
@@ -105,8 +123,11 @@ urlpatterns = [
         "post": "add_comment"
     })),
 
+    # Swagger Documentation
+    url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-
-    # Everything
+    # Everything 
     re_path(r'^(?:.*)/?$', index),
 ]

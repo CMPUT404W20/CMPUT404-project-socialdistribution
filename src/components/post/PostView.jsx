@@ -1,8 +1,10 @@
 /* eslint-disable react/sort-comp */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Fade from "react-reveal/Fade";
+import Pulse from "react-reveal/Pulse";
 import "../../styles/post/PostView.scss";
-import MakePost from "./MakePost";
+import EditablePost from "./EditablePost";
 import Post from "./Post";
 import * as postService from "../../services/PostService";
 
@@ -31,6 +33,8 @@ class PostView extends Component {
         const post = response.posts[i];
 
         newPost.username = post.author.displayName;
+        newPost.authorId = post.author.id;
+        newPost.title = post.title;
         newPost.content = post.content;
         newPost.published = post.published;
         newPost.id = post.id;
@@ -85,6 +89,11 @@ class PostView extends Component {
     });
   }
 
+  handleNewComment = () => {
+    // refresh the posts list to render the latest data
+    this.loadPosts();
+  }
+
   render() {
     const { editingPostId, posts } = this.state;
     const renderedPosts = [];
@@ -98,30 +107,36 @@ class PostView extends Component {
               post={post}
               onEdit={this.handleEditToggle}
               onDelete={this.handleDelete}
+              onNewComment={this.handleNewComment}
             />
           </div>,
         );
       } else {
         renderedPosts.push(
-          <div className="postWrapper" key={-1}>
-            <MakePost
-              editMode
-              originalPost={post}
-              defaultPostContent={post.content}
-              defaultPostImage={post.imageSrc}
-              onSubmit={this.handlePostUpdate}
-              // set the current post being edited to null -> close the edit dialog
-              onDiscard={() => this.handleEditToggle(null)}
-            />
-          </div>,
+          <Pulse duration={200}>
+            <div className="postWrapper" key={-1}>
+              <EditablePost
+                editMode
+                originalPost={post}
+                defaultPostTitle={post.title}
+                defaultPostContent={post.content}
+                defaultPostImage={post.imageSrc}
+                onSubmit={this.handlePostUpdate}
+                // set the current post being edited to null -> close the edit dialog
+                onDiscard={() => this.handleEditToggle(null)}
+              />
+            </div>
+          </Pulse>,
         );
       }
     }
 
     return (
-      <div className="post-view" key={-1}>
-        {renderedPosts}
-      </div>
+      <Fade bottom duration={1000} distance="100px">
+        <div className="post-view" key={-1}>
+          {renderedPosts}
+        </div>
+      </Fade>
     );
   }
 }
