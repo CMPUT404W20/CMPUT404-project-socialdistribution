@@ -79,6 +79,7 @@ class TestAuthorAPI:
             username="user0013", password="ualberta01!", host=test_host, githubUrl= "https://github.com/roychowd")
 
 
+        client.force_login(no_github_user)
         response = client.get('/author/github')
         assert response.status_code == 400
         client.logout()
