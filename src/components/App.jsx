@@ -35,9 +35,10 @@ function App() {
 
 App.propTypes = {
   match: PropTypes.objectOf(PropTypes.checkPropTypes()),
-  location: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
+  location: PropTypes.objectOf(PropTypes.checkPropTypes()),
 };
 App.defaultProps = {
   match: null,
+  location: null,
 };
 export default App;
