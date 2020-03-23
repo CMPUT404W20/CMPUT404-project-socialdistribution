@@ -118,6 +118,8 @@ class PostViewSet(viewsets.ModelViewSet):
         post_data = json.loads(post_data)
         post_data += foreign_posts
 
+        post_data.sort(key=lambda x: x["published"], reverse=True)
+
         return self.get_paginated_response(post_data)
 
     def visible_posts(self, request, author_id):
