@@ -197,6 +197,7 @@ EditablePost.propTypes = {
   originalPost: PropTypes.shape({
     id: PropTypes.string,
     title: PropTypes.string,
+    authorId: PropTypes.string,
     username: PropTypes.string,
     published: PropTypes.string,
     imageSrc: PropTypes.string,
