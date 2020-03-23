@@ -26,9 +26,11 @@ class NavigationBar extends Component {
   }
 
   handleLogOut = () => {
+    const { history } = this.props;
     auth.logoutUser().then((response) => {
       if (response.status === 200) {
         localStorage.clear();
+        history.push("/");
       }
     });
   }
@@ -103,7 +105,7 @@ class NavigationBar extends Component {
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#">Settings</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item as={NavLink} exact to="/" onSelect={this.handleLogOut}>Logout</NavDropdown.Item>
+                <NavDropdown.Item onSelect={this.handleLogOut}>Logout</NavDropdown.Item>
               </Fade>
             </NavDropdown>
           </Nav>

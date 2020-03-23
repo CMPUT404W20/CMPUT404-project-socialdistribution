@@ -9,11 +9,13 @@ import FriendsPage from "./friends/FriendsPage";
 import NoticesPage from "./notices/NoticesPage";
 import ProfilePage from "./profile/ProfilePage";
 import SearchPage from "./search/SearchPage";
+import Login from "./Login";
 
 function App() {
   return (
     <BrowserRouter>
       <PrivateRoute />
+      <Route exact path="/" component={Login} />
       <Route exact path="/home" component={Homepage} />
       <Route exact path="/friends" component={FriendsPage} />
       <Route exact path="/notifications" component={NoticesPage} />
