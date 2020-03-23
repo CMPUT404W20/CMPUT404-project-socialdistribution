@@ -26,7 +26,7 @@ class AuthorViewSet(viewsets.ViewSet):
         '''
         Get all the authors
         '''
-        author_data = []
+        foreign_author = []
         for host in Host.objects.all():
             if host.serviceAccountUsername and host.serviceAccountPassword:
                 print(host.url+"author")
@@ -41,13 +41,13 @@ class AuthorViewSet(viewsets.ViewSet):
                     response_data = response.json()
                     # if they followe swagger format, then use "data" as key
                     if "data" in response_data:
-                        author_data = response_data["data"]
+                        foreign_author = response_data["data"]
                     else:
-                        author_data += response_data
+                        foreign_author += response_data
 
         author = User.objects.all()
         serializer = UserSerializer(author, many=True)
-        return Response(serializer.data+author_data)
+        return Response(serializer.data+foreign_author)
 
     def get_profile(self, request, pk, *args, **kwargs):
         '''
