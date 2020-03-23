@@ -12,6 +12,7 @@ from backend.serializers import *
 from backend.models import User, Friend
 from backend.permissions import *
 from backend.utils import *
+from backend.helpers.github import *
 from django.db.models import Q
 from django.conf import settings
 import requests
@@ -75,35 +76,5 @@ class AuthorViewSet(viewsets.ViewSet):
             return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
 
     def get_github_activity(self, request):
-        github_token = 'token  ' + settings.GITHUB_TOKEN
-
-        #If the url field is empty, returns HTTP 400.
-        if request.user.githubUrl == "":
-            return Response("No gitHub url provided",status=status.HTTP_400_BAD_REQUEST)
-
-        id = github_urlparser(request.user.githubUrl)
-        request_url = 'https://api.github.com/users/{}/received_events'.format(id)
-        headers = {
-            'Authorization': github_token,
-        }
-        response = requests.get(request_url,headers=headers)
-        data = response.json()
-
-        parsed_data = {}
-        parsed_list = []
-        for item in data:
-            if item['type'] == 'ForkEvent':
-                parsed_data["name"] = item['actor']['display_login']
-                parsed_data["event"] = item['type']
-                parsed_data["Forked_Repo"] = item['payload']['forkee']['full_name']
-                parsed_data["repo"] = item['repo']['name']
-
-            else:
-                parsed_data["name"] = item['actor']['display_login']
-                parsed_data["event"] = item['type']
-                parsed_data["repo"] = item['repo']['name']
-                parsed_data.pop("Forked_Repo", None)
-
-            parsed_list.append(parsed_data.copy())
-
-        return Response({"data": parsed_list})
+        data = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN);
+        return Response({"data": data})
