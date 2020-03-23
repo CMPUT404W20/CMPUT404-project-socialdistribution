@@ -74,7 +74,7 @@ class AuthorViewSet(viewsets.ViewSet):
         '''
         /author/{author_id}/friends: Get all the friends of the author
         '''
-
+    
         url = get_host_from_id(pk)
         if url != settings.APP_HOST:
             if Host.objects.filter(url=url).exists():

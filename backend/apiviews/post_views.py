@@ -128,7 +128,7 @@ class PostViewSet(viewsets.ModelViewSet):
         '''
         user = request.user
         author_id = protocol_removed(author_id)
-
+        
         if User.objects.filter(fullId=author_id).exists():
             posts = Post.objects.filter(author__fullId=author_id)
             viewable_posts = Post.objects.none()

@@ -1,4 +1,5 @@
 from backend.models import *
+from backend.utils import *
 
 import requests
 from requests.auth import HTTPBasicAuth, HTTPDigestAuth
@@ -15,6 +16,11 @@ def get_from_host(endpoint, host):
     )
 
     return response
+
+def is_server_user(user_full_id):
+
+    pass
+
 
 # def get_host_data(request_endpoint):
 #     response_data =
