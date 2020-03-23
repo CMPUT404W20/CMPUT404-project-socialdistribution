@@ -108,5 +108,5 @@ urlpatterns = [
 
 
     # Everything
-    # re_path(r'^(?:.*)/?$', index),
+    re_path(r'^(?:.*)/?$', index),
 ]
