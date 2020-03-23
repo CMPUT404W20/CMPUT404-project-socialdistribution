@@ -32,7 +32,9 @@ class Post extends Component {
     } = this.props;
 
     if (previewMode) {
-      return null;
+      // add some gap at the top that would normally have been used by the menu bar
+      // without this, the preview looks cramped
+      return (<div className="spacer" />);
     }
 
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;

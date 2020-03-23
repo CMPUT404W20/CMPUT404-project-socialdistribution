@@ -85,8 +85,9 @@
         resize: none;
     }
     .post-title {
+        margin-top: -10pt;
         padding: 10pt 15pt 0 15pt;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.05em;
     }
     .post-content {
         text-align: left;
@@ -125,5 +126,9 @@
                 margin-top: 1rem;
             }
         }
+    }
+    .spacer {
+        height: 15pt;
+        width: 100%;
     }
 }
