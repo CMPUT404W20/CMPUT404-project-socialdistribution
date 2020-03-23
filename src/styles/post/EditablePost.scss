@@ -46,11 +46,13 @@
     .title-text-area {
       width: 100%;
       min-height: 20px;
-      font-size: 13pt;
+      font-size: 14pt;
       font-weight: 500;
       border: none;
       outline: 0;
       resize: none;
+      font-style: italic;
+      margin-bottom: -5pt;
     }
 
     .post-text-area {
