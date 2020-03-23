@@ -32,7 +32,9 @@ class Post extends Component {
     } = this.props;
 
     if (previewMode) {
-      return null;
+      // add some gap at the top that would normally have been used by the menu bar
+      // without this, the preview looks cramped
+      return (<div className="spacer" />);
     }
 
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
@@ -169,6 +171,7 @@ class Post extends Component {
       <div className="post-block">
         {this.renderMenu()}
         { post.imageSrc ? <img className="post-img" src={post.imageSrc} alt="more-icon" /> : null }
+        <h5 className="post-title"><em>{post.title}</em></h5>
         <ReactMarkdown className="post-content" plugins={[breaks]} source={post.content} />
         {this.renderCommentSection()}
       </div>
@@ -181,8 +184,9 @@ Post.propTypes = {
     id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     published: PropTypes.string.isRequired,
-    imageSrc: PropTypes.string,
+    title: PropTypes.string,
     content: PropTypes.string,
+    imageSrc: PropTypes.string,
     comments: PropTypes.array,
   }).isRequired,
   invisible: PropTypes.bool,

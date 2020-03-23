@@ -33,6 +33,7 @@ class PostView extends Component {
         const post = response.posts[i];
 
         newPost.username = post.author.displayName;
+        newPost.title = post.title;
         newPost.content = post.content;
         newPost.published = post.published;
         newPost.id = post.id;
@@ -110,6 +111,7 @@ class PostView extends Component {
               <EditablePost
                 editMode
                 originalPost={post}
+                defaultPostTitle={post.title}
                 defaultPostContent={post.content}
                 defaultPostImage={post.imageSrc}
                 onSubmit={this.handlePostUpdate}

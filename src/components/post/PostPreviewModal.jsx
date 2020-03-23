@@ -8,6 +8,7 @@ function PostPreviewModal(props) {
   const {
     onHide,
     show,
+    postTitle,
     postContent,
     imageObjectUrl,
   } = props;
@@ -15,6 +16,7 @@ function PostPreviewModal(props) {
   // Post requires a Post object for rendering
   const postObj = {
     id: "-1", // arbitrary ID for the Post object
+    title: postTitle,
     imageSrc: imageObjectUrl,
     content: postContent,
     published: (new Date()).toISOString(),
@@ -22,7 +24,6 @@ function PostPreviewModal(props) {
   };
 
   return (
-
     <Modal size="lg" onHide={onHide} show={show} className="post-preview-modal">
       <Modal.Header closeButton>
         <Modal.Title>Post Preview</Modal.Title>
@@ -40,6 +41,7 @@ function PostPreviewModal(props) {
 PostPreviewModal.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
+  postTitle: PropTypes.string.isRequired,
   postContent: PropTypes.string.isRequired,
   imageObjectUrl: PropTypes.string,
 };
