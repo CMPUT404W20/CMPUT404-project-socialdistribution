@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Redirect, Route } from "react-router-dom";
-import Login from "./Login";
+import { Redirect } from "react-router-dom";
 import * as auth from "../services/AuthenticationService";
 
 class PrivateRoute extends Component {
