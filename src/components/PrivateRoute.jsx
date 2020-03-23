@@ -28,15 +28,11 @@ class PrivateRoute extends Component {
     const { isAuthed, isLoading } = this.state;
     return (
       !isLoading && (
-      <Route
-        exact
-        path="/"
-        render={() => (isAuthed ? (
+        (isAuthed ? (
           <Redirect to={{ pathname: "/home" }} />
         ) : (
-          <Login />
-        ))}
-      />
+          <Redirect to={{ pathname: "/" }} />
+        ))
       )
     );
   }
