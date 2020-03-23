@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../styles/friends-notices/FriendItem.scss";
+import "../../styles/friends-notices-search/FriendItem.scss";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { Link } from "react-router-dom";
