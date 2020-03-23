@@ -70,28 +70,28 @@ class TestAuthorAPI:
         assert nouserResponse.status_code == 404
 
 
-    # def test_github(self, client, test_user,test_host):
-    #     no_github_user = User.objects.create_user(
-    #         username="user001", password="ualberta01!", host=test_host, githubUrl= "")
-    #     nodata_github_user = User.objects.create_user(
-    #         username="user0012", password="ualberta01!", host=test_host, githubUrl= "https://github.com/testuser001")
-    #     github_user = User.objects.create_user(
-    #         username="user0013", password="ualberta01!", host=test_host, githubUrl= "https://github.com/roychowd")
+    def test_github(self, client, test_user,test_host):
+        no_github_user = User.objects.create_user(
+            username="user001", password="ualberta01!", host=test_host, githubUrl= "")
+        nodata_github_user = User.objects.create_user(
+            username="user0012", password="ualberta01!", host=test_host, githubUrl= "https://github.com/testuser001")
+        github_user = User.objects.create_user(
+            username="user0013", password="ualberta01!", host=test_host, githubUrl= "https://github.com/roychowd")
 
 
-    #     client.force_login(no_github_user)
-    #     response = client.get('/author/github')
-    #     assert response.status_code == 400
-    #     client.logout()
+        client.force_login(no_github_user)
+        response = client.get('/author/github')
+        assert response.status_code == 400
+        client.logout()
 
-    #     client.force_login(nodata_github_user)
-    #     response = client.get('/author/github')
-    #     assert response.status_code == 200
-    #     assert response.data["data"] == []
-    #     client.logout()
+        client.force_login(nodata_github_user)
+        response = client.get('/author/github')
+        assert response.status_code == 200
+        assert response.data["data"] == []
+        client.logout()
 
-    #     client.force_login(github_user)
-    #     response = client.get('/author/github')
-    #     assert response.status_code == 200
-    #     assert response.data["data"] is not None
-    #     client.logout()
+        client.force_login(github_user)
+        response = client.get('/author/github')
+        assert response.status_code == 200
+        assert response.data["data"] is not None
+        client.logout()

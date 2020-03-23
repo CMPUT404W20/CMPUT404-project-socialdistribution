@@ -82,6 +82,7 @@ class AuthorViewSet(viewsets.ViewSet):
             return Response("No gitHub url provided",status=status.HTTP_400_BAD_REQUEST)
 
         id = github_urlparser(request.user.githubUrl)
+        print(id)
         request_url = 'https://api.github.com/users/{}/received_events'.format(id)
         headers = {
             'Authorization': github_token,
