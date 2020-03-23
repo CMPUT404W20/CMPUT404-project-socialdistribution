@@ -100,13 +100,17 @@ exports[`Post Block Components should render correctly 1`] = `
     >
       <div>
         <div
-          id="comment-list"
+          className="comment-list"
         >
           <div
             key="95c76f63-5579-45f6-810f-e0665f2ea588"
           >
             <p>
-              commentAuthor:
+              <span
+                className=""
+              >
+                commentAuthor:
+              </span>
               <span
                 className="comment-content"
               >
@@ -269,13 +273,17 @@ Normal Text
     >
       <div>
         <div
-          id="comment-list"
+          className="comment-list"
         >
           <div
             key="95c76f63-5579-45f6-810f-e0665f2ea588"
           >
             <p>
-              commentAuthor:
+              <span
+                className=""
+              >
+                commentAuthor:
+              </span>
               <span
                 className="comment-content"
               >
