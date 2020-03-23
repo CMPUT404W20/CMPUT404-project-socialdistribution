@@ -6,10 +6,11 @@ import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import PropTypes from "prop-types";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import logo from "../images/logo.svg";
 import * as auth from "../services/AuthenticationService";
 
@@ -20,31 +21,53 @@ class NavigationBar extends Component {
       username: localStorage.getItem("username") || "Username",
       userID: localStorage.getItem("userID"),
       numNotifications: 2,
+      keyword: "",
     };
   }
 
   handleLogOut = () => {
+    const { history } = this.props;
     auth.logoutUser().then((response) => {
       if (response.status === 200) {
         localStorage.clear();
-        return <Redirect to="/" />;
+        history.push("/");
       }
     });
   }
 
+  handleSearchTextChange = (event) => {
+    this.setState({ keyword: event.target.value });
+  }
+
+  handleSearchKeyPress = (event) => {
+    const { keyword } = this.state;
+    const { history } = this.props;
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (keyword !== "") {
+        history.push(`/search?username=${keyword}`);
+      }
+    }
+  }
+
   render() {
-    const { username, userID, numNotifications } = this.state;
+    const {
+      username, userID, numNotifications, keyword,
+    } = this.state;
     return (
       <Navbar collapseOnSelect expand="sm" fixed="top" className="navigationBar">
         <Navbar.Brand className="logo">
           <img src={logo} width="85%" alt="app logo" />
         </Navbar.Brand>
         <div className="search-input-container">
-          <InputGroup size="sm" className="searchBar">
+          <InputGroup size="sm" className="searchBar" onSubmit={this.handleRedirect}>
             <FormControl
               placeholder="Search"
               aria-label="Search"
               aria-describedby="basic-addon1"
+              value={keyword}
+              onChange={this.handleSearchTextChange}
+              onKeyPress={this.handleSearchKeyPress}
             />
           </InputGroup>
         </div>
@@ -82,7 +105,7 @@ class NavigationBar extends Component {
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#">Settings</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item as={NavLink} exact to="/" onSelect={this.handleLogOut}>Logout</NavDropdown.Item>
+                <NavDropdown.Item onSelect={this.handleLogOut}>Logout</NavDropdown.Item>
               </Fade>
             </NavDropdown>
           </Nav>
@@ -92,4 +115,8 @@ class NavigationBar extends Component {
   }
 }
 
-export default NavigationBar;
+NavigationBar.propTypes = {
+  history: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
+};
+
+export default withRouter(NavigationBar);

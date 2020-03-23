@@ -6,6 +6,7 @@ import demoImage from "../../../images/demo-img.png";
 const post = {
   id: "1",
   username: "username",
+  userId: "userId",
   imageSrc: demoImage,
   published: (new Date()).toISOString(),
   content: "content",
@@ -14,7 +15,7 @@ const post = {
     comment: "Sample Comment",
     published: "2020-03-12T23:41:35.339192Z",
     contentType: "text/plain",
-    author: { displayName: "commentAuthor" },
+    author: { id: "commentAuthorId", displayName: "commentAuthor" },
   }],
 };
 

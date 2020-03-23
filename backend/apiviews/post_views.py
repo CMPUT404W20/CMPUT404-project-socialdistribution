@@ -90,7 +90,7 @@ class PostViewSet(viewsets.ModelViewSet):
         visible_posts = Post.objects.none()
 
         for post in self.get_queryset():
-            if user in post.get_visible_users():
+            if user == post.author or user in post.get_visible_users():
                 visible_posts |= Post.objects.filter(postId=post.postId)
 
         page = self.paginate_queryset(visible_posts.order_by('-timestamp'))

@@ -1,0 +1,47 @@
+@import "../common.scss";
+.wrapper {
+    border: 1px solid $border-color;
+    margin: 10px;
+    padding: 10px 20px 10px 20px;
+    border-radius: $radius;
+}
+
+.leftColumn {
+    height: 50px;
+    .username-link {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 12pt;
+        color: black;
+    }
+}
+
+.middleColumn {
+    height: 50px;
+    .type-wrapper {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        padding-left: 1rem;
+        border-left: 2px solid $accent-color;
+    }
+}
+
+.rightColumn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    .view-profile-button {
+        @extend %button;
+        font-size: 16px;
+        text-decoration: none;
+    }
+}
