@@ -105,6 +105,7 @@ class AuthorViewSet(viewsets.ViewSet):
                 parsed_data.pop("Forked_Repo", None)
 
             parsed_list.append(parsed_data.copy())
+            
         
 
         return Response({"data": parsed_list})
