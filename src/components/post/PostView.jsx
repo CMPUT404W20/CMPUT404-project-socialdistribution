@@ -33,6 +33,7 @@ class PostView extends Component {
         const post = response.posts[i];
 
         newPost.username = post.author.displayName;
+        newPost.authorId = post.author.id;
         newPost.title = post.title;
         newPost.content = post.content;
         newPost.published = post.published;
@@ -88,6 +89,11 @@ class PostView extends Component {
     });
   }
 
+  handleNewComment = () => {
+    // refresh the posts list to render the latest data
+    this.loadPosts();
+  }
+
   render() {
     const { editingPostId, posts } = this.state;
     const renderedPosts = [];
@@ -101,6 +107,7 @@ class PostView extends Component {
               post={post}
               onEdit={this.handleEditToggle}
               onDelete={this.handleDelete}
+              onNewComment={this.handleNewComment}
             />
           </div>,
         );

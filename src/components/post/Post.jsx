@@ -56,7 +56,7 @@ class Post extends Component {
             {/* the following enclosing tag is required for the fade to work properly */}
             <>
               {
-                post.username === localStorage.getItem("username") ? (
+                post.authorId === localStorage.getItem("userID") ? (
                   <>
                     <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
                     <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
@@ -74,19 +74,22 @@ class Post extends Component {
 
   renderComments = () => {
     const { post } = this.props;
+    const comments = [];
 
-    return (
-      <div id="comment-list">
-        {post.comments.map((comment) => (
-          <div key={comment.id}>
-            <p>
-              {`${comment.author.displayName}:`}
-              <span className="comment-content">{comment.comment}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    );
+    post.comments.forEach((comment) => {
+      const opComment = comment.author.id === post.authorId;
+
+      comments.push(
+        <div key={comment.id}>
+          <p>
+            <span className={opComment ? "op" : ""}>{`${comment.author.displayName}:`}</span>
+            <span className="comment-content">{comment.comment}</span>
+          </p>
+        </div>,
+      );
+    });
+
+    return comments;
   }
 
   handleCommentTextChange = (event) => {
@@ -95,13 +98,17 @@ class Post extends Component {
 
   handleSubmitNewComment = () => {
     const { newComment } = this.state;
-    const { post } = this.props;
+    const { post, onNewComment } = this.props;
 
     CommentService.createComment(post.id, newComment).then((success) => {
       if (success) {
+        // clear the comment field but open the comment section so the user can see the created post
         this.setState({
           newComment: "",
+          commentSectionVisisble: true,
         });
+
+        onNewComment();
       }
     }).catch((err) => {
       const error = err.response.data;
@@ -149,7 +156,9 @@ class Post extends Component {
         <Collapse in={commentSectionVisisble}>
           {/* this div is necessary to prevent a choppy animation when opening the comments */}
           <div>
-            {this.renderComments()}
+            <div className="comment-list">
+              {this.renderComments()}
+            </div>
           </div>
         </Collapse>
         <form className="make-comment-input-wrapper" action="submit" onSubmit={this.handleSubmitNewComment}>
@@ -183,6 +192,7 @@ Post.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
+    authorId: PropTypes.string.isRequired,
     published: PropTypes.string.isRequired,
     title: PropTypes.string,
     content: PropTypes.string,
@@ -193,6 +203,7 @@ Post.propTypes = {
   previewMode: PropTypes.bool,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
+  onNewComment: PropTypes.func,
 };
 
 Post.defaultProps = {
@@ -200,6 +211,7 @@ Post.defaultProps = {
   previewMode: false,
   onEdit: null,
   onDelete: null,
+  onNewComment: null,
 };
 
 export default Post;
