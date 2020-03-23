@@ -6,3 +6,9 @@ def protocol_removed(url):
     url = parsed_url.geturl().replace(scheme, '', 1)
 
     return url
+
+def github_urlparser(url):
+    parsed_url = urlparse(url)
+    id = parsed_url.path.replace("/","")
+    
+    return id

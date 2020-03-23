@@ -76,13 +76,18 @@ class AuthorViewSet(viewsets.ViewSet):
 
     def get_github_activity(self, request):
         github_token = 'token  ' + settings.GITHUB_TOKEN
+
+        #If the url field is empty
+        if request.user.githubUrl == "":
+            return Response("No gitHub url provided",status=status.HTTP_400_BAD_REQUEST)
+
+        id = github_urlparser(request.user.githubUrl)
+        request_url = 'https://api.github.com/users/{}/received_events'.format(id)
         headers = {
             'Authorization': github_token,
         }
-        response = requests.get('https://api.github.com/users/roychowd/received_events',
-                                headers=headers)
+        response = requests.get(request_url,headers=headers)
         data = response.json()
-        # actions = {'WatchEvent': 'starred', 'PushEvent': 'pushed to'}
 
         parsed_data = {}
         parsed_list = []
@@ -100,5 +105,6 @@ class AuthorViewSet(viewsets.ViewSet):
                 parsed_data.pop("Forked_Repo", None)
 
             parsed_list.append(parsed_data.copy())
+        
 
         return Response({"data": parsed_list})
