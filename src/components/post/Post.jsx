@@ -98,13 +98,17 @@ class Post extends Component {
 
   handleSubmitNewComment = () => {
     const { newComment } = this.state;
-    const { post } = this.props;
+    const { post, onNewComment } = this.props;
 
     CommentService.createComment(post.id, newComment).then((success) => {
       if (success) {
+        // clear the comment field but open the comment section so the user can see the created post
         this.setState({
           newComment: "",
+          commentSectionVisisble: true,
         });
+
+        onNewComment();
       }
     }).catch((err) => {
       const error = err.response.data;
@@ -199,6 +203,7 @@ Post.propTypes = {
   previewMode: PropTypes.bool,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
+  onNewComment: PropTypes.func,
 };
 
 Post.defaultProps = {
@@ -206,6 +211,7 @@ Post.defaultProps = {
   previewMode: false,
   onEdit: null,
   onDelete: null,
+  onNewComment: null,
 };
 
 export default Post;
