@@ -11,7 +11,7 @@ from rest_framework import status
 from rest_framework import permissions
 from rest_framework.decorators import permission_classes
 
-from backend.serializers import PostSerializer
+from backend.serializers import PostSerializer, UserSerializer
 from backend.models import Post, User
 from backend.permissions import *
 from backend.utils import *
@@ -107,30 +107,15 @@ class PostViewSet(viewsets.ModelViewSet):
          # load github activity
         github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN)
         for event in github_events:
-            event["author"] = request.user.id
-            s = PostSerializer(data=event)
-
-            if s.is_valid():
-                print(s.is_valid(), event)
-                print(s.validated_data)
-                p = s.create(s.validated_data)
-                print("CAT", Post(**s.validated_data).content)
-                print(p)
-                print("COW", p.author)
-                print("COW", p.title)
-                print("COW", model_to_dict(p))
-                print("COW", p.__dict__)
-                post_data.append(event)
-            else: 
-                print(s.errors)
+            event["author"] = UserSerializer(request.user).data
+            post_data.append(event)
         
-
         # post_data.sort(key=lambda x: x["published"], reverse=True)
         post_data.sort(key=lambda x : x["published"] if isinstance(x, dict) else str(x.timestamp), reverse=True)
+        
+        page = self.paginate_queryset(post_data)
 
-        # print(post_data)
-
-        return self.get_paginated_response(post_data)
+        return self.get_paginated_response(page)
 
     def visible_posts(self, request, author_id):
         '''

@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 def protocol_removed(url):
     parsed_url = urlparse(url)
     scheme = "%s://" % parsed_url.scheme

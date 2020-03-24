@@ -56,7 +56,9 @@ class PostSerializer(serializers.ModelSerializer):
     unlisted = serializers.BooleanField(source="is_unlisted", read_only=True)
 
     def to_representation(self, instance):
+        
         response = super().to_representation(instance)
+        print(instance)
         response['author'] = UserSerializer(instance.author).data
 
         comments = Comments.objects.filter(post=instance.postId)
