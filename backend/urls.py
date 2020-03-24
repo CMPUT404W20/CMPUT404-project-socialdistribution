@@ -61,7 +61,7 @@ urlpatterns = [
         "delete": "destroy",
         "put": "partial_update",
     })),
-    path('author/posts', PostViewSet.as_view({
+    re_path(r'author/posts/?$', PostViewSet.as_view({
         "get": "get_user_visible_posts",
         "post": "create_post"
     })),
@@ -79,16 +79,22 @@ urlpatterns = [
         "get": "get_current_user"
     })),
 
+    
     path('author/<path:pk>/friends/', AuthorViewSet.as_view(({
         "get": "get_friends"
     }))),
-    path('author/<path:pk>/', AuthorViewSet.as_view({
-        "get": "get_profile"
-    })),
+
+    path('author/<path:authorId>/friends', FriendViewSet.as_view(({
+        "post": "post_query_friends"
+    }))),
 
     path('author/<path:authorId1>/friends/<path:authorId2>', FriendViewSet.as_view(({
         "get": "check_friends"
     }))),
+
+    path('author/<path:pk>', AuthorViewSet.as_view({
+        "get": "get_profile"
+    })),
 
     path('friend/accept/', FriendViewSet.as_view(({
         "post": "post_friendship"
@@ -98,9 +104,6 @@ urlpatterns = [
         "post": "unfriend"
     }))),
 
-    path('author/<path:authorId>/friends', FriendViewSet.as_view(({
-        "post": "post_query_friends"
-    }))),
 
     path('friendrequest', FriendRequestViewSet.as_view(({
         "post": "send_friend_request"
