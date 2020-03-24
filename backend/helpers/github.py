@@ -78,7 +78,8 @@ def parse_data(raw_data):
             "title": "Github",
             "visibility": "PRIVATE",
             "published": event["created_at"].replace("Z", ".000000Z"),
-            "comments": []
+            "comments": [],
+            "new": "Test"
         }
 
         parsed_events.append(parsed_event)

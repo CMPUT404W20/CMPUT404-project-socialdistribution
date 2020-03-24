@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.forms.models import model_to_dict
+
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -110,9 +112,14 @@ class PostViewSet(viewsets.ModelViewSet):
 
             if s.is_valid():
                 print(s.is_valid(), event)
+                print(s.validated_data)
                 p = s.create(s.validated_data)
                 print("CAT", Post(**s.validated_data).content)
-                print("COW", p.content)
+                print(p)
+                print("COW", p.author)
+                print("COW", p.title)
+                print("COW", model_to_dict(p))
+                print("COW", p.__dict__)
                 post_data.append(event)
             else: 
                 print(s.errors)
@@ -121,7 +128,7 @@ class PostViewSet(viewsets.ModelViewSet):
         # post_data.sort(key=lambda x: x["published"], reverse=True)
         post_data.sort(key=lambda x : x["published"] if isinstance(x, dict) else str(x.timestamp), reverse=True)
 
-        print(post_data)
+        # print(post_data)
 
         return self.get_paginated_response(post_data)
 
