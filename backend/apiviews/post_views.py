@@ -92,8 +92,15 @@ class PostViewSet(viewsets.ModelViewSet):
                 visible_posts |= Post.objects.filter(postId=post.postId)
 
         # load github activity
-        github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN);
-        # print(github_events)
+        github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN)
+        for event in github_events:
+            event["author"] = request.user.id
+            s = PostSerializer(data=event)
+
+            if s.is_valid():
+                print(s.is_valid(), event)
+            else: 
+                print(s.errors)
 
 
         page = self.paginate_queryset(visible_posts.order_by('-timestamp'))

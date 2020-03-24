@@ -26,7 +26,7 @@ def get_raw_data(github_url, access_token):
 def parse_data(raw_data):
     # https://github.com/azu/parse-github-event/blob/master/src/parse-github-event.ts for reference
 
-    parsed_data = []
+    parsed_events = []
     for event in raw_data:
         message = ""
         if event["type"] == "ForkEvent":
@@ -72,14 +72,21 @@ def parse_data(raw_data):
                     event["payload"]["ref_type"],
                     event["repo"]["name"]
                 )
-        # TODO: need to add more event types but we can come bac k$
-        print("\n", event["type"], message)
+        
+        parsed_event = {
+            "content": message,
+            "title": "Github",
+            "visibility": "PRIVATE",
+        }
 
-    return parsed_data
+        parsed_events.append(parsed_event)
+        # TODO: need to add more event types but we can come back to that later
+
+    return parsed_events
 
 def load_github_events(github_url, access_token):
     raw_data = get_raw_data(github_url, access_token)
-    parsed_data = parse_data(raw_data)
+    parsed_events = parse_data(raw_data)
 
-    return parsed_data
+    return parsed_events
 
