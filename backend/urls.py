@@ -82,7 +82,7 @@ urlpatterns = [
     path('author/<path:pk>/friends/', AuthorViewSet.as_view(({
         "get": "get_friends"
     }))),
-    path('author/<path:pk>', AuthorViewSet.as_view({
+    path('author/<path:pk>/', AuthorViewSet.as_view({
         "get": "get_profile"
     })),
 
@@ -98,7 +98,7 @@ urlpatterns = [
         "post": "unfriend"
     }))),
 
-    path('author/<path:authorId>/friend', FriendViewSet.as_view(({
+    path('author/<path:authorId>/friends', FriendViewSet.as_view(({
         "post": "post_query_friends"
     }))),
 

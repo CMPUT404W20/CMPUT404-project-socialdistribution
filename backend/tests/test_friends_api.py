@@ -181,7 +181,7 @@ class TestFriend:
                 "hi",
             ]
         })
-        url = '/author/{}/friends/'.format(test_auth_id)
+        url = '/author/{}/friends'.format(test_auth_id)
         print(url)
         response = client.post(url, data=post_body,
                                content_type='application/json', charset='UTF-8')
