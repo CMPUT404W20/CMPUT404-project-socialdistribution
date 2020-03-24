@@ -5,6 +5,7 @@ import json
 import pytest
 import urllib
 
+
 @pytest.mark.django_db
 class TestFriend:
     user_notFound_id = "https://example/20"
@@ -71,19 +72,17 @@ class TestFriend:
         assert response.status_code == 400
 
     def test_check_friends(self, client, test_user, friend_user):
-
         # check one way friends
         Friend.objects.create(
             fromUser=test_user, toUser=friend_user[0])
         test_auth_id = test_user.get_full_user_id()
-        print(test_auth_id)
-        print('/author/{}/friends/{}'.format(test_auth_id,friend_user[0].get_full_user_id()))
+        assert Friend.objects.filter(toUser=friend_user[0], fromUser=test_user).exists()
+        print("****", test_user.id, friend_user[0].id)
 
         # Checking scenario where they are friends
-        # the_url =urllib.parse.quote('/author/{}/friends/{}'.format(test_auth_id,friend_user[0].get_full_user_id()) , safe='~()*!.\'')
-        the_url = '/author/{}/friends/{}'.format(test_auth_id, friend_user[0].get_full_user_id())
 
-        response = client.get(the_url)
+        response = client.get(
+            '/author/{}/friends/{}'.format(test_auth_id, friend_user[0].get_full_user_id()))
 
         assert response.status_code == 200
         assert response.data["query"] == "friends"
@@ -109,7 +108,8 @@ class TestFriend:
         assert response.data['friends'] == True
 
         # Checking scenario where they are not friends
-        notFriendsResponse = client.get('/author/{}/friends/{}'.format(test_auth_id, friend_user[1].get_full_user_id()))
+        notFriendsResponse = client.get(
+            '/author/{}/friends/{}'.format(test_auth_id, friend_user[1].get_full_user_id()))
 
         assert notFriendsResponse.status_code == 200
         assert notFriendsResponse.data["query"] == "friends"
@@ -121,7 +121,8 @@ class TestFriend:
 
         # Checking scenario where the user(s) does not exist, 404 Error
 
-        nouserResponse = client.get('/author/{}/friends/{}'.format(test_auth_id, self.user_notFound_id))
+        nouserResponse = client.get(
+            '/author/{}/friends/{}'.format(test_auth_id, self.user_notFound_id))
         assert nouserResponse.status_code == 404
 
     def test_reject_friend_request(self, client, test_user, friend_user, test_host):
