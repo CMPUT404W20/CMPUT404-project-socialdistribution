@@ -71,13 +71,13 @@ class TestFriend:
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 400
 
+    
     def test_check_friends(self, client, test_user, friend_user):
+
         # check one way friends
         Friend.objects.create(
             fromUser=test_user, toUser=friend_user[0])
         test_auth_id = test_user.get_full_user_id()
-        assert Friend.objects.filter(toUser=friend_user[0], fromUser=test_user).exists()
-        print("****", test_user.id, friend_user[0].id)
 
         # Checking scenario where they are friends
 
