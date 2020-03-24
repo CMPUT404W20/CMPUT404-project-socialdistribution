@@ -42,10 +42,22 @@
 
   .editable-post-input-wrapper {
     margin-top: 1.0rem;
-  
+    
+    .title-text-area {
+      width: 100%;
+      min-height: 20px;
+      font-size: 14pt;
+      font-weight: 500;
+      border: none;
+      outline: 0;
+      resize: none;
+      font-style: italic;
+      margin-bottom: -5pt;
+    }
+
     .post-text-area {
       width: 100%;
-      min-height: 100px;
+      min-height: 80px;
       font-size: 12pt;
       border: none;
       outline: 0;
