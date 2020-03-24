@@ -16,6 +16,8 @@ from backend.utils import *
 from backend.helpers.github import *
 from backend.apiviews.paginations import PostPagination
 
+import json
+
 
 class PostViewSet(viewsets.ModelViewSet):
     """
@@ -91,7 +93,16 @@ class PostViewSet(viewsets.ModelViewSet):
             if user == post.author or user in post.get_visible_users():
                 visible_posts |= Post.objects.filter(postId=post.postId)
 
-        # load github activity
+
+        page = self.paginate_queryset(visible_posts.order_by('-timestamp'))
+        serializer = self.get_serializer(page, many=True)
+
+        post_data = json.dumps(serializer.data)
+        post_data = json.loads(post_data)
+
+        # print(post_data)
+
+         # load github activity
         github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN)
         for event in github_events:
             event["author"] = request.user.id
@@ -99,14 +110,17 @@ class PostViewSet(viewsets.ModelViewSet):
 
             if s.is_valid():
                 print(s.is_valid(), event)
+                p = s.create(s.validated_data)
+                print("CAT", Post(**s.validated_data).content)
+                print("COW", p.content)
+                post_data.append(event)
             else: 
                 print(s.errors)
+        
 
+        post_data.sort(key=lambda x: x["published"], reverse=True)
 
-        page = self.paginate_queryset(visible_posts.order_by('-timestamp'))
-        serializer = self.get_serializer(page, many=True)
-
-        return self.get_paginated_response(serializer.data)
+        return self.get_paginated_response(post_data)
 
     def visible_posts(self, request, author_id):
         '''
