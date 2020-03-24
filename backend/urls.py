@@ -32,16 +32,16 @@ from .views import index
 router = DefaultRouter()
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Snippets API",
-      default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="Snippets API",
+        default_version='v1',
+        description="Test description",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [
@@ -53,27 +53,24 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
 
     # url for Post Operations
-    path('posts/', PostViewSet.as_view({
+    path('posts', PostViewSet.as_view({
         "get": "list"
     })),
-    path('posts/<uuid:postId>/', PostViewSet.as_view({
+    path('posts/<uuid:postId>', PostViewSet.as_view({
         "get": "retrieve",
         "delete": "destroy",
         "put": "partial_update",
     })),
-    path('posts/<uuid:postId>/', PostViewSet.as_view({
-        "get": "retrieve"
-    })),
-    path('author/posts/', PostViewSet.as_view({
+    path('author/posts', PostViewSet.as_view({
         "get": "get_user_visible_posts",
         "post": "create_post"
     })),
-    path('author/<path:author_id>/posts/', PostViewSet.as_view({
+    path('author/<path:author_id>/posts', PostViewSet.as_view({
         "get": "visible_posts"
     })),
-    
+
     # url of Author Operations
-    path('author/', AuthorViewSet.as_view({
+    path('author', AuthorViewSet.as_view({
         "get": "get_authors"
     })),
 
@@ -85,13 +82,14 @@ urlpatterns = [
     path('author/<path:pk>/friends/', AuthorViewSet.as_view(({
         "get": "get_friends"
     }))),
-    path('author/<path:pk>/', AuthorViewSet.as_view({
+    path('author/<path:pk>', AuthorViewSet.as_view({
         "get": "get_profile"
     })),
 
     path('author/<path:authorId1>/friends/<path:authorId2>', FriendViewSet.as_view(({
         "get": "check_friends"
     }))),
+
     path('friend/accept/', FriendViewSet.as_view(({
         "post": "post_friendship"
     }))),
@@ -104,7 +102,7 @@ urlpatterns = [
         "post": "post_query_friends"
     }))),
 
-    path('friendrequest/', FriendRequestViewSet.as_view(({
+    path('friendrequest', FriendRequestViewSet.as_view(({
         "post": "send_friend_request"
     }))),
     path('friendrequest/reject/', FriendRequestViewSet.as_view(({
@@ -112,16 +110,20 @@ urlpatterns = [
     }))),
 
     # url of Comment Operations
-    path('posts/<uuid:postId>/comments/', CommentViewSet.as_view({
+    path('posts/<uuid:postId>/comments', CommentViewSet.as_view({
         "get": "get_post_comment",
         "post": "add_comment"
     })),
 
-    # Swagger Documentation
-    url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    # Everything 
+    # Swagger Documentation
+    url(r'^swagger(?P<format>\.json|\.yaml)$',
+        schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    url(r'^swagger/$', schema_view.with_ui('swagger',
+                                           cache_timeout=0), name='schema-swagger-ui'),
+    url(r'^redoc/$', schema_view.with_ui('redoc',
+                                         cache_timeout=0), name='schema-redoc'),
+
+    # Everything
     re_path(r'^(?:.*)/?$', index),
 ]

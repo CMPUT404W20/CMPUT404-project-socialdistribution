@@ -3,7 +3,7 @@ from backend.models import User, Friend, Host, FriendRequest
 from backend.utils import *
 import json
 import pytest
-
+import urllib
 
 @pytest.mark.django_db
 class TestFriend:
@@ -23,7 +23,7 @@ class TestFriend:
             }
         })
 
-        response = client.post('/friendrequest/', data=post_body_1,
+        response = client.post('/friendrequest', data=post_body_1,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 201
 
@@ -35,7 +35,7 @@ class TestFriend:
 
         # checking scenario where data is invalid
 
-        response = client.post('/friendrequest/', data={},
+        response = client.post('/friendrequest', data={},
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 400
 
@@ -76,11 +76,14 @@ class TestFriend:
         Friend.objects.create(
             fromUser=test_user, toUser=friend_user[0])
         test_auth_id = test_user.get_full_user_id()
+        print(test_auth_id)
+        print('/author/{}/friends/{}'.format(test_auth_id,friend_user[0].get_full_user_id()))
 
         # Checking scenario where they are friends
+        # the_url =urllib.parse.quote('/author/{}/friends/{}'.format(test_auth_id,friend_user[0].get_full_user_id()) , safe='~()*!.\'')
+        the_url = '/author/{}/friends/{}'.format(test_auth_id, friend_user[0].get_full_user_id())
 
-        response = client.get(
-            '/author/{}/friends/{}'.format(test_auth_id, friend_user[0].get_full_user_id()))
+        response = client.get(the_url)
 
         assert response.status_code == 200
         assert response.data["query"] == "friends"
@@ -106,8 +109,7 @@ class TestFriend:
         assert response.data['friends'] == True
 
         # Checking scenario where they are not friends
-        notFriendsResponse = client.get(
-            '/author/{}/friends/{}'.format(test_auth_id, friend_user[1].get_full_user_id()))
+        notFriendsResponse = client.get('/author/{}/friends/{}'.format(test_auth_id, friend_user[1].get_full_user_id()))
 
         assert notFriendsResponse.status_code == 200
         assert notFriendsResponse.data["query"] == "friends"
@@ -119,8 +121,7 @@ class TestFriend:
 
         # Checking scenario where the user(s) does not exist, 404 Error
 
-        nouserResponse = client.get(
-            '/author/{}/friends/{}'.format(test_auth_id, self.user_notFound_id))
+        nouserResponse = client.get('/author/{}/friends/{}'.format(test_auth_id, self.user_notFound_id))
         assert nouserResponse.status_code == 404
 
     def test_reject_friend_request(self, client, test_user, friend_user, test_host):
@@ -148,7 +149,7 @@ class TestFriend:
 
         # create friend request and check if reject works
 
-        response = client.post('/friendrequest/', data=post_body,
+        response = client.post('/friendrequest', data=post_body,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 201
         assert FriendRequest.objects.filter(
@@ -179,7 +180,8 @@ class TestFriend:
                 "hi",
             ]
         })
-        url = '/author/{}/friend'.format(test_auth_id)
+        url = '/author/{}/friends/'.format(test_auth_id)
+        print(url)
         response = client.post(url, data=post_body,
                                content_type='application/json', charset='UTF-8')
 
