@@ -42,7 +42,6 @@ class FriendRequestViewSet(viewsets.ViewSet):
                                          "message": "unauthorized host"},
                                         status=status.HTTP_403_FORBIDDEN)
             requested_user = User.objects.get(fullId=requester["id"])
-            print(receiver)
             # check if friend request receiver is a local author
             if receiver["host"] != settings.APP_HOST:
                 if not User.objects.filter(fullId=receiver["id"]).exists():
