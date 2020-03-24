@@ -24,23 +24,56 @@ def get_raw_data(github_url, access_token):
     return data
 
 def parse_data(raw_data):
+    # https://github.com/azu/parse-github-event/blob/master/src/parse-github-event.ts for reference
+
     parsed_data = []
-    for item in raw_data:
-        print("\n", item["type"])
+    for event in raw_data:
         message = ""
-        if item["type"] == "ForkEvent":
+        if event["type"] == "ForkEvent":
             message = "{} forked {} from {}".format(
-                item["actor"]["display_login"],
-                item["payload"]["forkee"]["full_name"],
-                item["repo"]["name"]
+                event["actor"]["display_login"],
+                event["payload"]["forkee"]["full_name"],
+                event["repo"]["name"]
             )
-        elif item["type"] == "WatchEvent":
+        elif event["type"] == "WatchEvent":
             message = "{} starred {}".format(
-                item["actor"]["display_login"],
-                item["repo"]["name"]
+                event["actor"]["display_login"],
+                event["repo"]["name"]
             )
-        
-        print(message)
+        elif event["type"] == "PullRequestEvent":
+            message = "{} {} pull request #{} at {}".format(
+                event["actor"]["display_login"],
+                event["payload"]["action"],
+                event["payload"]["number"],
+                event["repo"]["name"]
+            )
+        elif event["type"] == "PushEvent":
+            message = "{} pushed to branch {} at {}".format(
+                event["actor"]["display_login"],
+                event["payload"]["ref"].split("/")[-1],
+                event["repo"]["name"]
+            )
+        elif event["type"] == "DeleteEvent":
+            message = "{} deleted {} {} at {}".format(
+                event["actor"]["display_login"],
+                event["payload"]["ref_type"],
+                event["payload"]["ref"],
+                event["repo"]["name"]
+            )
+        elif event["type"] == "CreateEvent":
+            if event["payload"]["ref_type"] == "respository":
+                message = "{} created repository {}".format(
+                    event["actor"]["display_login"],
+                    event["repo"]["name"]
+                )
+            else: 
+                message = "{} created {} at {}".format(
+                    event["actor"]["display_login"],
+                    event["payload"]["ref_type"],
+                    event["repo"]["name"]
+                )
+        # TODO: need to add more event types but we can come bac k$
+        print("\n", event["type"], message)
 
     return parsed_data
 
