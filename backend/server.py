@@ -1,14 +1,12 @@
 from backend.models import *
 from backend.utils import *
 
-import requests
-from requests.auth import HTTPBasicAuth, HTTPDigestAuth
+from django.conf import settings
+
+import requests, json
 
 
 def get_from_host(endpoint, host):
-    print(host.url+endpoint)
-    print(host.serviceAccountPassword)
-    print(host.serviceAccountUsername)
     response = requests.get(
         host.url+endpoint,
         auth=(host.serviceAccountUsername,
@@ -17,29 +15,18 @@ def get_from_host(endpoint, host):
 
     return response
 
+
+def post_to_host(endpoint, host, body):
+    headers = {"Content-type": "application/json"}
+    response = requests.post(host.url+endpoint, data=json.dumps(body),
+                             auth=(host.serviceAccountUsername,
+                                   host.serviceAccountPassword),
+                             headers=headers)
+    return response
+
+
 def is_server_user(user_full_id):
-
-    pass
-
-
-# def get_host_data(request_endpoint):
-#     response_data =
-#     for host in Host.objects.all():
-#         if host.serviceAccountUsername and host.serviceAccountPassword:
-#             response = requests.get(
-#                 host.url+request_endpoint,
-#                 auth=(host.serviceAccountUsername,
-#                         host.serviceAccountPassword)
-#             )
-
-#             if response.status_code == 200:
-#                 response_data = response.json()
-
-#     return response_data
-
-#                 # # if they followe swagger format, then use "data" as key
-#                 # if "data" in response_data:
-#                 #     author_data = response_data["data"]
-#                 # else:
-#                 #     author_data += author_data
-#     return
+    if get_host_from_id(user_full_id) != settings.APP_HOST:
+        return False
+    else:
+        return True
