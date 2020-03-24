@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search Item Component should render correctly 1`] = `
+<Row
+  className="wrapper"
+  noGutters={false}
+>
+  <Col
+    className="leftColumn"
+    lg={4}
+    md={12}
+  >
+    <p
+      className="username-link"
+    />
+  </Col>
+  <Col
+    className="middleColumn"
+    lg={3}
+    md={12}
+  >
+    <div
+      className="type-wrapper"
+    />
+  </Col>
+  <Col
+    className="rightColumn"
+    lg={5}
+    md={12}
+  >
+    <div
+      className="button-wrapper"
+    >
+      <Link
+        className="view-profile-button"
+        to={
+          Object {
+            "pathname": "/profile/",
+            "state": Object {
+              "userID": "",
+              "username": "",
+            },
+          }
+        }
+      >
+        View Profile
+      </Link>
+    </div>
+  </Col>
+</Row>
+`;
