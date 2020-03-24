@@ -118,7 +118,10 @@ class PostViewSet(viewsets.ModelViewSet):
                 print(s.errors)
         
 
-        post_data.sort(key=lambda x: x["published"], reverse=True)
+        # post_data.sort(key=lambda x: x["published"], reverse=True)
+        post_data.sort(key=lambda x : x["published"] if isinstance(x, dict) else str(x.timestamp), reverse=True)
+
+        print(post_data)
 
         return self.get_paginated_response(post_data)
 
