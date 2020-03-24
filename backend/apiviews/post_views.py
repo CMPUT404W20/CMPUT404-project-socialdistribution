@@ -18,7 +18,7 @@ from backend.utils import *
 from backend.helpers.github import *
 from backend.apiviews.paginations import PostPagination
 
-import json
+import json, uuid
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -108,11 +108,11 @@ class PostViewSet(viewsets.ModelViewSet):
         github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN)
         for event in github_events:
             event["author"] = UserSerializer(request.user).data
+            event["id"] = uuid.uuid3(uuid.NAMESPACE_X500, event["content"])
             post_data.append(event)
         
         # post_data.sort(key=lambda x: x["published"], reverse=True)
         post_data.sort(key=lambda x : x["published"] if isinstance(x, dict) else str(x.timestamp), reverse=True)
-        
         page = self.paginate_queryset(post_data)
 
         return self.get_paginated_response(page)
