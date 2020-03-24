@@ -93,7 +93,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
         # load github activity
         github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN);
-        print(github_events)
+        # print(github_events)
 
 
         page = self.paginate_queryset(visible_posts.order_by('-timestamp'))

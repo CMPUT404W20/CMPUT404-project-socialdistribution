@@ -23,28 +23,30 @@ def get_raw_data(github_url, access_token):
 
     return data
 
-def prase_data(raw_data):
-    parsed_data = {}
-    parsed_list = []
+def parse_data(raw_data):
+    parsed_data = []
     for item in raw_data:
-        if item['type'] == 'ForkEvent':
-            parsed_data["name"] = item['actor']['display_login']
-            parsed_data["event"] = item['type']
-            parsed_data["Forked_Repo"] = item['payload']['forkee']['full_name']
-            parsed_data["repo"] = item['repo']['name']
+        print("\n", item["type"])
+        message = ""
+        if item["type"] == "ForkEvent":
+            message = "{} forked {} from {}".format(
+                item["actor"]["display_login"],
+                item["payload"]["forkee"]["full_name"],
+                item["repo"]["name"]
+            )
+        elif item["type"] == "WatchEvent":
+            message = "{} starred {}".format(
+                item["actor"]["display_login"],
+                item["repo"]["name"]
+            )
+        
+        print(message)
 
-        else:
-            parsed_data["name"] = item['actor']['display_login']
-            parsed_data["event"] = item['type']
-            parsed_data["repo"] = item['repo']['name']
-            parsed_data.pop("Forked_Repo", None)
-
-        parsed_list.append(parsed_data.copy())
-    return parsed_list
+    return parsed_data
 
 def load_github_events(github_url, access_token):
     raw_data = get_raw_data(github_url, access_token)
-    parsed_data = prase_data(raw_data)
+    parsed_data = parse_data(raw_data)
 
     return parsed_data
 
