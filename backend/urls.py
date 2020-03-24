@@ -93,11 +93,6 @@ urlpatterns = [
         "get": "check_friends"
     }))),
 
-    # url of github activity
-    path('author/github', AuthorViewSet.as_view(({
-        "get": "get_github_activity"
-    }))),
-
     path('friend/accept/', FriendViewSet.as_view(({
         "post": "post_friendship"
     }))),

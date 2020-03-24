@@ -22,7 +22,7 @@ class PostView extends Component {
   loadPosts() {
     const { userId } = this.props;
 
-    // TODO: fix else statement
+    // userId === null means it's rendering homepage and not the profile page
     const getPosts = userId === null ? postService.getPosts() : postService.getUserPosts(userId);
 
     const posts = [];

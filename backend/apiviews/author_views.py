@@ -12,7 +12,6 @@ from backend.serializers import *
 from backend.models import User, Friend
 from backend.permissions import *
 from backend.utils import *
-from backend.helpers.github import *
 from django.db.models import Q
 from django.conf import settings
 import requests
@@ -74,7 +73,3 @@ class AuthorViewSet(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
-
-    def get_github_activity(self, request):
-        data = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN);
-        return Response({"data": data})

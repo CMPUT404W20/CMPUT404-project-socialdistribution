@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -12,6 +13,7 @@ from backend.serializers import PostSerializer
 from backend.models import Post, User
 from backend.permissions import *
 from backend.utils import *
+from backend.helpers.github import *
 from backend.apiviews.paginations import PostPagination
 
 
@@ -88,6 +90,11 @@ class PostViewSet(viewsets.ModelViewSet):
         for post in self.get_queryset():
             if user == post.author or user in post.get_visible_users():
                 visible_posts |= Post.objects.filter(postId=post.postId)
+
+        # load github activity
+        github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN);
+        print(github_events)
+
 
         page = self.paginate_queryset(visible_posts.order_by('-timestamp'))
         serializer = self.get_serializer(page, many=True)
