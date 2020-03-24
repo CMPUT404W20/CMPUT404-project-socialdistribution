@@ -26,7 +26,7 @@ export const createComment = (postId, newComment, user) => {
       },
       comment: newComment,
       contentType: "text/markdown",
-      published: new Date().toJSON(),
+      published: new Date().toISOString(),
     },
   };
   // eslint-disable-next-line object-shorthand
