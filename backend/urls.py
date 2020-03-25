@@ -79,7 +79,7 @@ urlpatterns = [
         "get": "get_current_user"
     })),
 
-    
+
     path('author/<path:pk>/friends/', AuthorViewSet.as_view(({
         "get": "get_friends"
     }))),

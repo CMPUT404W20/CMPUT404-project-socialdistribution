@@ -3,7 +3,8 @@ from backend.utils import *
 
 from django.conf import settings
 
-import requests, json
+import requests
+import json
 
 
 def get_from_host(endpoint, host):
@@ -18,6 +19,7 @@ def get_from_host(endpoint, host):
 
 def post_to_host(endpoint, host, body):
     headers = {"Content-type": "application/json"}
+    print(host.url+endpoint)
     response = requests.post(host.url+endpoint, data=json.dumps(body),
                              auth=(host.serviceAccountUsername,
                                    host.serviceAccountPassword),

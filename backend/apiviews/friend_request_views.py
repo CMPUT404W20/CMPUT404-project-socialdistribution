@@ -33,10 +33,11 @@ class FriendRequestViewSet(viewsets.ViewSet):
         '''
         Friend.objects.create(fromUser=requester, toUser=receiver)
         Friend.objects.create(fromUser=receiver, toUser=requester)
-        FriendRequest.objects.filter(fromUser=receiver, toUser=requester).delete()
+        FriendRequest.objects.filter(
+            fromUser=receiver, toUser=requester).delete()
 
     def send_friend_request(self, request, *args, **kwargs):
-        # /friendrequest/ : create a friendrequest between authenticated user and another user
+        # /friendrequest : create a friendrequest between authenticated user and another user
         request_data = dict(request.data)
         requester = request_data["author"]
         receiver = request_data["friend"]
@@ -65,11 +66,14 @@ class FriendRequestViewSet(viewsets.ViewSet):
             if receiver["host"] != settings.APP_HOST:
                 if not User.objects.filter(fullId=receiver["id"]).exists():
                     if Host.objects.filter(url=receiver["host"]).exists():
-                        host_obj = Host.objects.get(url=receiver["host"])
 
+                        host_obj = Host.objects.get(url=receiver["host"])
                         User.objects.create_user(username=receiver["displayName"],
                                                  fullId=receiver["id"],
                                                  host=host_obj)
+
+                    else:
+                        return Response({"query": "createFriendRequest", "success": False, "message": "Receiver host not allowed"}, status=status.HTTP_400_BAD_REQUEST)
 
             received_user = User.objects.get(fullId=receiver["id"])
 
