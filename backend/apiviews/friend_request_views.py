@@ -10,6 +10,7 @@ from rest_framework.decorators import permission_classes
 from backend.serializers import UserSerializer, FriendSerializer, FriendRequestSerializer
 from backend.models import User, Friend, FriendRequest, Host
 from backend.server import *
+from backend.utils import *
 
 import json
 
@@ -19,11 +20,28 @@ class FriendRequestViewSet(viewsets.ViewSet):
     serializer_class = FriendRequestSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def reverse_friendrequest_exists(self, requester, receiver):
+        '''
+        check if the friend request from receiver to requester has already existed
+        '''
+
+        return FriendRequest.objects.filter(fromUser=receiver, toUser=requester).exists()
+
+    def make_friend(self, requester, receiver):
+        '''
+        Make 2 users friends of each other and remove the friendrequests
+        '''
+        Friend.objects.create(fromUser=requester, toUser=receiver)
+        Friend.objects.create(fromUser=receiver, toUser=requester)
+        FriendRequest.objects.filter(fromUser=receiver, toUser=requester).delete()
+
     def send_friend_request(self, request, *args, **kwargs):
         # /friendrequest/ : create a friendrequest between authenticated user and another user
         request_data = dict(request.data)
         requester = request_data["author"]
         receiver = request_data["friend"]
+        requester["id"] = protocol_removed(requester["id"])
+        receiver["id"] = protocol_removed(receiver["id"])
 
         if request_data.get("query") == "friendrequest":
             # Check if requester is a local author
@@ -33,39 +51,47 @@ class FriendRequestViewSet(viewsets.ViewSet):
 
                     if Host.objects.filter(url=requester["host"]).exists():
                         host_obj = Host.objects.get(url=requester["host"])
-                        requested_user = User.objects.create_user(username=requester["displayName"],
-                                                                  fullId=requester["id"],
-                                                                  host=host_obj)
+                        User.objects.create_user(username=requester["displayName"],
+                                                 fullId=requester["id"],
+                                                 host=host_obj)
                     else:
                         return Response({"query": "createFriend",
                                          "success": False,
                                          "message": "unauthorized host"},
                                         status=status.HTTP_403_FORBIDDEN)
             requested_user = User.objects.get(fullId=requester["id"])
+
             # check if friend request receiver is a local author
             if receiver["host"] != settings.APP_HOST:
                 if not User.objects.filter(fullId=receiver["id"]).exists():
                     if Host.objects.filter(url=receiver["host"]).exists():
                         host_obj = Host.objects.get(url=receiver["host"])
-                        response = post_to_host(
-                            "/friendrequest", host_obj, request_data)
 
-                        if response.status_code == 200:
-                            receiver_obj = User.objects.create_user(username=receiver["displayName"],
-                                                                    fullId=receiver["id"],
-                                                                    host=host_obj)
-                            FriendRequest.objects.create(
-                                fromUser=requested_user, toUser=receiver_obj)
-                            return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_200_OK)
-                        else:
-                            return Response({"query": "createFriendRequest", "success": False, "message": "Unable to create Friend Request"}, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                host_obj = Host.objects.get(url=settings.APP_HOST)
-                receiver_obj = User.objects.get(fullId=receiver["id"])
-                FriendRequest.objects.create(
-                    fromUser=requested_user, toUser=receiver_obj)
-                
+                        User.objects.create_user(username=receiver["displayName"],
+                                                 fullId=receiver["id"],
+                                                 host=host_obj)
+
+            received_user = User.objects.get(fullId=receiver["id"])
+
+            # if friend request has already exists
+            if self.reverse_friendrequest_exists(requested_user, received_user):
+                self.make_friend(requested_user, received_user)
                 return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_200_OK)
+            else:
+                if received_user.host.url != settings.APP_HOST:
+                    response = post_to_host(
+                        "friendrequest", received_user.host, request_data)
+
+                    if response.status_code == 200:
+                        FriendRequest.objects.create(
+                            fromUser=requested_user, toUser=received_user)
+                        return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_200_OK)
+                    else:
+                        return Response({"query": "createFriendRequest", "success": False, "message": "Unable to create Friend Request"}, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    FriendRequest.objects.create(
+                        fromUser=requested_user, toUser=received_user)
+                    return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_200_OK)
         else:
             return Response({"query": "createFriend", "success": False, "message": "wrong request"}, status=status.HTTP_400_BAD_REQUEST)
 

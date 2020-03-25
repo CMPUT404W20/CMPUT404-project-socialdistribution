@@ -35,6 +35,33 @@ class TestFriend:
             fromUser=test_user, toUser=test_user_2).exists()
         assert response.data["query"] == "createFriendRequest"
         assert response.data["success"] == True
+        client.logout()
+
+        # If they is reversed friend request already
+        post_body_2 = json.dumps({
+            "query": "friendrequest",
+            "author": {
+                "id": test_user_2.fullId,
+                "host": test_user_2.host.url,
+                "displayName": test_user_2.username,
+                "url": test_user_2.get_profile_url(),
+            },
+            "friend": {
+                "id": test_user.fullId,
+                "host": test_user.host.url,
+                "displayName": test_user.username,
+                "url": test_user.get_profile_url(),
+            },
+        })
+
+        client.force_login(test_user_2)
+        response = client.post('/friendrequest', data=post_body_2,
+                               content_type='application/json', charset='UTF-8')
+        assert response.status_code == 200
+        assert not FriendRequest.objects.filter(
+            fromUser=test_user, toUser=test_user_2).exists()
+        assert Friend.objects.filter(fromUser=test_user,toUser=test_user_2).exists()
+        assert Friend.objects.filter(fromUser=test_user_2,toUser=test_user).exists()
 
 
     def test_check_friends(self, client, test_user, friend_user):
