@@ -119,8 +119,9 @@ class PostViewSet(viewsets.ModelViewSet):
         post_data += foreign_posts
 
         post_data.sort(key=lambda x: x["published"], reverse=True)
-
-        return self.get_paginated_response(post_data)
+        
+        page = self.paginate_queryset(post_data)
+        return self.get_paginated_response(page)
 
     def visible_posts(self, request, author_id):
         '''
