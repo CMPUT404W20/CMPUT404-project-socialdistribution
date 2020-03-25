@@ -9,16 +9,11 @@ import EditProfileModal from "./EditProfileModal";
 class ProfileHeader extends Component {
   constructor(props) {
     super(props);
-    const {
-      remote, isFriends, isFollowing, isSelf, username,
-    } = this.props;
+    const { isFriends, isFollowing } = this.props;
     this.state = {
-      username,
-      remote,
+      modalShow: false,
       isFriends,
       isFollowing,
-      isSelf,
-      modalShow: false,
     };
   }
 
@@ -37,7 +32,8 @@ class ProfileHeader extends Component {
   };
 
   renderStatus = () => {
-    const { isSelf, isFollowing, isFriends } = this.state;
+    const { isSelf } = this.props;
+    const { isFollowing, isFriends } = this.state;
     if (!isSelf) {
       if (!isFriends && !isFollowing) {
         return (this.renderFollowButton());
@@ -92,8 +88,11 @@ class ProfileHeader extends Component {
 
   render() {
     const {
-      username, remote, modalShow, isSelf,
+      modalShow,
     } = this.state;
+    const {
+      username, github, isSelf, remote,
+    } = this.props;
     return (
       <div className="profileHeader">
         <div className="image-section" />
@@ -104,7 +103,7 @@ class ProfileHeader extends Component {
           </div>
           <div className="row2">
             {this.renderStatus()}
-            <EditProfileModal show={modalShow} onHide={this.renderModal} />
+            <EditProfileModal show={modalShow} onHide={this.renderModal} github={github} />
           </div>
         </div>
       </div>
@@ -118,6 +117,7 @@ ProfileHeader.propTypes = {
   isSelf: PropTypes.bool.isRequired,
   remote: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
+  github: PropTypes.string.isRequired,
 };
 
 export default ProfileHeader;
