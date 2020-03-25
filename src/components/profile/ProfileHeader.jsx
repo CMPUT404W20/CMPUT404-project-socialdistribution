@@ -18,8 +18,6 @@ class ProfileHeader extends Component {
       isFriends,
       isFollowing,
       isSelf,
-      // isSelf will be changed by comparing the userID and the loggedIn user's id
-      // to do: fetch the user
       modalShow: false,
     };
   }
