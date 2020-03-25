@@ -3,6 +3,7 @@ from backend.models import User, Friend, Host, FriendRequest
 from backend.utils import *
 import json
 import pytest
+import urllib
 
 
 @pytest.mark.django_db
@@ -23,7 +24,7 @@ class TestFriend:
             }
         })
 
-        response = client.post('/friendrequest/', data=post_body_1,
+        response = client.post('/friendrequest', data=post_body_1,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 201
 
@@ -35,7 +36,7 @@ class TestFriend:
 
         # checking scenario where data is invalid
 
-        response = client.post('/friendrequest/', data={},
+        response = client.post('/friendrequest', data={},
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 400
 
@@ -70,6 +71,7 @@ class TestFriend:
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 400
 
+    
     def test_check_friends(self, client, test_user, friend_user):
 
         # check one way friends
@@ -148,7 +150,7 @@ class TestFriend:
 
         # create friend request and check if reject works
 
-        response = client.post('/friendrequest/', data=post_body,
+        response = client.post('/friendrequest', data=post_body,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 201
         assert FriendRequest.objects.filter(
@@ -179,7 +181,8 @@ class TestFriend:
                 "hi",
             ]
         })
-        url = '/author/{}/friend'.format(test_auth_id)
+        url = '/author/{}/friends'.format(test_auth_id)
+        print(url)
         response = client.post(url, data=post_body,
                                content_type='application/json', charset='UTF-8')
 

@@ -43,6 +43,8 @@ class FriendViewSet(viewsets.ViewSet):
         friends = Friend.objects.filter(toUser__fullId=id1, fromUser__fullId=id2).exists() and Friend.objects.filter(fromUser__fullId=id1, toUser__fullId=id2).exists()
         return Response({"query": "friends", "authors": [author1.get_full_user_id(), author2.get_full_user_id()], "friends": friends})
 
+
+
     def post_query_friends(self, request, authorId, *args, **kwargs):
         # /author/<path:authorId>/friends
         user_id = protocol_removed(authorId)
