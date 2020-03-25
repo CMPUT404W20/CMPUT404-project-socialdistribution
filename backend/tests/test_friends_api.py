@@ -3,6 +3,7 @@ from backend.models import User, Friend, Host, FriendRequest
 from backend.utils import *
 import json
 import pytest
+import urllib
 
 
 @pytest.mark.django_db
@@ -64,6 +65,7 @@ class TestFriend:
         assert Friend.objects.filter(fromUser=test_user_2,toUser=test_user).exists()
 
 
+    
     def test_check_friends(self, client, test_user, friend_user):
 
         # check one way friends
@@ -178,7 +180,8 @@ class TestFriend:
                 "hi",
             ]
         })
-        url = '/author/{}/friend'.format(test_auth_id)
+        url = '/author/{}/friends'.format(test_auth_id)
+        print(url)
         response = client.post(url, data=post_body,
                                content_type='application/json', charset='UTF-8')
 

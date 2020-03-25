@@ -2,7 +2,7 @@
 import axios from "axios";
 
 export const getAuthorFriends = (authorId) => {
-  return axios.get(`/author/${authorId}/`).then((response) => {
+  return axios.get(`/author/${authorId}`).then((response) => {
     if (response.status === 200) {
       if (response.data && response.data.friends) {
         return response.data.friends;

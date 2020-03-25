@@ -4,7 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export const getPosts = () => {
-  return axios.get("/author/posts/").then((response) => {
+  return axios.get("/author/posts").then((response) => {
     if (response.status === 200) {
       if (response.data && response.data.posts) {
         return response.data;
@@ -17,7 +17,7 @@ export const getPosts = () => {
 };
 
 export const getUserPosts = (fullUserId) => {
-  return axios.get(`/author/${fullUserId}/posts/`).then((response) => {
+  return axios.get(`/author/${fullUserId}/posts`).then((response) => {
     if (response.status === 200) {
       if (response.data && response.data.posts) {
         return response.data;
@@ -36,7 +36,7 @@ export const createUserPosts = (postData) => {
   };
 
   // eslint-disable-next-line object-shorthand
-  return axios.post("/author/posts/", postData, { headers: headers }).then((response) => {
+  return axios.post("/author/posts", postData, { headers: headers }).then((response) => {
     if (response.status === 201) {
       return response.data.success;
     }
@@ -51,7 +51,7 @@ export const deleteUserPosts = (postId) => {
     "X-CSRFToken": csrf,
   };
 
-  return axios.delete(`/posts/${postId}/`, { headers: headers }).then((response) => {
+  return axios.delete(`/posts/${postId}`, { headers: headers }).then((response) => {
     if (response.status === 204) {
       return {};
     }
@@ -66,7 +66,7 @@ export const updateUserPosts = (post) => {
     "X-CSRFToken": csrf,
   };
 
-  return axios.put(`/posts/${post.id}/`, post, { headers: headers }).then((response) => {
+  return axios.put(`/posts/${post.id}`, post, { headers: headers }).then((response) => {
     if (response.status === 200) {
       return {};
     }
