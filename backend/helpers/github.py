@@ -79,7 +79,7 @@ def parse_data(raw_data):
             "visibility": "PRIVATE",
             "published": event["created_at"].replace("Z", ".000000Z"),
             "comments": [],
-            "new": "Test"
+            "isGithubPost": True, # used to tell React to render this post differently compared to other Posts
         }
 
         parsed_events.append(parsed_event)
