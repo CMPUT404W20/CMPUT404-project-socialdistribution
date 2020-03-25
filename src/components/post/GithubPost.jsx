@@ -4,7 +4,7 @@ import moment from "moment";
 import "../../styles/post/Post.scss";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
-import githubIcon from "../../images/GitHub-Mark-32px.png";
+import githubIcon from "../../images/github.svg";
 
 class GithubPost extends Component {
   renderMenu = () => {
