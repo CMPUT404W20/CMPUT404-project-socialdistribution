@@ -6,6 +6,7 @@
     box-shadow: $post-box-shadow;
     border-radius: $radius;
     overflow: auto;
+
     .post-info {
         padding: 0 15pt;
         height: 30pt;
@@ -24,6 +25,12 @@
                 top: 1.5pt;
                 left: 2pt;
                 height: 100%;
+            }
+
+            .github-icon {
+                width: 20px;
+                margin-bottom: 3pt;
+                margin-right: 10pt;
             }
         }
         .post-time {

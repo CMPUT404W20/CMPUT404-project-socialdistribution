@@ -13,6 +13,9 @@ from backend.models import User, Friend
 from backend.permissions import *
 from backend.utils import *
 from django.db.models import Q
+from django.conf import settings
+import requests
+import json
 
 
 class AuthorViewSet(viewsets.ViewSet):

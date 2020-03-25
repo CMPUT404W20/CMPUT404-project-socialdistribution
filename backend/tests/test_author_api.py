@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from backend.utils import *
 from backend.models import User, Friend, Host
-
 import pytest
 
 
@@ -11,7 +12,7 @@ class TestAuthorAPI:
         
         # Checking scenario where the user does not exist, 404 Error
         
-        nouserResponse = client.get('/author/{}/'.format(self.user_notFound_id))
+        nouserResponse = client.get('/author/{}'.format(self.user_notFound_id))
         assert nouserResponse.status_code == 404
 
         # Checking user's profile
@@ -22,7 +23,7 @@ class TestAuthorAPI:
         Friend.objects.create(
             fromUser=test_user, toUser=friend_user[1])
 
-        response = client.get('/author/{}/'.format(test_author_id))
+        response = client.get('/author/{}'.format(test_author_id))
         assert response.status_code == 200
 
         assert response.data["id"] == test_user.get_full_user_id()
@@ -67,6 +68,3 @@ class TestAuthorAPI:
         
         nouserResponse = client.get('/author/{}/friends/'.format(self.user_notFound_id))
         assert nouserResponse.status_code == 404
-
-
-    
