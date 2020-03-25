@@ -73,16 +73,17 @@ def parse_data(raw_data):
                     event["repo"]["name"]
                 )
         
-        parsed_event = {
-            "content": message,
-            "title": "Github",
-            "visibility": "PRIVATE",
-            "published": event["created_at"].replace("Z", ".000000Z"),
-            "comments": [],
-            "isGithubPost": True, # used to tell React to render this post differently compared to other Posts
-        }
+        if (len(message) > 0):
+            parsed_event = {
+                "content": message,
+                "title": "Github",
+                "visibility": "PRIVATE",
+                "published": event["created_at"].replace("Z", ".000000Z"),
+                "comments": [],
+                "isGithubPost": True, # used to tell React to render this post differently compared to other Posts
+            }
 
-        parsed_events.append(parsed_event)
+            parsed_events.append(parsed_event)
         # TODO: need to add more event types but we can come back to that later
 
     return parsed_events
