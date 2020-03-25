@@ -4,6 +4,7 @@ import moment from "moment";
 import "../../styles/post/Post.scss";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
+import githubIcon from "../../images/GitHub-Mark-32px.png";
 
 class GithubPost extends Component {
   renderMenu = () => {
@@ -14,7 +15,8 @@ class GithubPost extends Component {
     return (
       <div className="post-info">
         <span className="post-user-and-visibility">
-          Github
+          <img className="github-icon" src={githubIcon} alt="github-icon" />
+          {post.username}
         </span>
         <div className="post-time">{formattedTime}</div>
       </div>
