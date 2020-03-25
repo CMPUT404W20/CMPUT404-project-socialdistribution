@@ -6,6 +6,7 @@ import Pulse from "react-reveal/Pulse";
 import "../../styles/post/PostView.scss";
 import EditablePost from "./EditablePost";
 import Post from "./Post";
+import GithubPost from "./GithubPost";
 import * as postService from "../../services/PostService";
 
 class PostView extends Component {
@@ -108,18 +109,16 @@ class PostView extends Component {
     for (let i = 0; i < posts.length; i += 1) {
       const post = posts[i];
 
-      if (post.id !== editingPostId) {
+      if (post.isGithubPost) {
         renderedPosts.push(
           <div className="postWrapper" key={post.id}>
-            <Post
+            <GithubPost
               post={post}
-              onEdit={this.handleEditToggle}
-              onDelete={this.handleDelete}
-              onNewComment={this.handleNewComment}
             />
           </div>,
         );
-      } else {
+      } else if (post.id === editingPostId) {
+        // this post is being edited currently
         renderedPosts.push(
           <Pulse duration={200}>
             <div className="postWrapper" key={-1}>
@@ -135,6 +134,18 @@ class PostView extends Component {
               />
             </div>
           </Pulse>,
+        );
+      } else {
+        // regular posts
+        renderedPosts.push(
+          <div className="postWrapper" key={post.id}>
+            <Post
+              post={post}
+              onEdit={this.handleEditToggle}
+              onDelete={this.handleDelete}
+              onNewComment={this.handleNewComment}
+            />
+          </div>,
         );
       }
     }

@@ -6,6 +6,11 @@
     box-shadow: $post-box-shadow;
     border-radius: $radius;
     overflow: auto;
+
+    &.github {
+        background-color: #fcfcfc;
+    }
+
     .post-info {
         padding: 0 15pt;
         height: 30pt;

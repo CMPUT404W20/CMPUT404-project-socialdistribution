@@ -40,7 +40,7 @@ class Post extends Component {
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
     const formattedTime = moment(post.published).fromNow();
 
-    const isEditable = !post.isGithubPost && post.authorId === localStorage.getItem("userID");
+    const isEditable = post.authorId === localStorage.getItem("userID");
 
     return (
       <div className="post-info">
@@ -48,32 +48,27 @@ class Post extends Component {
           {post.username}
           { invisible ? <VisibilityOffIcon fontSize="inherit" /> : null }
         </span>
-
-        {
-          !post.isGithubPost ? (
-            <DropdownButton
-              id="post-more-button"
-              title={dropdownIcon}
-              drop="down"
-              alignRight
-            >
-              <Fade left duration={500} distance="5px">
-                {/* the following enclosing tag is required for the fade to work properly */}
-                <>
-                  {
-                    isEditable ? (
-                      <>
-                        <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
-                      </>
-                    ) : null
-                  }
-                  <Dropdown.Item href="#">Copy Link</Dropdown.Item>
-                </>
-              </Fade>
-            </DropdownButton>
-          ) : null
-        }
+        <DropdownButton
+          id="post-more-button"
+          title={dropdownIcon}
+          drop="down"
+          alignRight
+        >
+          <Fade left duration={500} distance="5px">
+            {/* the following enclosing tag is required for the fade to work properly */}
+            <>
+              {
+                isEditable ? (
+                  <>
+                    <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
+                    <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
+                  </>
+                ) : null
+              }
+              <Dropdown.Item href="#">Copy Link</Dropdown.Item>
+            </>
+          </Fade>
+        </DropdownButton>
         <div className="post-time">{formattedTime}</div>
       </div>
     );
@@ -142,7 +137,7 @@ class Post extends Component {
 
   renderCommentSection = () => {
     const { previewMode, post } = this.props;
-    if (previewMode || post.isGithubPost) {
+    if (previewMode) {
       return null;
     }
     const { commentSectionVisisble, newComment } = this.state;
