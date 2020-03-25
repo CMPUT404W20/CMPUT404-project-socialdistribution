@@ -136,11 +136,13 @@ class Post extends Component {
   }
 
   renderCommentSection = () => {
-    const { previewMode, post } = this.props;
+    const { previewMode } = this.props;
     if (previewMode) {
       return null;
     }
     const { commentSectionVisisble, newComment } = this.state;
+    const { post } = this.props;
+
     return (
       <div>
         <button

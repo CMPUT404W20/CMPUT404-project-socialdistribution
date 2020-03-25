@@ -17,7 +17,6 @@ class Homepage extends Component {
 
   handlePostCreation = (post) => {
     // eslint-disable-next-line no-console
-    console.log(post);
     postService.createUserPosts(post).then((success) => {
       if (success) {
         this.child.current.loadPosts();
