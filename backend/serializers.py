@@ -69,10 +69,6 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         exclude = ["timestamp", "postId"]
 
-    def create(self, data):
-        return Post(**data)
-
-
 class UserFriendSerializer(serializers.ModelSerializer):
     id = serializers.CharField(source="get_full_user_id")
 

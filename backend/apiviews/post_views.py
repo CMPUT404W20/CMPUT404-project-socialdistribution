@@ -111,9 +111,9 @@ class PostViewSet(viewsets.ModelViewSet):
                 github_posts = [] # github events in the format of a regular Post object
                 for event in github_events:
                     event["author"] = UserSerializer(request.user).data
-                    # use the hash of the content as the ID so it stays consistent between 
+                    # use the hash of the content and time as the ID so it stays consistent between 
                     # api calls - required to make sure that react can render efficiently
-                    event["id"] = uuid.uuid3(uuid.NAMESPACE_X500, event["content"])
+                    event["id"] = uuid.uuid3(uuid.NAMESPACE_X500, event["content"]+event["published"])
                     github_posts.append(event)
                 
                 cache.set(request.user.githubUrl, github_posts, 300)
