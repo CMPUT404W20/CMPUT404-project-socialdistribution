@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.forms.models import model_to_dict
-
+from django.core.cache import cache
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -102,14 +102,22 @@ class PostViewSet(viewsets.ModelViewSet):
         post_data = json.loads(post_data)
 
         if request.user.githubUrl:
-            # load github activity and merge with posts
-            github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN)
-            for event in github_events:
-                event["author"] = UserSerializer(request.user).data
-                # use the hash of the content as the ID so it stays consistent between 
-                # api calls - required to make sure that react can render efficiently
-                event["id"] = uuid.uuid3(uuid.NAMESPACE_X500, event["content"])
-                post_data.append(event)
+            cached_github_posts = cache.get(request.user.githubUrl)
+            if cached_github_posts:
+                post_data += cached_github_posts
+            else:
+                # load github activity and merge with posts
+                github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN)
+                github_posts = [] # github events in the format of a regular Post object
+                for event in github_events:
+                    event["author"] = UserSerializer(request.user).data
+                    # use the hash of the content as the ID so it stays consistent between 
+                    # api calls - required to make sure that react can render efficiently
+                    event["id"] = uuid.uuid3(uuid.NAMESPACE_X500, event["content"])
+                    github_posts.append(event)
+                
+                cache.set(request.user.githubUrl, github_posts, 300)
+                post_data += github_posts
             
         post_data.sort(key=lambda x : x["published"] if isinstance(x, dict) else str(x.timestamp), reverse=True)
         page = self.paginate_queryset(post_data)
