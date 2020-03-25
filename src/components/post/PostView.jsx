@@ -14,6 +14,7 @@ class PostView extends Component {
     this.state = {
       posts: [],
       editingPostId: null,
+      loading: true,
     };
 
     this.loadPosts();
@@ -46,6 +47,7 @@ class PostView extends Component {
 
       this.setState({
         posts,
+        loading: false,
       });
     }).catch((error) => {
       // eslint-disable-next-line no-alert
@@ -95,7 +97,12 @@ class PostView extends Component {
   }
 
   render() {
-    const { editingPostId, posts } = this.state;
+    const { editingPostId, posts, loading } = this.state;
+
+    if (loading) {
+      return <div />;
+    }
+
     const renderedPosts = [];
     for (let i = 0; i < posts.length; i += 1) {
       const post = posts[i];
