@@ -95,23 +95,22 @@ class PostViewSet(viewsets.ModelViewSet):
             if user == post.author or user in post.get_visible_users():
                 visible_posts |= Post.objects.filter(postId=post.postId)
 
-
-        page = self.paginate_queryset(visible_posts.order_by('-timestamp'))
+        page = self.paginate_queryset(visible_posts)
         serializer = self.get_serializer(page, many=True)
 
         post_data = json.dumps(serializer.data)
         post_data = json.loads(post_data)
 
-        # print(post_data)
-
-         # load github activity
-        github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN)
-        for event in github_events:
-            event["author"] = UserSerializer(request.user).data
-            event["id"] = uuid.uuid3(uuid.NAMESPACE_X500, event["content"])
-            post_data.append(event)
-        
-        # post_data.sort(key=lambda x: x["published"], reverse=True)
+        if request.user.githubUrl:
+            # load github activity and merge with posts
+            github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN)
+            for event in github_events:
+                event["author"] = UserSerializer(request.user).data
+                # use the hash of the content as the ID so it stays consistent between 
+                # api calls - required to make sure that react can render efficiently
+                event["id"] = uuid.uuid3(uuid.NAMESPACE_X500, event["content"])
+                post_data.append(event)
+            
         post_data.sort(key=lambda x : x["published"] if isinstance(x, dict) else str(x.timestamp), reverse=True)
         page = self.paginate_queryset(post_data)
 

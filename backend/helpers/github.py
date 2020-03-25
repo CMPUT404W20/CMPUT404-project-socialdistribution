@@ -88,8 +88,11 @@ def parse_data(raw_data):
     return parsed_events
 
 def load_github_events(github_url, access_token):
-    raw_data = get_raw_data(github_url, access_token)
-    parsed_events = parse_data(raw_data)
-
-    return parsed_events
+    try:
+        raw_data = get_raw_data(github_url, access_token)
+        parsed_events = parse_data(raw_data)
+        return parsed_events
+    except:
+        return []
+    
 
