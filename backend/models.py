@@ -32,7 +32,7 @@ class User(AbstractUser):
     
     def get_profile_url(self):
         full_user_id = self.get_full_user_id()
-        profile_url = settings.APP_HOST + full_user_id
+        profile_url = "{}author/{}".format(settings.APP_HOST, full_user_id)
 
         return profile_url
 
