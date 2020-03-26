@@ -82,4 +82,4 @@ class AuthorViewSet(viewsets.ViewSet):
         if len(list_of_authors) != 0:
             return Response({"authors": list_of_authors}, status=status.HTTP_200_OK)
         else:
-            return Response({"authors": []}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"authors": list_of_authors}, status=status.HTTP_400_BAD_REQUEST)
