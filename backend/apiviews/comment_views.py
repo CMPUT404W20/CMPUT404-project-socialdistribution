@@ -12,6 +12,8 @@ from backend.serializers import CommentSerializer
 from backend.models import Comments, Post, User
 from backend.apiviews.paginations import CommentPagination
 from backend.utils import *
+from backend.server import *
+import requests
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -39,34 +41,50 @@ class CommentViewSet(viewsets.ModelViewSet):
     def add_comment(self, request, postId):
         
         request_user = get_object_or_404(User, fullId=protocol_removed(request.data["comment"]["author"]["id"]))
-        if request.data and request.data["query"] == "addComment" and request.data["post"]:
-            if Post.objects.filter(postId=postId).exists():
-                requested_post = Post.objects.get(postId=postId)
-                viewable_users = requested_post.get_visible_users()
+        post = Post.objects.filter(pk=postId)
+        if not post:
 
-                if request_user in viewable_users:
-                    comment_data = request.data["comment"]
+            host_url = request.get_host()
+            host = Host.objects.get(url=host_url)
+            endpoint = "/posts/{}/comments/".format(postId)
 
-                    comment_data["content"] = comment_data["comment"]
-                    request_user_id = protocol_removed(request.data["comment"]["author"]["id"])
-                    comment_data["author"] = request_user_id
+            response = post_to_host(endpoint,host,request.data)
+            if response.status_code == 200:
+                print(response.status_code)
 
-                    serializer = CommentSerializer(
-                        data=comment_data, context={"request": request, "postId": postId})
+            # endpoint= "/posts/{}/comments/".format('253c1388-c927-47a7-acc0-bffa0d066e90')
 
-                    if serializer.is_valid():
-                        serializer.save()
-                        return Response({"query": "addComment", "success": True, "message": "Comment Added"}, status=status.HTTP_201_CREATED)
+            
+        else:
+            if request.data and request.data["query"] == "addComment" and request.data["post"]:
+                if Post.objects.filter(postId=postId).exists():
+                    requested_post = Post.objects.get(postId=postId)
+                    viewable_users = requested_post.get_visible_users()
+
+                    if request_user in viewable_users:
+                        comment_data = request.data["comment"]
+
+                        comment_data["content"] = comment_data["comment"]
+                        request_user_id = protocol_removed(request.data["comment"]["author"]["id"])
+                        comment_data["author"] = request_user_id
+
+                        serializer = CommentSerializer(
+                            data=comment_data, context={"request": request, "postId": postId})
+
+                        if serializer.is_valid():
+                            serializer.save()
+                            return Response({"query": "addComment", "success": True, "message": "Comment Added"}, status=status.HTTP_201_CREATED)
+                        else:
+                            return Response({"query": "addComment", "success": False, "message": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
                     else:
-                        return Response({"query": "addComment", "success": False, "message": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                        return Response({"query": "addComment", "success": False, "message": "Comment not allowed"},
+                                status=status.HTTP_403_FORBIDDEN)
 
                 else:
-                    return Response({"query": "addComment", "success": False, "message": "Comment not allowed"},
-                             status=status.HTTP_403_FORBIDDEN)
-
+                    Response({"query": "addComment", "success": False, "message": "Post not Found"},
+                            status=status.HTTP_404_NOT_FOUND)
             else:
-                Response({"query": "addComment", "success": False, "message": "Post not Found"},
-                         status=status.HTTP_404_NOT_FOUND)
-        else:
-            Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
-                     status=status.HTTP_400_BAD_REQUEST)
+                Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
+                        status=status.HTTP_400_BAD_REQUEST)
+
