@@ -122,8 +122,6 @@ class PostViewSet(viewsets.ModelViewSet):
         post_data = json.loads(post_data)
         post_data += foreign_posts
 
-        post_data.sort(key=lambda x: x["published"], reverse=True)
-
         if request.user.githubUrl:
             cached_github_posts = cache.get(request.user.githubUrl)
             if cached_github_posts:

@@ -31,7 +31,7 @@ class AuthorViewSet(viewsets.ViewSet):
         foreign_author = []
         for host in Host.objects.all():
             if host.serviceAccountUsername and host.serviceAccountPassword:
-                print(host.url+"author")
+
                 response = requests.get(
                     host.url+"author",
                     auth=(host.serviceAccountUsername,
@@ -39,7 +39,6 @@ class AuthorViewSet(viewsets.ViewSet):
                 )
 
                 if response.status_code == 200:
-                    
                     response_data = response.json()
                     # if they followe swagger format, then use "data" as key
                     if "data" in response_data:
