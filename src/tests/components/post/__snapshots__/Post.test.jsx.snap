@@ -117,6 +117,11 @@ exports[`Post Block Components should render correctly 1`] = `
                 Sample Comment
               </span>
             </p>
+            <p
+              className="comment-time"
+            >
+              14 days ago
+            </p>
           </div>
         </div>
       </div>
@@ -289,6 +294,11 @@ Normal Text
               >
                 Sample Comment
               </span>
+            </p>
+            <p
+              className="comment-time"
+            >
+              14 days ago
             </p>
           </div>
         </div>

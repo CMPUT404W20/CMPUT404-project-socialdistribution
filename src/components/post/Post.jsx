@@ -80,13 +80,14 @@ class Post extends Component {
 
     post.comments.forEach((comment) => {
       const opComment = comment.author.id === post.authorId;
-
+      const formattedTime = moment(comment.published).fromNow();
       comments.push(
         <div key={comment.id}>
           <p>
             <span className={opComment ? "op" : ""}>{`${comment.author.displayName}:`}</span>
             <span className="comment-content">{comment.comment}</span>
           </p>
+          <p className="comment-time">{formattedTime}</p>
         </div>,
       );
     });

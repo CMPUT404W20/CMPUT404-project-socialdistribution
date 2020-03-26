@@ -6,7 +6,6 @@
     box-shadow: $post-box-shadow;
     border-radius: $radius;
     overflow: auto;
-
     .post-info {
         padding: 0 15pt;
         height: 30pt;
@@ -26,7 +25,6 @@
                 left: 2pt;
                 height: 100%;
             }
-
             .github-icon {
                 width: 20px;
                 margin-bottom: 3pt;
@@ -65,21 +63,28 @@
     }
     .comment-list {
         padding: 2rem 15pt 1rem 15pt;
+        div:first-of-type {
+            border-top: 0.4px solid $border-color;
+            padding-top: 0.5rem;
+        }
         p {
-            margin-bottom: 5pt;
+            margin-bottom: 1pt;
             font-size: 10pt;
             color: $icon-color;
+            &.comment-time {
+                margin-bottom: 6pt;
+                font-size: 8pt;
+            }
         }
         span {
             color: black;
-
             &.op {
                 color: $accent-color;
             }
         }
-    }
-    .comment-content {
-        padding-left: 0.5rem;
+        .comment-content {
+            padding-left: 0.5rem;
+        }
     }
     .post-comment-text-area {
         width: 100%;
@@ -88,7 +93,7 @@
         padding: 10pt 15pt 5pt 15pt;
         border: none;
         outline: none;
-        border-top: 0.4px solid #E5E5E5;
+        border-top: 0.4px solid $border-color;
         resize: none;
     }
     .post-title {
