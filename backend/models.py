@@ -82,12 +82,21 @@ class Post(models.Model):
         ("UNLISTED", "UNLISTED"),
     )
 
+    CONTENT_TYPES = (
+        ("text/plain", "text/plain"),
+        ("text/markdown", "text/markdown"),
+        ("image/png;base64", "image/png;base64"),
+        ("image/jpeg;base64", "image/jpeg;base64"),
+        ("application/base64", "application/base64"),
+    )
+
     postId = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
+    content_type = models.CharField(max_length=20, choices=CONTENT_TYPES, default="text/markdown")
     # Visibility can be one of the followings : "PUBLIC","PRIVATE","Private","FRIENDS","FOF" or specific user ID
     visibility = models.CharField(
         max_length=10, choices=VISIBILITY_CHOICES, default="PUBLIC")
