@@ -120,6 +120,10 @@ class Post(models.Model):
 
         return users.distinct()
 
+    def get_source(self):
+        host_name = settings.APP_HOST
+        return "{}posts/{}".format(host_name, self.postId)
+
 
 class Comments(models.Model):
 
