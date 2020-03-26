@@ -8,6 +8,7 @@ import NavigationBar from "../NavigationBar";
 import ProfileHeader from "./ProfileHeader";
 import PostView from "../post/PostView";
 import * as friendsService from "../../services/FriendService";
+import * as auth from "../../services/AuthenticationService";
 
 class ProfilePage extends Component {
   constructor(props) {
@@ -36,13 +37,16 @@ class ProfilePage extends Component {
         alert(error);
       });
     } else {
-      this.setState({ loading: false });
+      auth.getCurrentUser()
+        .then(((response) => {
+          this.setState({ github: response.data.github, loading: false });
+        }));
     }
   }
 
   renderHeader = () => {
     const {
-      username, isFollowing, isFriends, userID, currentUserID, loading,
+      username, isFollowing, isFriends, userID, currentUserID, loading, github,
     } = this.state;
     const isSelf = (userID === currentUserID);
     return (
@@ -53,6 +57,7 @@ class ProfilePage extends Component {
         isFollowing={isFollowing}
         remote={false}
         username={username}
+        github={github}
       />
       )
     );
