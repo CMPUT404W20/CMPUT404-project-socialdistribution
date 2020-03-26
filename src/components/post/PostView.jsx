@@ -6,6 +6,7 @@ import Pulse from "react-reveal/Pulse";
 import "../../styles/post/PostView.scss";
 import EditablePost from "./EditablePost";
 import Post from "./Post";
+import GithubPost from "./GithubPost";
 import * as postService from "../../services/PostService";
 
 class PostView extends Component {
@@ -14,6 +15,7 @@ class PostView extends Component {
     this.state = {
       posts: [],
       editingPostId: null,
+      loading: true,
     };
 
     this.loadPosts();
@@ -22,7 +24,7 @@ class PostView extends Component {
   loadPosts() {
     const { userId } = this.props;
 
-    // TODO: fix else statement
+    // userId === null means it's rendering homepage and not the profile page
     const getPosts = userId === null ? postService.getPosts() : postService.getUserPosts(userId);
 
     const posts = [];
@@ -40,12 +42,14 @@ class PostView extends Component {
         newPost.id = post.id;
         newPost.imageSrc = null;
         newPost.comments = post.comments || [];
+        newPost.isGithubPost = post.isGithubPost || false;
 
         posts.push(newPost);
       }
 
       this.setState({
         posts,
+        loading: false,
       });
     }).catch((error) => {
       // eslint-disable-next-line no-alert
@@ -95,23 +99,26 @@ class PostView extends Component {
   }
 
   render() {
-    const { editingPostId, posts } = this.state;
+    const { editingPostId, posts, loading } = this.state;
+
+    if (loading) {
+      return <div />;
+    }
+
     const renderedPosts = [];
     for (let i = 0; i < posts.length; i += 1) {
       const post = posts[i];
 
-      if (post.id !== editingPostId) {
+      if (post.isGithubPost) {
         renderedPosts.push(
           <div className="postWrapper" key={post.id}>
-            <Post
+            <GithubPost
               post={post}
-              onEdit={this.handleEditToggle}
-              onDelete={this.handleDelete}
-              onNewComment={this.handleNewComment}
             />
           </div>,
         );
-      } else {
+      } else if (post.id === editingPostId) {
+        // this post is being edited currently
         renderedPosts.push(
           <Pulse duration={200}>
             <div className="postWrapper" key={-1}>
@@ -127,6 +134,18 @@ class PostView extends Component {
               />
             </div>
           </Pulse>,
+        );
+      } else {
+        // regular posts
+        renderedPosts.push(
+          <div className="postWrapper" key={post.id}>
+            <Post
+              post={post}
+              onEdit={this.handleEditToggle}
+              onDelete={this.handleDelete}
+              onNewComment={this.handleNewComment}
+            />
+          </div>,
         );
       }
     }

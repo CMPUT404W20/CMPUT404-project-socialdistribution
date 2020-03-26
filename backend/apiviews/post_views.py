@@ -1,5 +1,8 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from django.forms.models import model_to_dict
+from django.core.cache import cache
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -8,11 +11,14 @@ from rest_framework import status
 from rest_framework import permissions
 from rest_framework.decorators import permission_classes
 
-from backend.serializers import PostSerializer
+from backend.serializers import PostSerializer, UserSerializer
 from backend.models import Post, User
 from backend.permissions import *
 from backend.utils import *
+from backend.helpers.github import *
 from backend.apiviews.paginations import PostPagination
+
+import json, uuid
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -89,10 +95,34 @@ class PostViewSet(viewsets.ModelViewSet):
             if user == post.author or user in post.get_visible_users():
                 visible_posts |= Post.objects.filter(postId=post.postId)
 
-        page = self.paginate_queryset(visible_posts.order_by('-timestamp'))
+        page = self.paginate_queryset(visible_posts)
         serializer = self.get_serializer(page, many=True)
 
-        return self.get_paginated_response(serializer.data)
+        post_data = json.dumps(serializer.data)
+        post_data = json.loads(post_data)
+
+        if request.user.githubUrl:
+            cached_github_posts = cache.get(request.user.githubUrl)
+            if cached_github_posts:
+                post_data += cached_github_posts
+            else:
+                # load github activity and merge with posts
+                github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN)
+                github_posts = [] # github events in the format of a regular Post object
+                for event in github_events:
+                    event["author"] = UserSerializer(request.user).data
+                    # use the hash of the content and time as the ID so it stays consistent between 
+                    # api calls - required to make sure that react can render efficiently
+                    event["id"] = uuid.uuid3(uuid.NAMESPACE_X500, event["content"]+event["published"])
+                    github_posts.append(event)
+                
+                cache.set(request.user.githubUrl, github_posts, 300)
+                post_data += github_posts
+            
+        post_data.sort(key=lambda x : x["published"] if isinstance(x, dict) else str(x.timestamp), reverse=True)
+        page = self.paginate_queryset(post_data)
+
+        return self.get_paginated_response(page)
 
     def visible_posts(self, request, author_id):
         '''

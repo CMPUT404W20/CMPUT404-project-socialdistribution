@@ -173,3 +173,5 @@ REST_FRAMEWORK = {
 APP_HOST = os.environ.get(
     "APP_HOST", "https://cmput404-socialdistribution.herokuapp.com/"
 )
+
+GITHUB_TOKEN = os.environ.get("github_token", None)

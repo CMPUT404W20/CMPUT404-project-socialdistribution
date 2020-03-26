@@ -43,6 +43,8 @@ class Post extends Component {
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
     const formattedTime = moment(post.published).fromNow();
 
+    const isEditable = post.authorId === localStorage.getItem("userID");
+
     return (
       <div className="post-info">
         <span className="post-user-and-visibility">
@@ -59,7 +61,7 @@ class Post extends Component {
             {/* the following enclosing tag is required for the fade to work properly */}
             <>
               {
-                post.authorId === localStorage.getItem("userID") ? (
+                isEditable ? (
                   <>
                     <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
                     <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
@@ -146,6 +148,7 @@ class Post extends Component {
     }
     const { commentSectionVisisble, newComment } = this.state;
     const { post } = this.props;
+
     return (
       <div>
         <button
@@ -204,6 +207,7 @@ Post.propTypes = {
     content: PropTypes.string,
     imageSrc: PropTypes.string,
     comments: PropTypes.array,
+    isGithubPost: PropTypes.bool,
   }).isRequired,
   invisible: PropTypes.bool,
   previewMode: PropTypes.bool,
