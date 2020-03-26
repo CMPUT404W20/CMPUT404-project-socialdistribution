@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from backend.utils import *
 from backend.models import User, Friend, Host
-
 import pytest
 
 
@@ -67,6 +68,3 @@ class TestAuthorAPI:
         
         nouserResponse = client.get('/author/{}/friends/'.format(self.user_notFound_id))
         assert nouserResponse.status_code == 404
-
-
-    

@@ -6,6 +6,7 @@ import demoImage from "../../../images/demo-img.png";
 const post = {
   id: "1",
   username: "username",
+  authorId: "authorId",
   userId: "userId",
   imageSrc: demoImage,
   published: (new Date()).toISOString(),

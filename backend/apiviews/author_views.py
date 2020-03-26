@@ -16,8 +16,10 @@ from backend.permissions import *
 from backend.utils import *
 from backend.server import *
 
-
+from django.db.models import Q
+from django.conf import settings
 import requests
+import json
 
 
 class AuthorViewSet(viewsets.ViewSet):
