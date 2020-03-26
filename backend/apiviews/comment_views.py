@@ -11,6 +11,7 @@ from rest_framework.decorators import permission_classes
 from backend.serializers import CommentSerializer
 from backend.models import Comments, Post, User
 from backend.apiviews.paginations import CommentPagination
+from backend.utils import *
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -36,10 +37,9 @@ class CommentViewSet(viewsets.ModelViewSet):
                          status=status.HTTP_401_UNAUTHORIZED)
 
     def add_comment(self, request, postId):
-        request_user = request.user
-
+        
+        request_user = get_object_or_404(User, fullId=protocol_removed(request.data["comment"]["author"]["id"]))
         if request.data and request.data["query"] == "addComment" and request.data["post"]:
-
             if Post.objects.filter(postId=postId).exists():
                 requested_post = Post.objects.get(postId=postId)
                 viewable_users = requested_post.get_visible_users()
@@ -48,7 +48,8 @@ class CommentViewSet(viewsets.ModelViewSet):
                     comment_data = request.data["comment"]
 
                     comment_data["content"] = comment_data["comment"]
-                    comment_data["author"] = request_user.id
+                    request_user_id = protocol_removed(request.data["comment"]["author"]["id"])
+                    comment_data["author"] = request_user_id
 
                     serializer = CommentSerializer(
                         data=comment_data, context={"request": request, "postId": postId})
