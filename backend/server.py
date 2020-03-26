@@ -21,7 +21,7 @@ def post_to_host(endpoint, host, body):
     headers = {"Content-type": "application/json"}
     response = requests.post(host.url+endpoint,
                              data=json.dumps(body),
-                             auth=(host.serviceAccountUsername,host.serviceAccountPassword),
+                             auth=(host.serviceAccountUsername, host.serviceAccountPassword),
                              headers=headers)
     return response
 
