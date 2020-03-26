@@ -123,9 +123,12 @@ class Post(models.Model):
 
         elif self.visibility == "UNLISTED":
             users = User.objects.none()
-        # TODO add serveronly
 
         users |= User.objects.filter(id=self.author.id)
+
+        # Superuser(server admin) will have access to all the posts
+        superusers = User.objects.filter(is_superuser=True)
+        users |= superusers
 
         return users.distinct()
 
