@@ -43,7 +43,7 @@ class UserSerializer(serializers.ModelSerializer):
     github = serializers.URLField(source="githubUrl")
     id = serializers.CharField(source="get_full_user_id")
     host = serializers.CharField(source="host.url")
-    url = serializers.CharField(source="get_full_user_id")
+    url = serializers.CharField(source="get_profile_url")
 
     class Meta:
         model = User
@@ -71,7 +71,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 class UserFriendSerializer(serializers.ModelSerializer):
     id = serializers.CharField(source="get_full_user_id")
-
+    
     class Meta:
         model = User
         fields = ["id"]
@@ -92,7 +92,7 @@ class User_AuthorFriendSerializer(serializers.ModelSerializer):
     displayName = serializers.CharField(source="username")
     id = serializers.CharField(source="get_full_user_id")
     host = serializers.CharField(source="host.url")
-    url = serializers.CharField(source="get_full_user_id")
+    url = serializers.CharField(source="get_profile_url")
 
     class Meta:
         model = User
