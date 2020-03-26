@@ -31,9 +31,7 @@ class User(AbstractUser):
         return "{}/author/{}".format(user_host, self.id)
     
     def get_profile_url(self):
-        full_user_id = self.get_full_user_id()
-        profile_url = settings.APP_HOST + full_user_id
-
+        profile_url = "{}author/{}".format(settings.APP_HOST, self.fullId)
         return profile_url
 
     def get_friends(self):
