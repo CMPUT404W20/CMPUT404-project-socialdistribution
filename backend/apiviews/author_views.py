@@ -73,3 +73,12 @@ class AuthorViewSet(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
+
+    def get_author_by_username(self, request, userName, *args, **kwargs):
+        # print(userName)
+        print("*******************", userName)
+        print(User.objects.filter(username=userName).exists())
+        if User.objects.filter(username=userName).exists():
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
