@@ -80,7 +80,7 @@ urlpatterns = [
     })),
 
     # query by username
-    path("author/<str:userName>/query", AuthorViewSet.as_view(({
+    path("author/search/<str:userName>", AuthorViewSet.as_view(({
         "get": "get_author_by_username"
     }))),
 

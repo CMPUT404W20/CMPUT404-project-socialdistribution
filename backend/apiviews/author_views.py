@@ -75,10 +75,11 @@ class AuthorViewSet(viewsets.ViewSet):
             return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
 
     def get_author_by_username(self, request, userName, *args, **kwargs):
-        # print(userName)
-        print("*******************", userName)
-        print(User.objects.filter(username=userName).exists())
-        if User.objects.filter(username=userName).exists():
-            return Response(status=status.HTTP_200_OK)
+        # Given some string, searches all users and returns matching users
+        # /authors/search/<str:userName>
+        queryset_of_authors = User.objects.filter(username__contains=userName)
+        list_of_authors = list([user.username for user in queryset_of_authors])
+        if len(list_of_authors) != 0:
+            return Response({"authors": list_of_authors}, status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"authors": []}, status=status.HTTP_400_BAD_REQUEST)

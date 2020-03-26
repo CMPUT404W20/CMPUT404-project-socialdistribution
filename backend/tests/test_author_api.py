@@ -3,6 +3,7 @@ from django.conf import settings
 from backend.utils import *
 from backend.models import User, Friend, Host
 import pytest
+import json
 
 
 @pytest.mark.django_db
@@ -75,7 +76,30 @@ class TestAuthorAPI:
     def test_get_username(self, client, test_user, friend_user):
         client.force_login(test_user)
         test_auth_id = test_user.get_full_user_id()
-        response = client.get("/author/roychowd/query")
+        # test if author does not exist
+        response = client.get("/author/search/roychowd")
         assert response.status_code == 400
-        response = client.get("/author/testuser001/query")
+        assert response.data["authors"] == []
+        # test if author exists
+        response = client.get("/author/search/testuser001")
         assert response.status_code == 200
+        assert response.data["authors"] != []
+
+
+        # test if author exists with common substring: stu
+        test_user1_username = "testusernumero2"
+        test_user1_email = "teste1@gmail.com"
+        test_user1_password = "ualberta!!"
+        post_body_1 = json.dumps({
+            "username": test_user1_username,
+            "email": test_user1_email,
+            "password1": test_user1_password,
+            "password2": test_user1_password
+        })
+
+        response = client.post('/auth/registration/', data=post_body_1,
+                               content_type='application/json', charset='UTF-8')
+        assert response.status_code == 201
+        response = client.get("/author/search/stu")
+        assert response.status_code == 200
+        assert response.data["authors"] != []
