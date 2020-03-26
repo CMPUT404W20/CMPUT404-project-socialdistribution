@@ -4,10 +4,15 @@ from backend.models import *
 import dj_database_url
 
 User = get_user_model()
-test_user_username = "testuser001"
-test_user_email = "testemail001@gmail.com"
-test_user_password = "ualberta!"
-test_user_github_url = "https://github.com/testuser001"
+test_user_1_username = "testuser001"
+test_user_1_email = "testemail001@gmail.com"
+test_user_1_password = "ualberta!"
+test_user_1_github_url = "https://github.com/testuser001"
+
+test_user_2_username = "testuser002"
+test_user_2_email = "testemail002@gmail.com"
+test_user_2_password = "ualberta!"
+test_user_2_github_url = "https://github.com/testuser002"
 
 
 @pytest.fixture
@@ -19,7 +24,13 @@ def test_host(db):
 @pytest.fixture
 def test_user(db, test_host):
     test_user = User.objects.create_user(
-        username=test_user_username, email=test_user_email, password=test_user_password, githubUrl=test_user_github_url, host=test_host)
+        username=test_user_1_username, email=test_user_1_email, password=test_user_1_password, githubUrl=test_user_1_github_url, host=test_host)
+    return test_user
+
+@pytest.fixture
+def test_user_2(db, test_host):
+    test_user = User.objects.create_user(
+        username=test_user_2_username, email=test_user_2_email, password=test_user_2_password, githubUrl=test_user_2_github_url, host=test_host)
     return test_user
 
 

@@ -29,6 +29,12 @@ class User(AbstractUser):
             user_host = user_host[:-1]
 
         return "{}/author/{}".format(user_host, self.id)
+    
+    def get_profile_url(self):
+        full_user_id = self.get_full_user_id()
+        profile_url = settings.APP_HOST + full_user_id
+
+        return profile_url
 
     def get_friends(self):
         friend_ids = Friend.objects.filter(
@@ -59,11 +65,11 @@ class User(AbstractUser):
                 host_obj.save()
             self.host = host_obj
         super().save(*args, **kwargs)
-
-        fullId = self.get_full_user_id()
-        fullId = protocol_removed(fullId)
-        self.fullId = fullId
-        super().save(*args, **kwargs)
+        if not self.fullId:
+            fullId = self.get_full_user_id()
+            fullId = protocol_removed(fullId)
+            self.fullId = fullId
+            super().save(*args, **kwargs)
 
 
 class Post(models.Model):
@@ -101,7 +107,7 @@ class Post(models.Model):
             users = self.author.get_friends()
         elif self.visibility == "FOAF":
             users = self.author.get_friends()
-            users |= self.author.get_fof()
+            users |= self.author.get_foaf()
         elif self.visibility == "PRIVATE":
             visible_to = map(protocol_removed, self.visibleTo)
             users = User.objects.filter(fullId__in=visible_to)
@@ -109,6 +115,8 @@ class Post(models.Model):
         elif self.visibility == "UNLISTED":
             users = User.objects.none()
         # TODO add serveronly
+
+        users |= User.objects.filter(id=self.author.id)
 
         return users.distinct()
 

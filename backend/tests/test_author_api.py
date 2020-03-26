@@ -30,7 +30,7 @@ class TestAuthorAPI:
 
         assert response.data["displayName"] == test_user.username
         assert response.data["host"] is not None
-        assert response.data["url"] == test_user.get_full_user_id()
+        assert response.data["url"] == test_user.get_profile_url()
         assert response.data["friends"] is not None
 
         assert response.data["friends"][0]["id"] == friend_user[0].get_full_user_id(
