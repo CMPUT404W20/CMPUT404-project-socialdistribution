@@ -14,7 +14,9 @@ class FriendItem extends Component {
 
 
   render() {
-    const { username, userID, handleUnfollow, host } = this.props;
+    const {
+      username, userID, handleUnfollow, host,
+    } = this.props;
     return (
       <Col md={6}>
         <div className="friend-item-wrapper">

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "../../styles/friends-notices-search/Page.scss";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -21,8 +22,8 @@ class FriendsPage extends Component {
 
   loadFriends() {
     const friendsList = [];
-    const userID = localStorage.getItem("userID");
-    friendsService.getAuthorFriends(userID).then((response) => {
+    const { user } = this.props;
+    friendsService.getAuthorFriends(user.id).then((response) => {
       for (let i = 0; i < response.length; i += 1) {
         const newFriend = {};
         const friend = response[i];
@@ -68,12 +69,13 @@ class FriendsPage extends Component {
 
   render() {
     const { friendsList, loading } = this.state;
+    const { user } = this.props;
     return (
       !loading && (
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
-            <NavigationBar />
+            <NavigationBar user={user} />
           </Col>
         </Row>
         <Row>
@@ -98,4 +100,15 @@ class FriendsPage extends Component {
     );
   }
 }
+
+FriendsPage.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
+};
+
 export default FriendsPage;

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { userContext } from "../../contexts/UserContext";
 
 class NoticeItem extends Component {
   constructor(props) {
@@ -11,12 +12,10 @@ class NoticeItem extends Component {
     this.props = props;
   }
 
-
   render() {
     const {
       username, userID, host, handleAccept, handleDecline,
     } = this.props;
-    const currentHost = localStorage.getItem("host");
     return (
       <Row className="wrapper">
         <Col md={12} lg={4} className="leftColumn">
@@ -31,7 +30,9 @@ class NoticeItem extends Component {
           </Link>
         </Col>
         <Col md={12} lg={3} className="middleColumn">
-          <div className="type-wrapper">{ host === currentHost ? "Local" : "Remote"}</div>
+          <userContext.Consumer>
+            {(user) => (<div className="type-wrapper">{ host === user.host ? "Local" : "Remote"}</div>)}
+          </userContext.Consumer>
         </Col>
         <Col md={12} lg={5} className="rightColumn">
           <div className="button-wrapper">

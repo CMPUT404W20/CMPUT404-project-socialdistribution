@@ -4,7 +4,7 @@ import FriendsPage from "../../../components/friends/FriendsPage";
 
 describe("Friends Page Component", () => {
   it("should render correctly", () => {
-    const component = shallow(<FriendsPage />);
+    const component = shallow(<FriendsPage user={{ id: "" }} />);
     expect(component).toMatchSnapshot();
   });
 });

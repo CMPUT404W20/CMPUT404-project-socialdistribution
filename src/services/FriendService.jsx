@@ -1,5 +1,6 @@
 /* eslint-disable arrow-body-style */
 import axios from "axios";
+import Cookies from "js-cookie";
 
 export const getAuthorFriends = (authorId) => {
   return axios.get(`/author/${authorId}`).then((response) => {
@@ -33,6 +34,25 @@ export const checkFriendStatus = (authorId1, authorId2) => {
       return response.data.friends;
     }
     return false;
+  });
+};
+
+export const SendFriendRequest = (author, friend) => {
+  const payload = {
+    query: "friendrequest",
+    author,
+    friend,
+  };
+  const csrf = Cookies.get("csrftoken");
+  const headers = {
+    "X-CSRFToken": csrf,
+  };
+  // eslint-disable-next-line object-shorthand
+  return axios.post("/friendrequest", payload, { headers }).then((response) => {
+    if (response.status === 200) {
+      return response.data.success;
+    }
+    throw new Error("Unable to send friend request");
   });
 };
 

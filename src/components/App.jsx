@@ -10,30 +10,57 @@ import NoticesPage from "./notices/NoticesPage";
 import ProfilePage from "./profile/ProfilePage";
 import SearchPage from "./search/SearchPage";
 import Login from "./Login";
+import * as auth from "../services/AuthenticationService";
 
-function App() {
-  return (
-    <BrowserRouter>
-      <PrivateRoute />
-      <Route exact path="/" component={Login} />
-      <Route exact path="/home" component={Homepage} />
-      <Route exact path="/friends" component={FriendsPage} />
-      <Route exact path="/notifications" component={NoticesPage} />
-      <Route
-        path="/search"
-        render={(props) => (
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          <SearchPage key={props.location.search} {...props} />)}
-      />
-      <Route
-        path="/profile/:username"
-        render={(props) => (
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          <ProfilePage key={props.match.params.username} {...props} />)}
-      />
-    </BrowserRouter>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {},
+      isLoading: true,
+      isAuthed: false,
+    };
+  }
+
+  componentDidMount() {
+    auth.getCurrentUser()
+      .then(((response) => {
+        if (response.status === 200) {
+          this.setState({ user: response.data, isAuthed: true, isLoading: false });
+        } else {
+          this.setState({ isLoading: false });
+        }
+      }));
+  }
+
+  render() {
+    const { isLoading, isAuthed, user } = this.state;
+    return (
+      (!isLoading) && (
+      <BrowserRouter>
+        <Route exact path="/login" component={Login} />
+        <PrivateRoute exact path="/" component={Homepage} isAuthed={isAuthed} user={user} />
+        <PrivateRoute exact path="/friends" component={FriendsPage} isAuthed={isAuthed} user={user} />
+        <PrivateRoute exact path="/notifications" component={NoticesPage} isAuthed={isAuthed} user={user} />
+        <Route
+          path="/search"
+          render={(props) => (
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            <SearchPage key={props.location.search} user={user} {...props} />
+          )}
+        />
+        <Route
+          path="/profile/:username"
+          render={(props) => (
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            <ProfilePage key={props.match.params.username} user={user} {...props} />)}
+        />
+      </BrowserRouter>
+      )
+    );
+  }
 }
+
 
 App.propTypes = {
   match: PropTypes.objectOf(PropTypes.checkPropTypes()),

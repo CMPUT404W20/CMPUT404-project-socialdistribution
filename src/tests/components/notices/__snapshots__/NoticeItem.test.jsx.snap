@@ -29,11 +29,9 @@ exports[`Notice Item Component should render correctly 1`] = `
     lg={3}
     md={12}
   >
-    <div
-      className="type-wrapper"
-    >
-      Remote
-    </div>
+    <ContextConsumer>
+      <Component />
+    </ContextConsumer>
   </Col>
   <Col
     className="rightColumn"

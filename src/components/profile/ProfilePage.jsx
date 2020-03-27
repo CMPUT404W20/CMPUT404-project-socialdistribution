@@ -13,15 +13,15 @@ import * as auth from "../../services/AuthenticationService";
 class ProfilePage extends Component {
   constructor(props) {
     super(props);
-    const { location } = this.props;
+    const { location, user } = this.props;
     this.state = {
       username: location.state.username,
       userID: location.state.userID,
       host: location.state.host,
-      currentUserID: localStorage.getItem("userID"),
+      currentUserID: user.id,
       isFollowing: false,
       isFriends: false,
-      isSelf: (location.state.userID === localStorage.getItem("userID")),
+      isSelf: (location.state.userID === user.id),
       loading: true,
     };
   }
@@ -68,11 +68,12 @@ class ProfilePage extends Component {
 
   render() {
     const { userID } = this.state;
+    const { user } = this.props;
     return (
       <Container fluid className="profilePage">
         <Row>
           <Col md={12}>
-            <NavigationBar />
+            <NavigationBar user={user} />
           </Col>
         </Row>
         <Row>
@@ -94,6 +95,13 @@ class ProfilePage extends Component {
 
 ProfilePage.propTypes = {
   location: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
 };
 
 export default ProfilePage;

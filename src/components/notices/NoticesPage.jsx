@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../../styles/friends-notices-search/Page.scss";
+import PropTypes from "prop-types";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -19,16 +20,17 @@ class NoticesPage extends Component {
       // render the page after loading otherwise the count will first flash as 0 then
       // show the actual count
     };
+    this.loadRequests();
   }
 
-  componentDidMount() {
+  loadRequests() {
     const noticesList = [];
     friendsService.getAuthorFriendRequests().then((response) => {
       for (let i = 0; i < response.length; i += 1) {
         const newRequest = {};
         const request = response[i];
 
-        newRequest.name = request.fromUser.displayName;
+        newRequest.displayName = request.fromUser.displayName;
         newRequest.id = request.fromUser.id;
         newRequest.host = request.fromUser.host;
 
@@ -50,9 +52,16 @@ class NoticesPage extends Component {
     this.setState({ noticesList: filteredList });
   }
 
-  handleAccept(id) {
-    // TODO: accept the request
-    this.handleRemoveNotice(id);
+  handleAccept(item) {
+    const { user } = this.props;
+    friendsService.SendFriendRequest(user, item).then((success) => {
+      if (success) {
+        this.loadRequests();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   renderNoticeItems = () => {
@@ -63,11 +72,11 @@ class NoticesPage extends Component {
       notices.push(
         <NoticeItem
           key={item.id}
-          username={item.name}
+          username={item.displayName}
           userID={item.id}
           host={item.host}
-          handleAccept={(id) => this.handleAccept(id)}
-          handleDecline={(id) => this.handleRemoveNotice(id)}
+          handleAccept={() => this.handleAccept(item)}
+          handleDecline={() => this.handleRemoveNotice(item)}
         />,
       );
     });
@@ -77,12 +86,13 @@ class NoticesPage extends Component {
 
   render() {
     const { noticesList, loading } = this.state;
+    const { user } = this.props;
     return (
       !loading && (
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
-            <NavigationBar />
+            <NavigationBar user={user} key={noticesList.length} />
           </Col>
         </Row>
         <Row>
@@ -112,4 +122,15 @@ class NoticesPage extends Component {
     );
   }
 }
+
+NoticesPage.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
+};
+
 export default NoticesPage;

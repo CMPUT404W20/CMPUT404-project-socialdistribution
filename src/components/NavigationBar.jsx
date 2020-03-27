@@ -18,9 +18,10 @@ import * as friendsService from "../services/FriendService";
 class NavigationBar extends Component {
   constructor(props) {
     super(props);
+    const { user } = this.props;
     this.state = {
-      username: localStorage.getItem("username") || "Username",
-      userID: localStorage.getItem("userID"),
+      username: user.displayName,
+      userID: user.id,
       numNotifications: 0,
       keyword: "",
       loading: true,
@@ -43,8 +44,7 @@ class NavigationBar extends Component {
     const { history } = this.props;
     auth.logoutUser().then((response) => {
       if (response.status === 200) {
-        localStorage.clear();
-        history.push("/");
+        history.push("/login");
       }
     });
   }
@@ -90,7 +90,7 @@ class NavigationBar extends Component {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto" />
           <Nav>
-            <Nav.Link exact as={NavLink} to="/home">
+            <Nav.Link exact as={NavLink} to="/">
               <HomeOutlinedIcon />
             </Nav.Link>
             <Nav.Link exact as={NavLink} to="/friends">
@@ -99,7 +99,7 @@ class NavigationBar extends Component {
             <Nav.Link exact as={NavLink} to="/notifications">
               <div className="notification-icon-wrapper">
                 <NotificationsNoneOutlinedIcon />
-                {numNotifications == 0 ? null : (
+                {numNotifications === 0 ? null : (
                   <div className="notification-badge-wrapper">
                     <span className="notification-badge">{numNotifications}</span>
                   </div>
@@ -137,6 +137,13 @@ class NavigationBar extends Component {
 
 NavigationBar.propTypes = {
   history: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
 };
 
 export default withRouter(NavigationBar);

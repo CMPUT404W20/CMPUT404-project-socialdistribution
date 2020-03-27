@@ -40,11 +40,12 @@ class SearchPage extends Component {
 
   render() {
     const { resultsList, keyword } = this.state;
+    const { user } = this.props;
     return (
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
-            <NavigationBar />
+            <NavigationBar user={user} />
           </Col>
         </Row>
         <Row>
@@ -75,6 +76,13 @@ class SearchPage extends Component {
 
 SearchPage.propTypes = {
   location: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
 };
 
 export default SearchPage;
