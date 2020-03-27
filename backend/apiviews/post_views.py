@@ -105,19 +105,21 @@ class PostViewSet(viewsets.ModelViewSet):
         foreign_posts = []
 
         for friend in user_friends:
+            if not friend.fullId.startswith("https://"):
+                friend.fullId = "https://" + friend.fullId
+
             response = get_from_host(
-                "author/{}/posts".format("https://"+friend.fullId), friend.host)
-            if response.status_code == 404:
-                friend_uid = friend.fullId.split("/")[-1]
-                response = get_from_host(
-                    "author/{}/posts".format(friend_uid), friend.host)
+                "{}/posts".format(friend.fullId), friend.host)
             try:
                 response_data = response.json()
+                print(response_data)
+                foreign_posts += response_data["posts"]            
             except:
                 continue
-            else:
-                foreign_posts += response_data["posts"]
 
+            
+
+                
         post_data = json.dumps(serializer.data)
         post_data = json.loads(post_data)
         post_data += foreign_posts

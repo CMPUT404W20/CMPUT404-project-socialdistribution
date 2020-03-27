@@ -43,14 +43,23 @@ class CommentViewSet(viewsets.ModelViewSet):
         request_user = get_object_or_404(User, fullId=protocol_removed(request.data["comment"]["author"]["id"]))
         post = Post.objects.filter(pk=postId)
         if not post:
+            # host_url = request.get_host()
+            # print(host_url)
 
-            host_url = request.get_host()
-            host = Host.objects.get(url=host_url)
-            endpoint = "/posts/{}/comments/".format(postId)
+            host = Host.objects.get(url="https://spongebook.herokuapp.com/")
+            print(postId)
+            endpoint = "posts/{}/comments".format(postId)
 
             response = post_to_host(endpoint,host,request.data)
+
             if response.status_code == 200:
                 print(response.status_code)
+                return Response({"query": "addComment", "success": True, "message": "Comment Added"}, status=status.HTTP_201_CREATED)
+            else:
+                print(response.status_code)
+                return Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
+                        status=status.HTTP_400_BAD_REQUEST)
+
 
             # endpoint= "/posts/{}/comments/".format('253c1388-c927-47a7-acc0-bffa0d066e90')
 
