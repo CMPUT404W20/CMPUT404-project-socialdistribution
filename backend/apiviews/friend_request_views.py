@@ -17,8 +17,15 @@ import json
 
 class FriendRequestViewSet(viewsets.ViewSet):
 
-    serializer_class = FriendRequestSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_friend_request(self, request):
+        user = request.user
+
+        user_friendrequests = FriendRequest.objects.filter(toUser=user)
+        serializer = FriendRequestSerializer(user_friendrequests, many=True)
+        
+        return Response(data=serializer.data)
 
     def reverse_friendrequest_exists(self, requester, receiver):
         '''

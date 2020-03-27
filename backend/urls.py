@@ -106,6 +106,7 @@ urlpatterns = [
 
 
     path('friendrequest', FriendRequestViewSet.as_view(({
+        "get": "get_friend_request",
         "post": "send_friend_request"
     }))),
     path('friendrequest/reject/', FriendRequestViewSet.as_view(({
