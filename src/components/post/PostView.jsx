@@ -40,6 +40,7 @@ class PostView extends Component {
         newPost.content = post.content;
         newPost.published = post.published;
         newPost.id = post.id;
+        newPost.source = post.source;
         newPost.imageSrc = null;
         newPost.comments = post.comments || [];
         newPost.isGithubPost = post.isGithubPost || false;

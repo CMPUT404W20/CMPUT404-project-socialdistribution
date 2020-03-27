@@ -20,7 +20,8 @@ from backend.apiviews.paginations import PostPagination
 from backend.helpers.github import *
 from backend.apiviews.paginations import PostPagination
 
-import json, uuid
+import json
+import uuid
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -105,18 +106,17 @@ class PostViewSet(viewsets.ModelViewSet):
         foreign_posts = []
 
         for friend in user_friends:
+            if not friend.fullId.startswith("https://"):
+                friend.fullId = "https://" + friend.fullId
+
             response = get_from_host(
-                "author/{}/posts".format("https://"+friend.fullId), friend.host)
-            if response.status_code == 404:
-                friend_uid = friend.fullId.split("/")[-1]
-                response = get_from_host(
-                    "author/{}/posts".format(friend_uid), friend.host)
+                "{}/posts".format(friend.fullId), friend.host)
             try:
                 response_data = response.json()
+
+                foreign_posts += response_data["posts"]
             except:
                 continue
-            else:
-                foreign_posts += response_data["posts"]
 
         post_data = json.dumps(serializer.data)
         post_data = json.loads(post_data)
@@ -128,19 +128,22 @@ class PostViewSet(viewsets.ModelViewSet):
                 post_data += cached_github_posts
             else:
                 # load github activity and merge with posts
-                github_events = load_github_events(request.user.githubUrl, settings.GITHUB_TOKEN)
-                github_posts = [] # github events in the format of a regular Post object
+                github_events = load_github_events(
+                    request.user.githubUrl, settings.GITHUB_TOKEN)
+                github_posts = []  # github events in the format of a regular Post object
                 for event in github_events:
                     event["author"] = UserSerializer(request.user).data
-                    # use the hash of the content and time as the ID so it stays consistent between 
+                    # use the hash of the content and time as the ID so it stays consistent between
                     # api calls - required to make sure that react can render efficiently
-                    event["id"] = uuid.uuid3(uuid.NAMESPACE_X500, event["content"]+event["published"])
+                    event["id"] = uuid.uuid3(
+                        uuid.NAMESPACE_X500, event["content"]+event["published"])
                     github_posts.append(event)
-                
+
                 cache.set(request.user.githubUrl, github_posts, 300)
                 post_data += github_posts
-            
-        post_data.sort(key=lambda x : x["published"] if isinstance(x, dict) else str(x.timestamp), reverse=True)
+
+        post_data.sort(key=lambda x: x["published"] if isinstance(
+            x, dict) else str(x.timestamp), reverse=True)
         page = self.paginate_queryset(post_data)
 
         return self.get_paginated_response(page)
@@ -151,7 +154,7 @@ class PostViewSet(viewsets.ModelViewSet):
         '''
         user = request.user
         author_id = protocol_removed(author_id)
-        
+
         if User.objects.filter(fullId=author_id).exists():
             posts = Post.objects.filter(author__fullId=author_id)
             viewable_posts = Post.objects.none()
