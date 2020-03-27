@@ -80,12 +80,21 @@ class Post(models.Model):
         ("UNLISTED", "UNLISTED"),
     )
 
+    CONTENT_TYPES = (
+        ("text/plain", "text/plain"),
+        ("text/markdown", "text/markdown"),
+        ("image/png;base64", "image/png;base64"),
+        ("image/jpeg;base64", "image/jpeg;base64"),
+        ("application/base64", "application/base64"),
+    )
+
     postId = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
+    content_type = models.CharField(max_length=20, choices=CONTENT_TYPES, default="text/markdown")
     # Visibility can be one of the followings : "PUBLIC","PRIVATE","Private","FRIENDS","FOF" or specific user ID
     visibility = models.CharField(
         max_length=10, choices=VISIBILITY_CHOICES, default="PUBLIC")
@@ -112,11 +121,18 @@ class Post(models.Model):
 
         elif self.visibility == "UNLISTED":
             users = User.objects.none()
-        # TODO add serveronly
 
         users |= User.objects.filter(id=self.author.id)
 
+        # Superuser(server admin) will have access to all the posts
+        superusers = User.objects.filter(is_superuser=True)
+        users |= superusers
+
         return users.distinct()
+
+    def get_source(self):
+        host_name = settings.APP_HOST
+        return "{}posts/{}".format(host_name, self.postId)
 
 
 class Comments(models.Model):
