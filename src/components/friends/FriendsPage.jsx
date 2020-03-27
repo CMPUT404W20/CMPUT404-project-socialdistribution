@@ -44,10 +44,15 @@ class FriendsPage extends Component {
     });
   }
 
-  handleUnfollow(item) {
-    const { friendsList } = this.state;
-    const filteredList = friendsList.filter((item) => item.id !== userID);
-    this.setState({ friendsList: filteredList });
+  handleUnfriend(item) {
+    friendsService.UnFriend(item).then((success) => {
+      if (success) {
+        this.loadFriends();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   renderFriendItems = () => {
@@ -60,7 +65,7 @@ class FriendsPage extends Component {
             username={item.displayName}
             userID={item.id}
             host={item.host}
-            handleUnfollow={() => this.handleUnfollow(item)}
+            handleUnFriend={() => this.handleUnFriend(item)}
           />
         ))}
       </Row>

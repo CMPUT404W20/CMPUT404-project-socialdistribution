@@ -57,34 +57,34 @@ class ProfileHeader extends Component {
     </button>
   );
 
-  handleFollow = () => {
-    this.setState({ isFollowing: true });
+  renderDropDown = (isFriends) => {
+    const { handleUnFriend, handleUnFollow } = this.props;
+    return (
+      <DropdownButton
+        id="friend-status"
+        title={isFriends ? "FRIENDS" : "FOLLOWING"}
+        drop="down"
+        alignRight
+      >
+        {isFriends
+          ? (<Dropdown.Item onClick={handleUnFriend}>Unfriend</Dropdown.Item>)
+          : (<Dropdown.Item onClick={handleUnFollow}>Unfollow</Dropdown.Item>)}
+      </DropdownButton>
+    );
+  }
+
+  renderFollowButton = () => {
+    const { handleFollow } = this.props;
+    return (
+      <button
+        type="button"
+        className="follow-button"
+        onClick={handleFollow}
+      >
+        Follow
+      </button>
+    );
   };
-
-  renderDropDown = (isFriends) => (
-    <DropdownButton
-      id="friend-status"
-      title={isFriends === true ? "FRIENDS" : "FOLLOWING"}
-      drop="down"
-      alignRight
-    >
-      <Dropdown.Item onClick={this.handleUnFollow}>{isFriends === true ? "Unfriend" : "Unfollow"}</Dropdown.Item>
-    </DropdownButton>
-  );
-
-  handleUnFollow = () => {
-    this.setState({ isFriends: false, isFollowing: false });
-  };
-
-  renderFollowButton = () => (
-    <button
-      type="button"
-      className="follow-button"
-      onClick={this.handleFollow}
-    >
-      Follow
-    </button>
-  );
 
   render() {
     const {
@@ -118,6 +118,9 @@ ProfileHeader.propTypes = {
   host: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   github: PropTypes.string.isRequired,
+  handleFollow: PropTypes.func.isRequired,
+  handleUnFriend: PropTypes.func.isRequired,
+  handleUnFollow: PropTypes.func.isRequired,
 };
 
 export default ProfileHeader;

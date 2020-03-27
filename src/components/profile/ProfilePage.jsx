@@ -19,9 +19,10 @@ class ProfilePage extends Component {
       isSelf: (location.state.user.id === user.id),
       loading: true,
     };
+    this.relationshipCheck();
   }
 
-  componentDidMount() {
+  relationshipCheck() {
     const { isSelf } = this.state;
     const { location, user } = this.props;
     const currentUserID = user.id;
@@ -30,6 +31,7 @@ class ProfilePage extends Component {
       friendsService.checkFriendStatus(currentUserID, userID).then((response) => {
         if (response) {
           this.setState({ isFriends: true, loading: false });
+          // todo: check if there's a request from current user to that user.
         } else {
           this.setState({ loading: false });
         }
@@ -40,6 +42,42 @@ class ProfilePage extends Component {
     } else {
       this.setState({ loading: false });
     }
+  }
+
+  handleFollow(item) {
+    const { user } = this.props;
+    friendsService.SendFriendRequest(user, item).then((success) => {
+      if (success) {
+        window.location.reload();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  // handleUnFriend(item) {
+  //   friendsService.UnFriend(item).then((success) => {
+  //     if (success) {
+  //       window.location.reload();
+  //     }
+  //   }).catch((error) => {
+  //     // eslint-disable-next-line no-alert
+  //     alert(error);
+  //   });
+  // }
+
+  handleUnFollow(item) {
+    const { user } = this.props;
+    friendsService.RejectFriendRequest(item, user).then((success) => {
+      if (success) {
+        window.location.reload();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   renderHeader = () => {
@@ -56,6 +94,9 @@ class ProfilePage extends Component {
         host={location.state.user.host}
         username={location.state.user.displayName}
         github={user.github}
+        handleFollow={() => this.handleFollow(location.state.user)}
+        handleUnFollow={() => this.handleUnFollow(location.state.user)}
+        handleUnFriend={() => this.handleUnFriend(location.state.user)}
       />
       )
     );
