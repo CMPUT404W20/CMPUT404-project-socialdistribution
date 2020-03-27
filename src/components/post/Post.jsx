@@ -107,7 +107,7 @@ class Post extends Component {
     auth.getCurrentUser().then((user) => {
       this.setState({ currentUser: user.data }, () => {
         const { newComment, currentUser } = this.state;
-        CommentService.createComment(post.id, newComment, currentUser).then((success) => {
+        CommentService.createComment(post.source, post.id, newComment, currentUser).then((success) => {
           if (success) {
             // clear the comment field but open the comment section so the user can see the created post
             this.setState({
@@ -116,6 +116,7 @@ class Post extends Component {
             });
 
             onNewComment();
+            
           }
         }).catch((err) => {
           const error = err.response.data;
@@ -124,6 +125,7 @@ class Post extends Component {
         });
       });
     });
+    alert(post.source)
   }
 
   handleCommentKeyPress = (event) => {
@@ -203,6 +205,7 @@ class Post extends Component {
 Post.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.string.isRequired,
+    source: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     authorId: PropTypes.string.isRequired,
     published: PropTypes.string.isRequired,

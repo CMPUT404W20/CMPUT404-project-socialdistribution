@@ -8,14 +8,14 @@ export const getComment = () => {
   return null;
 };
 
-export const createComment = (postId, newComment, user) => {
+export const createComment = (source, postId, newComment, user) => {
   const csrf = Cookies.get("csrftoken");
   const headers = {
     "X-CSRFToken": csrf,
   };
   const payload = {
     query: "addComment",
-    post: postId,
+    post: source,
     comment: {
       author: {
         id: user.id,
