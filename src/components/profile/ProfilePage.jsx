@@ -8,26 +8,24 @@ import NavigationBar from "../NavigationBar";
 import ProfileHeader from "./ProfileHeader";
 import PostView from "../post/PostView";
 import * as friendsService from "../../services/FriendService";
-import * as auth from "../../services/AuthenticationService";
 
 class ProfilePage extends Component {
   constructor(props) {
     super(props);
     const { location, user } = this.props;
     this.state = {
-      username: location.state.username,
-      userID: location.state.userID,
-      host: location.state.host,
-      currentUserID: user.id,
       isFollowing: false,
       isFriends: false,
-      isSelf: (location.state.userID === user.id),
+      isSelf: (location.state.user.id === user.id),
       loading: true,
     };
   }
 
   componentDidMount() {
-    const { userID, currentUserID, isSelf } = this.state;
+    const { isSelf } = this.state;
+    const { location, user } = this.props;
+    const currentUserID = user.id;
+    const userID = location.state.user.id;
     if (!isSelf) {
       friendsService.checkFriendStatus(currentUserID, userID).then((response) => {
         if (response) {
@@ -40,35 +38,31 @@ class ProfilePage extends Component {
         alert(error);
       });
     } else {
-      auth.getCurrentUser()
-        .then(((response) => {
-          this.setState({ github: response.data.github, loading: false });
-        }));
+      this.setState({ loading: false });
     }
   }
 
   renderHeader = () => {
     const {
-      username, isFollowing, isFriends, userID, currentUserID, loading, github, host,
+      isFollowing, isFriends, loading, isSelf,
     } = this.state;
-    const isSelf = (userID === currentUserID);
+    const { location, user } = this.props;
     return (
       !loading && (
       <ProfileHeader
         isSelf={isSelf}
         isFriends={isFriends}
         isFollowing={isFollowing}
-        host={host}
-        username={username}
-        github={github}
+        host={location.state.user.host}
+        username={location.state.user.displayName}
+        github={user.github}
       />
       )
     );
   }
 
   render() {
-    const { userID } = this.state;
-    const { user } = this.props;
+    const { user, location } = this.props;
     return (
       <Container fluid className="profilePage">
         <Row>
@@ -83,7 +77,7 @@ class ProfilePage extends Component {
               {this.renderHeader()}
             </div>
             <PostView
-              userId={userID}
+              userId={location.state.user.id}
             />
           </Col>
           <Col md={2} />

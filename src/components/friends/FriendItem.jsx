@@ -23,7 +23,7 @@ class FriendItem extends Component {
           <Link
             to={{
               pathname: `/profile/${username}`,
-              state: { username, userID, host },
+              state: { user: { displayName: username, id: userID, host } },
             }}
             className="username-link"
           >

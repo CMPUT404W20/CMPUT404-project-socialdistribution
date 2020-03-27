@@ -46,15 +46,21 @@ class NoticesPage extends Component {
     });
   }
 
-  handleRemoveNotice(id) {
-    const { noticesList } = this.state;
-    const filteredList = noticesList.filter((item) => item.id !== id);
-    this.setState({ noticesList: filteredList });
-  }
-
   handleAccept(item) {
     const { user } = this.props;
     friendsService.SendFriendRequest(user, item).then((success) => {
+      if (success) {
+        this.loadRequests();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
+  handleReject(item) {
+    const { user } = this.props;
+    friendsService.RejectFriendRequest(user, item).then((success) => {
       if (success) {
         this.loadRequests();
       }
@@ -76,7 +82,7 @@ class NoticesPage extends Component {
           userID={item.id}
           host={item.host}
           handleAccept={() => this.handleAccept(item)}
-          handleDecline={() => this.handleRemoveNotice(item)}
+          handleDecline={() => this.handleReject(item)}
         />,
       );
     });

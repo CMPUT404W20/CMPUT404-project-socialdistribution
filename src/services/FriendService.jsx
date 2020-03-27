@@ -56,6 +56,25 @@ export const SendFriendRequest = (author, friend) => {
   });
 };
 
+export const RejectFriendRequest = (author, friend) => {
+  const payload = {
+    query: "friendrequest",
+    author,
+    friend,
+  };
+  const csrf = Cookies.get("csrftoken");
+  const headers = {
+    "X-CSRFToken": csrf,
+  };
+  // eslint-disable-next-line object-shorthand
+  return axios.post("/friendrequest/reject/", payload, { headers }).then((response) => {
+    if (response.status === 204) {
+      return true;
+    }
+    throw new Error("Unable to send friend request");
+  });
+};
+
 // for eslint
 export const createFriend = () => {
   return null;

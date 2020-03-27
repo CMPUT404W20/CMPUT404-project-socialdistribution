@@ -32,7 +32,7 @@ class SearchItem extends Component {
               className="view-profile-button"
               to={{
                 pathname: `/profile/${username}`,
-                state: { username, userID, host },
+                state: { user: { displayName: username, id: userID, host } },
               }}
             >
               View Profile

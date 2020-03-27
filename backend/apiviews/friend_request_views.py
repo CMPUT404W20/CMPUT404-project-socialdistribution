@@ -107,18 +107,18 @@ class FriendRequestViewSet(viewsets.ViewSet):
             return Response({"query": "createFriend", "success": False, "message": "wrong request"}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete_friend_request(self, request):
-        #  delete a freindrequest if the friend rejects request
+        #  delete a freindrequest if the author rejects request
         request_data = dict(request.data)
-        user_id = request.user.fullId
-        friend_id = request_data["friend"].get("id")
+        user_id = protocol_removed(request.user.fullId)
+        friend_id = protocol_removed(request_data["friend"].get("id"))
         print(user_id, friend_id)
         does_exist = FriendRequest.objects.filter(
-            toUser__fullId=friend_id, fromUser__fullId=user_id).exists()
+            toUser__fullId=user_id, fromUser__fullId=friend_id).exists()
 
         # check to see if exist then delete
         if does_exist:
             FriendRequest.objects.filter(
-                toUser__fullId=friend_id, fromUser__fullId=user_id).delete()
+                toUser__fullId=user_id, fromUser__fullId=friend_id).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
         else:

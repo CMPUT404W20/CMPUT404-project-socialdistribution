@@ -16,9 +16,11 @@ exports[`Notice Item Component should render correctly 1`] = `
         Object {
           "pathname": "/profile/",
           "state": Object {
-            "host": undefined,
-            "userID": "",
-            "username": "",
+            "user": Object {
+              "displayName": "",
+              "host": undefined,
+              "id": "",
+            },
           },
         }
       }

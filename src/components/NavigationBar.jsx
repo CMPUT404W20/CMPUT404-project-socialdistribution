@@ -21,7 +21,6 @@ class NavigationBar extends Component {
     const { user } = this.props;
     this.state = {
       username: user.displayName,
-      userID: user.id,
       numNotifications: 0,
       keyword: "",
       loading: true,
@@ -66,8 +65,9 @@ class NavigationBar extends Component {
 
   render() {
     const {
-      username, userID, numNotifications, keyword, loading,
+      username, numNotifications, keyword, loading,
     } = this.state;
+    const { user } = this.props;
     return (
       !loading && (
       <Navbar collapseOnSelect expand="sm" fixed="top" className="navigationBar">
@@ -116,7 +116,7 @@ class NavigationBar extends Component {
                   exact
                   to={{
                     pathname: `/profile/${username}`,
-                    state: { userID, username },
+                    state: { user },
                   }}
                 >
                   Profile
