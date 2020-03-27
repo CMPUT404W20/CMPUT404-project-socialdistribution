@@ -91,7 +91,7 @@ class ProfileHeader extends Component {
       modalShow,
     } = this.state;
     const {
-      username, github, isSelf, remote,
+      username, github, isSelf, host,
     } = this.props;
     return (
       <div className="profileHeader">
@@ -99,7 +99,7 @@ class ProfileHeader extends Component {
         <div className="user-section">
           <div className="row1">
             <p>{username}</p>
-            {isSelf ? null : (<p>{remote === true ? "Remote" : "Local"}</p>)}
+            {isSelf ? null : (<p>{host}</p>)}
           </div>
           <div className="row2">
             {this.renderStatus()}
@@ -115,7 +115,7 @@ ProfileHeader.propTypes = {
   isFriends: PropTypes.bool.isRequired,
   isFollowing: PropTypes.bool.isRequired,
   isSelf: PropTypes.bool.isRequired,
-  remote: PropTypes.bool.isRequired,
+  host: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   github: PropTypes.string.isRequired,
 };

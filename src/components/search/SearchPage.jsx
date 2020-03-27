@@ -15,7 +15,7 @@ class SearchPage extends Component {
     this.props = props;
     this.state = {
       // Todo: query on api
-      resultsList: [{ id: "001", name: "Username1", type: "Local" }, { id: "002", name: "Username2", type: "Local" }, { id: "003", name: "Username3", type: "Local" }, { id: "004", name: "Username4", type: "Local" }, { id: "005", name: "Username5", type: "Local" }],
+      resultsList: [],
       keyword: queryString.parse(props.location.search).username,
     };
   }
@@ -30,7 +30,7 @@ class SearchPage extends Component {
           key={item.id}
           username={item.name}
           userID={item.id}
-          type={item.type}
+          host={item.host}
         />,
       );
     });
@@ -61,7 +61,9 @@ class SearchPage extends Component {
                 </p>
               </div>
               <Fade bottom duration={1000} distance="100px">
-                {this.renderSearchResults()}
+                <div>
+                  {this.renderSearchResults()}
+                </div>
               </Fade>
             </div>
           </Col>

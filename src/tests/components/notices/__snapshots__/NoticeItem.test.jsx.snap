@@ -16,6 +16,7 @@ exports[`Notice Item Component should render correctly 1`] = `
         Object {
           "pathname": "/profile/",
           "state": Object {
+            "host": undefined,
             "userID": "",
             "username": "",
           },
@@ -31,7 +32,7 @@ exports[`Notice Item Component should render correctly 1`] = `
     <div
       className="type-wrapper"
     >
-      Local
+      Remote
     </div>
   </Col>
   <Col

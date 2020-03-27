@@ -14,14 +14,14 @@ class FriendItem extends Component {
 
 
   render() {
-    const { username, userID, handleUnfollow } = this.props;
+    const { username, userID, handleUnfollow, host } = this.props;
     return (
       <Col md={6}>
         <div className="friend-item-wrapper">
           <Link
             to={{
               pathname: `/profile/${username}`,
-              state: { username, userID },
+              state: { username, userID, host },
             }}
             className="username-link"
           >
@@ -43,6 +43,7 @@ class FriendItem extends Component {
 
 FriendItem.propTypes = {
   username: PropTypes.string.isRequired,
+  host: PropTypes.string.isRequired,
   userID: PropTypes.string.isRequired,
   handleUnfollow: PropTypes.func.isRequired,
 };

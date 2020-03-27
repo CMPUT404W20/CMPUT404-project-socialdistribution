@@ -13,6 +13,7 @@ exports[`FriendItem Component should render correctly 1`] = `
         Object {
           "pathname": "/profile/",
           "state": Object {
+            "host": undefined,
             "userID": "",
             "username": "",
           },

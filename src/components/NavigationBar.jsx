@@ -13,6 +13,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { NavLink, withRouter } from "react-router-dom";
 import logo from "../images/logo.svg";
 import * as auth from "../services/AuthenticationService";
+import * as friendsService from "../services/FriendService";
 
 class NavigationBar extends Component {
   constructor(props) {
@@ -20,9 +21,22 @@ class NavigationBar extends Component {
     this.state = {
       username: localStorage.getItem("username") || "Username",
       userID: localStorage.getItem("userID"),
-      numNotifications: 2,
+      numNotifications: 0,
       keyword: "",
+      loading: true,
     };
+  }
+
+  componentDidMount() {
+    friendsService.getAuthorFriendRequests().then((response) => {
+      this.setState({
+        numNotifications: response.length,
+        loading: false,
+      });
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   handleLogOut = () => {
@@ -52,9 +66,10 @@ class NavigationBar extends Component {
 
   render() {
     const {
-      username, userID, numNotifications, keyword,
+      username, userID, numNotifications, keyword, loading,
     } = this.state;
     return (
+      !loading && (
       <Navbar collapseOnSelect expand="sm" fixed="top" className="navigationBar">
         <Navbar.Brand className="logo">
           <img src={logo} width="85%" alt="app logo" />
@@ -84,9 +99,12 @@ class NavigationBar extends Component {
             <Nav.Link exact as={NavLink} to="/notifications">
               <div className="notification-icon-wrapper">
                 <NotificationsNoneOutlinedIcon />
-                <div className="notification-badge-wrapper">
-                  <span className="notification-badge">{numNotifications}</span>
-                </div>
+                {numNotifications == 0 ? null : (
+                  <div className="notification-badge-wrapper">
+                    <span className="notification-badge">{numNotifications}</span>
+                  </div>
+                )}
+
               </div>
             </Nav.Link>
           </Nav>
@@ -112,6 +130,7 @@ class NavigationBar extends Component {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
+      )
     );
   }
 }

@@ -7,14 +7,41 @@ import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneO
 import Fade from "react-reveal/Fade";
 import NavigationBar from "../NavigationBar";
 import NoticeItem from "./NoticeItem";
+import * as friendsService from "../../services/FriendService";
 
 class NoticesPage extends Component {
   constructor(props) {
     super(props);
     this.props = props;
     this.state = {
-      noticesList: [{ id: "001", name: "Username1", type: "Local" }, { id: "002", name: "Username2", type: "Local" }, { id: "003", name: "Username3", type: "Local" }, { id: "004", name: "Username4", type: "Local" }, { id: "005", name: "Username5", type: "Local" }],
+      noticesList: [],
+      loading: true,
+      // render the page after loading otherwise the count will first flash as 0 then
+      // show the actual count
     };
+  }
+
+  componentDidMount() {
+    const noticesList = [];
+    friendsService.getAuthorFriendRequests().then((response) => {
+      for (let i = 0; i < response.length; i += 1) {
+        const newRequest = {};
+        const request = response[i];
+
+        newRequest.name = request.fromUser.displayName;
+        newRequest.id = request.fromUser.id;
+        newRequest.host = request.fromUser.host;
+
+        noticesList.push(newRequest);
+      }
+
+      this.setState({
+        noticesList, loading: false,
+      });
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   handleRemoveNotice(id) {
@@ -38,7 +65,7 @@ class NoticesPage extends Component {
           key={item.id}
           username={item.name}
           userID={item.id}
-          type={item.type}
+          host={item.host}
           handleAccept={(id) => this.handleAccept(id)}
           handleDecline={(id) => this.handleRemoveNotice(id)}
         />,
@@ -49,8 +76,9 @@ class NoticesPage extends Component {
   }
 
   render() {
-    const { noticesList } = this.state;
+    const { noticesList, loading } = this.state;
     return (
+      !loading && (
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
@@ -71,12 +99,16 @@ class NoticesPage extends Component {
                 </p>
               </div>
               <Fade bottom duration={1000} distance="100px">
-                {this.renderNoticeItems()}
+                {/* this div is required otherwise the page won't render correctly */}
+                <div className="notice-view" key={-1}>
+                  {this.renderNoticeItems()}
+                </div>
               </Fade>
             </div>
           </Col>
         </Row>
       </Container>
+      )
     );
   }
 }

@@ -17,6 +17,7 @@ class PrivateRoute extends Component {
         if (response.status === 200) {
           localStorage.setItem("userID", response.data.id);
           localStorage.setItem("username", response.data.displayName);
+          localStorage.setItem("host", response.data.host);
           this.setState({ isAuthed: true, isLoading: false });
         }
       }));

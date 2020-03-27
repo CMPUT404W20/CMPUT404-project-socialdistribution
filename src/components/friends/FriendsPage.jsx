@@ -14,6 +14,7 @@ class FriendsPage extends Component {
     this.props = props;
     this.state = {
       friendsList: [],
+      loading: true,
     };
     this.loadFriends();
   }
@@ -28,12 +29,13 @@ class FriendsPage extends Component {
 
         newFriend.name = friend.displayName;
         newFriend.id = friend.id;
-
+        newFriend.host = friend.host;
         friendsList.push(newFriend);
       }
 
       this.setState({
         friendsList,
+        loading: false,
       });
     }).catch((error) => {
       // eslint-disable-next-line no-alert
@@ -56,6 +58,7 @@ class FriendsPage extends Component {
             key={item.id}
             username={item.name}
             userID={item.id}
+            host={item.host}
             handleUnfollow={(id) => this.handleUnfollow(id)}
           />
         ))}
@@ -64,8 +67,9 @@ class FriendsPage extends Component {
   }
 
   render() {
-    const { friendsList } = this.state;
+    const { friendsList, loading } = this.state;
     return (
+      !loading && (
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
@@ -90,6 +94,7 @@ class FriendsPage extends Component {
           </Col>
         </Row>
       </Container>
+      )
     );
   }
 }

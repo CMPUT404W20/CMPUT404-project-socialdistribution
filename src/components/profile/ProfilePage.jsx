@@ -17,6 +17,7 @@ class ProfilePage extends Component {
     this.state = {
       username: location.state.username,
       userID: location.state.userID,
+      host: location.state.host,
       currentUserID: localStorage.getItem("userID"),
       isFollowing: false,
       isFriends: false,
@@ -31,6 +32,8 @@ class ProfilePage extends Component {
       friendsService.checkFriendStatus(currentUserID, userID).then((response) => {
         if (response) {
           this.setState({ isFriends: true, loading: false });
+        } else {
+          this.setState({ loading: false });
         }
       }).catch((error) => {
       // eslint-disable-next-line no-alert
@@ -46,7 +49,7 @@ class ProfilePage extends Component {
 
   renderHeader = () => {
     const {
-      username, isFollowing, isFriends, userID, currentUserID, loading, github,
+      username, isFollowing, isFriends, userID, currentUserID, loading, github, host,
     } = this.state;
     const isSelf = (userID === currentUserID);
     return (
@@ -55,7 +58,7 @@ class ProfilePage extends Component {
         isSelf={isSelf}
         isFriends={isFriends}
         isFollowing={isFollowing}
-        remote={false}
+        host={host}
         username={username}
         github={github}
       />

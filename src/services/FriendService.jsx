@@ -14,6 +14,19 @@ export const getAuthorFriends = (authorId) => {
   });
 };
 
+export const getAuthorFriendRequests = () => {
+  return axios.get("/friendrequest").then((response) => {
+    if (response.status === 200) {
+      if (response.data) {
+        return response.data;
+      }
+      return {};
+    }
+
+    throw new Error("Unable to retrieve friends");
+  });
+};
+
 export const checkFriendStatus = (authorId1, authorId2) => {
   return axios.get(`/author/${authorId1}/friends/${authorId2}`).then((response) => {
     if (response.status === 200) {

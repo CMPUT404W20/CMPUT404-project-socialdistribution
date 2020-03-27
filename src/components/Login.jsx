@@ -53,6 +53,7 @@ class Login extends Component {
         if (response.status === 200) {
           auth.getCurrentUser().then((userData) => {
             localStorage.setItem("userID", userData.data.id);
+            localStorage.setItem("host", userData.data.host);
             localStorage.setItem("username", userData.data.displayName);
           }).then(() => { this.setState({ isAuthed: true }); });
         }
