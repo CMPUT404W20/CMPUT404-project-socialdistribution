@@ -16,6 +16,9 @@ class Host(models.Model):
     serviceAccountPassword = models.CharField(
         max_length=100, null=True, blank=True)
 
+    def __str__(self):
+        return self.serviceAccountUsername
+
 
 class User(AbstractUser):
     githubUrl = models.URLField(max_length=400, blank=True)
@@ -29,7 +32,7 @@ class User(AbstractUser):
             user_host = user_host[:-1]
 
         return "{}/author/{}".format(user_host, self.id)
-    
+
     def get_profile_url(self):
         profile_url = "{}author/{}".format(settings.APP_HOST, self.fullId)
         return profile_url
@@ -68,6 +71,9 @@ class User(AbstractUser):
             fullId = protocol_removed(fullId)
             self.fullId = fullId
             super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.username
 
 
 class Post(models.Model):
@@ -118,6 +124,9 @@ class Post(models.Model):
 
         return users.distinct()
 
+    def __str__(self):
+        return self.title
+
 
 class Comments(models.Model):
 
@@ -139,6 +148,9 @@ class Comments(models.Model):
     contentType = models.CharField(
         max_length=30, choices=CONTENT_TYPES, default="text/plain")
 
+    def __str__(self):
+        return str(self.commentId)
+
     class Meta:
         verbose_name = "comment"
         verbose_name_plural = "comments"
@@ -152,6 +164,9 @@ class FriendRequest(models.Model):
     isAccepted = models.BooleanField(default=False)
     sentDate = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return str(self.sentDate)
+
 
 class Friend(models.Model):
     fromUser = models.ForeignKey(
@@ -160,3 +175,6 @@ class Friend(models.Model):
         User, on_delete=models.CASCADE, related_name="friend_toUser")
     friendDate = models.DateTimeField(auto_now_add=True)
     unfriendDate = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.friendDate)
