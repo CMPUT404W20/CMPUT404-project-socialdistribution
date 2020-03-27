@@ -110,12 +110,10 @@ class PostViewSet(viewsets.ModelViewSet):
 
             response = get_from_host(
                 "{}/posts".format(friend.fullId), friend.host)
-            print(response.status_code)
             try:
                 response_data = response.json()
                 
                 foreign_posts += response_data["posts"] 
-                print(foreign_posts)           
             except:
                 continue
 

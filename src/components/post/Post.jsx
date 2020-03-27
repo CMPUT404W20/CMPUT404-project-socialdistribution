@@ -125,7 +125,6 @@ class Post extends Component {
         });
       });
     });
-    alert(post.source)
   }
 
   handleCommentKeyPress = (event) => {
