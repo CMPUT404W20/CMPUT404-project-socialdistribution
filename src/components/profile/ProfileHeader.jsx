@@ -67,8 +67,8 @@ class ProfileHeader extends Component {
         alignRight
       >
         {isFriends
-          ? (<Dropdown.Item onClick={handleUnFriend}>Unfriend</Dropdown.Item>)
-          : (<Dropdown.Item onClick={handleUnFollow}>Unfollow</Dropdown.Item>)}
+          ? (<Dropdown.Item onClick={() => handleUnFriend()}>Unfriend</Dropdown.Item>)
+          : (<Dropdown.Item onClick={() => handleUnFollow()}>Unfollow</Dropdown.Item>)}
       </DropdownButton>
     );
   }

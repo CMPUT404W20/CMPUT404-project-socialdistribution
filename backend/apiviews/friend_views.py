@@ -103,7 +103,7 @@ class FriendViewSet(viewsets.ViewSet):
                     fromUser__fullId=user_id, toUser__fullId=friend_id).delete()
                 Friend.objects.get(
                     toUser__fullId=user_id, fromUser__fullId=friend_id).delete()
-                return Response(data={"query": "unfriend", "suceess": True, "message": "Successful unfriend"}, status=status.HTTP_204_NO_CONTENT)
+                return Response(data={"query": "unfriend", "success": True, "message": "Successful unfriend"}, status=status.HTTP_204_NO_CONTENT)
             else:
                 return Response(data={"query": "unfriend", "success": False, "message": "Wrong Post Body"}, status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response(data={"query": "unfriend", "success": False, "message": "wrong request"}, status=status.HTTP_400_BAD_REQUEST)

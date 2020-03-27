@@ -20,6 +20,17 @@ class FriendsPage extends Component {
     this.loadFriends();
   }
 
+  handleUnFriend = (item) => {
+    friendsService.UnFriend(item).then((success) => {
+      if (success) {
+        this.loadFriends();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
   loadFriends() {
     const friendsList = [];
     const { user } = this.props;
@@ -38,17 +49,6 @@ class FriendsPage extends Component {
         friendsList,
         loading: false,
       });
-    }).catch((error) => {
-      // eslint-disable-next-line no-alert
-      alert(error);
-    });
-  }
-
-  handleUnfriend(item) {
-    friendsService.UnFriend(item).then((success) => {
-      if (success) {
-        this.loadFriends();
-      }
     }).catch((error) => {
       // eslint-disable-next-line no-alert
       alert(error);

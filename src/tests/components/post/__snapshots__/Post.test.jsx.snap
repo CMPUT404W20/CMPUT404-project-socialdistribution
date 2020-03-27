@@ -29,6 +29,9 @@ exports[`Post Block Components should render correctly 1`] = `
         duration={500}
         left={true}
       >
+        <ContextConsumer>
+          <Component />
+        </ContextConsumer>
         <DropdownItem
           as={
             Object {
@@ -179,6 +182,9 @@ exports[`Post Block Components should render markdown content correctly 1`] = `
         duration={500}
         left={true}
       >
+        <ContextConsumer>
+          <Component />
+        </ContextConsumer>
         <DropdownItem
           as={
             Object {

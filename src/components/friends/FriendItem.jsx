@@ -15,7 +15,7 @@ class FriendItem extends Component {
 
   render() {
     const {
-      username, userID, handleUnFriend, host,
+      username, userID, host, handleUnFriend,
     } = this.props;
     return (
       <Col md={6}>
@@ -35,7 +35,7 @@ class FriendItem extends Component {
             drop="down"
             alignRight
           >
-            <Dropdown.Item onClick={() => alert(userID)}>Unfriend</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleUnFriend()}>Unfriend</Dropdown.Item>
           </DropdownButton>
         </div>
       </Col>

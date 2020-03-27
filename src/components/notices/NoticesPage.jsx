@@ -20,10 +20,9 @@ class NoticesPage extends Component {
       // render the page after loading otherwise the count will first flash as 0 then
       // show the actual count
     };
-    this.loadRequests();
   }
 
-  loadRequests() {
+  componentDidMount() {
     const noticesList = [];
     friendsService.getAuthorFriendRequests().then((response) => {
       for (let i = 0; i < response.length; i += 1) {
@@ -46,11 +45,11 @@ class NoticesPage extends Component {
     });
   }
 
-  handleAccept(item) {
+  handleAccept = (item) => {
     const { user } = this.props;
     friendsService.SendFriendRequest(user, item).then((success) => {
       if (success) {
-        this.loadRequests();
+        window.location.reload();
       }
     }).catch((error) => {
       // eslint-disable-next-line no-alert
@@ -58,11 +57,11 @@ class NoticesPage extends Component {
     });
   }
 
-  handleReject(item) {
+  handleReject = (item) => {
     const { user } = this.props;
     friendsService.RejectFriendRequest(user, item).then((success) => {
       if (success) {
-        this.loadRequests();
+        window.location.reload();
       }
     }).catch((error) => {
       // eslint-disable-next-line no-alert

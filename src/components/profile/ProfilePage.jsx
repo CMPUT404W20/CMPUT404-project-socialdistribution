@@ -19,10 +19,9 @@ class ProfilePage extends Component {
       isSelf: (location.state.user.id === user.id),
       loading: true,
     };
-    this.relationshipCheck();
   }
 
-  relationshipCheck() {
+  componentDidMount() {
     const { isSelf } = this.state;
     const { location, user } = this.props;
     const currentUserID = user.id;
@@ -44,9 +43,9 @@ class ProfilePage extends Component {
     }
   }
 
-  handleFollow(item) {
-    const { user } = this.props;
-    friendsService.SendFriendRequest(user, item).then((success) => {
+
+  handleUnFriend = (item) => {
+    friendsService.UnFriend(item).then((success) => {
       if (success) {
         window.location.reload();
       }
@@ -56,21 +55,21 @@ class ProfilePage extends Component {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  // handleUnFriend(item) {
-  //   friendsService.UnFriend(item).then((success) => {
-  //     if (success) {
-  //       window.location.reload();
-  //     }
-  //   }).catch((error) => {
-  //     // eslint-disable-next-line no-alert
-  //     alert(error);
-  //   });
-  // }
-
-  handleUnFollow(item) {
+  handleUnFollow = (item) => {
     const { user } = this.props;
     friendsService.RejectFriendRequest(item, user).then((success) => {
+      if (success) {
+        window.location.reload();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
+  handleFollow = (item) => {
+    const { user } = this.props;
+    friendsService.SendFriendRequest(user, item).then((success) => {
       if (success) {
         window.location.reload();
       }
