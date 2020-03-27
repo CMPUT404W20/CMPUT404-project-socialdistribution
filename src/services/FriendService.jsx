@@ -67,7 +67,7 @@ export const SendFriendRequest = (author, friend) => {
   };
   // eslint-disable-next-line object-shorthand
   return axios.post("/friendrequest", payload, { headers }).then((response) => {
-    if (response.status === 200) {
+    if (response.status === 201) {
       return response.data.success;
     }
     throw new Error("Unable to send friend request");

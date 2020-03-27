@@ -48,7 +48,7 @@ class TestFriend:
         client.force_login(test_user)
         response = client.post('/friendrequest', data=post_body_1,
                                content_type='application/json', charset='UTF-8')
-        assert response.status_code == 200
+        assert response.status_code == 201
 
         assert FriendRequest.objects.filter(
             fromUser=test_user, toUser=test_user_2).exists()
@@ -76,7 +76,7 @@ class TestFriend:
         client.force_login(test_user_2)
         response = client.post('/friendrequest', data=post_body_2,
                                content_type='application/json', charset='UTF-8')
-        assert response.status_code == 200
+        assert response.status_code == 201
         assert not FriendRequest.objects.filter(
             fromUser=test_user, toUser=test_user_2).exists()
         assert Friend.objects.filter(fromUser=test_user,toUser=test_user_2).exists()
@@ -169,7 +169,7 @@ class TestFriend:
         client.force_login(test_user_2)
         response = client.post('/friendrequest', data=post_body,
                                content_type='application/json', charset='UTF-8')
-        assert response.status_code == 200
+        assert response.status_code == 201
         assert FriendRequest.objects.filter(
             fromUser__fullId=test_user_2.fullId, toUser__fullId=test_user.fullId).exists()
 

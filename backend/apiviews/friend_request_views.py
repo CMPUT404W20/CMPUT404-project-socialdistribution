@@ -87,22 +87,22 @@ class FriendRequestViewSet(viewsets.ViewSet):
             # if friend request has already exists
             if self.reverse_friendrequest_exists(requested_user, received_user):
                 self.make_friend(requested_user, received_user)
-                return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_200_OK)
+                return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_201_CREATED)
             else:
                 if received_user.host.url != settings.APP_HOST:
                     response = post_to_host(
                         "friendrequest", received_user.host, request_data)
 
-                    if response.status_code == 200:
+                    if response.status_code == 201:
                         FriendRequest.objects.create(
                             fromUser=requested_user, toUser=received_user)
-                        return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_200_OK)
+                        return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_201_CREATED)
                     else:
                         return Response({"query": "createFriendRequest", "success": False, "message": "Unable to create Friend Request"}, status=status.HTTP_400_BAD_REQUEST)
                 else:
                     FriendRequest.objects.create(
                         fromUser=requested_user, toUser=received_user)
-                    return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_200_OK)
+                    return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_201_CREATED)
         else:
             return Response({"query": "createFriend", "success": False, "message": "wrong request"}, status=status.HTTP_400_BAD_REQUEST)
 
