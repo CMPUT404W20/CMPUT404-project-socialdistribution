@@ -37,11 +37,12 @@ class CommentViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
         else:
             return Response({"message": "Not Authorized to view the comments"},
-                         status=status.HTTP_401_UNAUTHORIZED)
+                            status=status.HTTP_401_UNAUTHORIZED)
 
     def add_comment(self, request, postId):
-        
-        request_user = get_object_or_404(User, fullId=protocol_removed(request.data["comment"]["author"]["id"]))
+
+        request_user = get_object_or_404(User, fullId=protocol_removed(
+            request.data["comment"]["author"]["id"]))
         post = Post.objects.filter(pk=postId)
         if not post:
             source = get_host_from_id(request.data["post"])
@@ -50,15 +51,14 @@ class CommentViewSet(viewsets.ModelViewSet):
 
             request.data["comment"]["id"] = str(uuid.uuid1())
 
-            response = post_to_host(endpoint,host,request.data)
+            response = post_to_host(endpoint, host, request.data)
 
             if response.status_code == 200:
                 return Response({"query": "addComment", "success": True, "message": "Comment Added"}, status=status.HTTP_201_CREATED)
             else:
-                print(response.status_code)
                 return Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
-                        status=status.HTTP_400_BAD_REQUEST)
-            
+                                status=status.HTTP_400_BAD_REQUEST)
+
         else:
             if request.data and request.data["query"] == "addComment" and request.data["post"]:
                 if Post.objects.filter(postId=postId).exists():
@@ -69,7 +69,8 @@ class CommentViewSet(viewsets.ModelViewSet):
                         comment_data = request.data["comment"]
 
                         comment_data["content"] = comment_data["comment"]
-                        request_user_id = protocol_removed(request.data["comment"]["author"]["id"])
+                        request_user_id = protocol_removed(
+                            request.data["comment"]["author"]["id"])
                         comment_data["author"] = request_user_id
 
                         serializer = CommentSerializer(
@@ -83,12 +84,11 @@ class CommentViewSet(viewsets.ModelViewSet):
 
                     else:
                         return Response({"query": "addComment", "success": False, "message": "Comment not allowed"},
-                                status=status.HTTP_403_FORBIDDEN)
+                                        status=status.HTTP_403_FORBIDDEN)
 
                 else:
                     Response({"query": "addComment", "success": False, "message": "Post not Found"},
-                            status=status.HTTP_404_NOT_FOUND)
+                             status=status.HTTP_404_NOT_FOUND)
             else:
                 Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
-                        status=status.HTTP_400_BAD_REQUEST)
-
+                         status=status.HTTP_400_BAD_REQUEST)
