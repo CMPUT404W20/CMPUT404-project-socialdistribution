@@ -12,6 +12,8 @@ import breaks from "remark-breaks";
 import Collapse from "react-bootstrap/Collapse";
 import moreIcon from "../../images/more-icon.svg";
 import * as CommentService from "../../services/CommentService";
+import * as auth from "../../services/AuthenticationService";
+
 
 class Post extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class Post extends Component {
     this.state = {
       commentSectionVisisble: false,
       newComment: "",
+      currentUser: {},
     };
   }
 
@@ -100,23 +103,27 @@ class Post extends Component {
   }
 
   handleSubmitNewComment = () => {
-    const { newComment } = this.state;
     const { post, onNewComment } = this.props;
+    auth.getCurrentUser().then((user) => {
+      this.setState({ currentUser: user.data }, () => {
+        const { newComment, currentUser } = this.state;
+        CommentService.createComment(post.source, post.id, newComment, currentUser).then((success) => {
+          if (success) {
+            // clear the comment field but open the comment section so the user can see the created post
+            this.setState({
+              newComment: "",
+              commentSectionVisisble: true,
+            });
 
-    CommentService.createComment(post.id, newComment).then((success) => {
-      if (success) {
-        // clear the comment field but open the comment section so the user can see the created post
-        this.setState({
-          newComment: "",
-          commentSectionVisisble: true,
+            onNewComment();
+            
+          }
+        }).catch((err) => {
+          const error = err.response.data;
+          // eslint-disable-next-line no-console
+          console.log(error);
         });
-
-        onNewComment();
-      }
-    }).catch((err) => {
-      const error = err.response.data;
-      // eslint-disable-next-line no-console
-      console.log(error);
+      });
     });
   }
 
@@ -197,6 +204,7 @@ class Post extends Component {
 Post.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.string.isRequired,
+    source: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     authorId: PropTypes.string.isRequired,
     published: PropTypes.string.isRequired,
