@@ -27,7 +27,7 @@ export const createComment = (source, postId, newComment, user) => {
       comment: newComment,
       contentType: "text/markdown",
       published: new Date().toISOString(),
-      id: "cc9a7316-601f-437e-9708-18025b7e0d23",
+      id: "",
     },
   };
   // eslint-disable-next-line object-shorthand
