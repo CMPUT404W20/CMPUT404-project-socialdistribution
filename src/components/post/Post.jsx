@@ -146,17 +146,19 @@ class Post extends Component {
 
     return (
       <div>
-        <button
-          className="post-show-comment"
-          onClick={this.toggleCommentSection}
-          aria-controls="post-comments"
-          aria-expanded={commentSectionVisisble}
-          type="button"
-        >
-          {post.comments.length}
-          {" "}
-          {post.comments.length === 1 ? "comment" : "comments"}
-        </button>
+        <div className="button-block">
+          <button
+            className="post-show-comment"
+            onClick={this.toggleCommentSection}
+            aria-controls="post-comments"
+            aria-expanded={commentSectionVisisble}
+            type="button"
+          >
+            {post.comments.length}
+            {" "}
+            {post.comments.length === 1 ? "comment" : "comments"}
+          </button>
+        </div>
         <Collapse in={commentSectionVisisble}>
           {/* this div is necessary to prevent a choppy animation when opening the comments */}
           <div>

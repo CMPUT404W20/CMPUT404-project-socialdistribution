@@ -54,18 +54,20 @@
     .post-img {
         width: 100%;
     }
-    .post-show-comment {
-        all: unset;
-        float: right;
-        margin: 0 2rem 1rem 0;
-        color: $icon-color;
-        font-size: 11pt;
+    .button-block {
+        text-align: right;
+        .post-show-comment {
+            all: unset;
+            margin: 0 1.5rem 0.7rem 0;
+            color: $icon-color;
+            font-size: 11pt;
+        }
     }
     .comment-list {
-        padding: 2rem 15pt 1rem 15pt;
+        padding: 0rem 15pt 1rem 15pt;
         div:first-of-type {
             border-top: 0.4px solid $border-color;
-            padding-top: 0.5rem;
+            padding-top: 0.7rem;
         }
         p {
             margin-bottom: 1pt;

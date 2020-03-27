@@ -78,17 +78,21 @@ exports[`Post Block Components should render correctly 1`] = `
     transformLinkUri={[Function]}
   />
   <div>
-    <button
-      aria-controls="post-comments"
-      aria-expanded={false}
-      className="post-show-comment"
-      onClick={[Function]}
-      type="button"
+    <div
+      className="button-block"
     >
-      1
-       
-      comment
-    </button>
+      <button
+        aria-controls="post-comments"
+        aria-expanded={false}
+        className="post-show-comment"
+        onClick={[Function]}
+        type="button"
+      >
+        1
+         
+        comment
+      </button>
+    </div>
     <Collapse
       appear={false}
       dimension="height"
@@ -256,17 +260,21 @@ Normal Text
     transformLinkUri={[Function]}
   />
   <div>
-    <button
-      aria-controls="post-comments"
-      aria-expanded={false}
-      className="post-show-comment"
-      onClick={[Function]}
-      type="button"
+    <div
+      className="button-block"
     >
-      1
-       
-      comment
-    </button>
+      <button
+        aria-controls="post-comments"
+        aria-expanded={false}
+        className="post-show-comment"
+        onClick={[Function]}
+        type="button"
+      >
+        1
+         
+        comment
+      </button>
+    </div>
     <Collapse
       appear={false}
       dimension="height"
