@@ -91,7 +91,7 @@ class ProfileHeader extends Component {
       modalShow,
     } = this.state;
     const {
-      username, github, isSelf, host,
+      username, user, isSelf, host,
     } = this.props;
     return (
       <div className="profileHeader">
@@ -103,7 +103,7 @@ class ProfileHeader extends Component {
           </div>
           <div className="row2">
             {this.renderStatus()}
-            <EditProfileModal show={modalShow} onHide={this.renderModal} github={github} />
+            <EditProfileModal show={modalShow} onHide={this.renderModal} user={user} />
           </div>
         </div>
       </div>
@@ -117,7 +117,13 @@ ProfileHeader.propTypes = {
   isSelf: PropTypes.bool.isRequired,
   host: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
-  github: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
   handleFollow: PropTypes.func.isRequired,
   handleUnFriend: PropTypes.func.isRequired,
   handleUnFollow: PropTypes.func.isRequired,

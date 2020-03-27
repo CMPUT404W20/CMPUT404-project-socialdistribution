@@ -92,7 +92,7 @@ class ProfilePage extends Component {
         isFollowing={isFollowing}
         host={location.state.user.host}
         username={location.state.user.displayName}
-        github={user.github}
+        user={user}
         handleFollow={() => this.handleFollow(location.state.user)}
         handleUnFollow={() => this.handleUnFollow(location.state.user)}
         handleUnFriend={() => this.handleUnFriend(location.state.user)}
