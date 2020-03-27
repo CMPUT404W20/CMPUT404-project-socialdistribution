@@ -28,7 +28,7 @@ class FriendsPage extends Component {
         const newFriend = {};
         const friend = response[i];
 
-        newFriend.name = friend.displayName;
+        newFriend.displayName = friend.displayName;
         newFriend.id = friend.id;
         newFriend.host = friend.host;
         friendsList.push(newFriend);
@@ -44,7 +44,7 @@ class FriendsPage extends Component {
     });
   }
 
-  handleUnfollow(userID) {
+  handleUnfollow(item) {
     const { friendsList } = this.state;
     const filteredList = friendsList.filter((item) => item.id !== userID);
     this.setState({ friendsList: filteredList });
@@ -57,10 +57,10 @@ class FriendsPage extends Component {
         {friendsList.map((item) => (
           <FriendItem
             key={item.id}
-            username={item.name}
+            username={item.displayName}
             userID={item.id}
             host={item.host}
-            handleUnfollow={(id) => this.handleUnfollow(id)}
+            handleUnfollow={() => this.handleUnfollow(item)}
           />
         ))}
       </Row>

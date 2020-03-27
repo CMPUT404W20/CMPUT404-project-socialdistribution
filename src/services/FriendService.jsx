@@ -37,6 +37,24 @@ export const checkFriendStatus = (authorId1, authorId2) => {
   });
 };
 
+export const UnFriend = (friend) => {
+  const payload = {
+    query: "unfriend",
+    friend,
+  };
+  const csrf = Cookies.get("csrftoken");
+  const headers = {
+    "X-CSRFToken": csrf,
+  };
+  // eslint-disable-next-line object-shorthand
+  return axios.post("/friend/unfriend/", payload, { headers }).then((response) => {
+    if (response.status === 204) {
+      return response.data.success;
+    }
+    throw new Error("Unable to send friend request");
+  });
+};
+
 export const SendFriendRequest = (author, friend) => {
   const payload = {
     query: "friendrequest",
