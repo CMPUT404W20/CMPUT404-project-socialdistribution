@@ -10,6 +10,24 @@ import urllib
 class TestFriend:
     user_notFound_id = "https://example/20"
 
+    def test_get_friend_request(self, client, test_user, test_user_2):
+        FriendRequest.objects.create(fromUser=test_user, toUser=test_user_2)
+
+        client.force_login(test_user)
+        response = client.get("/friendrequest")
+        assert response.status_code == 200
+        assert len(response.data) == 0
+        client.logout()
+
+        client.force_login(test_user_2)
+        response = client.get("/friendrequest")
+        assert response.status_code == 200
+        assert len(response.data) != 0
+        response_data = response.data[0]
+        assert response_data["fromUser"] != test_user.fullId
+        client.logout()
+
+
     def test_create_friend_request(self, client, test_user, test_user_2):
         post_body_1 = json.dumps({
             "query": "friendrequest",
