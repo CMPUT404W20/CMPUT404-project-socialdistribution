@@ -2,9 +2,14 @@
 [![Build Status](https://travis-ci.com/CMPUT404W20/CMPUT404-project-socialdistribution.svg?branch=master)](https://travis-ci.com/CMPUT404W20/CMPUT404-project-socialdistribution)
 ## Overview
 
-### Admin Account:
+API documentation can be found [here](https://cmput404-socialdistribution.herokuapp.com/redoc/)
+
+### Admin Account(can be used to connect to our host):
 Username: admindemo \
 Password: ualberta01!
+
+Note: This is a superuser/server-admin account, which would have access to all the posts on our server.<br>
+To test the visibility of post, please use normal user<br>
 
 ### Technologies
 * Django
@@ -64,10 +69,9 @@ yarn add react-scripts
 ### Add secrets
 ```
 touch .env
-echo 'DATABASE_URL=sqlite:///db.sqlite3' > .env
+echo 'DATABASE_URL={YOUR POSTGRESQL HOST}' > .env
+echo 'github_token={GITHUB ACCESS TOKEN}' > .env
 ```
-Currently, we only have database information in secret file
-Information on databases will be explained later in this README
 
 ### Run the Project
 
@@ -96,9 +100,9 @@ yarn test
 ```
 For running backend tests, run
 ```
-py.test backend
+pytest backend
 ```
-**It is `py.test` not pytest** <br>
+
 After executing, it will generate a coverage report inside `htmlcov/` folder
 
 ### Install ESLint 
