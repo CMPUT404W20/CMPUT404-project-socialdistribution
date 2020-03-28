@@ -20,9 +20,35 @@ class NoticesPage extends Component {
       // render the page after loading otherwise the count will first flash as 0 then
       // show the actual count
     };
+    this.loadRequests();
   }
 
-  componentDidMount() {
+  handleAccept = (item) => {
+    const { user } = this.props;
+    friendsService.SendFriendRequest(user, item).then((success) => {
+      if (success) {
+        this.loadRequests();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
+  handleReject = (item) => {
+    const { user } = this.props;
+    friendsService.RejectFriendRequest(user, item).then((success) => {
+      if (success) {
+        this.loadRequests();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
+
+  loadRequests() {
     const noticesList = [];
     friendsService.getAuthorFriendRequests().then((response) => {
       for (let i = 0; i < response.length; i += 1) {
@@ -39,30 +65,6 @@ class NoticesPage extends Component {
       this.setState({
         noticesList, loading: false,
       });
-    }).catch((error) => {
-      // eslint-disable-next-line no-alert
-      alert(error);
-    });
-  }
-
-  handleAccept = (item) => {
-    const { user } = this.props;
-    friendsService.SendFriendRequest(user, item).then((success) => {
-      if (success) {
-        window.location.reload();
-      }
-    }).catch((error) => {
-      // eslint-disable-next-line no-alert
-      alert(error);
-    });
-  }
-
-  handleReject = (item) => {
-    const { user } = this.props;
-    friendsService.RejectFriendRequest(user, item).then((success) => {
-      if (success) {
-        window.location.reload();
-      }
     }).catch((error) => {
       // eslint-disable-next-line no-alert
       alert(error);
