@@ -45,7 +45,7 @@ class ProfilePage extends Component {
 
 
   handleUnFriend = (item) => {
-    friendsService.UnFriend(item).then((success) => {
+    friendsService.unFriend(item).then((success) => {
       if (success) {
         window.location.reload();
       }
@@ -57,7 +57,7 @@ class ProfilePage extends Component {
 
   handleUnFollow = (item) => {
     const { user } = this.props;
-    friendsService.RejectFriendRequest(item, user).then((success) => {
+    friendsService.rejectFriendRequest(item, user).then((success) => {
       if (success) {
         window.location.reload();
       }
@@ -69,7 +69,7 @@ class ProfilePage extends Component {
 
   handleFollow = (item) => {
     const { user } = this.props;
-    friendsService.SendFriendRequest(user, item).then((success) => {
+    friendsService.sendFriendRequest(user, item).then((success) => {
       if (success) {
         window.location.reload();
       }

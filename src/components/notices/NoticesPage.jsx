@@ -25,7 +25,7 @@ class NoticesPage extends Component {
 
   handleAccept = (item) => {
     const { user } = this.props;
-    friendsService.SendFriendRequest(user, item).then((success) => {
+    friendsService.sendFriendRequest(user, item).then((success) => {
       if (success) {
         this.loadRequests();
       }
@@ -37,7 +37,7 @@ class NoticesPage extends Component {
 
   handleReject = (item) => {
     const { user } = this.props;
-    friendsService.RejectFriendRequest(user, item).then((success) => {
+    friendsService.rejectFriendRequest(user, item).then((success) => {
       if (success) {
         this.loadRequests();
       }

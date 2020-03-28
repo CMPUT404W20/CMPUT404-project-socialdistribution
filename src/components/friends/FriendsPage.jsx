@@ -21,7 +21,7 @@ class FriendsPage extends Component {
   }
 
   handleUnFriend = (item) => {
-    friendsService.UnFriend(item).then((success) => {
+    friendsService.unFriend(item).then((success) => {
       if (success) {
         this.loadFriends();
       }

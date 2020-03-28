@@ -37,7 +37,7 @@ export const checkFriendStatus = (authorId1, authorId2) => {
   });
 };
 
-export const UnFriend = (friend) => {
+export const unFriend = (friend) => {
   const payload = {
     query: "unfriend",
     friend,
@@ -55,7 +55,7 @@ export const UnFriend = (friend) => {
   });
 };
 
-export const SendFriendRequest = (author, friend) => {
+export const sendFriendRequest = (author, friend) => {
   const payload = {
     query: "friendrequest",
     author,
@@ -74,7 +74,7 @@ export const SendFriendRequest = (author, friend) => {
   });
 };
 
-export const RejectFriendRequest = (author, friend) => {
+export const rejectFriendRequest = (author, friend) => {
   const payload = {
     query: "friendrequest",
     author,
