@@ -91,7 +91,7 @@ class FriendViewSet(viewsets.ViewSet):
         else:
             return Response({"query": "createFriend", "success": False, "message": "wrong request"}, status=status.HTTP_400_BAD_REQUEST)
 
-    def unfriend(self, request, *args, **kwargs):
+    def unfriend(self, request):
         # friend/unfriend
         request_data = dict(request.data)
         if request_data.get("query") == "unfriend":
@@ -99,11 +99,9 @@ class FriendViewSet(viewsets.ViewSet):
             friend_id = protocol_removed(request_data["friend"].get("id"))
             if friend_id:
                 # if they are friends then delete both instances of the relationship
-                Friend.objects.get(
-                    fromUser__fullId=user_id, toUser__fullId=friend_id).delete()
-                Friend.objects.get(
-                    toUser__fullId=user_id, fromUser__fullId=friend_id).delete()
-                return Response(data={"query": "unfriend", "success": True, "message": "Successful unfriend"}, status=status.HTTP_204_NO_CONTENT)
+                Friend.objects.get(fromUser__fullId=user_id, toUser__fullId=friend_id).delete()
+                Friend.objects.get(toUser__fullId=user_id, fromUser__fullId=friend_id).delete()
+                return Response({"query": "unfriend", "success": True, "message": "Successful unfriend"}, status=status.HTTP_204_NO_CONTENT)
             else:
-                return Response(data={"query": "unfriend", "success": False, "message": "Wrong Post Body"}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        return Response(data={"query": "unfriend", "success": False, "message": "wrong request"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"query": "unfriend", "success": False, "message": "Wrong Post Body"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response({"query": "unfriend", "success": False, "message": "wrong request"}, status=status.HTTP_400_BAD_REQUEST)
