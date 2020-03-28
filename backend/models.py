@@ -24,6 +24,10 @@ class User(AbstractUser):
     fullId = models.CharField(max_length=400, default='')
 
     def get_full_user_id(self):
+        
+        if self.host.url != settings.APP_HOST:
+            return "https://{}".format(self.fullId)
+
         user_host = self.host.url
         if user_host[-1] == "/":
             user_host = user_host[:-1]
