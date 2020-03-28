@@ -256,7 +256,7 @@ class TestFriend:
 
         response = client.post("/friend/unfriend/", data=post_body,
                                content_type="application/json", charset="UTF-8")
-        assert response.status_code == 204
+        assert response.status_code == 200
         assert response.data['query'] == "unfriend"
         assert response.data["message"] == "Successful unfriend"
         # check if they are deleted in table
