@@ -53,7 +53,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
             response = post_to_host(endpoint, host, request.data)
 
-            if response.status_code == 200:
+            if response.status_code == 201:
                 return Response({"query": "addComment", "success": True, "message": "Comment Added"}, status=status.HTTP_201_CREATED)
             else:
                 return Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
