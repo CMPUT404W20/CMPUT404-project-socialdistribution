@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  BrowserRouter, Route, Switch,
+  BrowserRouter, Route,
 } from "react-router-dom";
 import PropTypes from "prop-types";
 import Homepage from "./Homepage";
