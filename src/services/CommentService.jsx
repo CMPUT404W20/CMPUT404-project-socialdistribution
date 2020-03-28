@@ -31,7 +31,7 @@ export const createComment = (source, postId, newComment, user) => {
     },
   };
   // eslint-disable-next-line object-shorthand
-  return axios.post(`posts/${postId}/comments/`, payload, { headers }).then((response) => {
+  return axios.post(`/posts/${postId}/comments/`, payload, { headers }).then((response) => {
     if (response.status === 201) {
       return response.data.success;
     }
