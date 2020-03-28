@@ -7,9 +7,7 @@ import { userContext } from "../contexts/UserContext";
 const PrivateRoute = ({
   component: Component, user: User, isAuthed: Authed, ...rest
 }) => {
-  // Add your own authentication on the below line.
   const authed = Authed;
-
   return (
     <Route
       {...rest}

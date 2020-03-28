@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  BrowserRouter, Route,
+  BrowserRouter, Route, Switch,
 } from "react-router-dom";
 import PropTypes from "prop-types";
 import Homepage from "./Homepage";
@@ -23,21 +23,22 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    auth.getCurrentUser()
-      .then(((response) => {
-        if (response.status === 200) {
-          this.setState({ user: response.data, isAuthed: true, isLoading: false });
-        } else {
-          this.setState({ isLoading: false });
-        }
-      }));
+    auth.getCurrentUser().then((response) => {
+      if (response.status === 200) {
+        this.setState({ user: response.data, isAuthed: true, isLoading: false });
+      } else {
+        this.setState({ isLoading: false });
+      }
+    }).catch(() => {
+      this.setState({ isLoading: false });
+    });
   }
 
   render() {
     const { isLoading, isAuthed, user } = this.state;
     return (
       (!isLoading) && (
-      <BrowserRouter>
+      <BrowserRouter forceRefresh>
         <Route exact path="/login" component={Login} />
         <PrivateRoute exact path="/" component={Homepage} isAuthed={isAuthed} user={user} />
         <PrivateRoute exact path="/friends" component={FriendsPage} isAuthed={isAuthed} user={user} />

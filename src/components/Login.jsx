@@ -50,9 +50,7 @@ class Login extends Component {
     } else {
       auth.loginUser(username, password).then((response) => {
         if (response.status === 200) {
-          auth.getCurrentUser().then(() => {
-            history.push("/");
-          }).then();
+          history.push("/");
         }
       }).catch(() => {
         this.setState({
