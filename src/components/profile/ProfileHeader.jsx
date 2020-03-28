@@ -57,41 +57,41 @@ class ProfileHeader extends Component {
     </button>
   );
 
-  handleFollow = () => {
-    this.setState({ isFollowing: true });
+  renderDropDown = (isFriends) => {
+    const { handleUnFriend, handleUnFollow } = this.props;
+    return (
+      <DropdownButton
+        id="friend-status"
+        title={isFriends ? "FRIENDS" : "FOLLOWING"}
+        drop="down"
+        alignRight
+      >
+        {isFriends
+          ? (<Dropdown.Item onClick={() => handleUnFriend()}>Unfriend</Dropdown.Item>)
+          : (<Dropdown.Item onClick={() => handleUnFollow()}>Unfollow</Dropdown.Item>)}
+      </DropdownButton>
+    );
+  }
+
+  renderFollowButton = () => {
+    const { handleFollow } = this.props;
+    return (
+      <button
+        type="button"
+        className="follow-button"
+        onClick={handleFollow}
+      >
+        Follow
+      </button>
+    );
   };
-
-  renderDropDown = (isFriends) => (
-    <DropdownButton
-      id="friend-status"
-      title={isFriends === true ? "FRIENDS" : "FOLLOWING"}
-      drop="down"
-      alignRight
-    >
-      <Dropdown.Item onClick={this.handleUnFollow}>{isFriends === true ? "Unfriend" : "Unfollow"}</Dropdown.Item>
-    </DropdownButton>
-  );
-
-  handleUnFollow = () => {
-    this.setState({ isFriends: false, isFollowing: false });
-  };
-
-  renderFollowButton = () => (
-    <button
-      type="button"
-      className="follow-button"
-      onClick={this.handleFollow}
-    >
-      Follow
-    </button>
-  );
 
   render() {
     const {
       modalShow,
     } = this.state;
     const {
-      username, github, isSelf, remote,
+      username, user, isSelf, host,
     } = this.props;
     return (
       <div className="profileHeader">
@@ -99,11 +99,11 @@ class ProfileHeader extends Component {
         <div className="user-section">
           <div className="row1">
             <p>{username}</p>
-            {isSelf ? null : (<p>{remote === true ? "Remote" : "Local"}</p>)}
+            {isSelf ? null : (<p>{host}</p>)}
           </div>
           <div className="row2">
             {this.renderStatus()}
-            <EditProfileModal show={modalShow} onHide={this.renderModal} github={github} />
+            <EditProfileModal show={modalShow} onHide={this.renderModal} user={user} />
           </div>
         </div>
       </div>
@@ -115,9 +115,18 @@ ProfileHeader.propTypes = {
   isFriends: PropTypes.bool.isRequired,
   isFollowing: PropTypes.bool.isRequired,
   isSelf: PropTypes.bool.isRequired,
-  remote: PropTypes.bool.isRequired,
+  host: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
-  github: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
+  handleFollow: PropTypes.func.isRequired,
+  handleUnFriend: PropTypes.func.isRequired,
+  handleUnFollow: PropTypes.func.isRequired,
 };
 
 export default ProfileHeader;

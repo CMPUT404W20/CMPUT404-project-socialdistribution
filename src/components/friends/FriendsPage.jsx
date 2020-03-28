@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "../../styles/friends-notices-search/Page.scss";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -14,37 +15,33 @@ class FriendsPage extends Component {
     this.props = props;
     this.state = {
       friendsList: [],
+      loading: true,
     };
     this.loadFriends();
   }
 
-  loadFriends() {
-    const friendsList = [];
-    const userID = localStorage.getItem("userID");
-    friendsService.getAuthorFriends(userID).then((response) => {
-      for (let i = 0; i < response.length; i += 1) {
-        const newFriend = {};
-        const friend = response[i];
-
-        newFriend.name = friend.displayName;
-        newFriend.id = friend.id;
-
-        friendsList.push(newFriend);
+  handleUnFriend = (item) => {
+    friendsService.unFriend(item).then((success) => {
+      if (success) {
+        this.loadFriends();
       }
-
-      this.setState({
-        friendsList,
-      });
     }).catch((error) => {
       // eslint-disable-next-line no-alert
       alert(error);
     });
   }
 
-  handleUnfollow(userID) {
-    const { friendsList } = this.state;
-    const filteredList = friendsList.filter((item) => item.id !== userID);
-    this.setState({ friendsList: filteredList });
+  loadFriends() {
+    const { user } = this.props;
+    friendsService.getAuthorFriends(user.id).then((response) => {
+      this.setState({
+        friendsList: response,
+        loading: false,
+      });
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   renderFriendItems = () => {
@@ -54,9 +51,10 @@ class FriendsPage extends Component {
         {friendsList.map((item) => (
           <FriendItem
             key={item.id}
-            username={item.name}
+            username={item.displayName}
             userID={item.id}
-            handleUnfollow={(id) => this.handleUnfollow(id)}
+            host={item.host}
+            handleUnFriend={() => this.handleUnFriend(item)}
           />
         ))}
       </Row>
@@ -64,12 +62,14 @@ class FriendsPage extends Component {
   }
 
   render() {
-    const { friendsList } = this.state;
+    const { friendsList, loading } = this.state;
+    const { user } = this.props;
     return (
+      !loading && (
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
-            <NavigationBar />
+            <NavigationBar user={user} />
           </Col>
         </Row>
         <Row>
@@ -90,7 +90,19 @@ class FriendsPage extends Component {
           </Col>
         </Row>
       </Container>
+      )
     );
   }
 }
+
+FriendsPage.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
+};
+
 export default FriendsPage;

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import "../styles/Login.scss";
+import PropTypes from "prop-types";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { Redirect } from "react-router-dom";
 import * as auth from "../services/AuthenticationService";
 import cover from "../images/cover.svg";
 
@@ -16,7 +16,6 @@ class Login extends Component {
       username: "",
       password: "",
       passwordReentry: "",
-      isAuthed: false,
     };
   }
 
@@ -28,7 +27,7 @@ class Login extends Component {
 
   handleFormSubmit = (event) => {
     event.preventDefault();
-
+    const { history } = this.props;
     if (!this.validateForm()) { return; }
 
     const { signup, username, password } = this.state;
@@ -51,10 +50,7 @@ class Login extends Component {
     } else {
       auth.loginUser(username, password).then((response) => {
         if (response.status === 200) {
-          auth.getCurrentUser().then((userData) => {
-            localStorage.setItem("userID", userData.data.id);
-            localStorage.setItem("username", userData.data.displayName);
-          }).then(() => { this.setState({ isAuthed: true }); });
+          history.push("/");
         }
       }).catch(() => {
         this.setState({
@@ -177,10 +173,6 @@ class Login extends Component {
   }
 
   render() {
-    const { isAuthed } = this.state;
-    if (isAuthed) {
-      return <Redirect exact to="/home" />;
-    }
     return (
       <Container fluid className="login">
         <Row>
@@ -201,5 +193,9 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
+};
 
 export default Login;

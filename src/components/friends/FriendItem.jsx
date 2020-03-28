@@ -14,14 +14,16 @@ class FriendItem extends Component {
 
 
   render() {
-    const { username, userID, handleUnfollow } = this.props;
+    const {
+      username, userID, host, handleUnFriend,
+    } = this.props;
     return (
       <Col md={6}>
         <div className="friend-item-wrapper">
           <Link
             to={{
               pathname: `/profile/${username}`,
-              state: { username, userID },
+              state: { user: { displayName: username, id: userID, host } },
             }}
             className="username-link"
           >
@@ -33,7 +35,7 @@ class FriendItem extends Component {
             drop="down"
             alignRight
           >
-            <Dropdown.Item onClick={() => handleUnfollow(userID)}>Unfriend</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleUnFriend()}>Unfriend</Dropdown.Item>
           </DropdownButton>
         </div>
       </Col>
@@ -43,8 +45,9 @@ class FriendItem extends Component {
 
 FriendItem.propTypes = {
   username: PropTypes.string.isRequired,
+  host: PropTypes.string.isRequired,
   userID: PropTypes.string.isRequired,
-  handleUnfollow: PropTypes.func.isRequired,
+  handleUnFriend: PropTypes.func.isRequired,
 };
 
 export default FriendItem;

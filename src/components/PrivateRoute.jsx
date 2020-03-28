@@ -1,40 +1,33 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import * as auth from "../services/AuthenticationService";
+/* eslint-disable react/jsx-props-no-spreading */
+import React from "react";
+import PropTypes from "prop-types";
+import { Redirect, Route } from "react-router-dom";
+import { userContext } from "../contexts/UserContext";
 
-class PrivateRoute extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isAuthed: false,
-      isLoading: true,
-    };
-  }
+const PrivateRoute = ({
+  component: Component, user: User, isAuthed: Authed, ...rest
+}) => {
+  const authed = Authed;
+  return (
+    <Route
+      {...rest}
+      render={(props) => (authed ? (
+        <userContext.Provider value={User}>
+          <userContext.Consumer>
+            {(user) => (<Component {...props} user={user} />)}
+          </userContext.Consumer>
+        </userContext.Provider>
+      ) : (
+        <Redirect to={{ pathname: "/login" }} />
+      ))}
+    />
+  );
+};
 
-  componentDidMount() {
-    auth.getCurrentUser()
-      .then(((response) => {
-        if (response.status === 200) {
-          localStorage.setItem("userID", response.data.id);
-          localStorage.setItem("username", response.data.displayName);
-          this.setState({ isAuthed: true, isLoading: false });
-        }
-      }));
-    this.setState({ isLoading: false });
-  }
-
-  render() {
-    const { isAuthed, isLoading } = this.state;
-    return (
-      !isLoading && (
-        (isAuthed ? (
-          <Redirect to={{ pathname: "/home" }} />
-        ) : (
-          <Redirect to={{ pathname: "/" }} />
-        ))
-      )
-    );
-  }
-}
+PrivateRoute.propTypes = {
+  component: PropTypes.elementType.isRequired,
+  user: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
+  isAuthed: PropTypes.bool.isRequired,
+};
 
 export default PrivateRoute;

@@ -4,8 +4,7 @@ import "../../styles/profile/EditProfileModal.scss";
 import Modal from "react-bootstrap/Modal";
 
 function EditProfileModal(props) {
-  const { onHide, show, github } = props;
-  const username = localStorage.getItem("username");
+  const { onHide, show, user } = props;
   return (
     <Modal onHide={onHide} show={show} className="edit-profile-modal">
       <Modal.Header closeButton>
@@ -15,14 +14,14 @@ function EditProfileModal(props) {
         <input
           type="text"
           name="username"
-          value={username}
+          value={user.displayName}
           placeholder="Display Name"
         />
 
         <input
           type="text"
           name="github"
-          value={github}
+          value={user.github}
           placeholder="Github URL"
         />
 
@@ -49,7 +48,13 @@ function EditProfileModal(props) {
 EditProfileModal.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
-  github: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
 };
 
 export default EditProfileModal;

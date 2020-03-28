@@ -21,7 +21,9 @@ exports[`Search Item Component should render correctly 1`] = `
   >
     <div
       className="type-wrapper"
-    />
+    >
+      Remote
+    </div>
   </Col>
   <Col
     className="rightColumn"
@@ -37,8 +39,11 @@ exports[`Search Item Component should render correctly 1`] = `
           Object {
             "pathname": "/profile/",
             "state": Object {
-              "userID": "",
-              "username": "",
+              "user": Object {
+                "displayName": "",
+                "host": "",
+                "id": "",
+              },
             },
           }
         }

@@ -13,24 +13,37 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { NavLink, withRouter } from "react-router-dom";
 import logo from "../images/logo.svg";
 import * as auth from "../services/AuthenticationService";
+import * as friendsService from "../services/FriendService";
 
 class NavigationBar extends Component {
   constructor(props) {
     super(props);
+    const { user } = this.props;
     this.state = {
-      username: localStorage.getItem("username") || "Username",
-      userID: localStorage.getItem("userID"),
-      numNotifications: 2,
+      username: user.displayName,
+      numNotifications: 0,
       keyword: "",
+      loading: true,
     };
+  }
+
+  componentDidMount() {
+    friendsService.getAuthorFriendRequests().then((response) => {
+      this.setState({
+        numNotifications: response.length,
+        loading: false,
+      });
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   handleLogOut = () => {
     const { history } = this.props;
     auth.logoutUser().then((response) => {
       if (response.status === 200) {
-        localStorage.clear();
-        history.push("/");
+        history.push("/login");
       }
     });
   }
@@ -52,9 +65,11 @@ class NavigationBar extends Component {
 
   render() {
     const {
-      username, userID, numNotifications, keyword,
+      username, numNotifications, keyword, loading,
     } = this.state;
+    const { user } = this.props;
     return (
+      !loading && (
       <Navbar collapseOnSelect expand="sm" fixed="top" className="navigationBar">
         <Navbar.Brand className="logo">
           <img src={logo} width="85%" alt="app logo" />
@@ -75,7 +90,7 @@ class NavigationBar extends Component {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto" />
           <Nav>
-            <Nav.Link exact as={NavLink} to="/home">
+            <Nav.Link exact as={NavLink} to="/">
               <HomeOutlinedIcon />
             </Nav.Link>
             <Nav.Link exact as={NavLink} to="/friends">
@@ -84,9 +99,12 @@ class NavigationBar extends Component {
             <Nav.Link exact as={NavLink} to="/notifications">
               <div className="notification-icon-wrapper">
                 <NotificationsNoneOutlinedIcon />
-                <div className="notification-badge-wrapper">
-                  <span className="notification-badge">{numNotifications}</span>
-                </div>
+                {numNotifications === 0 ? null : (
+                  <div className="notification-badge-wrapper">
+                    <span className="notification-badge">{numNotifications}</span>
+                  </div>
+                )}
+
               </div>
             </Nav.Link>
           </Nav>
@@ -98,7 +116,7 @@ class NavigationBar extends Component {
                   exact
                   to={{
                     pathname: `/profile/${username}`,
-                    state: { userID, username },
+                    state: { user },
                   }}
                 >
                   Profile
@@ -112,12 +130,20 @@ class NavigationBar extends Component {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
+      )
     );
   }
 }
 
 NavigationBar.propTypes = {
   history: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
 };
 
 export default withRouter(NavigationBar);

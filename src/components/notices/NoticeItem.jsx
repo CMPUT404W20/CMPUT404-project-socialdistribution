@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { userContext } from "../../contexts/UserContext";
 
 class NoticeItem extends Component {
   constructor(props) {
@@ -11,10 +12,9 @@ class NoticeItem extends Component {
     this.props = props;
   }
 
-
   render() {
     const {
-      username, userID, type, handleAccept, handleDecline,
+      username, userID, host, handleAccept, handleDecline,
     } = this.props;
     return (
       <Row className="wrapper">
@@ -22,7 +22,7 @@ class NoticeItem extends Component {
           <Link
             to={{
               pathname: `/profile/${username}`,
-              state: { username, userID },
+              state: { user: { displayName: username, id: userID, host } },
             }}
             className="username-link"
           >
@@ -30,7 +30,9 @@ class NoticeItem extends Component {
           </Link>
         </Col>
         <Col md={12} lg={3} className="middleColumn">
-          <div className="type-wrapper">Local</div>
+          <userContext.Consumer>
+            {(user) => (<div className="type-wrapper">{ host === user.host ? "Local" : "Remote"}</div>)}
+          </userContext.Consumer>
         </Col>
         <Col md={12} lg={5} className="rightColumn">
           <div className="button-wrapper">
@@ -46,7 +48,7 @@ class NoticeItem extends Component {
 NoticeItem.propTypes = {
   username: PropTypes.string.isRequired,
   userID: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
+  host: PropTypes.string.isRequired,
   handleAccept: PropTypes.func.isRequired,
   handleDecline: PropTypes.func.isRequired,
 };
