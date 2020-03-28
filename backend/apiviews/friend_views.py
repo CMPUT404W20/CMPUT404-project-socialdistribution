@@ -101,7 +101,7 @@ class FriendViewSet(viewsets.ViewSet):
                 # if they are friends then delete both instances of the relationship
                 Friend.objects.get(fromUser__fullId=user_id, toUser__fullId=friend_id).delete()
                 Friend.objects.get(toUser__fullId=user_id, fromUser__fullId=friend_id).delete()
-                return Response({"query": "unfriend", "success": True, "message": "Successful unfriend"}, status=status.HTTP_204_NO_CONTENT)
+                return Response({"query": "unfriend", "success": True, "message": "Successful unfriend"}, status=status.HTTP_200_OK)
             else:
                 return Response({"query": "unfriend", "success": False, "message": "Wrong Post Body"}, status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response({"query": "unfriend", "success": False, "message": "wrong request"}, status=status.HTTP_400_BAD_REQUEST)
