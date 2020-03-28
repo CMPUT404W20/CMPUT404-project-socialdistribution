@@ -32,21 +32,10 @@ class FriendsPage extends Component {
   }
 
   loadFriends() {
-    const friendsList = [];
     const { user } = this.props;
     friendsService.getAuthorFriends(user.id).then((response) => {
-      for (let i = 0; i < response.length; i += 1) {
-        const newFriend = {};
-        const friend = response[i];
-
-        newFriend.displayName = friend.displayName;
-        newFriend.id = friend.id;
-        newFriend.host = friend.host;
-        friendsList.push(newFriend);
-      }
-
       this.setState({
-        friendsList,
+        friendsList: response,
         loading: false,
       });
     }).catch((error) => {

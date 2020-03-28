@@ -111,7 +111,7 @@ class FriendRequestViewSet(viewsets.ViewSet):
         request_data = dict(request.data)
         user_id = protocol_removed(request_data["author"].get("id"))
         friend_id = protocol_removed(request_data["friend"].get("id"))
-        print(user_id, friend_id)
+        
         does_exist = FriendRequest.objects.filter(
             toUser__fullId=user_id, fromUser__fullId=friend_id).exists()
 
