@@ -3,9 +3,11 @@ import "../../styles/post/EditablePost.scss";
 import PropTypes from "prop-types";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import VisibilityRoundedIcon from "@material-ui/icons/VisibilityRounded";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import TextareaAutosize from "react-textarea-autosize";
 import UploadImageModal from "./UploadImageModal";
 import PostPreviewModal from "./PostPreviewModal";
+import PrivacySelectorModal from "./PrivacySelectorModal";
 
 class EditablePost extends Component {
   constructor(props) {
@@ -13,6 +15,7 @@ class EditablePost extends Component {
     this.state = {
       uploadModalVisibility: false,
       previewModalVisibility: false,
+      privacyModalVisibility: false,
       originalPost: props.originalPost,
       postTitle: props.defaultPostTitle,
       postContent: props.defaultPostContent,
@@ -81,6 +84,12 @@ class EditablePost extends Component {
     }));
   }
 
+  togglePrivacyModalVisibility = () => {
+    this.setState((prevState) => ({
+      privacyModalVisibility: !prevState.privacyModalVisibility,
+    }));
+  }
+
   changePostVisibility = (event) => {
     this.setState({
       postVisibility: event.target.value,
@@ -92,6 +101,7 @@ class EditablePost extends Component {
     const {
       uploadModalVisibility,
       previewModalVisibility,
+      privacyModalVisibility,
       postTitle,
       postContent,
       postImage,
@@ -111,14 +121,14 @@ class EditablePost extends Component {
         <div className="editable-post-content">
           <div className="editable-post-header">
             <b>{componentTitle}</b>
-            <select className="privacy-select" defaultValue="PUBLIC" onChange={this.changePostVisibility}>
+            {/* <select className="privacy-select" defaultValue="PUBLIC" onChange={this.changePostVisibility}>
               <option value="PUBLIC">Anyone</option>
               <option value="PRIVATE">Specific author</option>
               <option value="FRIENDS">Friends</option>
               <option value="FOAF">Mutual friends</option>
               <option value="SERVERONLY">Server Only</option>
               <option value="UNLISTED">Private</option>
-            </select>
+            </select> */}
           </div>
           <UploadImageModal
             show={uploadModalVisibility}
@@ -131,6 +141,10 @@ class EditablePost extends Component {
             postTitle={postTitle}
             postContent={postContent}
             imageObjectUrl={postImage}
+          />
+          <PrivacySelectorModal
+            show={privacyModalVisibility}
+            onHide={this.togglePrivacyModalVisibility}
           />
           <form className="editable-post-input-wrapper" action="submit">
             <TextareaAutosize
@@ -160,6 +174,11 @@ class EditablePost extends Component {
                   />
                 ) : null
               }
+
+              <PeopleAltIcon
+                className="icon"
+                onClick={this.togglePrivacyModalVisibility}
+              />
 
               <ImageOutlinedIcon
                 className="icon"

@@ -1,0 +1,5 @@
+@import "../common.scss";
+
+.privacy-selector-modal {
+  @extend %modal;
+}
