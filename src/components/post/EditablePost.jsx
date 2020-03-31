@@ -64,7 +64,7 @@ class EditablePost extends Component {
 
       postService.createUserPosts(imageData).then((response) => {
         if (response.success) {
-          const imageUrl = `${window.location.href}post/${response.uuid}`;
+          const imageUrl = `${window.location.href}posts/${response.uuid}`;
           const markdownImage = `![${image.name}](${imageUrl})`;
 
           this.setState((prevState) => ({
