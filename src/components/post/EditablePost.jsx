@@ -3,7 +3,7 @@ import "../../styles/post/EditablePost.scss";
 import PropTypes from "prop-types";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import VisibilityRoundedIcon from "@material-ui/icons/VisibilityRounded";
-import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import PublicIcon from "@material-ui/icons/Public";
 import TextareaAutosize from "react-textarea-autosize";
 import UploadImageModal from "./UploadImageModal";
 import PostPreviewModal from "./PostPreviewModal";
@@ -178,7 +178,7 @@ class EditablePost extends Component {
                 ) : null
               }
 
-              <PeopleAltIcon
+              <PublicIcon
                 className="icon"
                 onClick={this.togglePrivacyModalVisibility}
               />

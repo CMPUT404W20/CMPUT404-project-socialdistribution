@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "../../styles/post/PrivacySelectorModal.scss";
 import Modal from "react-bootstrap/Modal";
@@ -13,85 +13,97 @@ import PRIVACY from "../../constants";
 
 const PRIVACY_MESSAGES = {
   PUBLIC: "This post will be visible to everyone",
-  PRIVATE: "This post will be visible to the selected users",
+  PRIVATE: "This post will only be visible to selected users",
   FRIENDS: "This post will be visible to your friends",
   FOAF: "This post will be visible to your friends, and their friends",
   SERVERONLY: "This post will be visible to users on this server",
   UNLISTED: "This post will only be available to users with the link",
 };
 
-function PrivacySelectorModal(props) {
-  const {
-    onHide,
-    show,
-    selectedPrivacy,
-    onVisibilityChange,
-  } = props;
+class PrivacySelectorModal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
- 
+  handleSubmit = () => {
+    const { onHide } = this.props;
 
-  return (
-    <Modal onHide={onHide} show={true} className="privacy-selector-modal">
-      <Modal.Body>
-        <div className="privacy-button-wrapper">
-          <button
-            type="button"
-            className={`privacy-button ${selectedPrivacy === PRIVACY.public ? "selected" : ""}`}
-            onClick={() => onVisibilityChange(PRIVACY.public)}
-          >
-            <PublicIcon />
-          </button>
-          <button
-            type="button"
-            className={`privacy-button ${selectedPrivacy === PRIVACY.server ? "selected" : ""}`}
-            onClick={() => onVisibilityChange(PRIVACY.server)}
-          >
-            <VpnLockIcon />
-          </button>
-          <button
-            type="button"
-            className={`privacy-button ${selectedPrivacy === PRIVACY.friends ? "selected" : ""}`}
-            onClick={() => onVisibilityChange(PRIVACY.friends)}
-          >
-            <PeopleAltIcon />
-          </button>
-          <button
-            type="button"
-            className={`privacy-button ${selectedPrivacy === PRIVACY.mutualFriends ? "selected" : ""}`}
-            onClick={() => onVisibilityChange(PRIVACY.mutualFriends)}
-          >
-            <GroupAddIcon />
-          </button>
-          <button
-            type="button"
-            className={`privacy-button ${selectedPrivacy === PRIVACY.private ? "selected" : ""}`}
-            onClick={() => onVisibilityChange(PRIVACY.private)}
-          >
-            <LockIcon />
-          </button>
-          <button
-            type="button"
-            className={`privacy-button ${selectedPrivacy === PRIVACY.unlisted ? "selected" : ""}`}
-            onClick={() => onVisibilityChange(PRIVACY.unlisted)}
-          >
-            <VisibilityOffIcon />
-          </button>
-        </div>
+    onHide();
+  }
 
-        <div className="privacy-message">
-          { PRIVACY_MESSAGES[selectedPrivacy] }
-        </div>
-      </Modal.Body>
-      <Modal.Footer className="privacy-select-button-wrapper">
-        <button
-          type="button"
-          className="privacy-select-button"
-        >
-          Update Privacy
-        </button>
-      </Modal.Footer>
-    </Modal>
-  );
+  render() {
+    const {
+      onHide,
+      show,
+      selectedPrivacy,
+      onVisibilityChange,
+    } = this.props;
+
+    return (
+      <Modal onHide={onHide} show={show} className="privacy-selector-modal">
+        <Modal.Body>
+          <div className="privacy-button-wrapper">
+            <button
+              type="button"
+              className={`privacy-button ${selectedPrivacy === PRIVACY.public ? "selected" : ""}`}
+              onClick={() => onVisibilityChange(PRIVACY.public)}
+            >
+              <PublicIcon />
+            </button>
+            <button
+              type="button"
+              className={`privacy-button ${selectedPrivacy === PRIVACY.server ? "selected" : ""}`}
+              onClick={() => onVisibilityChange(PRIVACY.server)}
+            >
+              <VpnLockIcon />
+            </button>
+            <button
+              type="button"
+              className={`privacy-button ${selectedPrivacy === PRIVACY.friends ? "selected" : ""}`}
+              onClick={() => onVisibilityChange(PRIVACY.friends)}
+            >
+              <PeopleAltIcon />
+            </button>
+            <button
+              type="button"
+              className={`privacy-button ${selectedPrivacy === PRIVACY.mutualFriends ? "selected" : ""}`}
+              onClick={() => onVisibilityChange(PRIVACY.mutualFriends)}
+            >
+              <GroupAddIcon />
+            </button>
+            <button
+              type="button"
+              className={`privacy-button ${selectedPrivacy === PRIVACY.private ? "selected" : ""}`}
+              onClick={() => onVisibilityChange(PRIVACY.private)}
+            >
+              <LockIcon />
+            </button>
+            <button
+              type="button"
+              className={`privacy-button ${selectedPrivacy === PRIVACY.unlisted ? "selected" : ""}`}
+              onClick={() => onVisibilityChange(PRIVACY.unlisted)}
+            >
+              <VisibilityOffIcon />
+            </button>
+          </div>
+  
+          <div className="privacy-message">
+            { PRIVACY_MESSAGES[selectedPrivacy] }
+          </div>
+        </Modal.Body>
+        <Modal.Footer className="privacy-select-button-wrapper">
+          <button
+            type="button"
+            className="privacy-select-button"
+            onClick={this.handleSubmit}
+          >
+            Update Privacy
+          </button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
 }
 
 PrivacySelectorModal.propTypes = {
