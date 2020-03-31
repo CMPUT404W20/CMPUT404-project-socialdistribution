@@ -9,7 +9,6 @@ import LockIcon from "@material-ui/icons/Lock";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import githubIcon from "../../images/github.svg";
 import PRIVACY from "../../constants";
 
 
@@ -22,7 +21,7 @@ function PrivacySelectorModal(props) {
   } = props;
 
   return (
-    <Modal size="lg" onHide={onHide} show={true} className="privacy-selector-modal">
+    <Modal size="lg" onHide={onHide} show={show} className="privacy-selector-modal">
       <Modal.Body>
         <div className="privacy-button-wrapper">
           <button

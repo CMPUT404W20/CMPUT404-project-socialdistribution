@@ -4,7 +4,7 @@
     @extend %modal;
     
     .privacy-button-wrapper {
-        margin-top: 50px;
+        margin-top: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -25,6 +25,7 @@
                 background-color: #438bff49;
                 color: $secondary-color;
             }
+
             svg {
                 margin-top: 5px;
                 font-size: 35px;

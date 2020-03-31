@@ -20,7 +20,7 @@ class EditablePost extends Component {
       postTitle: props.defaultPostTitle,
       postContent: props.defaultPostContent,
       postImage: props.defaultPostImage,
-      postVisibility: "PUBLIC",
+      postVisibility: props.defaultPostVisibility,
     };
   }
 
@@ -228,6 +228,7 @@ EditablePost.propTypes = {
   defaultPostTitle: PropTypes.string,
   defaultPostContent: PropTypes.string,
   defaultPostImage: PropTypes.string,
+  defaultPostVisibility: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
   onDiscard: PropTypes.func,
 };
@@ -238,6 +239,7 @@ EditablePost.defaultProps = {
   defaultPostTitle: "",
   defaultPostContent: "",
   defaultPostImage: "",
+  defaultPostVisibility: "",
   onDiscard: () => {},
 };
 

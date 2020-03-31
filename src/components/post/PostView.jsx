@@ -44,6 +44,8 @@ class PostView extends Component {
         newPost.imageSrc = null;
         newPost.comments = post.comments || [];
         newPost.isGithubPost = post.isGithubPost || false;
+        newPost.visibility = post.visibility || "PUBLIC";
+        newPost.visibleTo = post.visibleTo || [];
 
         posts.push(newPost);
       }
@@ -129,6 +131,7 @@ class PostView extends Component {
                 defaultPostTitle={post.title}
                 defaultPostContent={post.content}
                 defaultPostImage={post.imageSrc}
+                defaultPostVisibility={post.visibility}
                 onSubmit={this.handlePostUpdate}
                 // set the current post being edited to null -> close the edit dialog
                 onDiscard={() => this.handleEditToggle(null)}
