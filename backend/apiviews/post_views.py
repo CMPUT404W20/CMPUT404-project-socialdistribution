@@ -55,7 +55,7 @@ class PostViewSet(viewsets.ModelViewSet):
         # Check if the post is image 
         if instance.is_image():
             image = instance.content
-            return HttpResponse(base64.b64decode(image), content_type="image/png")
+            return HttpResponse(base64.b64decode(image), content_type=instance.content_type)
 
         queryset = Post.objects.none()
         queryset |= Post.objects.filter(pk=instance.pk).order_by("pk")
