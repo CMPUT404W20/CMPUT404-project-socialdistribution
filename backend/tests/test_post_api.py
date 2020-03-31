@@ -68,11 +68,11 @@ class TestPostAPI:
             "visibility": PUBLIC,
             "content_type": "image/png;base64",
         })
-        
+
         response = client.post('/author/posts', data=image_body_1,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 201
-        assert response.data["uuid"] == Post.objects.last().postId
+        assert response.data["uuid"]
 
     def test_delete_post(self, client, test_user, test_host):
         # Create a post used to test the delete
