@@ -42,7 +42,6 @@ GithubPost.propTypes = {
     published: PropTypes.string.isRequired,
     title: PropTypes.string,
     content: PropTypes.string,
-    imageSrc: PropTypes.string,
     comments: PropTypes.array,
     isGithubPost: PropTypes.bool,
   }).isRequired,

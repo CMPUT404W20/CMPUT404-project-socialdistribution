@@ -8,7 +8,6 @@ const post = {
   username: "username",
   authorId: "authorId",
   userId: "userId",
-  imageSrc: demoImage,
   published: (new Date()).toISOString(),
   content: "content",
   comments: [{

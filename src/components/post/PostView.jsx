@@ -34,18 +34,19 @@ class PostView extends Component {
         const newPost = {};
         const post = response.posts[i];
 
-        newPost.username = post.author.displayName;
-        newPost.authorId = post.author.id;
-        newPost.title = post.title;
-        newPost.content = post.content;
-        newPost.published = post.published;
-        newPost.id = post.id;
-        newPost.source = post.source;
-        newPost.imageSrc = null;
-        newPost.comments = post.comments || [];
-        newPost.isGithubPost = post.isGithubPost || false;
+        if (!post.unlisted && !post.content_type.includes("image")) {
+          newPost.username = post.author.displayName;
+          newPost.authorId = post.author.id;
+          newPost.title = post.title;
+          newPost.content = post.content;
+          newPost.published = post.published;
+          newPost.id = post.id;
+          newPost.source = post.source;
+          newPost.comments = post.comments || [];
+          newPost.isGithubPost = post.isGithubPost || false;
 
-        posts.push(newPost);
+          posts.push(newPost);
+        }
       }
 
       this.setState({
@@ -128,7 +129,6 @@ class PostView extends Component {
                 originalPost={post}
                 defaultPostTitle={post.title}
                 defaultPostContent={post.content}
-                defaultPostImage={post.imageSrc}
                 onSubmit={this.handlePostUpdate}
                 // set the current post being edited to null -> close the edit dialog
                 onDiscard={() => this.handleEditToggle(null)}

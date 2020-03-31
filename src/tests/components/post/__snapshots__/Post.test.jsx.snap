@@ -53,11 +53,6 @@ exports[`Post Block Components should render correctly 1`] = `
       a few seconds ago
     </div>
   </div>
-  <img
-    alt="more-icon"
-    className="post-img"
-    src="demo-img.png"
-  />
   <h5
     className="post-title"
   >
@@ -127,7 +122,7 @@ exports[`Post Block Components should render correctly 1`] = `
             <p
               className="comment-time"
             >
-              15 days ago
+              18 days ago
             </p>
           </div>
         </div>
@@ -206,11 +201,6 @@ exports[`Post Block Components should render markdown content correctly 1`] = `
       a few seconds ago
     </div>
   </div>
-  <img
-    alt="more-icon"
-    className="post-img"
-    src="demo-img.png"
-  />
   <h5
     className="post-title"
   >
@@ -312,7 +302,7 @@ Normal Text
             <p
               className="comment-time"
             >
-              15 days ago
+              18 days ago
             </p>
           </div>
         </div>
