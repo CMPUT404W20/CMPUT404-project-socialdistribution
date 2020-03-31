@@ -13,42 +13,6 @@ exports[`Post box Component should render correctly 1`] = `
       <b>
         NEW POST
       </b>
-      <select
-        className="privacy-select"
-        defaultValue="PUBLIC"
-        onChange={[Function]}
-      >
-        <option
-          value="PUBLIC"
-        >
-          Anyone
-        </option>
-        <option
-          value="PRIVATE"
-        >
-          Specific author
-        </option>
-        <option
-          value="FRIENDS"
-        >
-          Friends
-        </option>
-        <option
-          value="FOAF"
-        >
-          Mutual friends
-        </option>
-        <option
-          value="SERVERONLY"
-        >
-          Server Only
-        </option>
-        <option
-          value="UNLISTED"
-        >
-          Private
-        </option>
-      </select>
     </div>
     <UploadImageModal
       onHide={[Function]}
@@ -60,6 +24,12 @@ exports[`Post box Component should render correctly 1`] = `
       onHide={[Function]}
       postContent=""
       postTitle=""
+      show={false}
+    />
+    <PrivacySelectorModal
+      onHide={[Function]}
+      onVisibilityChange={[Function]}
+      selectedPrivacy="PUBLIC"
       show={false}
     />
     <form
@@ -88,6 +58,10 @@ exports[`Post box Component should render correctly 1`] = `
       <div
         className="editable-post-buttons-wrapper"
       >
+        <PublicIcon
+          className="icon"
+          onClick={[Function]}
+        />
         <ImageOutlinedIcon
           className="icon"
           onClick={[Function]}
