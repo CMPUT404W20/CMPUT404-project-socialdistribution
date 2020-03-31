@@ -90,9 +90,9 @@ class EditablePost extends Component {
     }));
   }
 
-  changePostVisibility = (event) => {
+  changePostVisibility = (visibility) => {
     this.setState({
-      postVisibility: event.target.value,
+      postVisibility: visibility,
     });
   }
 
@@ -105,6 +105,7 @@ class EditablePost extends Component {
       postTitle,
       postContent,
       postImage,
+      postVisibility,
     } = this.state;
 
     const { editMode, onDiscard } = this.props;
@@ -145,6 +146,8 @@ class EditablePost extends Component {
           <PrivacySelectorModal
             show={privacyModalVisibility}
             onHide={this.togglePrivacyModalVisibility}
+            selectedPrivacy={postVisibility}
+            onVisibilityChange={this.changePostVisibility}
           />
           <form className="editable-post-input-wrapper" action="submit">
             <TextareaAutosize

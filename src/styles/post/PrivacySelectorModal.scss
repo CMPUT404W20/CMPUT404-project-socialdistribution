@@ -1,5 +1,35 @@
 @import "../common.scss";
 
 .privacy-selector-modal {
-  @extend %modal;
+    @extend %modal;
+    
+    .privacy-button-wrapper {
+        margin-top: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        
+        .privacy-button {
+            background-color: transparent;
+            height: 60pt;
+            width: 60pt;
+            border: 0px solid $border-color;
+            margin: 0 5px 0 5px;
+            text-align: center;
+            border-radius: 500px;
+            outline: none;
+            cursor: pointer;
+            
+            &:hover, &.selected {
+                background-color: #438bff49;
+                color: $secondary-color;
+            }
+            svg {
+                margin-top: 5px;
+                font-size: 35px;
+            }
+        }
+    }
+    
 }
