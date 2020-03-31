@@ -3,6 +3,9 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.forms.models import model_to_dict
 from django.core.cache import cache
+from django.http import HttpResponse
+from django.core.files.base import ContentFile
+
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -22,6 +25,7 @@ from backend.apiviews.paginations import PostPagination
 
 import json
 import uuid
+import base64
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -47,6 +51,12 @@ class PostViewSet(viewsets.ModelViewSet):
         GET /posts/{POST_ID} : access to a single post with id = {POST_ID}
         '''
         instance = self.get_object()
+
+        # Check if the post is image 
+        if instance.is_image():
+            image = instance.content
+            return HttpResponse(base64.b64decode(image), content_type="image/png")
+
         queryset = Post.objects.none()
         queryset |= Post.objects.filter(pk=instance.pk).order_by("pk")
 
