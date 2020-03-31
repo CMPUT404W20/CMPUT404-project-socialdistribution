@@ -61,7 +61,8 @@ class App extends React.Component {
           path="/share/posts/:postId"
           render={(props) => {
             const { postId } = props.match.params;
-            return (<PostView postId={postId}/>);
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            return (<PostView postId={postId} user={user} {...props} />);
           }}
         />
       </BrowserRouter>

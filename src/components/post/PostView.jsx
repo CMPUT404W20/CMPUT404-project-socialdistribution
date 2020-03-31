@@ -50,7 +50,6 @@ class PostView extends Component {
         loading: false,
       });
     }).catch(() => {
-      // eslint-disable-next-line no-alert
       return (
         <p>Not a Post</p>
       );
