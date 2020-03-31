@@ -118,8 +118,30 @@ class AuthorViewSet(viewsets.ViewSet):
         # Given some string, searches all users and returns matching users
         # /authors/search/<str:userName>
         queryset_of_authors = User.objects.filter(username__contains=userName)
-        list_of_authors = list([user.username for user in queryset_of_authors])
-        if len(list_of_authors) != 0:
-            return Response({"authors": list_of_authors}, status=status.HTTP_200_OK)
-        else:
-            return Response({"authors": list_of_authors}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = UserSerializer(queryset_of_authors, many=True)
+        local_authors = serializer.data
+    
+        foreign_authors = []
+        for host in Host.objects.all():
+            if host.serviceAccountUsername and host.serviceAccountPassword:
+                response = requests.get(
+                    host.url+"author",
+                    auth=(host.serviceAccountUsername,
+                        host.serviceAccountPassword)
+                )
+
+                if response.status_code == 200:
+                    response_data = response.json()
+                    # if they followe swagger format, then use "data" as key
+                    if "data" in response_data:
+                        foreign_authors = response_data["data"]
+                    else:
+                        foreign_authors += response_data
+        
+        # have to manually search their usernames for foreign authors
+        all_authors = local_authors
+        for author in foreign_authors:
+            if userName.lower() in author["displayName"].lower():
+                all_authors.append(author)
+
+        return Response({"authors": all_authors}, status=status.HTTP_200_OK)

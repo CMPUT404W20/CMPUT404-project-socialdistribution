@@ -35,10 +35,8 @@ class TestAuthorAPI:
         assert response.data["url"] == test_user.get_profile_url()
         assert response.data["friends"] is not None
 
-        assert response.data["friends"][0]["id"] == friend_user[0].get_full_user_id(
-        )
-        assert response.data["friends"][1]["id"] == friend_user[1].get_full_user_id(
-        )
+        assert response.data["friends"][0]["id"] == friend_user[0].get_full_user_id()
+        assert response.data["friends"][1]["id"] == friend_user[1].get_full_user_id()
 
     def test_get_friends(self, client, test_user, friend_user):
 
@@ -76,10 +74,6 @@ class TestAuthorAPI:
     def test_get_username(self, client, test_user, friend_user):
         client.force_login(test_user)
         test_auth_id = test_user.get_full_user_id()
-        # test if author does not exist
-        response = client.get("/author/search/roychowd")
-        assert response.status_code == 400
-        assert response.data["authors"] == []
         # test if author exists
         response = client.get("/author/search/testuser001")
         assert response.status_code == 200
