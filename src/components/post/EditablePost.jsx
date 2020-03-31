@@ -239,7 +239,7 @@ EditablePost.defaultProps = {
   defaultPostTitle: "",
   defaultPostContent: "",
   defaultPostImage: "",
-  defaultPostVisibility: "",
+  defaultPostVisibility: "PUBLIC",
   onDiscard: () => {},
 };
 

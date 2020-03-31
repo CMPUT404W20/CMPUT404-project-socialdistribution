@@ -11,6 +11,14 @@ import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import PRIVACY from "../../constants";
 
+const PRIVACY_MESSAGES = {
+  PUBLIC: "This post will be visible to everyone",
+  PRIVATE: "This post will be visible to the selected users",
+  FRIENDS: "This post will be visible to your friends",
+  FOAF: "This post will be visible to your friends, and their friends",
+  SERVERONLY: "This post will be visible to users on this server",
+  UNLISTED: "This post will only be available to users with the link",
+};
 
 function PrivacySelectorModal(props) {
   const {
@@ -20,8 +28,10 @@ function PrivacySelectorModal(props) {
     onVisibilityChange,
   } = props;
 
+ 
+
   return (
-    <Modal size="lg" onHide={onHide} show={show} className="privacy-selector-modal">
+    <Modal onHide={onHide} show={true} className="privacy-selector-modal">
       <Modal.Body>
         <div className="privacy-button-wrapper">
           <button
@@ -67,8 +77,19 @@ function PrivacySelectorModal(props) {
             <VisibilityOffIcon />
           </button>
         </div>
-        {selectedPrivacy}
+
+        <div className="privacy-message">
+          { PRIVACY_MESSAGES[selectedPrivacy] }
+        </div>
       </Modal.Body>
+      <Modal.Footer className="privacy-select-button-wrapper">
+        <button
+          type="button"
+          className="privacy-select-button"
+        >
+          Update Privacy
+        </button>
+      </Modal.Footer>
     </Modal>
   );
 }
