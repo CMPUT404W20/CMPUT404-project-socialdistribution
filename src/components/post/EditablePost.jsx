@@ -85,14 +85,12 @@ class EditablePost extends Component {
       originalPost,
       postTitle,
       postContent,
-      postImage,
       postVisibility,
     } = this.state;
 
     const { onSubmit } = this.props;
 
     originalPost.content = postContent;
-    originalPost.imageSrc = postImage;
     originalPost.title = postTitle;
     originalPost.visibility = postVisibility;
 
@@ -237,7 +235,6 @@ EditablePost.propTypes = {
     authorId: PropTypes.string,
     username: PropTypes.string,
     published: PropTypes.string,
-    imageSrc: PropTypes.string,
     content: PropTypes.string,
   }),
   defaultPostTitle: PropTypes.string,
