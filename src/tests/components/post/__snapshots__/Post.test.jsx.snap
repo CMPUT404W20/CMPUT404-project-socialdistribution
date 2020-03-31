@@ -53,11 +53,6 @@ exports[`Post Block Components should render correctly 1`] = `
       a few seconds ago
     </div>
   </div>
-  <img
-    alt="more-icon"
-    className="post-img"
-    src="demo-img.png"
-  />
   <h5
     className="post-title"
   >
@@ -206,11 +201,6 @@ exports[`Post Block Components should render markdown content correctly 1`] = `
       a few seconds ago
     </div>
   </div>
-  <img
-    alt="more-icon"
-    className="post-img"
-    src="demo-img.png"
-  />
   <h5
     className="post-title"
   >
