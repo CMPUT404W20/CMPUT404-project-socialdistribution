@@ -38,7 +38,7 @@ export const createUserPosts = (postData) => {
   // eslint-disable-next-line object-shorthand
   return axios.post("/author/posts", postData, { headers: headers }).then((response) => {
     if (response.status === 201) {
-      return response.data.success;
+      return response.data;
     }
 
     throw new Error("Unable to create post");
