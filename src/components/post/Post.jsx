@@ -193,7 +193,6 @@ class Post extends Component {
     return (
       <div className="post-block">
         {this.renderMenu()}
-        { post.imageSrc ? <img className="post-img" src={post.imageSrc} alt="more-icon" /> : null }
         <h5 className="post-title"><em>{post.title}</em></h5>
         <ReactMarkdown className="post-content" plugins={[breaks]} source={post.content} />
         {this.renderCommentSection()}
@@ -211,7 +210,6 @@ Post.propTypes = {
     published: PropTypes.string.isRequired,
     title: PropTypes.string,
     content: PropTypes.string,
-    imageSrc: PropTypes.string,
     comments: PropTypes.array,
     isGithubPost: PropTypes.bool,
   }).isRequired,

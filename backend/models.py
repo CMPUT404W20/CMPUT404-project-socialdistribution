@@ -105,6 +105,11 @@ class Post(models.Model):
     visibleTo = ArrayField(models.CharField(
         max_length=200), blank=True, default=list)
 
+    def is_image(self):
+        if self.content_type == "image/png;base64" or self.content_type == "image/jpeg;base64":
+            return True
+        return False
+
     def is_unlisted(self):
         if self.visibility == "UNLISTED":
             return True
