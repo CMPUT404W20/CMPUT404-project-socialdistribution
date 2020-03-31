@@ -17,8 +17,44 @@ class PostView extends Component {
       editingPostId: null,
       loading: true,
     };
+    const { postId } = this.props;
+    if (postId) {
+      this.loadSinglePost();
+    } else {
+      this.loadPosts();
+    }
+  }
 
-    this.loadPosts();
+  loadSinglePost() {
+    const { postId } = this.props;
+
+    postService.getSinglePost(postId).then((response) => {
+      const singlePost = response.posts[0];
+      const newPost = {};
+      const posts = [];
+
+      newPost.username = singlePost.author.displayName;
+      newPost.authorId = singlePost.author.id;
+      newPost.title = singlePost.title;
+      newPost.content = singlePost.content;
+      newPost.published = singlePost.published;
+      newPost.id = singlePost.id;
+      newPost.source = singlePost.source;
+      newPost.comments = singlePost.comments || [];
+      newPost.isGithubPost = singlePost.isGithubPost || false;
+
+      posts.push(newPost);
+
+      this.setState({
+        posts,
+        loading: false,
+      });
+    }).catch(() => {
+      // eslint-disable-next-line no-alert
+      return (
+        <p>Not a Post</p>
+      );
+    });
   }
 
   loadPosts() {
@@ -26,7 +62,6 @@ class PostView extends Component {
 
     // userId === null means it's rendering homepage and not the profile page
     const getPosts = userId === null ? postService.getPosts() : postService.getUserPosts(userId);
-
     const posts = [];
 
     getPosts.then((response) => {
@@ -102,7 +137,6 @@ class PostView extends Component {
 
   render() {
     const { editingPostId, posts, loading } = this.state;
-
     if (loading) {
       return <div />;
     }
@@ -165,10 +199,12 @@ class PostView extends Component {
 PostView.propTypes = {
   // pass in the full user id to get posts for that user only
   userId: PropTypes.string,
+  postId: PropTypes.string,
 };
 
 PostView.defaultProps = {
   userId: null,
+  postId: "",
 };
 
 export default PostView;
