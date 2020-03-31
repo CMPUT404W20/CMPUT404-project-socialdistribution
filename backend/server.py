@@ -9,7 +9,7 @@ import json
 
 def get_from_host(endpoint, host):
     response = requests.get(
-        host.url+endpoint,
+        endpoint,
         auth=(host.serviceAccountUsername,
               host.serviceAccountPassword)
     )

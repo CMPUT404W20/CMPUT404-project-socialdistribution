@@ -8,6 +8,7 @@ import NavigationBar from "./NavigationBar";
 import EditablePost from "./post/EditablePost";
 import PostView from "./post/PostView";
 import * as postService from "../services/PostService";
+import { userContext } from "../contexts/UserContext";
 
 class Homepage extends Component {
   constructor(props) {
@@ -33,7 +34,9 @@ class Homepage extends Component {
       <Container fluid className="homepage">
         <Row>
           <Col md={12}>
-            <NavigationBar />
+            <userContext.Consumer>
+              {(user) => (<NavigationBar user={user} />)}
+            </userContext.Consumer>
           </Col>
         </Row>
         <Row>

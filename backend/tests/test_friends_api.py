@@ -10,6 +10,24 @@ import urllib
 class TestFriend:
     user_notFound_id = "https://example/20"
 
+    def test_get_friend_request(self, client, test_user, test_user_2):
+        FriendRequest.objects.create(fromUser=test_user, toUser=test_user_2)
+
+        client.force_login(test_user)
+        response = client.get("/friendrequest")
+        assert response.status_code == 200
+        assert len(response.data) == 0
+        client.logout()
+
+        client.force_login(test_user_2)
+        response = client.get("/friendrequest")
+        assert response.status_code == 200
+        assert len(response.data) != 0
+        response_data = response.data[0]
+        assert response_data["fromUser"] != test_user.fullId
+        client.logout()
+
+
     def test_create_friend_request(self, client, test_user, test_user_2):
         post_body_1 = json.dumps({
             "query": "friendrequest",
@@ -30,7 +48,7 @@ class TestFriend:
         client.force_login(test_user)
         response = client.post('/friendrequest', data=post_body_1,
                                content_type='application/json', charset='UTF-8')
-        assert response.status_code == 200
+        assert response.status_code == 201
 
         assert FriendRequest.objects.filter(
             fromUser=test_user, toUser=test_user_2).exists()
@@ -58,7 +76,7 @@ class TestFriend:
         client.force_login(test_user_2)
         response = client.post('/friendrequest', data=post_body_2,
                                content_type='application/json', charset='UTF-8')
-        assert response.status_code == 200
+        assert response.status_code == 201
         assert not FriendRequest.objects.filter(
             fromUser=test_user, toUser=test_user_2).exists()
         assert Friend.objects.filter(fromUser=test_user,toUser=test_user_2).exists()
@@ -125,6 +143,39 @@ class TestFriend:
         post_body = json.dumps({
             "query": "friendrequest",
             "author": {
+                "id": test_user_2.fullId,
+                "host": test_user_2.host.url,
+                "displayName": test_user_2.username,
+                "url": test_user_2.get_profile_url(),
+            },
+            "friend": {
+                "id": test_user.fullId,
+                "host": test_user.host.url,
+                "displayName": test_user.username,
+                "url": test_user.get_profile_url(),
+            }
+        })
+        client.force_login(test_user)
+
+        # test failure since friendreuqest does not exist
+
+        response = client.post(
+            '/friendrequest/reject/', data=post_body, content_type='application/json', charset='UTF-8')
+        assert response.status_code == 403
+        assert response.data["success"] == False
+        assert response.data["msg"] == "Forbidden"
+
+        # create friend request and check if reject works
+        client.force_login(test_user_2)
+        response = client.post('/friendrequest', data=post_body,
+                               content_type='application/json', charset='UTF-8')
+        assert response.status_code == 201
+        assert FriendRequest.objects.filter(
+            fromUser__fullId=test_user_2.fullId, toUser__fullId=test_user.fullId).exists()
+
+        reject_post_body = json.dumps({
+            "query": "friendrequest",
+            "author": {
                 "id": test_user.fullId,
                 "host": test_user.host.url,
                 "displayName": test_user.username,
@@ -139,26 +190,11 @@ class TestFriend:
         })
         client.force_login(test_user)
 
-        # test failure since friendreuqest does not exist
-
         response = client.post(
-            '/friendrequest/reject/', data=post_body, content_type='application/json', charset='UTF-8')
-        assert response.status_code == 403
-        assert response.data["success"] == False
-        assert response.data["msg"] == "Forbidden"
-
-        # create friend request and check if reject works
-
-        response = client.post('/friendrequest', data=post_body,
-                               content_type='application/json', charset='UTF-8')
-        assert response.status_code == 200
-        assert FriendRequest.objects.filter(
-            fromUser__fullId=test_user.fullId, toUser__fullId=test_user_2.fullId).exists()
-        response = client.post(
-            '/friendrequest/reject/', data=post_body, content_type='application/json', charset='UTF-8')
+            '/friendrequest/reject/', data=reject_post_body, content_type='application/json', charset='UTF-8')
         assert response.status_code == 204
         assert not FriendRequest.objects.filter(
-            fromUser__fullId=test_user.fullId, toUser__fullId=test_user_2.fullId).exists()
+            fromUser__fullId=test_user_2.fullId, toUser__fullId=test_user.fullId).exists()
 
     def test_query_friends(self, client, test_user, friend_user, test_host):
 
@@ -220,7 +256,7 @@ class TestFriend:
 
         response = client.post("/friend/unfriend/", data=post_body,
                                content_type="application/json", charset="UTF-8")
-        assert response.status_code == 204
+        assert response.status_code == 200
         assert response.data['query'] == "unfriend"
         assert response.data["message"] == "Successful unfriend"
         # check if they are deleted in table

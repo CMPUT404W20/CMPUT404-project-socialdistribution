@@ -12,6 +12,8 @@ import breaks from "remark-breaks";
 import Collapse from "react-bootstrap/Collapse";
 import moreIcon from "../../images/more-icon.svg";
 import * as CommentService from "../../services/CommentService";
+import { userContext } from "../../contexts/UserContext";
+import * as auth from "../../services/AuthenticationService";
 
 class Post extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class Post extends Component {
     this.state = {
       commentSectionVisisble: false,
       newComment: "",
+      currentUser: {},
     };
   }
 
@@ -40,8 +43,6 @@ class Post extends Component {
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
     const formattedTime = moment(post.published).fromNow();
 
-    const isEditable = post.authorId === localStorage.getItem("userID");
-
     return (
       <div className="post-info">
         <span className="post-user-and-visibility">
@@ -57,14 +58,16 @@ class Post extends Component {
           <Fade left duration={500} distance="5px">
             {/* the following enclosing tag is required for the fade to work properly */}
             <>
-              {
-                isEditable ? (
-                  <>
-                    <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
-                    <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
-                  </>
-                ) : null
-              }
+              <userContext.Consumer>
+                {(user) => ((user.id === post.authorId)
+                  ? (
+                    <>
+                      <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
+                      <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
+                    </>
+                  )
+                  : null)}
+              </userContext.Consumer>
               <Dropdown.Item href="#">Copy Link</Dropdown.Item>
             </>
           </Fade>
@@ -80,13 +83,14 @@ class Post extends Component {
 
     post.comments.forEach((comment) => {
       const opComment = comment.author.id === post.authorId;
-
+      const formattedTime = moment(comment.published).fromNow();
       comments.push(
         <div key={comment.id}>
           <p>
             <span className={opComment ? "op" : ""}>{`${comment.author.displayName}:`}</span>
             <span className="comment-content">{comment.comment}</span>
           </p>
+          <p className="comment-time">{formattedTime}</p>
         </div>,
       );
     });
@@ -99,23 +103,28 @@ class Post extends Component {
   }
 
   handleSubmitNewComment = () => {
-    const { newComment } = this.state;
     const { post, onNewComment } = this.props;
+    auth.getCurrentUser().then((user) => {
+      this.setState({ currentUser: user.data }, () => {
+        const { newComment, currentUser } = this.state;
+        CommentService.createComment(post.source, post.id, newComment, currentUser)
+          .then((success) => {
+            if (success) {
+            // clear the comment field but open the comment section
+            // so the user can see the created post
+              this.setState({
+                newComment: "",
+                commentSectionVisisble: true,
+              });
 
-    CommentService.createComment(post.id, newComment).then((success) => {
-      if (success) {
-        // clear the comment field but open the comment section so the user can see the created post
-        this.setState({
-          newComment: "",
-          commentSectionVisisble: true,
-        });
-
-        onNewComment();
-      }
-    }).catch((err) => {
-      const error = err.response.data;
-      // eslint-disable-next-line no-console
-      console.log(error);
+              onNewComment();
+            }
+          }).catch((err) => {
+            const error = err.response.data;
+            // eslint-disable-next-line no-console
+            console.log(error);
+          });
+      });
     });
   }
 
@@ -145,17 +154,19 @@ class Post extends Component {
 
     return (
       <div>
-        <button
-          className="post-show-comment"
-          onClick={this.toggleCommentSection}
-          aria-controls="post-comments"
-          aria-expanded={commentSectionVisisble}
-          type="button"
-        >
-          {post.comments.length}
-          {" "}
-          {post.comments.length === 1 ? "comment" : "comments"}
-        </button>
+        <div className="button-block">
+          <button
+            className="post-show-comment"
+            onClick={this.toggleCommentSection}
+            aria-controls="post-comments"
+            aria-expanded={commentSectionVisisble}
+            type="button"
+          >
+            {post.comments.length}
+            {" "}
+            {post.comments.length === 1 ? "comment" : "comments"}
+          </button>
+        </div>
         <Collapse in={commentSectionVisisble}>
           {/* this div is necessary to prevent a choppy animation when opening the comments */}
           <div>
@@ -194,6 +205,7 @@ class Post extends Component {
 Post.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.string.isRequired,
+    source: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     authorId: PropTypes.string.isRequired,
     published: PropTypes.string.isRequired,

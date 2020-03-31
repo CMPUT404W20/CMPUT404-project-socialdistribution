@@ -110,6 +110,7 @@ urlpatterns = [
 
 
     path('friendrequest', FriendRequestViewSet.as_view(({
+        "get": "get_friend_request",
         "post": "send_friend_request"
     }))),
     path('friendrequest/reject/', FriendRequestViewSet.as_view(({
@@ -117,7 +118,7 @@ urlpatterns = [
     }))),
 
     # url of Comment Operations
-    path('posts/<uuid:postId>/comments', CommentViewSet.as_view({
+    path('posts/<uuid:postId>/comments/', CommentViewSet.as_view({
         "get": "get_post_comment",
         "post": "add_comment"
     })),

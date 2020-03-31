@@ -16,8 +16,11 @@ exports[`Notice Item Component should render correctly 1`] = `
         Object {
           "pathname": "/profile/",
           "state": Object {
-            "userID": "",
-            "username": "",
+            "user": Object {
+              "displayName": "",
+              "host": undefined,
+              "id": "",
+            },
           },
         }
       }
@@ -28,11 +31,9 @@ exports[`Notice Item Component should render correctly 1`] = `
     lg={3}
     md={12}
   >
-    <div
-      className="type-wrapper"
-    >
-      Local
-    </div>
+    <ContextConsumer>
+      <Component />
+    </ContextConsumer>
   </Col>
   <Col
     className="rightColumn"

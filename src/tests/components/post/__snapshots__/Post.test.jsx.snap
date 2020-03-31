@@ -29,6 +29,9 @@ exports[`Post Block Components should render correctly 1`] = `
         duration={500}
         left={true}
       >
+        <ContextConsumer>
+          <Component />
+        </ContextConsumer>
         <DropdownItem
           as={
             Object {
@@ -78,17 +81,21 @@ exports[`Post Block Components should render correctly 1`] = `
     transformLinkUri={[Function]}
   />
   <div>
-    <button
-      aria-controls="post-comments"
-      aria-expanded={false}
-      className="post-show-comment"
-      onClick={[Function]}
-      type="button"
+    <div
+      className="button-block"
     >
-      1
-       
-      comment
-    </button>
+      <button
+        aria-controls="post-comments"
+        aria-expanded={false}
+        className="post-show-comment"
+        onClick={[Function]}
+        type="button"
+      >
+        1
+         
+        comment
+      </button>
+    </div>
     <Collapse
       appear={false}
       dimension="height"
@@ -116,6 +123,11 @@ exports[`Post Block Components should render correctly 1`] = `
               >
                 Sample Comment
               </span>
+            </p>
+            <p
+              className="comment-time"
+            >
+              15 days ago
             </p>
           </div>
         </div>
@@ -170,6 +182,9 @@ exports[`Post Block Components should render markdown content correctly 1`] = `
         duration={500}
         left={true}
       >
+        <ContextConsumer>
+          <Component />
+        </ContextConsumer>
         <DropdownItem
           as={
             Object {
@@ -251,17 +266,21 @@ Normal Text
     transformLinkUri={[Function]}
   />
   <div>
-    <button
-      aria-controls="post-comments"
-      aria-expanded={false}
-      className="post-show-comment"
-      onClick={[Function]}
-      type="button"
+    <div
+      className="button-block"
     >
-      1
-       
-      comment
-    </button>
+      <button
+        aria-controls="post-comments"
+        aria-expanded={false}
+        className="post-show-comment"
+        onClick={[Function]}
+        type="button"
+      >
+        1
+         
+        comment
+      </button>
+    </div>
     <Collapse
       appear={false}
       dimension="height"
@@ -289,6 +308,11 @@ Normal Text
               >
                 Sample Comment
               </span>
+            </p>
+            <p
+              className="comment-time"
+            >
+              15 days ago
             </p>
           </div>
         </div>

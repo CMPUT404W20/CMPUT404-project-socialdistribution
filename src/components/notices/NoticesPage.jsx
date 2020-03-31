@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../../styles/friends-notices-search/Page.scss";
+import PropTypes from "prop-types";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -7,25 +8,67 @@ import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneO
 import Fade from "react-reveal/Fade";
 import NavigationBar from "../NavigationBar";
 import NoticeItem from "./NoticeItem";
+import * as friendsService from "../../services/FriendService";
 
 class NoticesPage extends Component {
   constructor(props) {
     super(props);
     this.props = props;
     this.state = {
-      noticesList: [{ id: "001", name: "Username1", type: "Local" }, { id: "002", name: "Username2", type: "Local" }, { id: "003", name: "Username3", type: "Local" }, { id: "004", name: "Username4", type: "Local" }, { id: "005", name: "Username5", type: "Local" }],
+      noticesList: [],
+      loading: true,
+      // render the page after loading otherwise the count will first flash as 0 then
+      // show the actual count
     };
+    this.loadRequests();
   }
 
-  handleRemoveNotice(id) {
-    const { noticesList } = this.state;
-    const filteredList = noticesList.filter((item) => item.id !== id);
-    this.setState({ noticesList: filteredList });
+  handleAccept = (item) => {
+    const { user } = this.props;
+    friendsService.sendFriendRequest(user, item).then((success) => {
+      if (success) {
+        this.loadRequests();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
-  handleAccept(id) {
-    // TODO: accept the request
-    this.handleRemoveNotice(id);
+  handleReject = (item) => {
+    const { user } = this.props;
+    friendsService.rejectFriendRequest(user, item).then((success) => {
+      if (success) {
+        this.loadRequests();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
+
+  loadRequests() {
+    const noticesList = [];
+    friendsService.getAuthorFriendRequests().then((response) => {
+      for (let i = 0; i < response.length; i += 1) {
+        const newRequest = {};
+        const request = response[i];
+
+        newRequest.displayName = request.fromUser.displayName;
+        newRequest.id = request.fromUser.id;
+        newRequest.host = request.fromUser.host;
+
+        noticesList.push(newRequest);
+      }
+
+      this.setState({
+        noticesList, loading: false,
+      });
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   renderNoticeItems = () => {
@@ -36,11 +79,11 @@ class NoticesPage extends Component {
       notices.push(
         <NoticeItem
           key={item.id}
-          username={item.name}
+          username={item.displayName}
           userID={item.id}
-          type={item.type}
-          handleAccept={(id) => this.handleAccept(id)}
-          handleDecline={(id) => this.handleRemoveNotice(id)}
+          host={item.host}
+          handleAccept={() => this.handleAccept(item)}
+          handleDecline={() => this.handleReject(item)}
         />,
       );
     });
@@ -49,12 +92,14 @@ class NoticesPage extends Component {
   }
 
   render() {
-    const { noticesList } = this.state;
+    const { noticesList, loading } = this.state;
+    const { user } = this.props;
     return (
+      !loading && (
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
-            <NavigationBar />
+            <NavigationBar user={user} key={noticesList.length} />
           </Col>
         </Row>
         <Row>
@@ -71,13 +116,28 @@ class NoticesPage extends Component {
                 </p>
               </div>
               <Fade bottom duration={1000} distance="100px">
-                {this.renderNoticeItems()}
+                {/* this div is required otherwise the page won't render correctly */}
+                <div className="notice-view" key={-1}>
+                  {this.renderNoticeItems()}
+                </div>
               </Fade>
             </div>
           </Col>
         </Row>
       </Container>
+      )
     );
   }
 }
+
+NoticesPage.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
+};
+
 export default NoticesPage;

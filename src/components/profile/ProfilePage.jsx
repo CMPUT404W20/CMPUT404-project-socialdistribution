@@ -8,68 +8,106 @@ import NavigationBar from "../NavigationBar";
 import ProfileHeader from "./ProfileHeader";
 import PostView from "../post/PostView";
 import * as friendsService from "../../services/FriendService";
-import * as auth from "../../services/AuthenticationService";
 
 class ProfilePage extends Component {
   constructor(props) {
     super(props);
-    const { location } = this.props;
+    const { location, user } = this.props;
     this.state = {
-      username: location.state.username,
-      userID: location.state.userID,
-      currentUserID: localStorage.getItem("userID"),
       isFollowing: false,
       isFriends: false,
-      isSelf: (location.state.userID === localStorage.getItem("userID")),
+      isSelf: (location.state.user.id === user.id),
       loading: true,
     };
   }
 
   componentDidMount() {
-    const { userID, currentUserID, isSelf } = this.state;
+    const { isSelf } = this.state;
+    const { location, user } = this.props;
+    const currentUserID = user.id;
+    const userID = location.state.user.id;
     if (!isSelf) {
       friendsService.checkFriendStatus(currentUserID, userID).then((response) => {
         if (response) {
           this.setState({ isFriends: true, loading: false });
+          // todo: check if there's a request from current user to that user.
+        } else {
+          this.setState({ loading: false });
         }
       }).catch((error) => {
       // eslint-disable-next-line no-alert
         alert(error);
       });
     } else {
-      auth.getCurrentUser()
-        .then(((response) => {
-          this.setState({ github: response.data.github, loading: false });
-        }));
+      this.setState({ loading: false });
     }
+  }
+
+
+  handleUnFriend = (item) => {
+    friendsService.unFriend(item).then((success) => {
+      if (success) {
+        window.location.reload();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
+  handleUnFollow = (item) => {
+    const { user } = this.props;
+    friendsService.rejectFriendRequest(item, user).then((success) => {
+      if (success) {
+        window.location.reload();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
+  handleFollow = (item) => {
+    const { user } = this.props;
+    friendsService.sendFriendRequest(user, item).then((success) => {
+      if (success) {
+        window.location.reload();
+      }
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   renderHeader = () => {
     const {
-      username, isFollowing, isFriends, userID, currentUserID, loading, github,
+      isFollowing, isFriends, loading, isSelf,
     } = this.state;
-    const isSelf = (userID === currentUserID);
+    const { location, user } = this.props;
     return (
       !loading && (
       <ProfileHeader
         isSelf={isSelf}
         isFriends={isFriends}
         isFollowing={isFollowing}
-        remote={false}
-        username={username}
-        github={github}
+        host={location.state.user.host}
+        username={location.state.user.displayName}
+        user={user}
+        handleFollow={() => this.handleFollow(location.state.user)}
+        handleUnFollow={() => this.handleUnFollow(location.state.user)}
+        handleUnFriend={() => this.handleUnFriend(location.state.user)}
       />
       )
     );
   }
 
   render() {
-    const { userID } = this.state;
+    const { user, location } = this.props;
     return (
       <Container fluid className="profilePage">
         <Row>
           <Col md={12}>
-            <NavigationBar />
+            <NavigationBar user={user} />
           </Col>
         </Row>
         <Row>
@@ -79,7 +117,7 @@ class ProfilePage extends Component {
               {this.renderHeader()}
             </div>
             <PostView
-              userId={userID}
+              userId={location.state.user.id}
             />
           </Col>
           <Col md={2} />
@@ -91,6 +129,13 @@ class ProfilePage extends Component {
 
 ProfilePage.propTypes = {
   location: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
 };
 
 export default ProfilePage;

@@ -1,5 +1,6 @@
 /* eslint-disable arrow-body-style */
 import axios from "axios";
+import Cookies from "js-cookie";
 
 export const getAuthorFriends = (authorId) => {
   return axios.get(`/author/${authorId}`).then((response) => {
@@ -14,12 +15,81 @@ export const getAuthorFriends = (authorId) => {
   });
 };
 
+export const getAuthorFriendRequests = () => {
+  return axios.get("/friendrequest").then((response) => {
+    if (response.status === 200) {
+      if (response.data) {
+        return response.data;
+      }
+      return {};
+    }
+
+    throw new Error("Unable to retrieve friends");
+  });
+};
+
 export const checkFriendStatus = (authorId1, authorId2) => {
   return axios.get(`/author/${authorId1}/friends/${authorId2}`).then((response) => {
     if (response.status === 200) {
       return response.data.friends;
     }
     return false;
+  });
+};
+
+export const unFriend = (friend) => {
+  const payload = {
+    query: "unfriend",
+    friend,
+  };
+  const csrf = Cookies.get("csrftoken");
+  const headers = {
+    "X-CSRFToken": csrf,
+  };
+  // eslint-disable-next-line object-shorthand
+  return axios.post("/friend/unfriend/", payload, { headers }).then((response) => {
+    if (response.status === 200) {
+      return response.data.success;
+    }
+    throw new Error("Unable to send friend request");
+  });
+};
+
+export const sendFriendRequest = (author, friend) => {
+  const payload = {
+    query: "friendrequest",
+    author,
+    friend,
+  };
+  const csrf = Cookies.get("csrftoken");
+  const headers = {
+    "X-CSRFToken": csrf,
+  };
+  // eslint-disable-next-line object-shorthand
+  return axios.post("/friendrequest", payload, { headers }).then((response) => {
+    if (response.status === 201) {
+      return response.data.success;
+    }
+    throw new Error("Unable to send friend request");
+  });
+};
+
+export const rejectFriendRequest = (author, friend) => {
+  const payload = {
+    query: "friendrequest",
+    author,
+    friend,
+  };
+  const csrf = Cookies.get("csrftoken");
+  const headers = {
+    "X-CSRFToken": csrf,
+  };
+  // eslint-disable-next-line object-shorthand
+  return axios.post("/friendrequest/reject/", payload, { headers }).then((response) => {
+    if (response.status === 204) {
+      return true;
+    }
+    throw new Error("Unable to send friend request");
   });
 };
 

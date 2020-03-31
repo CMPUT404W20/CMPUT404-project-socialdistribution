@@ -54,6 +54,8 @@ class PostSerializer(serializers.ModelSerializer):
     published = serializers.DateTimeField(source="timestamp", read_only=True)
     id = serializers.UUIDField(source="postId", read_only=True)
     unlisted = serializers.BooleanField(source="is_unlisted", read_only=True)
+    source = serializers.URLField(source="get_source", read_only=True)
+    origin = serializers.URLField(source="get_source", read_only=True)
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
