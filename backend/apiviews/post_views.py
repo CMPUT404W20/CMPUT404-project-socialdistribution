@@ -4,8 +4,6 @@ from django.conf import settings
 from django.forms.models import model_to_dict
 from django.core.cache import cache
 from django.http import HttpResponse
-from django.core.files.base import ContentFile
-
 
 from rest_framework import viewsets
 from rest_framework import mixins
