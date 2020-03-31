@@ -52,7 +52,7 @@ class PostViewSet(viewsets.ModelViewSet):
         '''
         instance = self.get_object()
 
-        # Check if the post is image 
+        # Check if the post is image
         if instance.is_image():
             image = instance.content
             return HttpResponse(base64.b64decode(image), content_type=instance.content_type)
@@ -92,7 +92,10 @@ class PostViewSet(viewsets.ModelViewSet):
             serializer = PostSerializer(
                 data=post_data, context={"request": request})
             if serializer.is_valid():
-                serializer.save()
+                new_post = serializer.save()
+                if new_post.is_image():
+                    return Response({"query": "createPost", "success": True, "message": "Image uploaded", "uuid": new_post.postId}, status=status.HTTP_201_CREATED)
+
                 return Response({"query": "createPost", "success": True, "message": "Post created"}, status=status.HTTP_201_CREATED)
             else:
                 return Response({"query": "createPost", "success": False, "message": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)

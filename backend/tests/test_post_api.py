@@ -3,9 +3,12 @@ from django.contrib.auth import get_user_model
 
 from backend.models import Post, Host
 from backend.permissions import *
+from backend.settings import BASE_DIR
 
 import pytest
 import json
+import base64
+import os
 
 User = get_user_model()
 
@@ -51,6 +54,25 @@ class TestPostAPI:
         response = client.post('/author/posts', data=post_body_1,
                                content_type='application/json', charset='UTF-8')
         assert response.status_code == 201
+
+        # Create image post
+        image_path = os.path.join(
+            BASE_DIR, 'backend/tests/assets/test-image.png')
+        print(image_path)
+        with open(image_path, "rb") as image_file:
+            test_post_content = str(base64.b64encode(image_file.read()))
+
+        image_body_1 = json.dumps({
+            "title": test_post_title,
+            "content": test_post_content,
+            "visibility": PUBLIC,
+            "content_type": "image/png;base64",
+        })
+        
+        response = client.post('/author/posts', data=image_body_1,
+                               content_type='application/json', charset='UTF-8')
+        assert response.status_code == 201
+        assert response.data["uuid"] == Post.objects.last().postId
 
     def test_delete_post(self, client, test_user, test_host):
         # Create a post used to test the delete
