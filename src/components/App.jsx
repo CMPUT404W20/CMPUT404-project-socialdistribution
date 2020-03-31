@@ -9,6 +9,7 @@ import FriendsPage from "./friends/FriendsPage";
 import NoticesPage from "./notices/NoticesPage";
 import ProfilePage from "./profile/ProfilePage";
 import SearchPage from "./search/SearchPage";
+import PostView from "./post/PostView";
 import Login from "./Login";
 import * as auth from "../services/AuthenticationService";
 
@@ -55,6 +56,13 @@ class App extends React.Component {
           render={(props) => (
             // eslint-disable-next-line react/jsx-props-no-spreading
             <ProfilePage key={props.match.params.username} user={user} {...props} />)}
+        />
+        <Route
+          path="/share/posts/:postId"
+          render={(props) => {
+            const { postId } = props.match.params;
+            return (<PostView postId={postId}/>);
+          }}
         />
       </BrowserRouter>
       )
