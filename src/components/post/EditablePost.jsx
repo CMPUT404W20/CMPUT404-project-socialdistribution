@@ -6,6 +6,7 @@ import VisibilityRoundedIcon from "@material-ui/icons/VisibilityRounded";
 import TextareaAutosize from "react-textarea-autosize";
 import UploadImageModal from "./UploadImageModal";
 import PostPreviewModal from "./PostPreviewModal";
+import * as postService from "../../services/PostService";
 
 class EditablePost extends Component {
   constructor(props) {
@@ -18,6 +19,17 @@ class EditablePost extends Component {
       postContent: props.defaultPostContent,
       postImage: props.defaultPostImage,
       postVisibility: "PUBLIC",
+    };
+  }
+
+  getBase64 = (file, cb) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      cb(reader.result);
+    };
+    reader.onerror = (error) => {
+      console.log("Error: ", error);
     };
   }
 
@@ -38,8 +50,33 @@ class EditablePost extends Component {
   };
 
   handleImageUpload = (image) => {
-    this.setState({ postImage: URL.createObjectURL(image) });
-  }
+
+    this.getBase64(image, (result) => {
+      const fileType = image.type;
+      const base64Image = result.replace(`data:${fileType};base64,`,"");
+
+      const imageData = {
+        content: base64Image,
+        title: image.name,
+        visibility: "PUBLIC",
+        content_type: `${fileType};base64`,
+      };
+
+      postService.createUserPosts(imageData).then((response) => {
+        if (response.success) {
+          const imageUrl = `${window.location.href}post/${response.uuid}`;
+          const markdownImage = `![${image.name}](${imageUrl})`;
+
+          this.setState((prevState) => ({
+            postContent: prevState.postContent + markdownImage,
+          }));
+        }
+      }).catch((error) => {
+        // eslint-disable-next-line no-alert
+        alert(error);
+      });
+    });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
