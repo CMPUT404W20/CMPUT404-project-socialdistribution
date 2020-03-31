@@ -16,7 +16,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {},
+      currentUser: {},
       isLoading: true,
       isAuthed: false,
     };
@@ -25,7 +25,7 @@ class App extends React.Component {
   componentDidMount() {
     auth.getCurrentUser().then((response) => {
       if (response.status === 200) {
-        this.setState({ user: response.data, isAuthed: true, isLoading: false });
+        this.setState({ currentUser: response.data, isAuthed: true, isLoading: false });
       } else {
         this.setState({ isLoading: false });
       }
@@ -35,26 +35,26 @@ class App extends React.Component {
   }
 
   render() {
-    const { isLoading, isAuthed, user } = this.state;
+    const { isLoading, isAuthed, currentUser } = this.state;
     return (
       (!isLoading) && (
       <BrowserRouter forceRefresh>
         <Route exact path="/login" component={Login} />
-        <PrivateRoute exact path="/" component={Homepage} isAuthed={isAuthed} user={user} />
-        <PrivateRoute exact path="/friends" component={FriendsPage} isAuthed={isAuthed} user={user} />
-        <PrivateRoute exact path="/notifications" component={NoticesPage} isAuthed={isAuthed} user={user} />
+        <PrivateRoute exact path="/" component={Homepage} isAuthed={isAuthed} currentUser={currentUser} />
+        <PrivateRoute exact path="/friends" component={FriendsPage} isAuthed={isAuthed} currentUser={currentUser} />
+        <PrivateRoute exact path="/notifications" component={NoticesPage} isAuthed={isAuthed} currentUser={currentUser} />
         <Route
           path="/search"
           render={(props) => (
             // eslint-disable-next-line react/jsx-props-no-spreading
-            <SearchPage key={props.location.search} user={user} {...props} />
+            <SearchPage key={props.location.search} currentUser={currentUser} {...props} />
           )}
         />
         <Route
           path="/profile/:username"
           render={(props) => (
             // eslint-disable-next-line react/jsx-props-no-spreading
-            <ProfilePage key={props.match.params.username} user={user} {...props} />)}
+            <ProfilePage key={props.match.params.username} currentUser={currentUser} {...props} />)}
         />
       </BrowserRouter>
       )

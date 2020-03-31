@@ -8,29 +8,42 @@ import Fade from "react-reveal/Fade";
 import queryString from "query-string";
 import NavigationBar from "../NavigationBar";
 import SearchItem from "./SearchItem";
+import * as friendsService from "../../services/FriendService";
 
 class SearchPage extends Component {
   constructor(props) {
     super(props);
     this.props = props;
     this.state = {
-      // Todo: query on api
       resultsList: [],
       keyword: queryString.parse(props.location.search).username,
+      loading: true,
     };
+  }
+
+  componentDidMount() {
+    const { keyword } = this.state;
+    friendsService.searchAuthors(keyword).then((response) => {
+      this.setState({
+        resultsList: response,
+        loading: false,
+      });
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
   }
 
   renderSearchResults = () => {
     const results = [];
     const { resultsList } = this.state;
-
+    const { user } = this.props;
     resultsList.forEach((item) => {
       results.push(
         <SearchItem
           key={item.id}
-          username={item.name}
-          userID={item.id}
-          host={item.host}
+          user={item}
+          currentHost={user.host}
         />,
       );
     });
@@ -39,9 +52,10 @@ class SearchPage extends Component {
   }
 
   render() {
-    const { resultsList, keyword } = this.state;
+    const { resultsList, keyword, loading } = this.state;
     const { user } = this.props;
     return (
+      !loading && (
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
@@ -70,6 +84,7 @@ class SearchPage extends Component {
           </Col>
         </Row>
       </Container>
+      )
     );
   }
 }

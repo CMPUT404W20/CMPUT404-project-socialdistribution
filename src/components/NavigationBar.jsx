@@ -18,9 +18,7 @@ import * as friendsService from "../services/FriendService";
 class NavigationBar extends Component {
   constructor(props) {
     super(props);
-    const { user } = this.props;
     this.state = {
-      username: user.displayName,
       numNotifications: 0,
       keyword: "",
       loading: true,
@@ -65,9 +63,9 @@ class NavigationBar extends Component {
 
   render() {
     const {
-      username, numNotifications, keyword, loading,
+      numNotifications, keyword, loading,
     } = this.state;
-    const { user } = this.props;
+    const { currentUser } = this.props;
     return (
       !loading && (
       <Navbar collapseOnSelect expand="sm" fixed="top" className="navigationBar">
@@ -109,14 +107,14 @@ class NavigationBar extends Component {
             </Nav.Link>
           </Nav>
           <Nav>
-            <NavDropdown title={username} id="username-dropdown" alignRight>
+            <NavDropdown title={currentUser.displayName} id="username-dropdown" alignRight>
               <Fade left duration={500} distance="5px">
                 <NavDropdown.Item
                   as={NavLink}
                   exact
                   to={{
-                    pathname: `/profile/${username}`,
-                    state: { user },
+                    pathname: `/profile/${currentUser.displayName}`,
+                    state: { user: currentUser },
                   }}
                 >
                   Profile
@@ -137,7 +135,7 @@ class NavigationBar extends Component {
 
 NavigationBar.propTypes = {
   history: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
-  user: PropTypes.shape({
+  currentUser: PropTypes.shape({
     id: PropTypes.string.isRequired,
     displayName: PropTypes.string.isRequired,
     host: PropTypes.string.isRequired,

@@ -32,8 +32,8 @@ class FriendsPage extends Component {
   }
 
   loadFriends() {
-    const { user } = this.props;
-    friendsService.getAuthorFriends(user.id).then((response) => {
+    const { currentUser } = this.props;
+    friendsService.getAuthorFriends(currentUser.id).then((response) => {
       this.setState({
         friendsList: response,
         loading: false,
@@ -51,9 +51,7 @@ class FriendsPage extends Component {
         {friendsList.map((item) => (
           <FriendItem
             key={item.id}
-            username={item.displayName}
-            userID={item.id}
-            host={item.host}
+            user={item}
             handleUnFriend={() => this.handleUnFriend(item)}
           />
         ))}
@@ -63,13 +61,13 @@ class FriendsPage extends Component {
 
   render() {
     const { friendsList, loading } = this.state;
-    const { user } = this.props;
+    const { currentUser } = this.props;
     return (
       !loading && (
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
-            <NavigationBar user={user} />
+            <NavigationBar currentUser={currentUser} />
           </Col>
         </Row>
         <Row>
@@ -96,7 +94,7 @@ class FriendsPage extends Component {
 }
 
 FriendsPage.propTypes = {
-  user: PropTypes.shape({
+  currentUser: PropTypes.shape({
     id: PropTypes.string.isRequired,
     displayName: PropTypes.string.isRequired,
     host: PropTypes.string.isRequired,

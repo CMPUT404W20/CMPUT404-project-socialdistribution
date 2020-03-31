@@ -24,8 +24,8 @@ class NoticesPage extends Component {
   }
 
   handleAccept = (item) => {
-    const { user } = this.props;
-    friendsService.sendFriendRequest(user, item).then((success) => {
+    const { currentUser } = this.props;
+    friendsService.sendFriendRequest(currentUser, item).then((success) => {
       if (success) {
         this.loadRequests();
       }
@@ -36,8 +36,8 @@ class NoticesPage extends Component {
   }
 
   handleReject = (item) => {
-    const { user } = this.props;
-    friendsService.rejectFriendRequest(user, item).then((success) => {
+    const { currentUser } = this.props;
+    friendsService.rejectFriendRequest(currentUser, item).then((success) => {
       if (success) {
         this.loadRequests();
       }
@@ -52,14 +52,8 @@ class NoticesPage extends Component {
     const noticesList = [];
     friendsService.getAuthorFriendRequests().then((response) => {
       for (let i = 0; i < response.length; i += 1) {
-        const newRequest = {};
         const request = response[i];
-
-        newRequest.displayName = request.fromUser.displayName;
-        newRequest.id = request.fromUser.id;
-        newRequest.host = request.fromUser.host;
-
-        noticesList.push(newRequest);
+        noticesList.push(request.fromUser);
       }
 
       this.setState({
@@ -79,9 +73,7 @@ class NoticesPage extends Component {
       notices.push(
         <NoticeItem
           key={item.id}
-          username={item.displayName}
-          userID={item.id}
-          host={item.host}
+          user={item}
           handleAccept={() => this.handleAccept(item)}
           handleDecline={() => this.handleReject(item)}
         />,
@@ -93,13 +85,13 @@ class NoticesPage extends Component {
 
   render() {
     const { noticesList, loading } = this.state;
-    const { user } = this.props;
+    const { currentUser } = this.props;
     return (
       !loading && (
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
-            <NavigationBar user={user} key={noticesList.length} />
+            <NavigationBar currentUser={currentUser} key={noticesList.length} />
           </Col>
         </Row>
         <Row>
@@ -131,7 +123,7 @@ class NoticesPage extends Component {
 }
 
 NoticesPage.propTypes = {
-  user: PropTypes.shape({
+  currentUser: PropTypes.shape({
     id: PropTypes.string.isRequired,
     displayName: PropTypes.string.isRequired,
     host: PropTypes.string.isRequired,

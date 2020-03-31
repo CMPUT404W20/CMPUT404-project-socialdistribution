@@ -59,7 +59,7 @@ class Post extends Component {
             {/* the following enclosing tag is required for the fade to work properly */}
             <>
               <userContext.Consumer>
-                {(user) => ((user.id === post.authorId)
+                {(currentUser) => ((currentUser.id === post.authorId)
                   ? (
                     <>
                       <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
