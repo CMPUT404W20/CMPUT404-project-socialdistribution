@@ -34,7 +34,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
     lookup_field = "postId"
     pagination_class = PostPagination
 
@@ -50,11 +50,16 @@ class PostViewSet(viewsets.ModelViewSet):
         GET /posts/{POST_ID} : access to a single post with id = {POST_ID}
         '''
         instance = self.get_object()
+        user = request.user
 
         # Check if the post is image
         if instance.is_image():
             image = instance.content
             return HttpResponse(base64.b64decode(image), content_type=instance.content_type)
+
+        # Check if user has permission to view the post
+        if not user in instance.get_visible_users():
+            return Response({"success": False, "msg": "You don't have the permission to view this post"}, status=status.HTTP_401_UNAUTHORIZED)
 
         queryset = Post.objects.none()
         queryset |= Post.objects.filter(pk=instance.pk).order_by("pk")
