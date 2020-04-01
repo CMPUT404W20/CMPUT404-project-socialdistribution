@@ -65,6 +65,11 @@
             .delete-button {
                 float: right;
                 font-size: 17px;
+                cursor: pointer;
+
+                &:hover {
+                    color: $accent-color;
+                }
             }
         }
 
