@@ -164,10 +164,9 @@ class PostViewSet(viewsets.ModelViewSet):
         http://service/author/{AUTHOR_ID}/posts all posts made by {AUTHOR_ID} visible to the currently authenticated user
         '''
         user = request.user
-        author_id = protocol_removed(author_id)
 
-        if User.objects.filter(fullId=author_id).exists():
-            posts = Post.objects.filter(author__fullId=author_id)
+        if User.objects.filter(fullId=protocol_removed(author_id)).exists():
+            posts = Post.objects.filter(author__fullId=protocol_removed(author_id))
             viewable_posts = Post.objects.none()
 
             for post in posts:
@@ -180,5 +179,29 @@ class PostViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(page, many=True)
 
             return self.get_paginated_response(serializer.data)
+            
         else:
-            return Response(data={"success": False, "msg": "No such user"}, status=status.HTTP_400_BAD_REQUEST)
+            author_host = get_host_from_id(author_id)
+            visible_posts = []
+
+            if Host.objects.filter(url=author_host).exists():
+                host = Host.objects.get(url=author_host)
+                response = get_from_host("{}author/posts".format(author_host), host)
+    
+                if response.status_code == 200:
+                    response_data = response.json()
+                    posts = response_data["posts"]
+
+                    print(author_id)
+
+                    for post in posts:
+                        if post["author"] and post["author"]["id"] == author_id and post["visibility"] == "PUBLIC":
+                            visible_posts.append(post)
+                    
+                    page = self.paginate_queryset(visible_posts)
+                    return self.get_paginated_response(page)
+
+            else:
+                return Response(data={"success": False, "msg": "No such user or user's host not connected"}, status=status.HTTP_400_BAD_REQUEST)
+                
+
