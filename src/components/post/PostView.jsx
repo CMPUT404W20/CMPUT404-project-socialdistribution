@@ -68,7 +68,7 @@ class PostView extends Component {
         const newPost = {};
         const post = response.posts[i];
 
-        if (!post.unlisted && !post.content_type.includes("image")) {
+        if (!post.unlisted && (!post.content_type || !post.content_type.includes("image"))) {
           newPost.username = post.author.displayName;
           newPost.authorId = post.author.id;
           newPost.title = post.title;
