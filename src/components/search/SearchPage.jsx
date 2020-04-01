@@ -37,13 +37,13 @@ class SearchPage extends Component {
   renderSearchResults = () => {
     const results = [];
     const { resultsList } = this.state;
-    const { user } = this.props;
+    const { currentUser } = this.props;
     resultsList.forEach((item) => {
       results.push(
         <SearchItem
           key={item.id}
           user={item}
-          currentHost={user.host}
+          currentHost={currentUser.host}
         />,
       );
     });
@@ -53,13 +53,13 @@ class SearchPage extends Component {
 
   render() {
     const { resultsList, keyword, loading } = this.state;
-    const { user } = this.props;
+    const { currentUser } = this.props;
     return (
       !loading && (
       <Container fluid className="page-wrapper">
         <Row>
           <Col md={12}>
-            <NavigationBar user={user} />
+            <NavigationBar currentUser={currentUser} />
           </Col>
         </Row>
         <Row>
@@ -91,7 +91,7 @@ class SearchPage extends Component {
 
 SearchPage.propTypes = {
   location: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
-  user: PropTypes.shape({
+  currentUser: PropTypes.shape({
     id: PropTypes.string.isRequired,
     displayName: PropTypes.string.isRequired,
     host: PropTypes.string.isRequired,
