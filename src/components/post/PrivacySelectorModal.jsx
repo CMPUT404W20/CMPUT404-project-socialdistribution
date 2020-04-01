@@ -3,12 +3,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "../../styles/post/PrivacySelectorModal.scss";
 import Modal from "react-bootstrap/Modal";
+import ListGroup from "react-bootstrap/ListGroup";
 import PublicIcon from "@material-ui/icons/Public";
 import VpnLockIcon from "@material-ui/icons/VpnLock";
 import LockIcon from "@material-ui/icons/Lock";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import PRIVACY from "../../constants";
 
 const PRIVACY_MESSAGES = {
@@ -24,7 +26,7 @@ class PrivacySelectorModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visibleTo: [],
+      visibleTo: ["User1", "User2", "User3"],
     };
   }
 
@@ -34,11 +36,31 @@ class PrivacySelectorModal extends Component {
     onHide();
   }
 
+  handlePrivateUserRemoval = (username) => {
+    this.setState((prevState) => ({
+      visibleTo: prevState.visibleTo.filter((person) => person !== username),
+    }));
+  }
+
   // eslint-disable-next-line arrow-body-style
   renderPeopleSelector = () => {
+    const { visibleTo } = this.state;
+
     return (
       <div className="privacy-people-selector">
-        Select People
+        <ListGroup>
+          {visibleTo.map((username) => (
+            <>
+              <ListGroup.Item>
+                {username}
+                <DeleteRoundedIcon
+                  className="delete-button"
+                  onClick={() => this.handlePrivateUserRemoval(username)}
+                />
+              </ListGroup.Item>
+            </>
+          ))}
+        </ListGroup>
       </div>
     );
   }
@@ -52,7 +74,7 @@ class PrivacySelectorModal extends Component {
     } = this.props;
 
     return (
-      <Modal onHide={onHide} show={show} className="privacy-selector-modal">
+      <Modal onHide={onHide} show={true} className="privacy-selector-modal">
         <Modal.Body>
           <div className="privacy-button-wrapper">
             <button
