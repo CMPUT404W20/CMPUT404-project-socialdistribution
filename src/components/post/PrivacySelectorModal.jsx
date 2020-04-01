@@ -13,7 +13,7 @@ import PRIVACY from "../../constants";
 
 const PRIVACY_MESSAGES = {
   PUBLIC: "This post will be visible to everyone",
-  PRIVATE: "This post will only be visible to selected users",
+  PRIVATE: "This post will only be visible to the selected users",
   FRIENDS: "This post will be visible to your friends",
   FOAF: "This post will be visible to your friends, and their friends",
   SERVERONLY: "This post will be visible to users on this server",
@@ -32,6 +32,12 @@ class PrivacySelectorModal extends Component {
     const { onHide } = this.props;
 
     onHide();
+  }
+
+  handlePrivateUserAddition = (username) => {
+    this.setState((prevState) => ({
+      visibleTo: [...prevState.visibleTo, username],
+    }));
   }
 
   handlePrivateUserRemoval = (username) => {
@@ -106,6 +112,7 @@ class PrivacySelectorModal extends Component {
             selectedPrivacy === PRIVACY.private ? (
               <UserSelector
                 onUserRemoval={this.handlePrivateUserRemoval}
+                onUserAdd={this.handlePrivateUserAddition}
                 visibleTo={visibleTo}
               />
             ) : null

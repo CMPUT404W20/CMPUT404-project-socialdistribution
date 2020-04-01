@@ -11,6 +11,7 @@ class UserSelector extends Component {
 
     this.state = {
       allAuthors: [],
+      searchValue: null,
     };
   }
 
@@ -33,14 +34,35 @@ class UserSelector extends Component {
     });
   }
 
+  handleSelectChange = (user) => {
+    this.setState({
+      searchValue: null,
+    });
+
+    const { onUserAdd } = this.props;
+
+    onUserAdd(user.label);
+  }
+
+  handleInputChange = (newValue) => {
+    this.setState({
+      searchValue: newValue,
+    });
+
+    return newValue;
+  };
+
   render() {
-    const { allAuthors } = this.state;
+    const { allAuthors, searchValue } = this.state;
     const { onUserRemoval, visibleTo } = this.props;
 
     return (
       <div className="privacy-people-selector">
         <Select
           options={allAuthors}
+          value={searchValue}
+          onChange={this.handleSelectChange}
+          onInputChange={this.handleInputChange}
         />
         <ListGroup>
           {visibleTo.map((username) => (
