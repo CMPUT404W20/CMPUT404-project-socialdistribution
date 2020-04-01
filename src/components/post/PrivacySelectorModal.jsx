@@ -1,19 +1,14 @@
-/* eslint-disable arrow-body-style */
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "../../styles/post/PrivacySelectorModal.scss";
 import Modal from "react-bootstrap/Modal";
-import ListGroup from "react-bootstrap/ListGroup";
-import AsyncSelect from "react-select/async";
 import PublicIcon from "@material-ui/icons/Public";
 import VpnLockIcon from "@material-ui/icons/VpnLock";
 import LockIcon from "@material-ui/icons/Lock";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
-import * as friendsService from "../../services/FriendService";
+import UserSelector from "./UserSelector";
 import PRIVACY from "../../constants";
 
 const PRIVACY_MESSAGES = {
@@ -24,41 +19,6 @@ const PRIVACY_MESSAGES = {
   SERVERONLY: "This post will be visible to users on this server",
   UNLISTED: "This post will only be available to users with the link",
 };
-
-
-function UserSelector(props) {
-  const filterColors = (inputValue) => {
-    const colourOptions = [
-      { value: "chocolate", label: "Chocolate" },
-      { value: "strawberry", label: "Strawberry" },
-      { value: "vanilla", label: "Vanilla" },
-    ];
-
-    return colourOptions.filter((i) => i.label.toLowerCase().includes(inputValue.toLowerCase()));
-  };
-
-  const promiseOptions = (inputValue) => {
-    if (inputValue.length > 0) {
-      friendsService.searchAuthors(inputValue).then((response) => {
-        console.log(response);
-      });
-    }
-
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(filterColors(inputValue));
-      }, 1000);
-    });
-  };
-
-  return (
-    <AsyncSelect
-      cacheOptions
-      defaultOptions
-      loadOptions={promiseOptions}
-    />
-  );
-}
 
 class PrivacySelectorModal extends Component {
   constructor(props) {
@@ -78,30 +38,6 @@ class PrivacySelectorModal extends Component {
     this.setState((prevState) => ({
       visibleTo: prevState.visibleTo.filter((person) => person !== username),
     }));
-  }
-
-  // eslint-disable-next-line arrow-body-style
-  renderPeopleSelector = () => {
-    const { visibleTo } = this.state;
-
-    return (
-      <div className="privacy-people-selector">
-        <UserSelector />
-        <ListGroup>
-          {visibleTo.map((username) => (
-            <>
-              <ListGroup.Item>
-                {username}
-                <DeleteRoundedIcon
-                  className="delete-button"
-                  onClick={() => this.handlePrivateUserRemoval(username)}
-                />
-              </ListGroup.Item>
-            </>
-          ))}
-        </ListGroup>
-      </div>
-    );
   }
 
   render() {
@@ -165,9 +101,11 @@ class PrivacySelectorModal extends Component {
           </div>
 
           {
-            selectedPrivacy === PRIVACY.private
-              ? this.renderPeopleSelector()
-              : null
+            selectedPrivacy === PRIVACY.private ? (
+              <UserSelector
+                onUserRemoval={this.handlePrivateUserRemoval}
+              />
+            ) : null
           }
 
         </Modal.Body>
