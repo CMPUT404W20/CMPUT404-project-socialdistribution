@@ -44,7 +44,7 @@ class UserSelector extends Component {
 
     const { onUserAdd } = this.props;
 
-    onUserAdd(user.label);
+    onUserAdd(user.value);
   }
 
   handleInputChange = (newValue) => {
@@ -53,7 +53,14 @@ class UserSelector extends Component {
     });
 
     return newValue;
-  };
+  }
+
+  getUsername = (id) => {
+    const { allAuthors } = this.state;
+    const username = allAuthors.find((author) => author.value === id).label;
+
+    return username;
+  }
 
   render() {
     const { allAuthors, searchValue, loading } = this.state;
@@ -78,7 +85,7 @@ class UserSelector extends Component {
           {visibleTo.map((username) => (
             <>
               <ListGroup.Item>
-                {username}
+                {this.getUsername(username)}
                 <DeleteRoundedIcon
                   className="delete-button"
                   onClick={() => onUserRemoval(username)}

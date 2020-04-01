@@ -24,7 +24,7 @@ class PrivacySelectorModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visibleTo: ["User1", "User2", "User3"],
+      visibleTo: ["https://cmput404-socialdistribution.herokuapp.com/author/1", "https://cmput404-socialdistribution.herokuapp.com/author/6"],
     };
   }
 
