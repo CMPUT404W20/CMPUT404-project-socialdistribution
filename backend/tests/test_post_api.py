@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
+
 
 from backend.models import Post, Host
 from backend.permissions import *
@@ -154,3 +156,38 @@ class TestPostAPI:
         assert len(response.data["posts"]) > 0
         assert response.data["posts"][0]["content"] == test_post.content
         client.logout()
+    
+    def test_update_post(self, client, test_user, test_host):
+        test_user_no_access = User.objects.create_user(
+            username='testuser003', password='ualberta!', host=test_host)
+        test_user_with_access = User.objects.create_user(
+            username='testuser004', password='ualberta!', host=test_host)
+
+        test_post = Post.objects.create(
+            author=test_user_with_access, title="post title", content="post content", visibility = PUBLIC
+        )
+
+        content = json.dumps({
+            "username": test_user_with_access.username,
+            "authorId" : test_user_with_access.get_full_user_id(),
+            "title": "Edited title",
+            "content": "Edited Content",
+            "source":test_post.get_source(),
+            "comments":[],
+            "isGithubPost":"false",
+            "visibility": PUBLIC
+        })
+        client.force_login(test_user_no_access)
+        response = client.put('/posts/{}'.format(test_post.postId),data=content,content_type='application/json', charset='UTF-8')
+        assert response.status_code == 400
+        client.logout()
+
+        client.force_login(test_user_with_access)
+        response = client.put('/posts/{}'.format(test_post.postId),data=content,content_type='application/json', charset='UTF-8')
+        assert response.status_code == 200
+        post=get_object_or_404(Post,pk=test_post.postId)
+        assert post.title == "Edited title"
+        assert post.content == "Edited Content"
+        client.logout()
+
+

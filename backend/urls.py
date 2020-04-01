@@ -59,7 +59,7 @@ urlpatterns = [
     path('posts/<uuid:postId>', PostViewSet.as_view({
         "get": "retrieve",
         "delete": "destroy",
-        "put": "partial_update",
+        "put": "update_post",
     })),
     re_path(r'author/posts/?$', PostViewSet.as_view({
         "get": "get_user_visible_posts",

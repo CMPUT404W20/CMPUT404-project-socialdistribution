@@ -101,6 +101,28 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response({"query": "createPost", "success": False, "message": "wrong request"},
                             status=status.HTTP_400_BAD_REQUEST)
 
+    def update_post(self, request, *args, **kwargs):
+       
+        if request.user.fullId == protocol_removed(request.data["authorId"]):
+            
+            post = get_object_or_404(Post,pk=self.kwargs.get(self.lookup_field))
+            post_data = request.data
+            post_data["author"] = self.request.user.id
+
+            serializer = PostSerializer(post,data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"query": "UpdatePost", "success": True, "message": "Post updated"}, status=status.HTTP_200_OK)
+            else:
+                print(serializer.errors)
+                return Response({"query": "UpdatePost", "success": False, "message": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        else:
+            return Response({"query": "UpdatePost", "success": False, "message": "No access to post"},
+                            status=status.HTTP_400_BAD_REQUEST)
+            
+
+        
+
     def get_user_visible_posts(self, request):
         user = request.user
         visible_posts = Post.objects.none()
@@ -182,3 +204,6 @@ class PostViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
         else:
             return Response(data={"success": False, "msg": "No such user"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+
