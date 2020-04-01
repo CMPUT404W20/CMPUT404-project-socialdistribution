@@ -35,9 +35,13 @@ class PrivacySelectorModal extends Component {
   }
 
   handlePrivateUserAddition = (authorId) => {
-    this.setState((prevState) => ({
-      visibleTo: [...prevState.visibleTo, authorId],
-    }));
+    const { visibleTo } = this.state;
+
+    if (visibleTo.indexOf(authorId) === -1) {
+      this.setState((prevState) => ({
+        visibleTo: [...prevState.visibleTo, authorId],
+      }));
+    }
   }
 
   handlePrivateUserRemoval = (authorId) => {
