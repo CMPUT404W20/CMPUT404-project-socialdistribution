@@ -48,6 +48,8 @@ class PrivacySelectorModal extends Component {
       onVisibilityChange,
     } = this.props;
 
+    const { visibleTo } = this.state;
+
     return (
       <Modal onHide={onHide} show={true} className="privacy-selector-modal">
         <Modal.Body>
@@ -104,6 +106,7 @@ class PrivacySelectorModal extends Component {
             selectedPrivacy === PRIVACY.private ? (
               <UserSelector
                 onUserRemoval={this.handlePrivateUserRemoval}
+                visibleTo={visibleTo}
               />
             ) : null
           }

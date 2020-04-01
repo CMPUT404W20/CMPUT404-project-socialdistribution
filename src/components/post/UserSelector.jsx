@@ -10,42 +10,37 @@ class UserSelector extends Component {
     super(props);
 
     this.state = {
-      options: [
-        { value: "chocolate", label: "Chocolate" },
-        { value: "strawberry", label: "Strawberry" },
-        { value: "vanilla", label: "Vanilla" },
-      ],
-      visibleTo: ["User1", "User2", "User3"],
+      allAuthors: [],
     };
   }
 
   componentDidMount() {
-    const options = [];
+    const allAuthors = [];
 
     friendsService.getAllAuthors().then((authors) => {
       for (let i = 0; i < authors.length; i += 1) {
-        const o = {
+        const author = {
           value: authors[i].id,
           label: authors[i].displayName,
         };
 
-        options.push(o);
+        allAuthors.push(author);
       }
 
       this.setState({
-        options,
+        allAuthors,
       });
     });
   }
 
   render() {
-    const { options, visibleTo } = this.state;
-    const { onUserRemoval } = this.props;
+    const { allAuthors } = this.state;
+    const { onUserRemoval, visibleTo } = this.props;
 
     return (
       <div className="privacy-people-selector">
         <Select
-          options={options}
+          options={allAuthors}
         />
         <ListGroup>
           {visibleTo.map((username) => (
