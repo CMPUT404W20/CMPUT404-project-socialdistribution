@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "../../styles/post/UserSelector.scss";
 import Select from "react-select";
 import ListGroup from "react-bootstrap/ListGroup";
@@ -69,17 +70,19 @@ class UserSelector extends Component {
     if (loading) {
       return (
         <div className="privacy-loading-circle">
-          <Spinner size={"sm"} animation="border" variant="dark" />
+          <Spinner size="sm" animation="border" variant="primary" />
         </div>
       );
     }
     return (
-      <div className="user-selector">
+      <div className="user-selector-wrapper">
         <Select
+          className="user-selector-input"
           options={allAuthors}
           value={searchValue}
           onChange={this.handleSelectChange}
           onInputChange={this.handleInputChange}
+          placeholder="Enter author username"
         />
         <ListGroup>
           {visibleTo.map((username) => (
@@ -98,5 +101,16 @@ class UserSelector extends Component {
     );
   }
 }
+
+UserSelector.propTypes = {
+  onUserAdd: PropTypes.func.isRequired,
+  onUserRemoval: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  visibleTo: PropTypes.array.isRequired,
+};
+
+UserSelector.defaultProps = {
+};
+
 
 export default UserSelector;

@@ -1,13 +1,16 @@
 @import "../common.scss";
 
-.user-selector {
+.user-selector-wrapper {
     margin-top: 30pt;
     font-size: 10pt;
 
-    .list-group-item {
-        // border: none;
-        // background-color: transparent;
+    .user-selector-input {
+        margin-bottom: 10pt;
+    }
 
+    .list-group-item {
+        padding: 0.75rem;
+        
         .delete-button {
             float: right;
             font-size: 17px;
