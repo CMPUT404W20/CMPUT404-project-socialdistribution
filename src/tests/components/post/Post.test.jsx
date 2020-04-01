@@ -1,7 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
 import Post from "../../../components/post/Post";
-import demoImage from "../../../images/demo-img.png";
 
 const post = {
   id: "1",
@@ -13,7 +12,7 @@ const post = {
   comments: [{
     id: "95c76f63-5579-45f6-810f-e0665f2ea588",
     comment: "Sample Comment",
-    published: "2020-03-12T23:41:35.339192Z",
+    published: (new Date()).toISOString(),
     contentType: "text/plain",
     author: { id: "commentAuthorId", displayName: "commentAuthor" },
   }],
