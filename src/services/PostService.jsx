@@ -19,8 +19,8 @@ export const getPosts = () => {
 export const getSinglePost = (postId) => {
   return axios.get(`/posts/${postId}`).then((response) => {
     if (response.status === 200) {
-      if (response.data && response.data.posts) {
-        return response.data;
+      if (response.data && response.data.posts && response.data.posts.length > 0) {
+        return response.data.posts[0];
       }
       return {};
     }

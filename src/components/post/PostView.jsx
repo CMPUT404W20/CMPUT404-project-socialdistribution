@@ -28,8 +28,8 @@ class PostView extends Component {
   loadSinglePost() {
     const { postId } = this.props;
 
-    postService.getSinglePost(postId).then((response) => {
-      const singlePost = response.posts[0];
+    postService.getSinglePost(postId).then((post) => {
+      const singlePost = post;
       const newPost = {};
       const posts = [];
 
