@@ -4,6 +4,7 @@ from django.conf import settings
 from django.forms.models import model_to_dict
 from django.core.cache import cache
 from django.http import HttpResponse
+from django.db.models import Q
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -108,6 +109,7 @@ class PostViewSet(viewsets.ModelViewSet):
         for post in self.get_queryset():
             if user == post.author or user in post.get_visible_users():
                 visible_posts |= Post.objects.filter(postId=post.postId)
+                visible_posts &= Post.objects.filter(Q(content_type="text/plain") | Q(content_type="text/markdown"))
 
         page = self.paginate_queryset(visible_posts)
         serializer = self.get_serializer(page, many=True)
@@ -124,10 +126,21 @@ class PostViewSet(viewsets.ModelViewSet):
                 "{}/posts".format(friend.fullId), friend.host)
             try:
                 response_data = response.json()
-
                 foreign_posts += response_data["posts"]
             except:
                 continue
+
+        for host in Host.objects.exclude(url=settings.APP_HOST):
+            response = get_from_host(
+                "{}author/posts".format(host.url), host)
+
+            if response.status_code == 200:
+                response_data = response.json()
+                posts = response_data["posts"]
+
+                for post in posts:
+                    if post["visibility"] == "PUBLIC" and post not in foreign_posts:
+                        foreign_posts.append(post)
 
         post_data = json.dumps(serializer.data)
         post_data = json.loads(post_data)
@@ -179,7 +192,7 @@ class PostViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(page, many=True)
 
             return self.get_paginated_response(serializer.data)
-            
+
         else:
             author_host = get_host_from_id(author_id)
             visible_posts = []
@@ -191,8 +204,6 @@ class PostViewSet(viewsets.ModelViewSet):
                 if response.status_code == 200:
                     response_data = response.json()
                     posts = response_data["posts"]
-
-                    print(author_id)
 
                     for post in posts:
                         if post["author"] and post["author"]["id"] == author_id and post["visibility"] == "PUBLIC":
