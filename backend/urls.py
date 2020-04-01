@@ -79,6 +79,10 @@ urlpatterns = [
         "get": "get_current_user"
     })),
 
+    # query by username
+    path("author/search/<str:userName>", AuthorViewSet.as_view(({
+        "get": "get_author_by_username"
+    }))),
 
     path('author/<path:pk>/friends/', AuthorViewSet.as_view(({
         "get": "get_friends"

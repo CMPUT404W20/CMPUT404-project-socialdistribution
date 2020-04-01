@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.forms.models import model_to_dict
 from django.core.cache import cache
+from django.http import HttpResponse
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -22,6 +23,7 @@ from backend.apiviews.paginations import PostPagination
 
 import json
 import uuid
+import base64
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -47,6 +49,12 @@ class PostViewSet(viewsets.ModelViewSet):
         GET /posts/{POST_ID} : access to a single post with id = {POST_ID}
         '''
         instance = self.get_object()
+
+        # Check if the post is image
+        if instance.is_image():
+            image = instance.content
+            return HttpResponse(base64.b64decode(image), content_type=instance.content_type)
+
         queryset = Post.objects.none()
         queryset |= Post.objects.filter(pk=instance.pk).order_by("pk")
 
@@ -82,7 +90,10 @@ class PostViewSet(viewsets.ModelViewSet):
             serializer = PostSerializer(
                 data=post_data, context={"request": request})
             if serializer.is_valid():
-                serializer.save()
+                new_post = serializer.save()
+                if new_post.is_image():
+                    return Response({"query": "createPost", "success": True, "message": "Image uploaded", "uuid": new_post.postId}, status=status.HTTP_201_CREATED)
+
                 return Response({"query": "createPost", "success": True, "message": "Post created"}, status=status.HTTP_201_CREATED)
             else:
                 return Response({"query": "createPost", "success": False, "message": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)

@@ -16,6 +16,19 @@ export const getPosts = () => {
   });
 };
 
+export const getSinglePost = (postId) => {
+  return axios.get(`/posts/${postId}`).then((response) => {
+    if (response.status === 200) {
+      if (response.data && response.data.posts && response.data.posts.length > 0) {
+        return response.data.posts[0];
+      }
+      return {};
+    }
+
+    throw new Error("Unable to retrieve the post");
+  });
+};
+
 export const getUserPosts = (fullUserId) => {
   return axios.get(`/author/${fullUserId}/posts`).then((response) => {
     if (response.status === 200) {
@@ -38,7 +51,7 @@ export const createUserPosts = (postData) => {
   // eslint-disable-next-line object-shorthand
   return axios.post("/author/posts", postData, { headers: headers }).then((response) => {
     if (response.status === 201) {
-      return response.data.success;
+      return response.data;
     }
 
     throw new Error("Unable to create post");

@@ -17,8 +17,43 @@ class PostView extends Component {
       editingPostId: null,
       loading: true,
     };
+    const { postId } = this.props;
+    if (postId) {
+      this.loadSinglePost();
+    } else {
+      this.loadPosts();
+    }
+  }
 
-    this.loadPosts();
+  loadSinglePost() {
+    const { postId } = this.props;
+
+    postService.getSinglePost(postId).then((post) => {
+      const singlePost = post;
+      const newPost = {};
+      const posts = [];
+
+      newPost.username = singlePost.author.displayName;
+      newPost.authorId = singlePost.author.id;
+      newPost.title = singlePost.title;
+      newPost.content = singlePost.content;
+      newPost.published = singlePost.published;
+      newPost.id = singlePost.id;
+      newPost.source = singlePost.source;
+      newPost.comments = singlePost.comments || [];
+      newPost.isGithubPost = singlePost.isGithubPost || false;
+
+      posts.push(newPost);
+
+      this.setState({
+        posts,
+        loading: false,
+      });
+    }).catch(() => {
+      return (
+        <p>Not a Post</p>
+      );
+    });
   }
 
   loadPosts() {
@@ -26,7 +61,6 @@ class PostView extends Component {
 
     // userId === null means it's rendering homepage and not the profile page
     const getPosts = userId === null ? postService.getPosts() : postService.getUserPosts(userId);
-
     const posts = [];
 
     getPosts.then((response) => {
@@ -34,20 +68,21 @@ class PostView extends Component {
         const newPost = {};
         const post = response.posts[i];
 
-        newPost.username = post.author.displayName;
-        newPost.authorId = post.author.id;
-        newPost.title = post.title;
-        newPost.content = post.content;
-        newPost.published = post.published;
-        newPost.id = post.id;
-        newPost.source = post.source;
-        newPost.imageSrc = null;
-        newPost.comments = post.comments || [];
-        newPost.isGithubPost = post.isGithubPost || false;
-        newPost.visibility = post.visibility || "PUBLIC";
-        newPost.visibleTo = post.visibleTo || [];
+        if (!post.unlisted && !post.content_type.includes("image")) {
+          newPost.username = post.author.displayName;
+          newPost.authorId = post.author.id;
+          newPost.title = post.title;
+          newPost.content = post.content;
+          newPost.published = post.published;
+          newPost.id = post.id;
+          newPost.source = post.source;
+          newPost.comments = post.comments || [];
+          newPost.isGithubPost = post.isGithubPost || false;
+          newPost.visibility = post.visibility || "PUBLIC";
+          newPost.visibleTo = post.visibleTo || [];
 
-        posts.push(newPost);
+          posts.push(newPost);
+        }
       }
 
       this.setState({
@@ -103,7 +138,6 @@ class PostView extends Component {
 
   render() {
     const { editingPostId, posts, loading } = this.state;
-
     if (loading) {
       return <div />;
     }
@@ -130,7 +164,6 @@ class PostView extends Component {
                 originalPost={post}
                 defaultPostTitle={post.title}
                 defaultPostContent={post.content}
-                defaultPostImage={post.imageSrc}
                 defaultPostVisibility={post.visibility}
                 onSubmit={this.handlePostUpdate}
                 // set the current post being edited to null -> close the edit dialog
@@ -168,10 +201,12 @@ class PostView extends Component {
 PostView.propTypes = {
   // pass in the full user id to get posts for that user only
   userId: PropTypes.string,
+  postId: PropTypes.string,
 };
 
 PostView.defaultProps = {
   userId: null,
+  postId: "",
 };
 
 export default PostView;
