@@ -23,13 +23,24 @@ const PRIVACY_MESSAGES = {
 class PrivacySelectorModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      visibleTo: [],
+    };
   }
 
   handleSubmit = () => {
     const { onHide } = this.props;
 
     onHide();
+  }
+
+  // eslint-disable-next-line arrow-body-style
+  renderPeopleSelector = () => {
+    return (
+      <div className="privacy-people-selector">
+        Select People
+      </div>
+    );
   }
 
   render() {
@@ -87,10 +98,17 @@ class PrivacySelectorModal extends Component {
               <VisibilityOffIcon />
             </button>
           </div>
-  
+
           <div className="privacy-message">
             { PRIVACY_MESSAGES[selectedPrivacy] }
           </div>
+
+          {
+            selectedPrivacy === PRIVACY.private
+              ? this.renderPeopleSelector()
+              : null
+          }
+
         </Modal.Body>
         <Modal.Footer className="privacy-select-button-wrapper">
           <button
