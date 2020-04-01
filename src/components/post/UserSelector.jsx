@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import "../../styles/post/PrivacySelectorModal.scss";
+import "../../styles/post/UserSelector.scss";
 import Select from "react-select";
 import ListGroup from "react-bootstrap/ListGroup";
+import Spinner from "react-bootstrap/Spinner";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import * as friendsService from "../../services/FriendService";
 
@@ -12,6 +13,7 @@ class UserSelector extends Component {
     this.state = {
       allAuthors: [],
       searchValue: null,
+      loading: true,
     };
   }
 
@@ -30,6 +32,7 @@ class UserSelector extends Component {
 
       this.setState({
         allAuthors,
+        loading: false,
       });
     });
   }
@@ -53,11 +56,18 @@ class UserSelector extends Component {
   };
 
   render() {
-    const { allAuthors, searchValue } = this.state;
+    const { allAuthors, searchValue, loading } = this.state;
     const { onUserRemoval, visibleTo } = this.props;
 
+    if (loading) {
+      return (
+        <div className="privacy-loading-circle">
+          <Spinner size={"sm"} animation="border" variant="dark" />
+        </div>
+      );
+    }
     return (
-      <div className="privacy-people-selector">
+      <div className="user-selector">
         <Select
           options={allAuthors}
           value={searchValue}

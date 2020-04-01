@@ -53,26 +53,4 @@
           width: 100%;
         }
     }
-
-    .privacy-people-selector {
-        margin-top: 30pt;
-        font-size: 10pt;
-
-        .list-group-item {
-            // border: none;
-            // background-color: transparent;
-
-            .delete-button {
-                float: right;
-                font-size: 17px;
-                cursor: pointer;
-
-                &:hover {
-                    color: $accent-color;
-                }
-            }
-        }
-
-    }
-    
 }
