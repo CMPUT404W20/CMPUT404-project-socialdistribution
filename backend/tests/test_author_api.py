@@ -35,8 +35,10 @@ class TestAuthorAPI:
         assert response.data["url"] == test_user.get_profile_url()
         assert response.data["friends"] is not None
 
-        assert response.data["friends"][0]["id"] == friend_user[0].get_full_user_id()
-        assert response.data["friends"][1]["id"] == friend_user[1].get_full_user_id()
+        assert response.data["friends"][0]["id"] == friend_user[0].get_full_user_id(
+        )
+        assert response.data["friends"][1]["id"] == friend_user[1].get_full_user_id(
+        )
 
     def test_get_friends(self, client, test_user, friend_user):
 
@@ -79,7 +81,6 @@ class TestAuthorAPI:
         assert response.status_code == 200
         assert response.data["authors"] != []
 
-
         # test if author exists with common substring: stu
         test_user1_username = "testusernumero2"
         test_user1_email = "teste1@gmail.com"
@@ -97,3 +98,61 @@ class TestAuthorAPI:
         response = client.get("/author/search/stu")
         assert response.status_code == 200
         assert response.data["authors"] != []
+
+    def test_update_password(self, client, test_user, friend_user):
+        client.force_login(test_user)
+        test_auth_id = test_user.get_full_user_id()
+        response = client.get("/author/search/testuser001")
+        assert response.status_code == 200
+        assert response.data["authors"] != []
+
+        # update password only
+        assert not User.objects.filter(password="liluzi").exists()
+        post_body_1 = json.dumps({
+            "password": "liluzi",
+        })
+        response = client.put("/author/update/", data=post_body_1,
+                              content_type='application/json', charset='UTF-8')
+        assert response.status_code == 200
+        assert User.objects.filter(password="liluzi").exists()
+
+    def test_update_githubURL(self, client, test_user, friend_user):
+        # update githuburl only
+        client.force_login(test_user)
+        assert not User.objects.filter(githubUrl="liluzi@gmail.com").exists()
+        post_body_1 = json.dumps({
+            "github_URL": "liluzi@gmail.com",
+        })
+        response = client.put("/author/update/", data=post_body_1,
+                              content_type='application/json', charset='UTF-8')
+        assert response.status_code == 200
+        assert User.objects.filter(githubUrl="liluzi@gmail.com").exists()
+
+    def test_update_profile(self, client, test_user, friend_user):
+        client.force_login(test_user)
+        assert not User.objects.filter(
+            githubUrl="liluzi@gmail.com", password="somepassword").exists()
+        post_body_1 = json.dumps({
+            "github_URL": "liluzi1@gmail.com",
+            "password": "somepassword"
+
+        })
+
+        response = client.put("/author/update/", data=post_body_1,
+                              content_type='application/json', charset='UTF-8')
+        assert response.status_code == 200
+        assert not User.objects.filter(
+            githubUrl="liluzi@gmail.com", password="somepassword").exists()
+
+    def test_update_profile_error(self, client, test_user, friend_user):
+        post_body_1 = json.dumps({
+            "somebody": "liluzi1@gmail.com",
+            "something": "somepassword"
+        })
+        response = client.put("/author/update/", data=post_body_1,content_type='application/json', charset='UTF-8')
+        assert response.status_code == 401
+        client.force_login(test_user)                                                        
+        response = client.put("/author/update/", data=post_body_1,
+                              content_type='application/json', charset='UTF-8')
+        assert response.status_code == 406
+

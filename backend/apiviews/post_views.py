@@ -149,6 +149,9 @@ class PostViewSet(viewsets.ModelViewSet):
             except:
                 continue
 
+            
+
+                
         post_data = json.dumps(serializer.data)
         post_data = json.loads(post_data)
         post_data += foreign_posts

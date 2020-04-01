@@ -88,6 +88,10 @@ urlpatterns = [
         "get": "get_friends"
     }))),
 
+    path('author/update/', AuthorViewSet.as_view(({
+         "put": "update_user"
+    }))),
+
     path('author/<path:authorId>/friends', FriendViewSet.as_view(({
         "post": "post_query_friends"
     }))),
@@ -95,6 +99,7 @@ urlpatterns = [
     path('author/<path:authorId1>/friends/<path:authorId2>', FriendViewSet.as_view(({
         "get": "check_friends"
     }))),
+
 
     path('author/<path:pk>', AuthorViewSet.as_view({
         "get": "get_profile"
