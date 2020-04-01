@@ -127,9 +127,10 @@ class Post(models.Model):
         elif self.visibility == "PRIVATE":
             visible_to = map(protocol_removed, self.visibleTo)
             users = User.objects.filter(fullId__in=visible_to)
-
         elif self.visibility == "UNLISTED":
             users = User.objects.none()
+        elif self.visibility == "SERVERONLY":
+            users = User.objects.filter(host__url=settings.APP_HOST)
 
         users |= User.objects.filter(id=self.author.id)
 
