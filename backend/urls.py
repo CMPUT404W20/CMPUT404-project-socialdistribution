@@ -59,7 +59,7 @@ urlpatterns = [
     path('posts/<uuid:postId>', PostViewSet.as_view({
         "get": "retrieve",
         "delete": "destroy",
-        "put": "partial_update",
+        "put": "update_post",
     })),
     re_path(r'author/posts/?$', PostViewSet.as_view({
         "get": "get_user_visible_posts",
@@ -71,7 +71,11 @@ urlpatterns = [
 
     # url of Author Operations
     path('author', AuthorViewSet.as_view({
-        "get": "get_authors"
+        "get": "get_local_authors"
+    })),
+
+    path('author/all/', AuthorViewSet.as_view({
+        "get": "get_all_authors"
     })),
 
     # get current authenticated user information
@@ -88,6 +92,10 @@ urlpatterns = [
         "get": "get_friends"
     }))),
 
+    path('author/update/', AuthorViewSet.as_view(({
+         "put": "update_user"
+    }))),
+
     path('author/<path:authorId>/friends', FriendViewSet.as_view(({
         "post": "post_query_friends"
     }))),
@@ -95,6 +103,7 @@ urlpatterns = [
     path('author/<path:authorId1>/friends/<path:authorId2>', FriendViewSet.as_view(({
         "get": "check_friends"
     }))),
+
 
     path('author/<path:pk>', AuthorViewSet.as_view({
         "get": "get_profile"

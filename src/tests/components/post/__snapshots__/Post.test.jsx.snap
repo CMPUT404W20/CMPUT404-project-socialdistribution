@@ -32,19 +32,23 @@ exports[`Post Block Components should render correctly 1`] = `
         <ContextConsumer>
           <Component />
         </ContextConsumer>
-        <DropdownItem
-          as={
-            Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "displayName": "SafeAnchor",
-              "render": [Function],
-            }
-          }
-          disabled={false}
-          href="#"
+        <CopyToClipboard
+          text="http://localhost/share/posts/1"
         >
-          Copy Link
-        </DropdownItem>
+          <DropdownItem
+            as={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "displayName": "SafeAnchor",
+                "render": [Function],
+              }
+            }
+            disabled={false}
+            href="#"
+          >
+            Copy Link
+          </DropdownItem>
+        </CopyToClipboard>
       </Fade>
     </DropdownButton>
     <div
@@ -122,7 +126,7 @@ exports[`Post Block Components should render correctly 1`] = `
             <p
               className="comment-time"
             >
-              19 days ago
+              20 days ago
             </p>
           </div>
         </div>
@@ -180,19 +184,23 @@ exports[`Post Block Components should render markdown content correctly 1`] = `
         <ContextConsumer>
           <Component />
         </ContextConsumer>
-        <DropdownItem
-          as={
-            Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "displayName": "SafeAnchor",
-              "render": [Function],
-            }
-          }
-          disabled={false}
-          href="#"
+        <CopyToClipboard
+          text="http://localhost/share/posts/1"
         >
-          Copy Link
-        </DropdownItem>
+          <DropdownItem
+            as={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "displayName": "SafeAnchor",
+                "render": [Function],
+              }
+            }
+            disabled={false}
+            href="#"
+          >
+            Copy Link
+          </DropdownItem>
+        </CopyToClipboard>
       </Fade>
     </DropdownButton>
     <div
@@ -302,7 +310,7 @@ Normal Text
             <p
               className="comment-time"
             >
-              19 days ago
+              20 days ago
             </p>
           </div>
         </div>

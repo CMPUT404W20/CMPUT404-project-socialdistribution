@@ -37,11 +37,16 @@ class FriendViewSet(viewsets.ViewSet):
         # author/<path:authorId1>/friends/<path:authorId2>
         id1 = protocol_removed(authorId1)
         id2 = protocol_removed(authorId2)
-        author1 = get_object_or_404(User, fullId=id1)
-        author2 = get_object_or_404(User, fullId=id2)
-        # check for two-way friendship
-        friends = Friend.objects.filter(toUser__fullId=id1, fromUser__fullId=id2).exists() and Friend.objects.filter(fromUser__fullId=id1, toUser__fullId=id2).exists()
-        return Response({"query": "friends", "authors": [author1.get_full_user_id(), author2.get_full_user_id()], "friends": friends})
+        
+        try:
+            author1 = User.objects.get(fullId=id1)
+            author2 = User.objects.get(fullId=id2)
+        except:
+            return Response({"query": "friends", "authors": [authorId1, authorId2], "friends": False})
+        else:
+            # check for two-way friendship
+            friends = Friend.objects.filter(toUser__fullId=id1, fromUser__fullId=id2).exists() and Friend.objects.filter(fromUser__fullId=id1, toUser__fullId=id2).exists()
+            return Response({"query": "friends", "authors": [author1.get_full_user_id(), author2.get_full_user_id()], "friends": friends})
 
 
 

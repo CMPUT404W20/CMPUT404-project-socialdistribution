@@ -129,13 +129,17 @@ class TestFriend:
 
         assert notFriendsResponse.data["authors"] == [
             test_user.get_full_user_id(), friend_user[1].get_full_user_id()]
-        assert notFriendsResponse.data['friends'] == False
+        assert not notFriendsResponse.data['friends'] 
 
         # Checking scenario where the user(s) does not exist, 404 Error
 
         nouserResponse = client.get(
             '/author/{}/friends/{}'.format(test_auth_id, self.user_notFound_id))
-        assert nouserResponse.status_code == 404
+        assert nouserResponse.status_code == 200
+        assert notFriendsResponse.data["query"] == "friends"
+        assert not notFriendsResponse.data['friends'] 
+
+
 
     def test_reject_friend_request(self, client, test_user, test_user_2, test_host):
         # checking scenario where a friend request is rejected

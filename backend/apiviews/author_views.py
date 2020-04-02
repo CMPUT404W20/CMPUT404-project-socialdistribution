@@ -24,9 +24,17 @@ import json
 
 class AuthorViewSet(viewsets.ViewSet):
 
-    def get_authors(self, request, *args, **kwargs):
+    def get_local_authors(self, request, *args, **kwargs):
         '''
-        Get all the authors
+        Get all the authors on our server
+        '''
+        author = User.objects.all()
+        serializer = UserSerializer(author, many=True)
+        return Response(serializer.data)
+    
+    def get_all_authors(self, request, *args, **kwargs):
+        '''
+        Get all the authors (local and remote)
         '''
         foreign_author = []
         for host in Host.objects.all():
@@ -35,7 +43,7 @@ class AuthorViewSet(viewsets.ViewSet):
                 response = requests.get(
                     host.url+"author",
                     auth=(host.serviceAccountUsername,
-                        host.serviceAccountPassword)
+                          host.serviceAccountPassword)
                 )
 
                 if response.status_code == 200:
@@ -75,7 +83,7 @@ class AuthorViewSet(viewsets.ViewSet):
         '''
         /author/{author_id}/friends: Get all the friends of the author
         '''
-    
+
         url = get_host_from_id(pk)
         if url != settings.APP_HOST:
             if Host.objects.filter(url=url).exists():
@@ -114,20 +122,45 @@ class AuthorViewSet(viewsets.ViewSet):
         else:
             return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
 
+    def update_user(self, request, *args, **kwargs):
+        # takes in either password and/or githubURL
+        # author/update/
+        if request.user.is_authenticated:
+            author = get_object_or_404(User, username=request.user)
+            # check in dict
+            if "github_URL" in request.data and not "password" in request.data:
+                github_URL = request.data["github_URL"]
+                User.objects.filter(username=request.user).update(
+                    githubUrl=github_URL)
+            elif not "github_URL" in request.data and "password" in request.data:
+                password = request.data["password"]
+                User.objects.filter(username=request.user).update(
+                    password=password)
+            elif not "github_URL" in request.data and not "password" in request.data:
+                return Response({"data": False}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            else:
+                password = request.data["password"]
+                github_URL = request.data["github_URL"]
+                User.objects.filter(username=request.user).update(
+                    githubUrl=github_URL, password=password)
+            return Response({"query": "update_user", "success": True, "message": "User updated"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
+
     def get_author_by_username(self, request, userName, *args, **kwargs):
         # Given some string, searches all users and returns matching users
         # /authors/search/<str:userName>
         queryset_of_authors = User.objects.filter(username__contains=userName)
         serializer = UserSerializer(queryset_of_authors, many=True)
         local_authors = serializer.data
-    
+
         foreign_authors = []
         for host in Host.objects.all():
             if host.serviceAccountUsername and host.serviceAccountPassword:
                 response = requests.get(
                     host.url+"author",
                     auth=(host.serviceAccountUsername,
-                        host.serviceAccountPassword)
+                          host.serviceAccountPassword)
                 )
 
                 if response.status_code == 200:
@@ -137,7 +170,7 @@ class AuthorViewSet(viewsets.ViewSet):
                         foreign_authors = response_data["data"]
                     else:
                         foreign_authors += response_data
-        
+
         # have to manually search their usernames for foreign authors
         all_authors = local_authors
         for author in foreign_authors:

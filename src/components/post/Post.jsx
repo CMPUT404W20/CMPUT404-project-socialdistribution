@@ -10,6 +10,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
 import Collapse from "react-bootstrap/Collapse";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import moreIcon from "../../images/more-icon.svg";
 import * as CommentService from "../../services/CommentService";
 import { userContext } from "../../contexts/UserContext";
@@ -42,6 +43,7 @@ class Post extends Component {
 
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
     const formattedTime = moment(post.published).fromNow();
+    const sharableLink = `${window.location.href}share/posts/${post.id}`;
 
     return (
       <div className="post-info">
@@ -68,7 +70,9 @@ class Post extends Component {
                   )
                   : null)}
               </userContext.Consumer>
-              <Dropdown.Item href="#">Copy Link</Dropdown.Item>
+              <CopyToClipboard text={sharableLink}>
+                <Dropdown.Item href="#">Copy Link</Dropdown.Item>
+              </CopyToClipboard>
             </>
           </Fade>
         </DropdownButton>
