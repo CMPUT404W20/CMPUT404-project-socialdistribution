@@ -81,6 +81,7 @@ class TestPostAPI:
             "content": test_post_content,
             "visibility": PUBLIC,
             "content_type": "image/png;base64",
+            "unlisted": True,
         })
 
         response = client.post('/author/posts', data=image_body_1,
