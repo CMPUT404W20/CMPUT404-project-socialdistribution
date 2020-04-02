@@ -61,7 +61,7 @@ class PrivacySelectorModal extends Component {
     const { visibleTo } = this.state;
 
     return (
-      <Modal onHide={onHide} show={true} className="privacy-selector-modal">
+      <Modal onHide={onHide} show={show} className="privacy-selector-modal">
         <Modal.Body>
           <div className="privacy-button-wrapper">
             <button
