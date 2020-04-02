@@ -71,7 +71,11 @@ urlpatterns = [
 
     # url of Author Operations
     path('author', AuthorViewSet.as_view({
-        "get": "get_authors"
+        "get": "get_local_authors"
+    })),
+
+    path('author/all/', AuthorViewSet.as_view({
+        "get": "get_all_authors"
     })),
 
     # get current authenticated user information

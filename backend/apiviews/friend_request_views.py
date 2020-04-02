@@ -94,14 +94,16 @@ class FriendRequestViewSet(viewsets.ViewSet):
                         "friendrequest", received_user.host, request_data)
 
                     if response.status_code == 201:
-                        FriendRequest.objects.create(
-                            fromUser=requested_user, toUser=received_user)
+                        if not FriendRequest.objects.filter(fromUser=requested_user, toUser=received_user).exists():
+                            FriendRequest.objects.create(
+                                fromUser=requested_user, toUser=received_user)
                         return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_201_CREATED)
                     else:
                         return Response({"query": "createFriendRequest", "success": False, "message": "Unable to create Friend Request"}, status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    FriendRequest.objects.create(
-                        fromUser=requested_user, toUser=received_user)
+                    if not FriendRequest.objects.filter(fromUser=requested_user, toUser=received_user).exists():
+                        FriendRequest.objects.create(
+                            fromUser=requested_user, toUser=received_user)
                     return Response({"query": "createFriendRequest", "success": True, "message": "FriendRequest created"}, status=status.HTTP_201_CREATED)
         else:
             return Response({"query": "createFriend", "success": False, "message": "wrong request"}, status=status.HTTP_400_BAD_REQUEST)

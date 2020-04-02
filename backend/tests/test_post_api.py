@@ -18,11 +18,22 @@ User = get_user_model()
 @pytest.mark.django_db
 class TestPostAPI:
 
-    def test_get_post_by_id(self, client, test_user):
+    def test_get_post_by_id(self, client, test_user, test_user_2):
         test_post = Post.objects.create(
-            author=test_user, title="post title", content="post content")
+            author=test_user, title="post title", content="post content", visibility=FRIENDS)
         test_post_id = test_post.postId
 
+        # without logging in, user shouldn't be able to view the post
+        response = client.get('/posts/{}'.format(test_post_id))
+        assert response.status_code == 401
+
+        # User who has no permission to view the post shouldn't see this post
+        client.force_login(test_user_2)
+        response = client.get('/posts/{}'.format(test_post_id))
+        assert response.status_code == 401
+        client.logout()
+        
+        client.force_login(test_user)
         response = client.get('/posts/{}'.format(test_post_id))
         assert response.status_code == 200
         assert response.data["query"] == "posts"
