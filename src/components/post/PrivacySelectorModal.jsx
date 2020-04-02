@@ -9,7 +9,6 @@ import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import UserSelector from "./UserSelector";
-import PRIVACY from "../../constants";
 
 const PRIVACY_MESSAGES = {
   PUBLIC: "This post will be visible to everyone",
@@ -19,6 +18,16 @@ const PRIVACY_MESSAGES = {
   SERVERONLY: "This post will be visible to users on this server",
   UNLISTED: "This post will only be available to users with the link",
 };
+
+const PRIVACY = Object.freeze({
+  public: "PUBLIC",
+  private: "PRIVATE",
+  friends: "FRIENDS",
+  mutualFriends: "FOAF",
+  server: "SERVERONLY",
+  unlisted: "UNLISTED",
+});
+
 
 class PrivacySelectorModal extends Component {
   constructor(props) {
