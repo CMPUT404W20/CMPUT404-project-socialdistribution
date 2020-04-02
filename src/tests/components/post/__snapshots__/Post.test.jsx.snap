@@ -126,7 +126,7 @@ exports[`Post Block Components should render correctly 1`] = `
             <p
               className="comment-time"
             >
-              19 days ago
+              20 days ago
             </p>
           </div>
         </div>
@@ -310,7 +310,7 @@ Normal Text
             <p
               className="comment-time"
             >
-              19 days ago
+              20 days ago
             </p>
           </div>
         </div>
