@@ -85,7 +85,7 @@ class UserSelector extends Component {
           value={searchValue}
           onChange={this.handleSelectChange}
           onInputChange={this.handleInputChange}
-          placeholder="Enter author username"
+          placeholder="Search author by username"
           theme={(theme) => ({
             ...theme,
             borderRadius: 5,

@@ -43,16 +43,17 @@
             float: right;
             margin-left: 10px;
             line-height: 30pt;
+            position: relative;
+            left: 3px;
+            
         }
         .dropdown-menu {
             @extend %dropdown;
         }
         .dropdown-toggle::after {
             border: none;
+            margin-left: 0;
         }
-    }
-    .post-img {
-        width: 100%;
     }
     .button-block {
         text-align: right;
@@ -139,6 +140,10 @@
             p {
                 margin-top: 1rem;
             }
+        }
+
+        img {
+            max-width: 100%;
         }
     }
     .spacer {
