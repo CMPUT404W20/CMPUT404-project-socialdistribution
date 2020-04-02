@@ -34,7 +34,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     lookup_field = "postId"
     pagination_class = PostPagination
 
@@ -234,12 +234,13 @@ class PostViewSet(viewsets.ModelViewSet):
                 posts = response_data["posts"]
                 
                 for post in posts:
-                    if post["author"] and post["author"]["id"] == author_id and post["visibility"] == "PUBLIC":
+                    if post["author"] and (post["author"]["id"] == author_id or post["author"]["id"] == protocol_removed(author_id)) and post["visibility"] == "PUBLIC":
                         visible_posts.append(post)
                 
                 page = self.paginate_queryset(visible_posts)
                 return self.get_paginated_response(page)
-
+            else:
+                return Response(data={"success": False, "msg": "Can't connect to user's host at the moment"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(data={"success": False, "msg": "No such user or user's host not connected"}, status=status.HTTP_400_BAD_REQUEST)
                 
