@@ -23,6 +23,7 @@ class EditablePost extends Component {
       postImage: props.defaultPostImage,
       postVisibility: props.defaultPostVisibility,
       postVisibleTo: props.defaultPostVisibleTo,
+      postUnlisted: props.defaultPostUnlisted,
     };
   }
 
@@ -91,6 +92,7 @@ class EditablePost extends Component {
       postContent,
       postVisibility,
       postVisibleTo,
+      postUnlisted,
     } = this.state;
 
     const { onSubmit } = this.props;
@@ -99,6 +101,7 @@ class EditablePost extends Component {
     originalPost.title = postTitle;
     originalPost.visibility = postVisibility;
     originalPost.visibleTo = postVisibleTo;
+    originalPost.unlisted = postUnlisted;
 
     onSubmit(originalPost);
     this.setState({
@@ -107,6 +110,7 @@ class EditablePost extends Component {
       postImage: "",
       postVisibility: "PUBLIC",
       postVisibleTo: [],
+      postUnlisted: false,
     });
   };
 
@@ -128,10 +132,11 @@ class EditablePost extends Component {
     }));
   }
 
-  handlePostVisibilityChange = (visibility, visibleTo) => {
+  handlePostVisibilityChange = (visibility, visibleTo, unlisted) => {
     this.setState({
       postVisibility: visibility,
       postVisibleTo: visibleTo,
+      postUnlisted: unlisted,
       privacyModalVisibility: false,
     });
   }
@@ -146,6 +151,7 @@ class EditablePost extends Component {
       postImage,
       postVisibility,
       postVisibleTo,
+      postUnlisted,
     } = this.state;
 
     const { editMode, onDiscard } = this.props;
@@ -181,6 +187,7 @@ class EditablePost extends Component {
             onSubmit={this.handlePostVisibilityChange}
             selectedVisibility={postVisibility}
             selectedVisibileTo={postVisibleTo}
+            unlisted={postUnlisted}
           />
           <form className="editable-post-input-wrapper" action="submit">
             <TextareaAutosize
@@ -263,6 +270,7 @@ EditablePost.propTypes = {
   defaultPostVisibility: PropTypes.string,
   // eslint-disable-next-line react/forbid-prop-types
   defaultPostVisibleTo: PropTypes.array,
+  defaultPostUnlisted: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
   onDiscard: PropTypes.func,
 };
@@ -275,6 +283,7 @@ EditablePost.defaultProps = {
   defaultPostImage: "",
   defaultPostVisibility: "PUBLIC",
   defaultPostVisibleTo: [],
+  defaultPostUnlisted: false,
   onDiscard: () => {},
 };
 

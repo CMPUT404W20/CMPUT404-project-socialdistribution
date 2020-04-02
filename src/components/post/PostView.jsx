@@ -80,6 +80,7 @@ class PostView extends Component {
           newPost.isGithubPost = post.isGithubPost || false;
           newPost.visibility = post.visibility || "PUBLIC";
           newPost.visibleTo = post.visibleTo || [];
+          newPost.unlisted = post.unlisted || false;
 
           posts.push(newPost);
         }
@@ -166,6 +167,7 @@ class PostView extends Component {
                 defaultPostContent={post.content}
                 defaultPostVisibility={post.visibility}
                 defaultPostVisibleTo={post.visibleTo}
+                defaultPostUnlisted={post.unlisted}
                 onSubmit={this.handlePostUpdate}
                 // set the current post being edited to null -> close the edit dialog
                 onDiscard={() => this.handleEditToggle(null)}

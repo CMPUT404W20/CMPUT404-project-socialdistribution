@@ -31,10 +31,16 @@ const PRIVACY_MESSAGES = Object.freeze({
 class PrivacySelectorModal extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       visibility: props.selectedVisibility,
       visibleTo: props.selectedVisibileTo,
     };
+
+    // convert the public unlisted posts to an unlisted visibility for this component
+    if (props.unlisted === true) {
+      this.state.visibility = PRIVACY.unlisted;
+    }
   }
 
   handleVisibleToAddition = (authorId) => {
@@ -70,7 +76,12 @@ class PrivacySelectorModal extends Component {
     const { visibility, visibleTo } = this.state;
     const { onSubmit } = this.props;
 
-    onSubmit(visibility, visibleTo);
+    if (visibility === PRIVACY.unlisted) {
+      // unlisted get's saved as a public post with the unlisted flag set
+      onSubmit(PRIVACY.public, visibleTo, true);
+    } else {
+      onSubmit(visibility, visibleTo, false);
+    }
   }
 
   handleHide = () => {
@@ -174,6 +185,7 @@ PrivacySelectorModal.propTypes = {
   selectedVisibility: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   selectedVisibileTo: PropTypes.array.isRequired,
+  unlisted: PropTypes.bool.isRequired,
 };
 
 PrivacySelectorModal.defaultProps = {
