@@ -112,7 +112,10 @@ class Post(models.Model):
 
     def get_visible_users(self):
         if self.visibility == "PUBLIC":
-            users = User.objects.all()
+            if self.is_unlisted:
+                users = User.objects.none()
+            else:
+                users = User.objects.all()
         elif self.visibility == "FRIENDS":
             users = self.author.get_friends()
         elif self.visibility == "FOAF":
@@ -123,8 +126,7 @@ class Post(models.Model):
             users = User.objects.filter(fullId__in=visible_to)
         elif self.visibility == "SERVERONLY":
             user = User.objects.filter(host__url=settings.APP_HOST)
-        elif self.is_unlisted:
-            users = User.objects.none()
+            
 
         users |= User.objects.filter(id=self.author.id)
 
