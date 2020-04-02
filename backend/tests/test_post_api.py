@@ -55,7 +55,8 @@ class TestPostAPI:
         post_body_1 = json.dumps({
             "title": test_post_title,
             "content": test_post_content,
-            "visibility": PUBLIC
+            "visibility": PUBLIC,
+            "unlisted": False,
         })
 
         response = client.post('/author/posts', data=post_body_1,
