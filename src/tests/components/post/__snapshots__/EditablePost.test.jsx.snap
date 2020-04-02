@@ -28,8 +28,9 @@ exports[`Post box Component should render correctly 1`] = `
     />
     <PrivacySelectorModal
       onHide={[Function]}
-      onVisibilityChange={[Function]}
-      selectedPrivacy="PUBLIC"
+      onSubmit={[Function]}
+      selectedVisibileTo={Array []}
+      selectedVisibility="PUBLIC"
       show={false}
     />
     <form
