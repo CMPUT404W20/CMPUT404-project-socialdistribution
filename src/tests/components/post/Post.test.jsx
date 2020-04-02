@@ -1,7 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
 import Post from "../../../components/post/Post";
-import demoImage from "../../../images/demo-img.png";
 
 const post = {
   id: "1",
