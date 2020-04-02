@@ -32,6 +32,7 @@ exports[`Post box Component should render correctly 1`] = `
       selectedVisibileTo={Array []}
       selectedVisibility="PUBLIC"
       show={false}
+      unlisted={false}
     />
     <form
       action="submit"
