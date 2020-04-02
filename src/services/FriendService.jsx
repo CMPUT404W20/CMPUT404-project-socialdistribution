@@ -94,7 +94,7 @@ export const rejectFriendRequest = (author, friend) => {
 };
 
 export const getAllAuthors = () => {
-  return axios.get("/author").then((response) => {
+  return axios.get("/author/all/").then((response) => {
     if (response.status === 200) {
       return response.data;
     }
