@@ -81,7 +81,6 @@ class Post(models.Model):
         ("FRIENDS", "FRIENDS"),
         ("PRIVATE", "PRIVATE"),
         ("SERVERONLY", "SERVERONLY"),
-        ("UNLISTED", "UNLISTED"),
     )
 
     CONTENT_TYPES = (
@@ -104,17 +103,12 @@ class Post(models.Model):
         max_length=10, choices=VISIBILITY_CHOICES, default="PUBLIC")
     visibleTo = ArrayField(models.CharField(
         max_length=200), blank=True, default=list)
+    is_unlisted = models.BooleanField(default=False)
 
     def is_image(self):
         if self.content_type == "image/png;base64" or self.content_type == "image/jpeg;base64":
             return True
         return False
-
-    def is_unlisted(self):
-        if self.visibility == "UNLISTED":
-            return True
-        else:
-            return False
 
     def get_visible_users(self):
         if self.visibility == "PUBLIC":
@@ -127,10 +121,10 @@ class Post(models.Model):
         elif self.visibility == "PRIVATE":
             visible_to = map(protocol_removed, self.visibleTo)
             users = User.objects.filter(fullId__in=visible_to)
-        elif self.visibility == "UNLISTED":
-            users = User.objects.none()
         elif self.visibility == "SERVERONLY":
             user = User.objects.filter(host__url=settings.APP_HOST)
+        elif self.is_unlisted:
+            users = User.objects.none()
 
         users |= User.objects.filter(id=self.author.id)
 
