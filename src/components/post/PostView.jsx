@@ -68,19 +68,17 @@ class PostView extends Component {
         const newPost = {};
         const post = response.posts[i];
 
-        if (!post.unlisted && !post.content_type.includes("image")) {
-          newPost.username = post.author.displayName;
-          newPost.authorId = post.author.id;
-          newPost.title = post.title;
-          newPost.content = post.content;
-          newPost.published = post.published;
-          newPost.id = post.id;
-          newPost.source = post.source;
-          newPost.comments = post.comments || [];
-          newPost.isGithubPost = post.isGithubPost || false;
+        newPost.username = post.author.displayName;
+        newPost.authorId = post.author.id;
+        newPost.title = post.title;
+        newPost.content = post.content;
+        newPost.published = post.published;
+        newPost.id = post.id;
+        newPost.source = post.source;
+        newPost.comments = post.comments || [];
+        newPost.isGithubPost = post.isGithubPost || false;
 
-          posts.push(newPost);
-        }
+        posts.push(newPost);
       }
 
       this.setState({

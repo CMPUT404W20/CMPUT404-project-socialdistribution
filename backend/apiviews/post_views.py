@@ -4,6 +4,7 @@ from django.conf import settings
 from django.forms.models import model_to_dict
 from django.core.cache import cache
 from django.http import HttpResponse
+from django.db.models import Q
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -33,7 +34,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
     lookup_field = "postId"
     pagination_class = PostPagination
 
@@ -49,11 +50,16 @@ class PostViewSet(viewsets.ModelViewSet):
         GET /posts/{POST_ID} : access to a single post with id = {POST_ID}
         '''
         instance = self.get_object()
+        user = request.user
 
         # Check if the post is image
         if instance.is_image():
             image = instance.content
             return HttpResponse(base64.b64decode(image), content_type=instance.content_type)
+
+        # Check if user has permission to view the post
+        if not user in instance.get_visible_users():
+            return Response({"success": False, "msg": "You don't have the permission to view this post"}, status=status.HTTP_401_UNAUTHORIZED)
 
         queryset = Post.objects.none()
         queryset |= Post.objects.filter(pk=instance.pk).order_by("pk")
@@ -128,6 +134,7 @@ class PostViewSet(viewsets.ModelViewSet):
         for post in self.get_queryset():
             if user == post.author or user in post.get_visible_users():
                 visible_posts |= Post.objects.filter(postId=post.postId)
+                visible_posts &= Post.objects.filter(Q(content_type="text/plain") | Q(content_type="text/markdown"))
 
         page = self.paginate_queryset(visible_posts)
         serializer = self.get_serializer(page, many=True)
@@ -144,14 +151,22 @@ class PostViewSet(viewsets.ModelViewSet):
                 "{}/posts".format(friend.fullId), friend.host)
             try:
                 response_data = response.json()
-
                 foreign_posts += response_data["posts"]
             except:
                 continue
 
-            
+        for host in Host.objects.exclude(url=settings.APP_HOST):
+            response = get_from_host(
+                "{}author/posts".format(host.url), host)
 
-                
+            if response.status_code == 200:
+                response_data = response.json()
+                posts = response_data["posts"]
+
+                for post in posts:
+                    if post["visibility"] == "PUBLIC" and post not in foreign_posts:
+                        foreign_posts.append(post)
+
         post_data = json.dumps(serializer.data)
         post_data = json.loads(post_data)
         post_data += foreign_posts
@@ -187,21 +202,45 @@ class PostViewSet(viewsets.ModelViewSet):
         http://service/author/{AUTHOR_ID}/posts all posts made by {AUTHOR_ID} visible to the currently authenticated user
         '''
         user = request.user
-        author_id = protocol_removed(author_id)
 
-        if User.objects.filter(fullId=author_id).exists():
-            posts = Post.objects.filter(author__fullId=author_id)
-            viewable_posts = Post.objects.none()
+        if User.objects.filter(fullId=protocol_removed(author_id)).exists():
+            requested_user = User.objects.get(fullId=protocol_removed(author_id))
 
-            for post in posts:
-                visible_users = post.get_visible_users()
-                if user in visible_users:
-                    viewable_posts |= Post.objects.filter(postId=post.postId)
+            if requested_user.host.url == settings.APP_HOST:
+                posts = Post.objects.filter(author__fullId=protocol_removed(author_id))
+                viewable_posts = Post.objects.none()
 
-            page = self.paginate_queryset(
-                viewable_posts.order_by('-timestamp'))
-            serializer = self.get_serializer(page, many=True)
+                for post in posts:
+                    visible_users = post.get_visible_users()
+                    if user in visible_users:
+                        viewable_posts |= Post.objects.filter(postId=post.postId)
+                        viewable_posts &= Post.objects.filter(Q(content_type="text/plain") | Q(content_type="text/markdown"))
 
-            return self.get_paginated_response(serializer.data)
+                page = self.paginate_queryset(
+                    viewable_posts.order_by('-timestamp'))
+                serializer = self.get_serializer(page, many=True)
+
+                return self.get_paginated_response(serializer.data)
+     
+        author_host = get_host_from_id(author_id)
+        visible_posts = []
+
+        if Host.objects.filter(url=author_host).exists():
+            host = Host.objects.get(url=author_host)
+            response = get_from_host("{}author/posts".format(author_host), host)
+
+            if response.status_code == 200:
+                response_data = response.json()
+                posts = response_data["posts"]
+                
+                for post in posts:
+                    if post["author"] and post["author"]["id"] == author_id and post["visibility"] == "PUBLIC":
+                        visible_posts.append(post)
+                
+                page = self.paginate_queryset(visible_posts)
+                return self.get_paginated_response(page)
+
         else:
-            return Response(data={"success": False, "msg": "No such user"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"success": False, "msg": "No such user or user's host not connected"}, status=status.HTTP_400_BAD_REQUEST)
+                
+
