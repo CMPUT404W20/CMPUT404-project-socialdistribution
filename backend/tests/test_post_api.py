@@ -32,7 +32,7 @@ class TestPostAPI:
         response = client.get('/posts/{}'.format(test_post_id))
         assert response.status_code == 401
         client.logout()
-        
+
         client.force_login(test_user)
         response = client.get('/posts/{}'.format(test_post_id))
         assert response.status_code == 200
@@ -55,7 +55,8 @@ class TestPostAPI:
         post_body_1 = json.dumps({
             "title": test_post_title,
             "content": test_post_content,
-            "visibility": PUBLIC
+            "visibility": PUBLIC,
+            "unlisted": False,
         })
 
         response = client.post('/author/posts', data=post_body_1,
@@ -80,6 +81,7 @@ class TestPostAPI:
             "content": test_post_content,
             "visibility": PUBLIC,
             "content_type": "image/png;base64",
+            "unlisted": True,
         })
 
         response = client.post('/author/posts', data=image_body_1,
@@ -202,4 +204,3 @@ class TestPostAPI:
         assert post.title == "Edited title"
         assert post.content == "Edited Content"
         client.logout()
-
