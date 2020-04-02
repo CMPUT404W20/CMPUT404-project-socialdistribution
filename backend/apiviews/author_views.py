@@ -24,9 +24,17 @@ import json
 
 class AuthorViewSet(viewsets.ViewSet):
 
-    def get_authors(self, request, *args, **kwargs):
+    def get_local_authors(self, request, *args, **kwargs):
         '''
-        Get all the authors
+        Get all the authors on our server
+        '''
+        author = User.objects.all()
+        serializer = UserSerializer(author, many=True)
+        return Response(serializer.data)
+    
+    def get_all_authors(self, request, *args, **kwargs):
+        '''
+        Get all the authors (local and remote)
         '''
         foreign_author = []
         for host in Host.objects.all():
