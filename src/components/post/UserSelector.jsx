@@ -86,6 +86,15 @@ class UserSelector extends Component {
           onChange={this.handleSelectChange}
           onInputChange={this.handleInputChange}
           placeholder="Enter author username"
+          theme={(theme) => ({
+            ...theme,
+            borderRadius: 5,
+            colors: {
+              ...theme.colors,
+              primary25: "#438bff49",
+              primary: "#5c9cf5",
+            },
+          })}
         />
         <ListGroup>
           {visibleTo.map((username) => (
