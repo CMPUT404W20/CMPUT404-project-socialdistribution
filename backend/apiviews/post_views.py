@@ -34,7 +34,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     lookup_field = "postId"
     pagination_class = PostPagination
 
@@ -58,8 +58,9 @@ class PostViewSet(viewsets.ModelViewSet):
             return HttpResponse(base64.b64decode(image), content_type=instance.content_type)
 
         # Check if user has permission to view the post
-        if not user in instance.get_visible_users():
-            return Response({"success": False, "msg": "You don't have the permission to view this post"}, status=status.HTTP_401_UNAUTHORIZED)
+        if instance.visibility != PUBLIC:
+            if not user in instance.get_visible_users():
+                return Response({"success": False, "msg": "You don't have the permission to view this post"}, status=status.HTTP_401_UNAUTHORIZED)
 
         queryset = Post.objects.none()
         queryset |= Post.objects.filter(pk=instance.pk).order_by("pk")
@@ -108,23 +109,12 @@ class PostViewSet(viewsets.ModelViewSet):
                             status=status.HTTP_400_BAD_REQUEST)
 
     def update_post(self, request, *args, **kwargs):
-
-        if request.user.fullId == protocol_removed(request.data["authorId"]):
-
-            post = get_object_or_404(
-                Post, pk=self.kwargs.get(self.lookup_field))
-            post_data = request.data
-            post_data["author"] = self.request.user.id
-
-            serializer = PostSerializer(post, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response({"query": "UpdatePost", "success": True, "message": "Post updated"}, status=status.HTTP_200_OK)
-            else:
-                print(serializer.errors)
-                return Response({"query": "UpdatePost", "success": False, "message": serializer.errors}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        post = self.get_object()
+        if post.author.fullId == request.user.fullId:
+            kwargs['partial'] = True
+            return self.update(request, *args, **kwargs)
         else:
-            return Response({"query": "UpdatePost", "success": False, "message": "No access to post"},
+             return Response({"query": "UpdatePost", "success": False, "message": "No access to post"},
                             status=status.HTTP_400_BAD_REQUEST)
 
     def get_user_visible_posts(self, request):
@@ -234,12 +224,13 @@ class PostViewSet(viewsets.ModelViewSet):
                 posts = response_data["posts"]
                 
                 for post in posts:
-                    if post["author"] and post["author"]["id"] == author_id and post["visibility"] == "PUBLIC":
+                    if post["author"] and (post["author"]["id"] == author_id or post["author"]["id"] == protocol_removed(author_id)) and post["visibility"] == "PUBLIC":
                         visible_posts.append(post)
                 
                 page = self.paginate_queryset(visible_posts)
                 return self.get_paginated_response(page)
-
+            else:
+                return Response(data={"success": False, "msg": "Can't connect to user's host at the moment"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(data={"success": False, "msg": "No such user or user's host not connected"}, status=status.HTTP_400_BAD_REQUEST)
                 
