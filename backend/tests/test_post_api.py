@@ -32,7 +32,7 @@ class TestPostAPI:
         response = client.get('/posts/{}'.format(test_post_id))
         assert response.status_code == 401
         client.logout()
-        
+
         client.force_login(test_user)
         response = client.get('/posts/{}'.format(test_post_id))
         assert response.status_code == 200
@@ -204,4 +204,3 @@ class TestPostAPI:
         assert post.title == "Edited title"
         assert post.content == "Edited Content"
         client.logout()
-

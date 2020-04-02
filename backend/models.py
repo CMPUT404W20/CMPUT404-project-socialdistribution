@@ -24,7 +24,7 @@ class User(AbstractUser):
     fullId = models.CharField(max_length=400, default='')
 
     def get_full_user_id(self):
-        
+
         if self.host.url != settings.APP_HOST:
             return "https://{}".format(self.fullId)
 
@@ -33,7 +33,7 @@ class User(AbstractUser):
             user_host = user_host[:-1]
 
         return "{}/author/{}".format(user_host, self.id)
-    
+
     def get_profile_url(self):
         profile_url = "{}author/{}".format(settings.APP_HOST, self.fullId)
         return profile_url
@@ -97,7 +97,8 @@ class Post(models.Model):
     title = models.CharField(max_length=50)
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
-    content_type = models.CharField(max_length=20, choices=CONTENT_TYPES, default="text/markdown")
+    content_type = models.CharField(
+        max_length=20, choices=CONTENT_TYPES, default="text/markdown")
     # Visibility can be one of the followings : "PUBLIC","PRIVATE","Private","FRIENDS","FOF" or specific user ID
     visibility = models.CharField(
         max_length=10, choices=VISIBILITY_CHOICES, default="PUBLIC")
@@ -126,7 +127,6 @@ class Post(models.Model):
             users = User.objects.filter(fullId__in=visible_to)
         elif self.visibility == "SERVERONLY":
             user = User.objects.filter(host__url=settings.APP_HOST)
-            
 
         users |= User.objects.filter(id=self.author.id)
 

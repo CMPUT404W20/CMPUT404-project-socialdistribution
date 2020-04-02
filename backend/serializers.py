@@ -69,12 +69,12 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        exclude = ["timestamp", "postId","is_unlisted"]
+        exclude = ["timestamp", "postId", "is_unlisted"]
 
 
 class UserFriendSerializer(serializers.ModelSerializer):
     id = serializers.CharField(source="get_full_user_id")
-    
+
     class Meta:
         model = User
         fields = ["id"]
