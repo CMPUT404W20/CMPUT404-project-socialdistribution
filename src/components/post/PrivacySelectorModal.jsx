@@ -112,15 +112,12 @@ class PrivacySelectorModal extends Component {
             { PRIVACY_MESSAGES[selectedPrivacy] }
           </div>
 
-          {
-            selectedPrivacy === PRIVACY.private ? (
-              <UserSelector
-                onUserRemoval={this.handlePrivateUserRemoval}
-                onUserAdd={this.handlePrivateUserAddition}
-                visibleTo={visibleTo}
-              />
-            ) : null
-          }
+          <UserSelector
+            onUserRemoval={this.handlePrivateUserRemoval}
+            onUserAdd={this.handlePrivateUserAddition}
+            visibleTo={visibleTo}
+            show={selectedPrivacy === PRIVACY.private}
+          />
 
         </Modal.Body>
         <Modal.Footer className="privacy-select-button-wrapper">

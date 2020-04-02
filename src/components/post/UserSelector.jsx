@@ -65,8 +65,11 @@ class UserSelector extends Component {
 
   render() {
     const { allAuthors, searchValue, loading } = this.state;
-    const { onUserRemoval, visibleTo } = this.props;
+    const { onUserRemoval, visibleTo, show } = this.props;
 
+    if (!show) {
+      return <div />;
+    }
     if (loading) {
       return (
         <div className="privacy-loading-circle">
@@ -107,9 +110,13 @@ UserSelector.propTypes = {
   onUserRemoval: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   visibleTo: PropTypes.array.isRequired,
+  // use a show prop instead of conditional rendering so we can pre-load the
+  // list of authors so no loading is required after - and no unmounting
+  show: PropTypes.bool,
 };
 
 UserSelector.defaultProps = {
+  show: false,
 };
 
 
