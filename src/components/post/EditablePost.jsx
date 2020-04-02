@@ -34,6 +34,7 @@ class EditablePost extends Component {
       cb(reader.result);
     };
     reader.onerror = (error) => {
+      // eslint-disable-next-line no-console
       console.log("Error: ", error);
     };
   }
@@ -55,10 +56,9 @@ class EditablePost extends Component {
   };
 
   handleImageUpload = (image) => {
-
     this.getBase64(image, (result) => {
       const fileType = image.type;
-      const base64Image = result.replace(`data:${fileType};base64,`,"");
+      const base64Image = result.replace(`data:${fileType};base64,`, "");
 
       const imageData = {
         content: base64Image,

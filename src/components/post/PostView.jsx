@@ -49,11 +49,9 @@ class PostView extends Component {
         posts,
         loading: false,
       });
-    }).catch(() => {
-      return (
-        <p>Not a Post</p>
-      );
-    });
+    }).catch(() => (
+      <p>Not a Post</p>
+    ));
   }
 
   loadPosts() {
