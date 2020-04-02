@@ -24,17 +24,12 @@ class PrivacySelectorModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visibleTo: ["https://cmput404-socialdistribution.herokuapp.com/author/1", "https://cmput404-socialdistribution.herokuapp.com/author/6"],
+      visibility: props.selectedVisibility,
+      visibleTo: props.selectedVisibileTo,
     };
   }
 
-  handleSubmit = () => {
-    const { onHide } = this.props;
-
-    onHide();
-  }
-
-  handlePrivateUserAddition = (authorId) => {
+  handleVisibleToAddition = (authorId) => {
     const { visibleTo } = this.state;
 
     if (visibleTo.indexOf(authorId) === -1) {
@@ -44,79 +39,109 @@ class PrivacySelectorModal extends Component {
     }
   }
 
-  handlePrivateUserRemoval = (authorId) => {
+  handleVisibleToRemoval = (authorId) => {
     this.setState((prevState) => ({
       visibleTo: prevState.visibleTo.filter((id) => id !== authorId),
     }));
   }
 
-  render() {
-    const {
-      onHide,
-      show,
-      selectedPrivacy,
-      onVisibilityChange,
-    } = this.props;
+  handleVisibilityChange = (visibility) => {
+    if (visibility !== PRIVACY.private) {
+      this.setState({
+        visibility,
+        visibleTo: [],
+      });
+    }
 
-    const { visibleTo } = this.state;
+    this.setState({
+      visibility,
+    });
+  }
+
+  handleSubmit = () => {
+    const { visibility, visibleTo } = this.state;
+    const { onSubmit } = this.props;
+
+    onSubmit(visibility, visibleTo);
+  }
+
+  handleHide = () => {
+    const { selectedVisibility, selectedVisibileTo, onHide } = this.props;
+
+    // reset the state back to the original
+    // since this is a modal, we have to do this explicitly because
+    // it will not unmount like a regular component - it will just hide
+    // so without this step, the data will save in the component state
+    // but not in the actual post data
+    this.setState({
+      visibility: selectedVisibility,
+      visibleTo: selectedVisibileTo,
+    });
+
+    onHide();
+  }
+
+  render() {
+    const { show } = this.props;
+    const { visibility, visibleTo } = this.state;
 
     return (
-      <Modal onHide={onHide} show={show} className="privacy-selector-modal">
+      <Modal onHide={this.handleHide} show={show} className="privacy-selector-modal">
         <Modal.Body>
           <div className="privacy-button-wrapper">
             <button
               type="button"
-              className={`privacy-button ${selectedPrivacy === PRIVACY.public ? "selected" : ""}`}
-              onClick={() => onVisibilityChange(PRIVACY.public)}
+              className={`privacy-button ${visibility === PRIVACY.public ? "selected" : ""}`}
+              onClick={() => this.handleVisibilityChange(PRIVACY.public)}
             >
               <PublicIcon />
             </button>
             <button
               type="button"
-              className={`privacy-button ${selectedPrivacy === PRIVACY.server ? "selected" : ""}`}
-              onClick={() => onVisibilityChange(PRIVACY.server)}
+              className={`privacy-button ${visibility === PRIVACY.server ? "selected" : ""}`}
+              onClick={() => this.handleVisibilityChange(PRIVACY.server)}
             >
               <VpnLockIcon />
             </button>
             <button
               type="button"
-              className={`privacy-button ${selectedPrivacy === PRIVACY.friends ? "selected" : ""}`}
-              onClick={() => onVisibilityChange(PRIVACY.friends)}
+              className={`privacy-button ${visibility === PRIVACY.friends ? "selected" : ""}`}
+              onClick={() => this.handleVisibilityChange(PRIVACY.friends)}
             >
               <PeopleAltIcon />
             </button>
             <button
               type="button"
-              className={`privacy-button ${selectedPrivacy === PRIVACY.mutualFriends ? "selected" : ""}`}
-              onClick={() => onVisibilityChange(PRIVACY.mutualFriends)}
+              className={`privacy-button ${visibility === PRIVACY.mutualFriends ? "selected" : ""}`}
+              onClick={() => this.handleVisibilityChange(PRIVACY.mutualFriends)}
             >
               <GroupAddIcon />
             </button>
             <button
               type="button"
-              className={`privacy-button ${selectedPrivacy === PRIVACY.private ? "selected" : ""}`}
-              onClick={() => onVisibilityChange(PRIVACY.private)}
+              className={`privacy-button ${visibility === PRIVACY.private ? "selected" : ""}`}
+              onClick={() => this.handleVisibilityChange(PRIVACY.private)}
             >
               <LockIcon />
             </button>
             <button
               type="button"
-              className={`privacy-button ${selectedPrivacy === PRIVACY.unlisted ? "selected" : ""}`}
-              onClick={() => onVisibilityChange(PRIVACY.unlisted)}
+              className={`privacy-button ${visibility === PRIVACY.unlisted ? "selected" : ""}`}
+              onClick={() => this.handleVisibilityChange(PRIVACY.unlisted)}
             >
               <VisibilityOffIcon />
             </button>
           </div>
 
           <div className="privacy-message">
-            { PRIVACY_MESSAGES[selectedPrivacy] }
+            { PRIVACY_MESSAGES[visibility] }
           </div>
 
           <UserSelector
-            onUserRemoval={this.handlePrivateUserRemoval}
-            onUserAdd={this.handlePrivateUserAddition}
+            onUserRemoval={this.handleVisibleToRemoval}
+            onUserAdd={this.handleVisibleToAddition}
             visibleTo={visibleTo}
-            show={selectedPrivacy === PRIVACY.private}
+            show={visibility === PRIVACY.private}
           />
 
         </Modal.Body>
@@ -137,8 +162,10 @@ class PrivacySelectorModal extends Component {
 PrivacySelectorModal.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
-  selectedPrivacy: PropTypes.func.isRequired,
-  onVisibilityChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  selectedVisibility: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  selectedVisibileTo: PropTypes.array.isRequired,
 };
 
 PrivacySelectorModal.defaultProps = {

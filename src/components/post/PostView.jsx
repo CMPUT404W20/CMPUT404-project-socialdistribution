@@ -165,6 +165,7 @@ class PostView extends Component {
                 defaultPostTitle={post.title}
                 defaultPostContent={post.content}
                 defaultPostVisibility={post.visibility}
+                defaultPostVisibleTo={post.visibleTo}
                 onSubmit={this.handlePostUpdate}
                 // set the current post being edited to null -> close the edit dialog
                 onDiscard={() => this.handleEditToggle(null)}
