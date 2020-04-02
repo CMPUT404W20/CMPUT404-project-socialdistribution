@@ -234,7 +234,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 posts = response_data["posts"]
                 
                 for post in posts:
-                    if post["author"] and post["author"]["id"] == author_id and post["visibility"] == "PUBLIC":
+                    if post["author"] and (post["author"]["id"] == author_id or post["author"]["id"] == protocol_removed(author_id)) and post["visibility"] == "PUBLIC":
                         visible_posts.append(post)
                 
                 page = self.paginate_queryset(visible_posts)
