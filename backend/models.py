@@ -24,7 +24,7 @@ class User(AbstractUser):
     fullId = models.CharField(max_length=400, default='')
 
     def get_full_user_id(self):
-        
+
         if self.host.url != settings.APP_HOST:
             return "https://{}".format(self.fullId)
 
@@ -33,7 +33,7 @@ class User(AbstractUser):
             user_host = user_host[:-1]
 
         return "{}/author/{}".format(user_host, self.id)
-    
+
     def get_profile_url(self):
         profile_url = "{}author/{}".format(settings.APP_HOST, self.fullId)
         return profile_url
@@ -81,7 +81,6 @@ class Post(models.Model):
         ("FRIENDS", "FRIENDS"),
         ("PRIVATE", "PRIVATE"),
         ("SERVERONLY", "SERVERONLY"),
-        ("UNLISTED", "UNLISTED"),
     )
 
     CONTENT_TYPES = (
@@ -98,27 +97,26 @@ class Post(models.Model):
     title = models.CharField(max_length=50)
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
-    content_type = models.CharField(max_length=20, choices=CONTENT_TYPES, default="text/markdown")
+    content_type = models.CharField(
+        max_length=20, choices=CONTENT_TYPES, default="text/markdown")
     # Visibility can be one of the followings : "PUBLIC","PRIVATE","Private","FRIENDS","FOF" or specific user ID
     visibility = models.CharField(
         max_length=10, choices=VISIBILITY_CHOICES, default="PUBLIC")
     visibleTo = ArrayField(models.CharField(
         max_length=200), blank=True, default=list)
+    is_unlisted = models.BooleanField(default=False)
 
     def is_image(self):
         if self.content_type == "image/png;base64" or self.content_type == "image/jpeg;base64":
             return True
         return False
 
-    def is_unlisted(self):
-        if self.visibility == "UNLISTED":
-            return True
-        else:
-            return False
-
     def get_visible_users(self):
         if self.visibility == "PUBLIC":
-            users = User.objects.all()
+            if self.is_unlisted:
+                users = User.objects.none()
+            else:
+                users = User.objects.all()
         elif self.visibility == "FRIENDS":
             users = self.author.get_friends()
         elif self.visibility == "FOAF":
@@ -127,9 +125,8 @@ class Post(models.Model):
         elif self.visibility == "PRIVATE":
             visible_to = map(protocol_removed, self.visibleTo)
             users = User.objects.filter(fullId__in=visible_to)
-
-        elif self.visibility == "UNLISTED":
-            users = User.objects.none()
+        elif self.visibility == "SERVERONLY":
+            user = User.objects.filter(host__url=settings.APP_HOST)
 
         users |= User.objects.filter(id=self.author.id)
 

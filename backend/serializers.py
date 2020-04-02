@@ -53,7 +53,7 @@ class UserSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     published = serializers.DateTimeField(source="timestamp", read_only=True)
     id = serializers.UUIDField(source="postId", read_only=True)
-    unlisted = serializers.BooleanField(source="is_unlisted", read_only=True)
+    unlisted = serializers.BooleanField(source="is_unlisted")
     source = serializers.URLField(source="get_source", read_only=True)
     origin = serializers.URLField(source="get_source", read_only=True)
 
@@ -69,11 +69,12 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        exclude = ["timestamp", "postId"]
+        exclude = ["timestamp", "postId", "is_unlisted"]
+
 
 class UserFriendSerializer(serializers.ModelSerializer):
     id = serializers.CharField(source="get_full_user_id")
-    
+
     class Meta:
         model = User
         fields = ["id"]
