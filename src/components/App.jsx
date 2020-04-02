@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from "react";
 import {
   BrowserRouter, Route,
@@ -47,22 +48,21 @@ class App extends React.Component {
         <Route
           path="/search"
           render={(props) => (
-            // eslint-disable-next-line react/jsx-props-no-spreading
             <SearchPage key={props.location.search} currentUser={currentUser} {...props} />
           )}
         />
         <Route
           path="/profile/:username"
           render={(props) => (
-            // eslint-disable-next-line react/jsx-props-no-spreading
             <ProfilePage key={props.match.params.username} currentUser={currentUser} {...props} />)}
         />
         <Route
           path="/share/posts/:postId"
           render={(props) => {
             const { postId } = props.match.params;
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            return (<PostView postId={postId} currentUser={currentUser} {...props} />);
+            // Urls that has a parameter inside must have a key otherwise viewing a shared post
+            // from other shared post will not work. With the key the router will refresh itself.
+            return (<PostView key={postId} postId={postId} currentUser={currentUser} {...props} />);
           }}
         />
       </BrowserRouter>
