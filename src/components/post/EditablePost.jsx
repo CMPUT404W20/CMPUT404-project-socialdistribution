@@ -180,7 +180,6 @@ class EditablePost extends Component {
             onHide={this.togglePreviewModalVisibility}
             postTitle={postTitle}
             postContent={postContent}
-            imageObjectUrl={postImage}
           />
           <PrivacySelectorModal
             show={privacyModalVisibility}
