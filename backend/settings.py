@@ -177,3 +177,15 @@ APP_HOST = os.environ.get(
 )
 
 GITHUB_TOKEN = os.environ.get("github_token", None)
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'github': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'post': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
