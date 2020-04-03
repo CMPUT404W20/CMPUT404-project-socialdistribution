@@ -93,6 +93,15 @@ export const rejectFriendRequest = (author, friend) => {
   });
 };
 
+export const searchAuthors = (displayName) => {
+  return axios.get(`/author/search/${displayName}`).then((response) => {
+    if (response.status === 200) {
+      return response.data.authors;
+    }
+    return {};
+  });
+};
+
 export const getAllAuthors = () => {
   return axios.get("/author/all/").then((response) => {
     if (response.status === 200) {

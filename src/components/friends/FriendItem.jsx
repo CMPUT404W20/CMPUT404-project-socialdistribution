@@ -15,19 +15,19 @@ class FriendItem extends Component {
 
   render() {
     const {
-      username, userID, host, handleUnFriend,
+      user, handleUnFriend,
     } = this.props;
     return (
       <Col md={6}>
         <div className="friend-item-wrapper">
           <Link
             to={{
-              pathname: `/profile/${username}`,
-              state: { user: { displayName: username, id: userID, host } },
+              pathname: `/profile/${user.displayName}`,
+              state: { user },
             }}
             className="username-link"
           >
-            {username}
+            {user.displayName}
           </Link>
           <DropdownButton
             id="friend-status"
@@ -44,9 +44,13 @@ class FriendItem extends Component {
 }
 
 FriendItem.propTypes = {
-  username: PropTypes.string.isRequired,
-  host: PropTypes.string.isRequired,
-  userID: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
   handleUnFriend: PropTypes.func.isRequired,
 };
 

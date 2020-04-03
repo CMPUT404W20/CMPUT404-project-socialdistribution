@@ -9,6 +9,7 @@ const post = {
   userId: "userId",
   published: (new Date()).toISOString(),
   content: "content",
+  source: "https://abc.com/",
   comments: [{
     id: "95c76f63-5579-45f6-810f-e0665f2ea588",
     comment: "Sample Comment",

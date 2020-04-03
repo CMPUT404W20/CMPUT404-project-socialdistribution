@@ -12,19 +12,19 @@ import * as friendsService from "../../services/FriendService";
 class ProfilePage extends Component {
   constructor(props) {
     super(props);
-    const { location, user } = this.props;
+    const { location, currentUser } = this.props;
     this.state = {
       isFollowing: false,
       isFriends: false,
-      isSelf: (location.state.user.id === user.id),
+      isSelf: (location.state.user.id === currentUser.id),
       loading: true,
     };
   }
 
   componentDidMount() {
     const { isSelf } = this.state;
-    const { location, user } = this.props;
-    const currentUserID = user.id;
+    const { location, currentUser } = this.props;
+    const currentUserID = currentUser.id;
     const userID = location.state.user.id;
     if (!isSelf) {
       friendsService.checkFriendStatus(currentUserID, userID).then((response) => {
@@ -56,8 +56,8 @@ class ProfilePage extends Component {
   }
 
   handleUnFollow = (item) => {
-    const { user } = this.props;
-    friendsService.rejectFriendRequest(item, user).then((success) => {
+    const { currentUser } = this.props;
+    friendsService.rejectFriendRequest(item, currentUser).then((success) => {
       if (success) {
         window.location.reload();
       }
@@ -68,8 +68,8 @@ class ProfilePage extends Component {
   }
 
   handleFollow = (item) => {
-    const { user } = this.props;
-    friendsService.sendFriendRequest(user, item).then((success) => {
+    const { currentUser } = this.props;
+    friendsService.sendFriendRequest(currentUser, item).then((success) => {
       if (success) {
         window.location.reload();
       }
@@ -83,7 +83,7 @@ class ProfilePage extends Component {
     const {
       isFollowing, isFriends, loading, isSelf,
     } = this.state;
-    const { location, user } = this.props;
+    const { location, currentUser } = this.props;
     return (
       !loading && (
       <ProfileHeader
@@ -92,7 +92,7 @@ class ProfilePage extends Component {
         isFollowing={isFollowing}
         host={location.state.user.host}
         username={location.state.user.displayName}
-        user={user}
+        currentUser={currentUser}
         handleFollow={() => this.handleFollow(location.state.user)}
         handleUnFollow={() => this.handleUnFollow(location.state.user)}
         handleUnFriend={() => this.handleUnFriend(location.state.user)}
@@ -102,12 +102,12 @@ class ProfilePage extends Component {
   }
 
   render() {
-    const { user, location } = this.props;
+    const { currentUser, location } = this.props;
     return (
       <Container fluid className="profilePage">
         <Row>
           <Col md={12}>
-            <NavigationBar user={user} />
+            <NavigationBar currentUser={currentUser} />
           </Col>
         </Row>
         <Row>
@@ -129,7 +129,7 @@ class ProfilePage extends Component {
 
 ProfilePage.propTypes = {
   location: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
-  user: PropTypes.shape({
+  currentUser: PropTypes.shape({
     id: PropTypes.string.isRequired,
     displayName: PropTypes.string.isRequired,
     host: PropTypes.string.isRequired,

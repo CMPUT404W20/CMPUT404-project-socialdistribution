@@ -35,7 +35,7 @@ class Homepage extends Component {
         <Row>
           <Col md={12}>
             <userContext.Consumer>
-              {(user) => (<NavigationBar user={user} />)}
+              {(currentUser) => (<NavigationBar currentUser={currentUser} />)}
             </userContext.Consumer>
           </Col>
         </Row>

@@ -13,26 +13,25 @@ class SearchItem extends Component {
 
   render() {
     const {
-      username, userID, host,
+      user, currentHost,
     } = this.props;
-    const currentHost = localStorage.getItem("host");
     return (
       <Row className="wrapper">
         <Col md={12} lg={4} className="leftColumn">
           <p className="username-link">
-            {username}
+            {user.displayName}
           </p>
         </Col>
         <Col md={12} lg={3} className="middleColumn">
-          <div className="type-wrapper">{ host === currentHost ? "Local" : "Remote"}</div>
+          <div className="type-wrapper">{ user.host === currentHost ? "Local" : "Remote"}</div>
         </Col>
         <Col md={12} lg={5} className="rightColumn">
           <div className="button-wrapper">
             <Link
               className="view-profile-button"
               to={{
-                pathname: `/profile/${username}`,
-                state: { user: { displayName: username, id: userID, host } },
+                pathname: `/profile/${user.displayName}`,
+                state: { user },
               }}
             >
               View Profile
@@ -45,9 +44,14 @@ class SearchItem extends Component {
 }
 
 SearchItem.propTypes = {
-  username: PropTypes.string.isRequired,
-  userID: PropTypes.string.isRequired,
-  host: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    github: PropTypes.string,
+  }).isRequired,
+  currentHost: PropTypes.string.isRequired,
 };
 
 export default SearchItem;
