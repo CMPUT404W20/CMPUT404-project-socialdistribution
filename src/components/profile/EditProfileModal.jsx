@@ -61,13 +61,23 @@ class EditProfileModal extends Component {
     }
   }
 
+  handleModalHide = () => {
+    const { onHide } = this.props;
+    this.setState({
+      password1: "",
+      password2: "",
+      errorGithub: "",
+      errorPwd: "",
+    }, () => onHide());
+  }
+
   render() {
-    const { onHide, show, currentUser } = this.props;
+    const { show, currentUser } = this.props;
     const {
       github, password1, password2, errorGithub, errorPwd,
     } = this.state;
     return (
-      <Modal onHide={onHide} show={show} className="edit-profile-modal">
+      <Modal onHide={this.handleModalHide} show={show} className="edit-profile-modal">
         <Modal.Header closeButton>
           <Modal.Title>Edit Profile</Modal.Title>
         </Modal.Header>
