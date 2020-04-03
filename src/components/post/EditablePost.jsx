@@ -3,9 +3,11 @@ import "../../styles/post/EditablePost.scss";
 import PropTypes from "prop-types";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import VisibilityRoundedIcon from "@material-ui/icons/VisibilityRounded";
+import PublicIcon from "@material-ui/icons/Public";
 import TextareaAutosize from "react-textarea-autosize";
 import UploadImageModal from "./UploadImageModal";
 import PostPreviewModal from "./PostPreviewModal";
+import PrivacySelectorModal from "./PrivacySelectorModal";
 import * as postService from "../../services/PostService";
 
 class EditablePost extends Component {
@@ -14,11 +16,14 @@ class EditablePost extends Component {
     this.state = {
       uploadModalVisibility: false,
       previewModalVisibility: false,
+      privacyModalVisibility: false,
       originalPost: props.originalPost,
       postTitle: props.defaultPostTitle,
       postContent: props.defaultPostContent,
       postImage: props.defaultPostImage,
-      postVisibility: "PUBLIC",
+      postVisibility: props.defaultPostVisibility,
+      postVisibleTo: props.defaultPostVisibleTo,
+      postUnlisted: props.defaultPostUnlisted,
     };
   }
 
@@ -29,6 +34,7 @@ class EditablePost extends Component {
       cb(reader.result);
     };
     reader.onerror = (error) => {
+      // eslint-disable-next-line no-console
       console.log("Error: ", error);
     };
   }
@@ -50,10 +56,9 @@ class EditablePost extends Component {
   };
 
   handleImageUpload = (image) => {
-
     this.getBase64(image, (result) => {
       const fileType = image.type;
-      const base64Image = result.replace(`data:${fileType};base64,`,"");
+      const base64Image = result.replace(`data:${fileType};base64,`, "");
 
       const imageData = {
         content: base64Image,
@@ -86,6 +91,8 @@ class EditablePost extends Component {
       postTitle,
       postContent,
       postVisibility,
+      postVisibleTo,
+      postUnlisted,
     } = this.state;
 
     const { onSubmit } = this.props;
@@ -93,15 +100,18 @@ class EditablePost extends Component {
     originalPost.content = postContent;
     originalPost.title = postTitle;
     originalPost.visibility = postVisibility;
+    originalPost.visibleTo = postVisibleTo;
+    originalPost.unlisted = postUnlisted;
 
     onSubmit(originalPost);
     this.setState({
       postTitle: "",
       postContent: "",
       postImage: "",
+      postVisibility: "PUBLIC",
+      postVisibleTo: [],
+      postUnlisted: false,
     });
-    // eslint-disable-next-line no-alert
-    // alert(postContent);
   };
 
   toggleUploadModalVisibility = () => {
@@ -116,20 +126,32 @@ class EditablePost extends Component {
     }));
   }
 
-  changePostVisibility = (event) => {
-    this.setState({
-      postVisibility: event.target.value,
-    });
+  togglePrivacyModalVisibility = () => {
+    this.setState((prevState) => ({
+      privacyModalVisibility: !prevState.privacyModalVisibility,
+    }));
   }
 
+  handlePostVisibilityChange = (visibility, visibleTo, unlisted) => {
+    this.setState({
+      postVisibility: visibility,
+      postVisibleTo: visibleTo,
+      postUnlisted: unlisted,
+      privacyModalVisibility: false,
+    });
+  }
 
   render() {
     const {
       uploadModalVisibility,
       previewModalVisibility,
+      privacyModalVisibility,
       postTitle,
       postContent,
       postImage,
+      postVisibility,
+      postVisibleTo,
+      postUnlisted,
     } = this.state;
 
     const { editMode, onDiscard } = this.props;
@@ -146,14 +168,6 @@ class EditablePost extends Component {
         <div className="editable-post-content">
           <div className="editable-post-header">
             <b>{componentTitle}</b>
-            <select className="privacy-select" defaultValue="PUBLIC" onChange={this.changePostVisibility}>
-              <option value="PUBLIC">Anyone</option>
-              <option value="PRIVATE">Specific author</option>
-              <option value="FRIENDS">Friends</option>
-              <option value="FOAF">Mutual friends</option>
-              <option value="SERVERONLY">Server Only</option>
-              <option value="UNLISTED">Private</option>
-            </select>
           </div>
           <UploadImageModal
             show={uploadModalVisibility}
@@ -166,6 +180,14 @@ class EditablePost extends Component {
             postTitle={postTitle}
             postContent={postContent}
             imageObjectUrl={postImage}
+          />
+          <PrivacySelectorModal
+            show={privacyModalVisibility}
+            onHide={this.togglePrivacyModalVisibility}
+            onSubmit={this.handlePostVisibilityChange}
+            selectedVisibility={postVisibility}
+            selectedVisibileTo={postVisibleTo}
+            unlisted={postUnlisted}
           />
           <form className="editable-post-input-wrapper" action="submit">
             <TextareaAutosize
@@ -195,6 +217,11 @@ class EditablePost extends Component {
                   />
                 ) : null
               }
+
+              <PublicIcon
+                className="icon"
+                onClick={this.togglePrivacyModalVisibility}
+              />
 
               <ImageOutlinedIcon
                 className="icon"
@@ -240,6 +267,10 @@ EditablePost.propTypes = {
   defaultPostTitle: PropTypes.string,
   defaultPostContent: PropTypes.string,
   defaultPostImage: PropTypes.string,
+  defaultPostVisibility: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
+  defaultPostVisibleTo: PropTypes.array,
+  defaultPostUnlisted: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
   onDiscard: PropTypes.func,
 };
@@ -250,6 +281,9 @@ EditablePost.defaultProps = {
   defaultPostTitle: "",
   defaultPostContent: "",
   defaultPostImage: "",
+  defaultPostVisibility: "PUBLIC",
+  defaultPostVisibleTo: [],
+  defaultPostUnlisted: false,
   onDiscard: () => {},
 };
 

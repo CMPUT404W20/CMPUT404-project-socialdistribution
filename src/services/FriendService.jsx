@@ -102,6 +102,16 @@ export const searchAuthors = (displayName) => {
   });
 };
 
+export const getAllAuthors = () => {
+  return axios.get("/author/all/").then((response) => {
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    return [];
+  });
+};
+
 // for eslint
 export const createFriend = () => {
   return null;
