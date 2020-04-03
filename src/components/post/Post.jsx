@@ -30,7 +30,6 @@ class Post extends Component {
   renderMenu = () => {
     const {
       post,
-      invisible,
       previewMode,
       onEdit,
       onDelete,
@@ -69,7 +68,7 @@ class Post extends Component {
           >
             {post.username}
           </Link>
-          { invisible ? <VisibilityOffIcon fontSize="inherit" /> : null }
+          { post.unlisted ? <VisibilityOffIcon className="unlisted-icon" /> : null }
         </span>
         <userContext.Consumer>
           {(currentUser) => ((currentUser.host === postHost)
@@ -249,8 +248,8 @@ Post.propTypes = {
     content: PropTypes.string,
     comments: PropTypes.array,
     isGithubPost: PropTypes.bool,
+    unlisted: PropTypes.bool,
   }).isRequired,
-  invisible: PropTypes.bool,
   previewMode: PropTypes.bool,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
@@ -258,7 +257,6 @@ Post.propTypes = {
 };
 
 Post.defaultProps = {
-  invisible: false,
   previewMode: false,
   onEdit: null,
   onDelete: null,
