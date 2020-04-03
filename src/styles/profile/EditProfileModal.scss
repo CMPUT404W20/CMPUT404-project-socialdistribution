@@ -8,7 +8,7 @@
     .modal-body {
         display: inline-flex;
         flex-direction: column;
-        >input:not(last-of-type) {
+        >input:not(:last-of-type) {
             margin-bottom: 1em;
         }
     }
@@ -25,6 +25,13 @@
         &:disabled {
             background-color: $background-color;
         }
+    }
+    .error-message {
+        text-align: right;
+        color: $error-color;
+        margin: 0 1rem 0 0;
+        font-size: 10pt;
+        right: 0;
     }
     .save-button-wrapper {
         display: flex;

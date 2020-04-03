@@ -18,6 +18,24 @@ export const registerUser = (username, password) => {
   });
 };
 
+export const updateUserProfile = (github, password) => {
+  const csrf = Cookies.get("csrftoken");
+  const headers = {
+    "X-CSRFToken": csrf,
+  };
+  // Leave the password unchanged if not provided
+  if (password === "") {
+    return axios.put("/author/update/", {
+      github_URL: github,
+    }, { headers: headers });
+  }
+
+  return axios.put("/author/update/", {
+    github_URL: github,
+    password,
+  }, { headers: headers });
+};
+
 export const getCurrentUser = () => {
   return axios.get("/author/current/");
 };
