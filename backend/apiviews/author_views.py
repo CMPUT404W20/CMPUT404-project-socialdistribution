@@ -134,6 +134,7 @@ class AuthorViewSet(viewsets.ViewSet):
                     githubUrl=github_URL)
             elif not "github_URL" in request.data and "password" in request.data:
                 password = request.data["password"]
+                # hash password
                 author.set_password(password)
                 author.save()
             elif not "github_URL" in request.data and not "password" in request.data:
@@ -141,6 +142,7 @@ class AuthorViewSet(viewsets.ViewSet):
             else:
                 password = request.data["password"]
                 github_URL = request.data["github_URL"]
+                # hash password
                 author.set_password(password)
                 User.objects.filter(username=request.user).update(
                     githubUrl=github_URL)
