@@ -67,7 +67,8 @@ class PostView extends Component {
         const post = response.posts[i];
 
         newPost.username = post.author.displayName;
-        newPost.authorId = post.author.id;
+        newPost.authorId = post.author.id || "";
+        newPost.authorHost = post.author.host || "";
         newPost.title = post.title;
         newPost.content = post.content;
         newPost.published = post.published;
