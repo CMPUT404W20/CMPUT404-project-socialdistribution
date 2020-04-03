@@ -26,6 +26,7 @@ import base64
 github_cache = caches['github']
 post_cache = caches['post']
 
+
 class PostViewSet(viewsets.ModelViewSet):
     """
     Viewset for all the operation related to Post
@@ -131,7 +132,7 @@ class PostViewSet(viewsets.ModelViewSet):
         # check if foreign users' posts is cached
         foreign_posts = post_cache.get(request.user.fullId)
         if foreign_posts is None:
-        # get foreign users' posts
+            # get foreign users' posts
             user_friends = user.get_friends().exclude(host__url=settings.APP_HOST)
             foreign_posts = []
 
@@ -146,7 +147,7 @@ class PostViewSet(viewsets.ModelViewSet):
                     foreign_posts += response_data["posts"]
                 except:
                     continue
-            
+
             for host in Host.objects.exclude(url=settings.APP_HOST):
                 response = get_from_host(
                     "{}author/posts".format(host.url), host)
@@ -166,7 +167,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
         if request.user.githubUrl:
             cached_github_posts = github_cache.get(request.user.githubUrl)
-            print(cached_github_posts)
             if cached_github_posts:
                 post_data += cached_github_posts
             else:
