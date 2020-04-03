@@ -65,6 +65,7 @@ class EditablePost extends Component {
         title: image.name,
         visibility: "PUBLIC",
         content_type: `${fileType};base64`,
+        unlisted: true,
       };
 
       postService.createUserPosts(imageData).then((response) => {
