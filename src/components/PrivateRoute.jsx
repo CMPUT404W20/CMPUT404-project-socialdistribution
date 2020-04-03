@@ -5,7 +5,7 @@ import { Redirect, Route } from "react-router-dom";
 import { userContext } from "../contexts/UserContext";
 
 const PrivateRoute = ({
-  component: Component, user: User, isAuthed: Authed, ...rest
+  component: Component, currentUser: User, isAuthed: Authed, ...rest
 }) => {
   const authed = Authed;
   return (
@@ -14,7 +14,7 @@ const PrivateRoute = ({
       render={(props) => (authed ? (
         <userContext.Provider value={User}>
           <userContext.Consumer>
-            {(user) => (<Component {...props} user={user} />)}
+            {(currentUser) => (<Component {...props} currentUser={currentUser} />)}
           </userContext.Consumer>
         </userContext.Provider>
       ) : (
@@ -26,7 +26,7 @@ const PrivateRoute = ({
 
 PrivateRoute.propTypes = {
   component: PropTypes.elementType.isRequired,
-  user: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
+  currentUser: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
   isAuthed: PropTypes.bool.isRequired,
 };
 

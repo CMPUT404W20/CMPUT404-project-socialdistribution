@@ -18,8 +18,10 @@ exports[`Notice Item Component should render correctly 1`] = `
           "state": Object {
             "user": Object {
               "displayName": "",
-              "host": undefined,
+              "github": "",
+              "host": "",
               "id": "",
+              "url": "",
             },
           },
         }

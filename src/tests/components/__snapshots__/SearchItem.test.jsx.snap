@@ -41,8 +41,10 @@ exports[`Search Item Component should render correctly 1`] = `
             "state": Object {
               "user": Object {
                 "displayName": "",
+                "github": "",
                 "host": "",
                 "id": "",
+                "url": "",
               },
             },
           }

@@ -22,6 +22,9 @@
         &:focus {
             border: 1px #E0E0E0 solid;
         }
+        &:disabled {
+            background-color: $background-color;
+        }
     }
     .save-button-wrapper {
         display: flex;

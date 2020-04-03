@@ -44,38 +44,47 @@ class Post extends Component {
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
     const formattedTime = moment(post.published).fromNow();
     const sharableLink = `${window.location.href}share/posts/${post.id}`;
-
+    const postURL = new URL(post.source);
+    const postHost = `${postURL.protocol}//${postURL.host}/`;
     return (
       <div className="post-info">
         <span className="post-user-and-visibility">
           {post.username}
           { invisible ? <VisibilityOffIcon fontSize="inherit" /> : null }
         </span>
-        <DropdownButton
-          id="post-more-button"
-          title={dropdownIcon}
-          drop="down"
-          alignRight
-        >
-          <Fade left duration={500} distance="5px">
-            {/* the following enclosing tag is required for the fade to work properly */}
-            <>
-              <userContext.Consumer>
-                {(user) => ((user.id === post.authorId)
-                  ? (
+        <userContext.Consumer>
+          {(currentUser) => ((currentUser.host === postHost)
+                && (
+                <DropdownButton
+                  id="post-more-button"
+                  title={dropdownIcon}
+                  drop="down"
+                  alignRight
+                >
+                  <Fade left duration={500} distance="5px">
+                    {/* the following enclosing tag is required for the fade to work properly */}
                     <>
-                      <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
-                      <Dropdown.Item onClick={() => onDelete(post.id)}>Delete</Dropdown.Item>
+
+                      {((currentUser.id === post.authorId)
+                        ? (
+                          <>
+                            <Dropdown.Item onClick={() => onEdit(post.id)}>Edit</Dropdown.Item>
+                            <Dropdown.Item onClick={() => onDelete(post.id)}>
+                              Delete
+                            </Dropdown.Item>
+                          </>
+                        )
+                        : null)}
+
+                      <CopyToClipboard text={sharableLink}>
+                        <Dropdown.Item href="#">Copy Link</Dropdown.Item>
+                      </CopyToClipboard>
                     </>
-                  )
-                  : null)}
-              </userContext.Consumer>
-              <CopyToClipboard text={sharableLink}>
-                <Dropdown.Item href="#">Copy Link</Dropdown.Item>
-              </CopyToClipboard>
-            </>
-          </Fade>
-        </DropdownButton>
+                  </Fade>
+                </DropdownButton>
+                )
+          )}
+        </userContext.Consumer>
         <div className="post-time">{formattedTime}</div>
       </div>
     );
