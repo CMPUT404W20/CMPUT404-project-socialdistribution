@@ -127,8 +127,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 visible_posts &= Post.objects.filter(
                     Q(content_type="text/plain") | Q(content_type="text/markdown"))
 
-        page = self.paginate_queryset(visible_posts)
-        serializer = self.get_serializer(page, many=True)
+        serializer = self.get_serializer(visible_posts, many=True)
         # check if foreign users' posts is cached
         foreign_posts = post_cache.get(request.user.fullId)
         if foreign_posts is None:
