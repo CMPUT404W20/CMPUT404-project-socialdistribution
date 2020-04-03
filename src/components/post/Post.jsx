@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import Fade from "react-reveal/Fade";
 import "../../styles/post/Post.scss";
+import { Link } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
@@ -45,10 +46,28 @@ class Post extends Component {
     const sharableLink = `${window.location.href}share/posts/${post.id}`;
     const postURL = new URL(post.source);
     const postHost = `${postURL.protocol}//${postURL.host}/`;
+
+    const user = {
+      id: post.authorId,
+      displayName: post.username,
+      host: post.authorHost,
+    };
+    // some hosts don't include the protocol so we must add it manually
+    if (!user.id.includes("https://")) {
+      user.id = `https://${user.id}`;
+    }
+
     return (
       <div className="post-info">
         <span className="post-user-and-visibility">
-          {post.username}
+          <Link
+            to={{
+              pathname: `/profile/${post.username}`,
+              state: { user },
+            }}
+          >
+            {post.username}
+          </Link>
           { post.unlisted ? <VisibilityOffIcon className="unlisted-icon" /> : null }
         </span>
         <userContext.Consumer>
@@ -223,6 +242,7 @@ Post.propTypes = {
     source: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     authorId: PropTypes.string.isRequired,
+    authorHost: PropTypes.string.isRequired,
     published: PropTypes.string.isRequired,
     title: PropTypes.string,
     content: PropTypes.string,
