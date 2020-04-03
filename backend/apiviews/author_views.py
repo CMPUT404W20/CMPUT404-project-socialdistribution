@@ -142,11 +142,11 @@ class AuthorViewSet(viewsets.ViewSet):
             else:
                 password = request.data["password"]
                 github_URL = request.data["github_URL"]
-                # hash password
+                # hash password and set githuburl
                 author.set_password(password)
+                author.save()
                 User.objects.filter(username=request.user).update(
                     githubUrl=github_URL)
-                author.save()
             return Response({"query": "update_user", "success": True, "message": "User updated"}, status=status.HTTP_200_OK)
         else:
             return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)

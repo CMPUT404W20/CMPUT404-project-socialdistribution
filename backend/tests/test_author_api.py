@@ -118,34 +118,32 @@ class TestAuthorAPI:
         assert response.status_code == 200
         author = get_object_or_404(User, username=test_user.username)
         assert author.check_password("liluzi")
-        # assert User.objects.filter(password=).exists()
 
     def test_update_githubURL(self, client, test_user, friend_user):
-        # update githuburl only
+        # update github url only
         client.force_login(test_user)
-        assert not User.objects.filter(githubUrl="liluzi@gmail.com").exists()
+        assert not test_user.githubUrl == "liluzi@gmail.com"
         post_body_1 = json.dumps({
             "github_URL": "liluzi@gmail.com",
         })
         response = client.put("/author/update/", data=post_body_1,
                               content_type='application/json', charset='UTF-8')
         assert response.status_code == 200
-        assert User.objects.filter(githubUrl="liluzi@gmail.com").exists()
+        author = get_object_or_404(User, username=test_user.username)
+        assert author.githubUrl == "liluzi@gmail.com"
 
     def test_update_profile(self, client, test_user, friend_user):
         client.force_login(test_user)
-        assert not User.objects.filter(
-            githubUrl="liluzi@gmail.com").exists()
+        assert not test_user.githubUrl == "liluzi1@gmail.com"
         post_body_1 = json.dumps({
             "github_URL": "liluzi1@gmail.com",
             "password": "somepassword"
         })
-
         response = client.put("/author/update/", data=post_body_1,
                               content_type='application/json', charset='UTF-8')
         assert response.status_code == 200
-        assert not User.objects.filter(githubUrl="liluzi@gmail.com").exists()
         author = get_object_or_404(User, username=test_user.username)
+        assert author.githubUrl == "liluzi1@gmail.com"
         assert author.check_password("somepassword")
 
     def test_update_profile_error(self, client, test_user, friend_user):
