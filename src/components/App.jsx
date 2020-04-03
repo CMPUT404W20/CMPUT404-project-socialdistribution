@@ -13,6 +13,7 @@ import SearchPage from "./search/SearchPage";
 import PostView from "./post/PostView";
 import Login from "./Login";
 import * as auth from "../services/AuthenticationService";
+import { userContext } from "../contexts/UserContext";
 
 class App extends React.Component {
   constructor(props) {
@@ -54,7 +55,10 @@ class App extends React.Component {
         <Route
           path="/profile/:username"
           render={(props) => (
-            <ProfilePage key={props.match.params.username} currentUser={currentUser} {...props} />)}
+            <userContext.Provider value={currentUser}>
+              <ProfilePage key={props.match.params.username} currentUser={currentUser} {...props} />
+            </userContext.Provider>
+          )}
         />
         <Route
           path="/share/posts/:postId"
