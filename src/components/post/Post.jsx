@@ -48,7 +48,7 @@ class Post extends Component {
       <div className="post-info">
         <span className="post-user-and-visibility">
           {post.username}
-          { post.unlisted ? <VisibilityOffIcon className="unlisted-icon" fontSize="inherit" /> : null }
+          { post.unlisted ? <VisibilityOffIcon className="unlisted-icon" /> : null }
         </span>
         <DropdownButton
           id="post-more-button"
