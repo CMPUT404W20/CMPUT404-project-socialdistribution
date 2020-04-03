@@ -154,8 +154,8 @@ class PostView extends Component {
       } else if (post.id === editingPostId) {
         // this post is being edited currently
         renderedPosts.push(
-          <Pulse duration={200}>
-            <div className="postWrapper" key={-1}>
+          <Pulse duration={200} key={-1}>
+            <div className="postWrapper">
               <EditablePost
                 editMode
                 originalPost={post}

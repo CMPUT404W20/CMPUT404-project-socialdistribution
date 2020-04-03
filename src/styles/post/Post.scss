@@ -19,11 +19,11 @@
             top: 0.5pt;
             line-height: 30pt;
             font-size: 14px;
-            svg {
+            .unlisted-icon {
                 position: relative;
-                top: 1.5pt;
-                left: 2pt;
-                height: 100%;
+                top: -1pt;
+                left: 4pt;
+                font-size: 13pt;
             }
             .github-icon {
                 width: 20px;
