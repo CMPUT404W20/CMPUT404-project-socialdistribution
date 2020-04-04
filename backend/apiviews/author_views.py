@@ -31,7 +31,7 @@ class AuthorViewSet(viewsets.ViewSet):
         author = User.objects.all()
         serializer = UserSerializer(author, many=True)
         return Response(serializer.data)
-    
+
     def get_all_authors(self, request, *args, **kwargs):
         '''
         Get all the authors (local and remote)
@@ -134,15 +134,19 @@ class AuthorViewSet(viewsets.ViewSet):
                     githubUrl=github_URL)
             elif not "github_URL" in request.data and "password" in request.data:
                 password = request.data["password"]
-                User.objects.filter(username=request.user).update(
-                    password=password)
+                # hash password
+                author.set_password(password)
+                author.save()
             elif not "github_URL" in request.data and not "password" in request.data:
                 return Response({"data": False}, status=status.HTTP_406_NOT_ACCEPTABLE)
             else:
                 password = request.data["password"]
                 github_URL = request.data["github_URL"]
+                # hash password and set githuburl
+                author.set_password(password)
+                author.save()
                 User.objects.filter(username=request.user).update(
-                    githubUrl=github_URL, password=password)
+                    githubUrl=github_URL)
             return Response({"query": "update_user", "success": True, "message": "User updated"}, status=status.HTTP_200_OK)
         else:
             return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
