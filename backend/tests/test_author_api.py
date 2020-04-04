@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from django.conf import settings
 from backend.utils import *
 from backend.models import User, Friend, Host
+
 import pytest
 import json
 
@@ -114,45 +116,45 @@ class TestAuthorAPI:
         response = client.put("/author/update/", data=post_body_1,
                               content_type='application/json', charset='UTF-8')
         assert response.status_code == 200
-        assert User.objects.filter(password="liluzi").exists()
+        author = get_object_or_404(User, username=test_user.username)
+        assert author.check_password("liluzi")
 
     def test_update_githubURL(self, client, test_user, friend_user):
-        # update githuburl only
+        # update github url only
         client.force_login(test_user)
-        assert not User.objects.filter(githubUrl="liluzi@gmail.com").exists()
+        assert not test_user.githubUrl == "liluzi@gmail.com"
         post_body_1 = json.dumps({
             "github_URL": "liluzi@gmail.com",
         })
         response = client.put("/author/update/", data=post_body_1,
                               content_type='application/json', charset='UTF-8')
         assert response.status_code == 200
-        assert User.objects.filter(githubUrl="liluzi@gmail.com").exists()
+        author = get_object_or_404(User, username=test_user.username)
+        assert author.githubUrl == "liluzi@gmail.com"
 
     def test_update_profile(self, client, test_user, friend_user):
         client.force_login(test_user)
-        assert not User.objects.filter(
-            githubUrl="liluzi@gmail.com", password="somepassword").exists()
+        assert not test_user.githubUrl == "liluzi1@gmail.com"
         post_body_1 = json.dumps({
             "github_URL": "liluzi1@gmail.com",
             "password": "somepassword"
-
         })
-
         response = client.put("/author/update/", data=post_body_1,
                               content_type='application/json', charset='UTF-8')
         assert response.status_code == 200
-        assert not User.objects.filter(
-            githubUrl="liluzi@gmail.com", password="somepassword").exists()
+        author = get_object_or_404(User, username=test_user.username)
+        assert author.githubUrl == "liluzi1@gmail.com"
+        assert author.check_password("somepassword")
 
     def test_update_profile_error(self, client, test_user, friend_user):
         post_body_1 = json.dumps({
             "somebody": "liluzi1@gmail.com",
             "something": "somepassword"
         })
-        response = client.put("/author/update/", data=post_body_1,content_type='application/json', charset='UTF-8')
+        response = client.put("/author/update/", data=post_body_1,
+                              content_type='application/json', charset='UTF-8')
         assert response.status_code == 401
-        client.force_login(test_user)                                                        
+        client.force_login(test_user)
         response = client.put("/author/update/", data=post_body_1,
                               content_type='application/json', charset='UTF-8')
         assert response.status_code == 406
-
