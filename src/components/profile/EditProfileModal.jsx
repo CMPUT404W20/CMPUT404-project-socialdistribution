@@ -53,22 +53,26 @@ class EditProfileModal extends Component {
     let urlValidator;
     let errorPwd = "";
     let errorGithub = "";
-    try {
-      urlValidator = new URL(github);
-    } catch (e) {
+    if (github !== "") {
+      try {
+        urlValidator = new URL(github);
+      } catch (e) {
       // Not valid URL
-      errorGithub = "Invalid github URL.";
+        errorGithub = "Invalid github URL.";
+      }
+      // Check github url format
+      if (urlValidator && (urlValidator.protocol !== "https:" || urlValidator.host !== "github.com")) {
+        errorGithub = "Invalid github URL.";
+      }
     }
+
     if (password1 !== password2) {
       errorPwd = "Passwords don't match.";
     }
     if (password1 !== "" && password1.length < 8) {
       errorPwd = "Password must be at least 8 characters long.";
     }
-    // Check github url format
-    if (github !== "" && urlValidator && (urlValidator.protocol !== "https:" || urlValidator.host !== "github.com")) {
-      errorGithub = "Invalid github URL.";
-    }
+
     this.setState({ errorGithub, errorPwd }, () => {
       if (errorGithub === "" && errorPwd === "") {
         this.handleUpdateProfile();
