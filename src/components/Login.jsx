@@ -178,7 +178,7 @@ class Login extends Component {
         <Row>
           <Col md={7} className="login-description">
             <div className="login-heading">
-              App Name
+              Social Distribution
             </div>
             <div className="cover-image-wrapper">
               <img className="cover-image" src={cover} width="70%" alt="cover" />

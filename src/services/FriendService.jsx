@@ -37,6 +37,15 @@ export const checkFriendStatus = (authorId1, authorId2) => {
   });
 };
 
+export const checkFollowingStatus = (authorId) => {
+  return axios.get(`/following/${authorId}`).then((response) => {
+    if (response.status === 200) {
+      return response.data.following;
+    }
+    return false;
+  });
+};
+
 export const unFriend = (friend) => {
   const payload = {
     query: "unfriend",
