@@ -62,8 +62,12 @@ class AuthorViewSet(viewsets.ViewSet):
         '''
         /author/{author_id}: Get a author's profile with fullId = {author_id}
         '''
-        fullId = protocol_removed(pk)
-        author = get_object_or_404(User, fullId=fullId)
+        if pk.isdigit():
+            author = get_object_or_404(User, id=pk)
+        else:
+            fullId = protocol_removed(pk)
+            author = get_object_or_404(User, fullId=fullId)
+            
         serializer = User_AuthorFriendSerializer(author)
         friends = Friend.objects.filter(fromUser__fullId=author.fullId)
         newSerializer = AuthorFriendSerializer(friends, many=True)

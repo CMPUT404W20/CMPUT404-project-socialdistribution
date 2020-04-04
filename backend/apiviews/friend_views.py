@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.conf import settings
+
 from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework.response import Response
@@ -35,6 +37,9 @@ class FriendViewSet(viewsets.ViewSet):
 
     def check_friends(self, request, authorId1, authorId2, *args, **kwargs):
         # author/<path:authorId1>/friends/<path:authorId2>
+        if authorId1.isdigit():
+            authorId1 = "{}author/{}".format(settings.APP_HOST, authorId1)
+    
         id1 = protocol_removed(authorId1)
         id2 = protocol_removed(authorId2)
         
