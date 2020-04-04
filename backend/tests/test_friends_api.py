@@ -275,15 +275,20 @@ class TestFriend:
 
         client.force_login(test_user)
         response = client.get("/following/{}".format(friend_user[0].get_full_user_id()))
+        assert response.status_code == 200
         assert response.data is not None
         assert response.data["following"] == True
         
         response = client.get("/following/{}".format(friend_user[1].get_full_user_id()))
+        assert response.status_code == 200
         assert response.data is not None
         assert response.data["following"] == False
 
         #User doesnt exist. Returns Following:False
         response = client.get("/following/{}".format("https://example/20"))
         print(response.data)
+        assert response.status_code == 404
         assert response.data is not None
         assert response.data["following"] == False
+
+        client.logout()

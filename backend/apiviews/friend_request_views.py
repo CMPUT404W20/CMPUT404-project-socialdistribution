@@ -132,7 +132,7 @@ class FriendRequestViewSet(viewsets.ViewSet):
         try:
             user = User.objects.get(fullId=id)
         except:
-            return Response({"query": "check following", "authors": [request.user.get_full_user_id(),authorId], "following": False})
+            return Response({"query": "check following", "authors": [request.user.get_full_user_id(),authorId], "following": False},status=status.HTTP_404_NOT_FOUND)
         else:
             following = FriendRequest.objects.filter(fromUser=request.user,toUser=user).exists()
-            return  Response({"query": "check following", "authors": [request.user.get_full_user_id(),authorId], "following": following})
+            return  Response({"query": "check following", "authors": [request.user.get_full_user_id(),authorId], "following": following},status=status.HTTP_200_OK)
