@@ -269,3 +269,26 @@ class TestFriend:
             fromUser__fullId=test_user.fullId, toUser__fullId=friend_user[0].fullId).exists()
         assert not Friend.objects.filter(
             toUser__fullId=test_user.fullId, fromUser__fullId=friend_user[0].fullId).exists()
+        
+    def test_check_following(self, client, test_user, friend_user):
+        FriendRequest.objects.create(fromUser=test_user, toUser=friend_user[0])
+
+        client.force_login(test_user)
+        response = client.get("/following/{}".format(friend_user[0].get_full_user_id()))
+        assert response.status_code == 200
+        assert response.data is not None
+        assert response.data["following"] == True
+        
+        response = client.get("/following/{}".format(friend_user[1].get_full_user_id()))
+        assert response.status_code == 200
+        assert response.data is not None
+        assert response.data["following"] == False
+
+        #User doesnt exist. Returns Following:False
+        response = client.get("/following/{}".format("https://example/20"))
+        print(response.data)
+        assert response.status_code == 404
+        assert response.data is not None
+        assert response.data["following"] == False
+
+        client.logout()

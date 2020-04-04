@@ -117,6 +117,9 @@ urlpatterns = [
         "post": "unfriend"
     }))),
 
+    path('following/<path:authorId>', FriendRequestViewSet.as_view(({
+        "get": "check_following"
+    }))),
 
     path('friendrequest', FriendRequestViewSet.as_view(({
         "get": "get_friend_request",

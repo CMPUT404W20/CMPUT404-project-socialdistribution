@@ -51,6 +51,12 @@ class FriendRequestViewSet(viewsets.ViewSet):
         requester["id"] = protocol_removed(requester["id"])
         receiver["id"] = protocol_removed(receiver["id"])
 
+        if requester["host"][-1] != "/":
+            requester["host"] += "/"
+
+        if receiver["host"][-1] != "/":
+            receiver["host"] += "/"
+
         if request_data.get("query") == "friendrequest":
             # Check if requester is a local author
             if requester["host"] != settings.APP_HOST:
@@ -125,3 +131,14 @@ class FriendRequestViewSet(viewsets.ViewSet):
 
         else:
             return Response(data={"success": False, "msg": "Forbidden"}, status=status.HTTP_403_FORBIDDEN)
+    
+    def check_following(self, request,authorId, *args, **kwargs):
+        id = protocol_removed(authorId)
+
+        try:
+            user = User.objects.get(fullId=id)
+        except:
+            return Response({"query": "check following", "authors": [request.user.get_full_user_id(),authorId], "following": False},status=status.HTTP_404_NOT_FOUND)
+        else:
+            following = FriendRequest.objects.filter(fromUser=request.user,toUser=user).exists()
+            return  Response({"query": "check following", "authors": [request.user.get_full_user_id(),authorId], "following": following},status=status.HTTP_200_OK)
