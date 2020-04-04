@@ -65,6 +65,7 @@ class EditablePost extends Component {
         title: image.name,
         visibility: "PUBLIC",
         content_type: `${fileType};base64`,
+        unlisted: true,
       };
 
       postService.createUserPosts(imageData).then((response) => {
@@ -179,7 +180,6 @@ class EditablePost extends Component {
             onHide={this.togglePreviewModalVisibility}
             postTitle={postTitle}
             postContent={postContent}
-            imageObjectUrl={postImage}
           />
           <PrivacySelectorModal
             show={privacyModalVisibility}

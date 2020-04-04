@@ -1,4 +1,7 @@
 @import "../common.scss";
+
+$info-text-color: #aaaaaa;
+
 .post-block {
     width: 100%;
     height: fit-content;
@@ -11,7 +14,7 @@
         height: 30pt;
         font-size: 12px;
         .post-user-and-visibility {
-            color: #aaaaaa;
+            color: $info-text-color;
             text-align: left;
             float: left;
             vertical-align: middle;
@@ -19,20 +22,28 @@
             top: 0.5pt;
             line-height: 30pt;
             font-size: 14px;
-            svg {
+            .unlisted-icon {
                 position: relative;
-                top: 1.5pt;
-                left: 2pt;
-                height: 100%;
+                top: -1pt;
+                left: 4pt;
+                font-size: 13pt;
             }
             .github-icon {
                 width: 20px;
                 margin-bottom: 3pt;
                 margin-right: 10pt;
             }
+            a {
+                text-decoration: none;
+                color: $info-text-color;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
         }
         .post-time {
-            color: #aaaaaa;
+            color: $info-text-color;
             float: right;
             line-height: 30pt;
         }

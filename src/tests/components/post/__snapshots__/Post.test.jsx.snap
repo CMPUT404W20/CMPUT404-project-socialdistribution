@@ -10,7 +10,22 @@ exports[`Post Block Components should render correctly 1`] = `
     <span
       className="post-user-and-visibility"
     >
-      username
+      <Link
+        to={
+          Object {
+            "pathname": "/profile/username",
+            "state": Object {
+              "user": Object {
+                "displayName": "username",
+                "host": undefined,
+                "id": "https://authorId",
+              },
+            },
+          }
+        }
+      >
+        username
+      </Link>
     </span>
     <ContextConsumer>
       <Component />
@@ -126,7 +141,22 @@ exports[`Post Block Components should render markdown content correctly 1`] = `
     <span
       className="post-user-and-visibility"
     >
-      username
+      <Link
+        to={
+          Object {
+            "pathname": "/profile/username",
+            "state": Object {
+              "user": Object {
+                "displayName": "username",
+                "host": undefined,
+                "id": "https://authorId",
+              },
+            },
+          }
+        }
+      >
+        username
+      </Link>
     </span>
     <ContextConsumer>
       <Component />

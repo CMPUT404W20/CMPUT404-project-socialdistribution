@@ -1,8 +1,6 @@
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import get_user_model
 from django.conf import settings
-from django.forms.models import model_to_dict
-from django.core.cache import cache
+from django.core.cache import caches
 from django.http import HttpResponse
 from django.db.models import Q
 
@@ -20,11 +18,13 @@ from backend.utils import *
 from backend.server import *
 from backend.apiviews.paginations import PostPagination
 from backend.helpers.github import *
-from backend.apiviews.paginations import PostPagination
 
 import json
 import uuid
 import base64
+
+github_cache = caches['github']
+post_cache = caches['post']
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -114,7 +114,7 @@ class PostViewSet(viewsets.ModelViewSet):
             kwargs['partial'] = True
             return self.update(request, *args, **kwargs)
         else:
-             return Response({"query": "UpdatePost", "success": False, "message": "No access to post"},
+            return Response({"query": "UpdatePost", "success": False, "message": "No access to post"},
                             status=status.HTTP_400_BAD_REQUEST)
 
     def get_user_visible_posts(self, request):
@@ -124,45 +124,48 @@ class PostViewSet(viewsets.ModelViewSet):
         for post in self.get_queryset():
             if user == post.author or user in post.get_visible_users():
                 visible_posts |= Post.objects.filter(postId=post.postId)
-                visible_posts &= Post.objects.filter(Q(content_type="text/plain") | Q(content_type="text/markdown"))
+                visible_posts &= Post.objects.filter(
+                    Q(content_type="text/plain") | Q(content_type="text/markdown"))
 
-        page = self.paginate_queryset(visible_posts)
-        serializer = self.get_serializer(page, many=True)
+        serializer = self.get_serializer(visible_posts, many=True)
+        # check if foreign users' posts is cached
+        foreign_posts = post_cache.get(request.user.fullId)
+        if foreign_posts is None:
+            # get foreign users' posts
+            user_friends = user.get_friends().exclude(host__url=settings.APP_HOST)
+            foreign_posts = []
 
-        # get foreign users' posts
-        user_friends = user.get_friends().exclude(host__url=settings.APP_HOST)
-        foreign_posts = []
+            for friend in user_friends:
+                if not friend.fullId.startswith("https://"):
+                    friend.fullId = "https://" + friend.fullId
 
-        for friend in user_friends:
-            if not friend.fullId.startswith("https://"):
-                friend.fullId = "https://" + friend.fullId
+                response = get_from_host(
+                    "{}/posts".format(friend.fullId), friend.host)
+                try:
+                    response_data = response.json()
+                    foreign_posts += response_data["posts"]
+                except:
+                    continue
 
-            response = get_from_host(
-                "{}/posts".format(friend.fullId), friend.host)
-            try:
-                response_data = response.json()
-                foreign_posts += response_data["posts"]
-            except:
-                continue
+            for host in Host.objects.exclude(url=settings.APP_HOST):
+                response = get_from_host(
+                    "{}author/posts".format(host.url), host)
 
-        for host in Host.objects.exclude(url=settings.APP_HOST):
-            response = get_from_host(
-                "{}author/posts".format(host.url), host)
+                if response.status_code == 200:
+                    response_data = response.json()
+                    posts = response_data["posts"]
 
-            if response.status_code == 200:
-                response_data = response.json()
-                posts = response_data["posts"]
-
-                for post in posts:
-                    if post["visibility"] == "PUBLIC" and post not in foreign_posts:
-                        foreign_posts.append(post)
+                    for post in posts:
+                        if post["visibility"] == "PUBLIC" and post not in foreign_posts:
+                            foreign_posts.append(post)
+            post_cache.set(request.user.fullId, foreign_posts, 300)
 
         post_data = json.dumps(serializer.data)
         post_data = json.loads(post_data)
         post_data += foreign_posts
 
         if request.user.githubUrl:
-            cached_github_posts = cache.get(request.user.githubUrl)
+            cached_github_posts = github_cache.get(request.user.githubUrl)
             if cached_github_posts:
                 post_data += cached_github_posts
             else:
@@ -178,7 +181,7 @@ class PostViewSet(viewsets.ModelViewSet):
                         uuid.NAMESPACE_X500, event["content"]+event["published"])
                     github_posts.append(event)
 
-                cache.set(request.user.githubUrl, github_posts, 300)
+                github_cache.set(request.user.githubUrl, github_posts, 300)
                 post_data += github_posts
 
         post_data.sort(key=lambda x: x["published"] if isinstance(
@@ -194,44 +197,47 @@ class PostViewSet(viewsets.ModelViewSet):
         user = request.user
 
         if User.objects.filter(fullId=protocol_removed(author_id)).exists():
-            requested_user = User.objects.get(fullId=protocol_removed(author_id))
+            requested_user = User.objects.get(
+                fullId=protocol_removed(author_id))
 
             if requested_user.host.url == settings.APP_HOST:
-                posts = Post.objects.filter(author__fullId=protocol_removed(author_id))
+                posts = Post.objects.filter(
+                    author__fullId=protocol_removed(author_id))
                 viewable_posts = Post.objects.none()
 
                 for post in posts:
                     visible_users = post.get_visible_users()
                     if user in visible_users:
-                        viewable_posts |= Post.objects.filter(postId=post.postId)
-                        viewable_posts &= Post.objects.filter(Q(content_type="text/plain") | Q(content_type="text/markdown"))
+                        viewable_posts |= Post.objects.filter(
+                            postId=post.postId)
+                        viewable_posts &= Post.objects.filter(
+                            Q(content_type="text/plain") | Q(content_type="text/markdown"))
 
                 page = self.paginate_queryset(
                     viewable_posts.order_by('-timestamp'))
                 serializer = self.get_serializer(page, many=True)
 
                 return self.get_paginated_response(serializer.data)
-     
+
         author_host = get_host_from_id(author_id)
         visible_posts = []
 
         if Host.objects.filter(url=author_host).exists():
             host = Host.objects.get(url=author_host)
-            response = get_from_host("{}author/posts".format(author_host), host)
+            response = get_from_host(
+                "{}author/posts".format(author_host), host)
 
             if response.status_code == 200:
                 response_data = response.json()
                 posts = response_data["posts"]
-                
+
                 for post in posts:
                     if post["author"] and (post["author"]["id"] == author_id or post["author"]["id"] == protocol_removed(author_id)) and post["visibility"] == "PUBLIC":
                         visible_posts.append(post)
-                
+
                 page = self.paginate_queryset(visible_posts)
                 return self.get_paginated_response(page)
             else:
                 return Response(data={"success": False, "msg": "Can't connect to user's host at the moment"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(data={"success": False, "msg": "No such user or user's host not connected"}, status=status.HTTP_400_BAD_REQUEST)
-                
-

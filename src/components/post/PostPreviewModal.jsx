@@ -14,11 +14,14 @@ function PostPreviewModal(props) {
 
   // Post requires a Post object for rendering
   const postObj = {
-    id: "-1", // arbitrary ID for the Post object
     title: postTitle,
     content: postContent,
     published: (new Date()).toISOString(),
-    username: "username",
+    // must supply to keep the Prop check happy
+    id: "-1", // arbitrary ID for the Post object
+    username: "",
+    source: "",
+    authorId: "",
   };
 
   return (
