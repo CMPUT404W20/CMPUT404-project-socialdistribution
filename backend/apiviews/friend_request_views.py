@@ -51,6 +51,12 @@ class FriendRequestViewSet(viewsets.ViewSet):
         requester["id"] = protocol_removed(requester["id"])
         receiver["id"] = protocol_removed(receiver["id"])
 
+        if requester["host"][-1] != "/":
+            requester["host"] += "/"
+
+        if receiver["host"][-1] != "/":
+            receiver["host"] += "/"
+
         if request_data.get("query") == "friendrequest":
             # Check if requester is a local author
             if requester["host"] != settings.APP_HOST:
