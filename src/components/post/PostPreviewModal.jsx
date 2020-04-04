@@ -46,7 +46,4 @@ PostPreviewModal.propTypes = {
   postContent: PropTypes.string.isRequired,
 };
 
-PostPreviewModal.defaultProps = {
-};
-
 export default PostPreviewModal;

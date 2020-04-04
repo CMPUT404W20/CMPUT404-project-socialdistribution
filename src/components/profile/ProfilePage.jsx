@@ -30,9 +30,17 @@ class ProfilePage extends Component {
       friendsService.checkFriendStatus(currentUserID, userID).then((response) => {
         if (response) {
           this.setState({ isFriends: true, loading: false });
-          // todo: check if there's a request from current user to that user.
         } else {
-          this.setState({ loading: false });
+          friendsService.checkFollowingStatus(userID).then((response2) => {
+            if (response2) {
+              this.setState({ isFollowing: true, loading: false });
+            } else {
+              this.setState({ loading: false });
+            }
+          }).catch((error) => {
+            // eslint-disable-next-line no-alert
+            alert(error);
+          });
         }
       }).catch((error) => {
       // eslint-disable-next-line no-alert

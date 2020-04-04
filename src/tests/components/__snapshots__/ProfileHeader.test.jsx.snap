@@ -32,10 +32,6 @@ exports[`Navigation bar Component should render correctly 1`] = `
           EDIT PROFILE
         </span>
       </button>
-      <EditProfileModal
-        onHide={[Function]}
-        show={false}
-      />
     </div>
   </div>
 </div>

@@ -52,6 +52,7 @@ $bg-path: "../../images/profile-bg.png";
     }
     #friend-status {
         @extend %button;
+        font-size: 9pt;
         &:not(:disabled) {
             &:hover,
             &:focus {

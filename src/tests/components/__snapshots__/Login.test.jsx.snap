@@ -15,7 +15,7 @@ exports[`Login Page should render correctly 1`] = `
       <div
         className="login-heading"
       >
-        App Name
+        Social Distribution
       </div>
       <div
         className="cover-image-wrapper"
@@ -110,7 +110,7 @@ exports[`Login Page should switch to sign in on secondary button click 1`] = `
       <div
         className="login-heading"
       >
-        App Name
+        Social Distribution
       </div>
       <div
         className="cover-image-wrapper"

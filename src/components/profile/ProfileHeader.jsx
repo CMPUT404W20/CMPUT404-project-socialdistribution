@@ -103,11 +103,16 @@ class ProfileHeader extends Component {
           </div>
           <div className="row2">
             {this.renderStatus()}
+            {/* Remount modal on hide
+            https://github.com/reactjs/react-modal/issues/106
+            */}
+            {modalShow && (
             <EditProfileModal
-              show={modalShow}
+              show
               onHide={this.renderModal}
               currentUser={currentUser}
             />
+            )}
           </div>
         </div>
       </div>
