@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "../../styles/profile/EditProfileModal.scss";
 import Modal from "react-bootstrap/Modal";
+import { withRouter } from "react-router-dom";
 import * as auth from "../../services/AuthenticationService";
 
 class EditProfileModal extends Component {
@@ -31,10 +32,16 @@ class EditProfileModal extends Component {
 
   handleUpdateProfile = () => {
     const { github, password1 } = this.state;
-    const { onHide } = this.props;
+    const passwordChanged = password1 !== "";
+    const { history } = this.props;
     auth.updateUserProfile(github, password1).then((response) => {
       if (response.status === 200) {
-        onHide();
+        // Need to login again after updating pwd
+        if (passwordChanged) {
+          history.push("/login");
+        }
+        // Remount profile page when github url changes
+        window.location.reload();
       }
     }).catch((err) => {
       this.setState({ errorPwd: err });
@@ -43,41 +50,39 @@ class EditProfileModal extends Component {
 
   validateForm = () => {
     const { github, password1, password2 } = this.state;
-    const urlValidator = new URL(github);
+    let urlValidator;
     let errorPwd = "";
     let errorGithub = "";
+    try {
+      urlValidator = new URL(github);
+    } catch (e) {
+      // Not valid URL
+      errorGithub = "Invalid github URL.";
+    }
     if (password1 !== password2) {
       errorPwd = "Passwords don't match.";
     }
     if (password1 !== "" && password1.length < 8) {
       errorPwd = "Password must be at least 8 characters long.";
     }
-    if (github !== "" && (urlValidator.protocol !== "https:" || urlValidator.host !== "github.com")) {
-      errorGithub = "Incorrect github URL.";
+    // Check github url format
+    if (github !== "" && urlValidator && (urlValidator.protocol !== "https:" || urlValidator.host !== "github.com")) {
+      errorGithub = "Invalid github URL.";
     }
-    this.setState({ errorGithub, errorPwd });
-    if (errorGithub === "" && errorPwd === "") {
-      this.handleUpdateProfile();
-    }
-  }
-
-  handleModalHide = () => {
-    const { onHide } = this.props;
-    this.setState({
-      password1: "",
-      password2: "",
-      errorGithub: "",
-      errorPwd: "",
-    }, () => onHide());
+    this.setState({ errorGithub, errorPwd }, () => {
+      if (errorGithub === "" && errorPwd === "") {
+        this.handleUpdateProfile();
+      }
+    });
   }
 
   render() {
-    const { show, currentUser } = this.props;
+    const { onHide, show, currentUser } = this.props;
     const {
       github, password1, password2, errorGithub, errorPwd,
     } = this.state;
     return (
-      <Modal onHide={this.handleModalHide} show={show} className="edit-profile-modal">
+      <Modal onHide={onHide} show={show} className="edit-profile-modal">
         <Modal.Header closeButton>
           <Modal.Title>Edit Profile</Modal.Title>
         </Modal.Header>
@@ -141,6 +146,7 @@ EditProfileModal.propTypes = {
     url: PropTypes.string.isRequired,
     github: PropTypes.string,
   }).isRequired,
+  history: PropTypes.objectOf(PropTypes.checkPropTypes()).isRequired,
 };
 
-export default EditProfileModal;
+export default withRouter(EditProfileModal);
