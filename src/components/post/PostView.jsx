@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Fade from "react-reveal/Fade";
 import Pulse from "react-reveal/Pulse";
+import InfiniteScroll from "react-infinite-scroller";
 import "../../styles/post/PostView.scss";
 import EditablePost from "./EditablePost";
 import Post from "./Post";
@@ -16,12 +17,11 @@ class PostView extends Component {
       posts: [],
       editingPostId: null,
       loading: true,
+      hasMoreItems: true, // used by InfiniteScroll to determine if there are more posts to load
     };
     const { postId } = this.props;
     if (postId) {
       this.loadSinglePost();
-    } else {
-      this.loadPosts();
     }
   }
 
@@ -54,12 +54,15 @@ class PostView extends Component {
     ));
   }
 
-  loadPosts() {
+  loadPosts = (page) => {
+    // alert("posts", page);
     const { userId } = this.props;
 
+    const { posts } = this.state;
+
     // userId === null means it's rendering homepage and not the profile page
-    const getPosts = userId === null ? postService.getPosts() : postService.getUserPosts(userId);
-    const posts = [];
+    const getPosts = userId === null ? postService.getPostsByPage(page) : postService.getUserPosts(userId);
+    const newPosts = posts.slice();
 
     getPosts.then((response) => {
       for (let i = 0; i < response.posts.length; i += 1) {
@@ -80,11 +83,11 @@ class PostView extends Component {
         newPost.visibleTo = post.visibleTo || [];
         newPost.unlisted = post.unlisted || false;
 
-        posts.push(newPost);
+        newPosts.push(newPost);
       }
 
       this.setState({
-        posts,
+        posts: newPosts,
         loading: false,
       });
     }).catch((error) => {
@@ -136,9 +139,6 @@ class PostView extends Component {
 
   render() {
     const { editingPostId, posts, loading } = this.state;
-    if (loading) {
-      return <div />;
-    }
 
     const renderedPosts = [];
     for (let i = 0; i < posts.length; i += 1) {
@@ -190,7 +190,14 @@ class PostView extends Component {
     return (
       <Fade bottom duration={1000} distance="100px">
         <div className="post-view" key={-1}>
-          {renderedPosts}
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={this.loadPosts}
+            hasMore={true || false}
+            loader={<div className="loader" key={0}>Loading ...</div>}
+          >
+            {renderedPosts}
+          </InfiniteScroll>
         </div>
       </Fade>
     );

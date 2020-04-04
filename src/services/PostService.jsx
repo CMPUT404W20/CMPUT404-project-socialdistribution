@@ -16,6 +16,20 @@ export const getPosts = () => {
   });
 };
 
+export const getPostsByPage = (page) => {
+  return axios.get(`/author/posts?page=${page}&size=10`).then((response) => {
+    if (response.status === 200) {
+      if (response.data && response.data.posts) {
+        return response.data;
+      }
+      return {};
+    }
+
+    throw new Error("Unable to retrieve posts");
+  });
+};
+
+
 export const getSinglePost = (postId) => {
   return axios.get(`/posts/${postId}`).then((response) => {
     if (response.status === 200) {
