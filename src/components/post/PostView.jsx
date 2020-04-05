@@ -25,19 +25,6 @@ class PostView extends Component {
     }
   }
 
-  loadSinglePost() {
-    const { postId } = this.props;
-
-    postService.getSinglePost(postId).then((post) => {
-      const parsedPosts = this.parsePosts([post]);
-      this.setState({
-        posts: parsedPosts,
-      });
-    }).catch(() => (
-      <p>Not a Post</p>
-    ));
-  }
-
   parsePosts = (posts) => {
     const parsedPosts = [];
 
@@ -63,6 +50,21 @@ class PostView extends Component {
     }
 
     return parsedPosts;
+  }
+
+  loadSinglePost() {
+    // for rendering when visitng the share link
+    const { postId } = this.props;
+
+    postService.getSinglePost(postId).then((post) => {
+      const parsedPosts = this.parsePosts([post]);
+      this.setState({
+        posts: parsedPosts,
+      });
+    }).catch(() => {
+      // eslint-disable-next-line no-alert
+      console.log("Not a post");
+    });
   }
 
   loadMorePosts = (page) => {
@@ -143,13 +145,19 @@ class PostView extends Component {
     const { editingPostId, posts, hasMoreItems } = this.state;
 
     const { postId } = this.props;
-    if (postId && posts.length > 0) {
-      return (
-        <Post
-          post={posts[0]}
-          previewMode
-        />
-      );
+    if (postId) {
+      // this is very bad code but this if statement can't be combined with the previous one or else it will load
+      // the infinite scroll while this post is still loading
+      if (posts.length > 0) {
+        return (
+          <Post
+            post={posts[0]}
+            previewMode
+          />
+        );
+      }
+
+      return <div className="spinner-wrapper"><Spinner size="sm" animation="border" variant="primary" /></div>;
     }
 
     const renderedPosts = [];
@@ -200,12 +208,13 @@ class PostView extends Component {
     }
 
     return (
-      <Fade bottom duration={1000} distance="100px">
+      <Fade bottom duration={2500} distance="50px">
         <div className="post-view" key={-1}>
           <InfiniteScroll
             pageStart={0}
             loadMore={this.loadMorePosts}
             hasMore={hasMoreItems}
+            threshold={500}
             loader={<div className="spinner-wrapper"><Spinner size="sm" animation="border" variant="primary" /></div>}
           >
             {renderedPosts}
