@@ -61,7 +61,7 @@ class PostView extends Component {
     const { posts } = this.state;
 
     // userId === null means it's rendering homepage and not the profile page
-    const getPosts = userId === null ? postService.getPostsByPage(page) : postService.getUserPosts(userId);
+    const getPosts = userId === null ? postService.getPostsByPage(page, 10) : postService.getUserPosts(userId);
     const newPosts = posts.slice();
 
     getPosts.then((response) => {
@@ -96,6 +96,50 @@ class PostView extends Component {
     });
   }
 
+
+  reloadPosts = () => {
+    // load one page with all the posts that are on the page
+    const { userId } = this.props;
+
+    const { posts } = this.state;
+
+    // userId === null means it's rendering homepage and not the profile page
+    const getPosts = userId === null ? postService.getPostsByPage(1, posts.length) : postService.getUserPosts(userId);
+    const newPosts = [];
+
+    getPosts.then((response) => {
+      for (let i = 0; i < response.posts.length; i += 1) {
+        const newPost = {};
+        const post = response.posts[i];
+
+        newPost.username = post.author.displayName;
+        newPost.authorId = post.author.id || "";
+        newPost.authorHost = post.author.host || "";
+        newPost.title = post.title;
+        newPost.content = post.content;
+        newPost.published = post.published;
+        newPost.id = post.id;
+        newPost.source = post.source;
+        newPost.comments = post.comments || [];
+        newPost.isGithubPost = post.isGithubPost || false;
+        newPost.visibility = post.visibility || "PUBLIC";
+        newPost.visibleTo = post.visibleTo || [];
+        newPost.unlisted = post.unlisted || false;
+
+        newPosts.push(newPost);
+      }
+
+      this.setState({
+        posts: newPosts,
+        loading: false,
+        editingPostId: null,
+      });
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
   handleEditToggle = (id) => {
     this.setState({
       editingPostId: id,
@@ -103,15 +147,8 @@ class PostView extends Component {
   }
 
   handlePostUpdate = (post) => {
-    postService.updateUserPosts(post).then(() => {
-      this.setState((prevState) => ({
-        // no longer editing the post
-        editingPostId: null,
-        // update post that got edited
-        posts: prevState.posts.map(
-          (p) => (p.id === post.id ? Object.assign(p, post) : p),
-        ),
-      }));
+    postService.updateUserPost(post).then(() => {
+      this.reloadPosts();
     }).catch((error) => {
       // eslint-disable-next-line no-alert
       alert(error);
@@ -119,13 +156,8 @@ class PostView extends Component {
   }
 
   handleDelete = (postID) => {
-    postService.deleteUserPosts(postID).then(() => {
-      this.setState((prevState) => ({
-        // remove delete posts from state
-        posts: prevState.posts.filter(
-          (p) => (p.id !== postID),
-        ),
-      }));
+    postService.deleteUserPost(postID).then(() => {
+      this.reloadPosts();
     }).catch((error) => {
       // eslint-disable-next-line no-alert
       alert(error);
@@ -134,7 +166,7 @@ class PostView extends Component {
 
   handleNewComment = () => {
     // refresh the posts list to render the latest data
-    this.loadPosts();
+    this.reloadPosts();
   }
 
   render() {

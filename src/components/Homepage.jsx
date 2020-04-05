@@ -20,7 +20,7 @@ class Homepage extends Component {
     // eslint-disable-next-line no-console
     postService.createUserPosts(post).then((response) => {
       if (response.success) {
-        this.child.current.loadPosts();
+        this.child.current.reloadPosts();
       }
     }).catch((error) => {
       // eslint-disable-next-line no-alert
