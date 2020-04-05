@@ -3,7 +3,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Fade from "react-reveal/Fade";
 import Pulse from "react-reveal/Pulse";
+import InfiniteScroll from "react-infinite-scroller";
 import "../../styles/post/PostView.scss";
+import Spinner from "react-bootstrap/Spinner";
 import EditablePost from "./EditablePost";
 import Post from "./Post";
 import GithubPost from "./GithubPost";
@@ -15,77 +17,94 @@ class PostView extends Component {
     this.state = {
       posts: [],
       editingPostId: null,
-      loading: true,
+      hasMoreItems: true, // used by InfiniteScroll to determine if there are more posts to load
     };
     const { postId } = this.props;
     if (postId) {
       this.loadSinglePost();
-    } else {
-      this.loadPosts();
     }
   }
 
+  parsePosts = (posts) => {
+    const parsedPosts = [];
+
+    for (let i = 0; i < posts.length; i += 1) {
+      const newPost = {};
+      const post = posts[i];
+
+      newPost.username = post.author.displayName;
+      newPost.authorId = post.author.id || "";
+      newPost.authorHost = post.author.host || "";
+      newPost.title = post.title;
+      newPost.content = post.content;
+      newPost.published = post.published;
+      newPost.id = post.id;
+      newPost.source = post.source;
+      newPost.comments = post.comments || [];
+      newPost.isGithubPost = post.isGithubPost || false;
+      newPost.visibility = post.visibility || "PUBLIC";
+      newPost.visibleTo = post.visibleTo || [];
+      newPost.unlisted = post.unlisted || false;
+
+      parsedPosts.push(newPost);
+    }
+
+    return parsedPosts;
+  }
+
   loadSinglePost() {
+    // for rendering when visitng the share link
     const { postId } = this.props;
 
     postService.getSinglePost(postId).then((post) => {
-      const singlePost = post;
-      const newPost = {};
-      const posts = [];
-
-      newPost.username = singlePost.author.displayName;
-      newPost.authorId = singlePost.author.id;
-      newPost.title = singlePost.title;
-      newPost.content = singlePost.content;
-      newPost.published = singlePost.published;
-      newPost.id = singlePost.id;
-      newPost.source = singlePost.source;
-      newPost.comments = singlePost.comments || [];
-      newPost.isGithubPost = singlePost.isGithubPost || false;
-
-      posts.push(newPost);
-
+      const parsedPosts = this.parsePosts([post]);
       this.setState({
-        posts,
-        loading: false,
+        posts: parsedPosts,
       });
-    }).catch(() => (
-      <p>Not a Post</p>
-    ));
+    }).catch(() => {
+      // eslint-disable-next-line no-alert
+      console.log("Not a post");
+    });
   }
 
-  loadPosts() {
+  loadMorePosts = (page) => {
     const { userId } = this.props;
+    const { posts } = this.state;
 
     // userId === null means it's rendering homepage and not the profile page
-    const getPosts = userId === null ? postService.getPosts() : postService.getUserPosts(userId);
-    const posts = [];
+    const getPostsPromise = userId === null ? postService.getPostsByPage(page, 10) : postService.getUserPosts(userId);
+    let newPosts = posts.slice();
 
-    getPosts.then((response) => {
-      for (let i = 0; i < response.posts.length; i += 1) {
-        const newPost = {};
-        const post = response.posts[i];
-
-        newPost.username = post.author.displayName;
-        newPost.authorId = post.author.id || "";
-        newPost.authorHost = post.author.host || "";
-        newPost.title = post.title;
-        newPost.content = post.content;
-        newPost.published = post.published;
-        newPost.id = post.id;
-        newPost.source = post.source;
-        newPost.comments = post.comments || [];
-        newPost.isGithubPost = post.isGithubPost || false;
-        newPost.visibility = post.visibility || "PUBLIC";
-        newPost.visibleTo = post.visibleTo || [];
-        newPost.unlisted = post.unlisted || false;
-
-        posts.push(newPost);
-      }
+    getPostsPromise.then((response) => {
+      const parsedPosts = this.parsePosts(response.posts);
+      newPosts = newPosts.concat(parsedPosts);
 
       this.setState({
-        posts,
-        loading: false,
+        posts: newPosts,
+        hasMoreItems: response.next !== null,
+      });
+    }).catch((error) => {
+      // eslint-disable-next-line no-alert
+      alert(error);
+    });
+  }
+
+
+  reloadPosts = () => {
+    // load one page of posts of size state.posts.length to update all visible posts
+    const { userId } = this.props;
+    const { posts } = this.state;
+
+    // userId === null means it's rendering homepage and not the profile page
+    const getPostsPromise = userId === null ? postService.getPostsByPage(1, posts.length) : postService.getUserPosts(userId);
+
+    getPostsPromise.then((response) => {
+      const parsedPosts = this.parsePosts(response.posts);
+
+      this.setState({
+        posts: parsedPosts,
+        editingPostId: null, // the editing dialog should be closed on reload
+        hasMoreItems: response.next !== null,
       });
     }).catch((error) => {
       // eslint-disable-next-line no-alert
@@ -100,15 +119,8 @@ class PostView extends Component {
   }
 
   handlePostUpdate = (post) => {
-    postService.updateUserPosts(post).then(() => {
-      this.setState((prevState) => ({
-        // no longer editing the post
-        editingPostId: null,
-        // update post that got edited
-        posts: prevState.posts.map(
-          (p) => (p.id === post.id ? Object.assign(p, post) : p),
-        ),
-      }));
+    postService.updateUserPost(post).then(() => {
+      this.reloadPosts();
     }).catch((error) => {
       // eslint-disable-next-line no-alert
       alert(error);
@@ -116,13 +128,8 @@ class PostView extends Component {
   }
 
   handleDelete = (postID) => {
-    postService.deleteUserPosts(postID).then(() => {
-      this.setState((prevState) => ({
-        // remove delete posts from state
-        posts: prevState.posts.filter(
-          (p) => (p.id !== postID),
-        ),
-      }));
+    postService.deleteUserPost(postID).then(() => {
+      this.reloadPosts();
     }).catch((error) => {
       // eslint-disable-next-line no-alert
       alert(error);
@@ -131,13 +138,26 @@ class PostView extends Component {
 
   handleNewComment = () => {
     // refresh the posts list to render the latest data
-    this.loadPosts();
+    this.reloadPosts();
   }
 
   render() {
-    const { editingPostId, posts, loading } = this.state;
-    if (loading) {
-      return <div />;
+    const { editingPostId, posts, hasMoreItems } = this.state;
+
+    const { postId } = this.props;
+    if (postId) {
+      // this is very bad code but this if statement can't be combined with the previous one or else it will load
+      // the infinite scroll while this post is still loading
+      if (posts.length > 0) {
+        return (
+          <Post
+            post={posts[0]}
+            previewMode
+          />
+        );
+      }
+
+      return <div className="spinner-wrapper"><Spinner size="sm" animation="border" variant="primary" /></div>;
     }
 
     const renderedPosts = [];
@@ -188,9 +208,17 @@ class PostView extends Component {
     }
 
     return (
-      <Fade bottom duration={1000} distance="100px">
+      <Fade bottom duration={2500} distance="50px">
         <div className="post-view" key={-1}>
-          {renderedPosts}
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={this.loadMorePosts}
+            hasMore={hasMoreItems}
+            threshold={500}
+            loader={<div className="spinner-wrapper"><Spinner size="sm" animation="border" variant="primary" /></div>}
+          >
+            {renderedPosts}
+          </InfiniteScroll>
         </div>
       </Fade>
     );
