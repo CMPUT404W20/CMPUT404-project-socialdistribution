@@ -28,24 +28,9 @@ class PostView extends Component {
     const { postId } = this.props;
 
     postService.getSinglePost(postId).then((post) => {
-      const singlePost = post;
-      const newPost = {};
-      const posts = [];
-
-      newPost.username = singlePost.author.displayName;
-      newPost.authorId = singlePost.author.id;
-      newPost.title = singlePost.title;
-      newPost.content = singlePost.content;
-      newPost.published = singlePost.published;
-      newPost.id = singlePost.id;
-      newPost.source = singlePost.source;
-      newPost.comments = singlePost.comments || [];
-      newPost.isGithubPost = singlePost.isGithubPost || false;
-
-      posts.push(newPost);
-
+      const parsedPosts = this.parsePosts([post]);
       this.setState({
-        posts,
+        posts: parsedPosts,
       });
     }).catch(() => (
       <p>Not a Post</p>
@@ -156,6 +141,16 @@ class PostView extends Component {
   render() {
     const { editingPostId, posts, hasMoreItems } = this.state;
 
+    const { postId } = this.props;
+    if (postId && posts.length > 0) {
+      return (
+        <Post
+          post={posts[0]}
+          previewMode
+        />
+      );
+    }
+
     const renderedPosts = [];
     for (let i = 0; i < posts.length; i += 1) {
       const post = posts[i];
@@ -201,17 +196,6 @@ class PostView extends Component {
           </div>,
         );
       }
-    }
-
-    const { postId } = this.props;
-    if (postId) {
-      // don't render the infinite scroll for a single post
-      // this is for when the user visits the share link
-      return (
-        <div className="post-view" key={-1}>
-          {renderedPosts}
-        </div>
-      );
     }
 
     return (
