@@ -5,6 +5,7 @@ import Fade from "react-reveal/Fade";
 import Pulse from "react-reveal/Pulse";
 import InfiniteScroll from "react-infinite-scroller";
 import "../../styles/post/PostView.scss";
+import Spinner from "react-bootstrap/Spinner";
 import EditablePost from "./EditablePost";
 import Post from "./Post";
 import GithubPost from "./GithubPost";
@@ -205,7 +206,7 @@ class PostView extends Component {
             pageStart={0}
             loadMore={this.loadMorePosts}
             hasMore={hasMoreItems}
-            loader={<div className="loader" key={0}>Loading ...</div>}
+            loader={<div className="spinner-wrapper"><Spinner size="sm" animation="border" variant="primary" /></div>}
           >
             {renderedPosts}
           </InfiniteScroll>
