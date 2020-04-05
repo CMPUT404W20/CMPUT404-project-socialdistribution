@@ -79,7 +79,7 @@ class PostView extends Component {
     return parsedPosts;
   }
 
-  loadPosts = (page) => {
+  loadMorePosts = (page) => {
     const { userId } = this.props;
     const { posts } = this.state;
 
@@ -203,12 +203,23 @@ class PostView extends Component {
       }
     }
 
+    const { postId } = this.props;
+    if (postId) {
+      // don't render the infinite scroll for a single post
+      // this is for when the user visits the share link
+      return (
+        <div className="post-view" key={-1}>
+          {renderedPosts}
+        </div>
+      );
+    }
+
     return (
       <Fade bottom duration={1000} distance="100px">
         <div className="post-view" key={-1}>
           <InfiniteScroll
             pageStart={0}
-            loadMore={this.loadPosts}
+            loadMore={this.loadMorePosts}
             hasMore={hasMoreItems}
             loader={<div className="loader" key={0}>Loading ...</div>}
           >
