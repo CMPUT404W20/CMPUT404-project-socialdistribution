@@ -43,7 +43,7 @@ class Post extends Component {
 
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
     const formattedTime = moment(post.published).fromNow();
-    const sharableLink = `${window.location.href}share/posts/${post.id}`;
+    const sharableLink = `${(new URL(window.location.href)).origin}/share/posts/${post.id}`;
     const postURL = new URL(post.source);
     const postHost = `${postURL.protocol}//${postURL.host}/`;
 
