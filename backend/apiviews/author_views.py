@@ -182,7 +182,7 @@ class AuthorViewSet(viewsets.ViewSet):
         # have to manually search their usernames for foreign authors
         all_authors = local_authors
         for author in foreign_authors:
-            if userName.lower() in author["displayName"].lower():
+            if userName.lower() in author["displayName"].lower() and not User.objects.filter(username=author["displayName"]).exists():
                 all_authors.append(author)
 
         return Response({"authors": all_authors}, status=status.HTTP_200_OK)
