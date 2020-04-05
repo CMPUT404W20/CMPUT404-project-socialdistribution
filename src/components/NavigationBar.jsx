@@ -119,8 +119,7 @@ class NavigationBar extends Component {
                 >
                   Profile
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#">Help</NavDropdown.Item>
-                {/* Will link the demo video here */}
+                <NavDropdown.Item href="https://www.youtube.com/watch?v=i-CLDPYGvcI" target="_blank">Help</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onSelect={this.handleLogOut}>Logout</NavDropdown.Item>
               </Fade>
