@@ -52,7 +52,6 @@ class CommentViewSet(viewsets.ModelViewSet):
             endpoint = "posts/{}/comments".format(postId)
 
             request.data["comment"]["id"] = str(uuid.uuid4())
-
             response = post_to_host(endpoint, host, request.data)
 
             if response.status_code == 201:
