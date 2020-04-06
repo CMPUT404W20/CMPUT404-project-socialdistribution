@@ -20,7 +20,7 @@ function PostPreviewModal(props) {
     // must supply to keep the Prop check happy
     id: "-1", // arbitrary ID for the Post object
     username: "",
-    source: "",
+    origin: "",
     authorId: "",
   };
 
