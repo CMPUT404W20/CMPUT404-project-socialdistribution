@@ -49,7 +49,7 @@ class CommentViewSet(viewsets.ModelViewSet):
             host = Host.objects.get(url=source)
             endpoint = "posts/{}/comments".format(postId)
 
-            request.data["comment"]["id"] = str(uuid.uuid1())
+            request.data["comment"]["id"] = str(uuid.uuid4())
 
             response = post_to_host(endpoint, host, request.data)
 
