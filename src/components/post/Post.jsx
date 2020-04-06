@@ -44,7 +44,7 @@ class Post extends Component {
     const dropdownIcon = <img id="post-more-icon" src={moreIcon} alt="more-icon" />;
     const formattedTime = moment(post.published).fromNow();
     const sharableLink = `${(new URL(window.location.href)).origin}/share/posts/${post.id}`;
-    const postURL = new URL(post.source);
+    const postURL = new URL(post.origin);
     const postHost = `${postURL.protocol}//${postURL.host}/`;
 
     const user = {
@@ -138,7 +138,7 @@ class Post extends Component {
     auth.getCurrentUser().then((user) => {
       this.setState({ currentUser: user.data }, () => {
         const { newComment, currentUser } = this.state;
-        CommentService.createComment(post.source, post.id, newComment, currentUser)
+        CommentService.createComment(post.origin, post.id, newComment, currentUser)
           .then((success) => {
             if (success) {
             // clear the comment field but open the comment section
@@ -239,7 +239,7 @@ class Post extends Component {
 Post.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    source: PropTypes.string.isRequired,
+    origin: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     authorId: PropTypes.string.isRequired,
     authorHost: PropTypes.string.isRequired,

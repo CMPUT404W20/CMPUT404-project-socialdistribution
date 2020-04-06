@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.core.cache import caches
 
 from rest_framework import viewsets
 from rest_framework import mixins
@@ -16,6 +17,7 @@ from backend.server import *
 import requests
 import uuid
 
+post_cache = caches['post']
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
@@ -50,10 +52,10 @@ class CommentViewSet(viewsets.ModelViewSet):
             endpoint = "posts/{}/comments".format(postId)
 
             request.data["comment"]["id"] = str(uuid.uuid4())
-
             response = post_to_host(endpoint, host, request.data)
 
             if response.status_code == 201:
+                post_cache.clear()
                 return Response({"query": "addComment", "success": True, "message": "Comment Added"}, status=status.HTTP_201_CREATED)
             else:
                 return Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
