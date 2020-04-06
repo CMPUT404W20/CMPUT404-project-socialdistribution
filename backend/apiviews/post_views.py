@@ -158,7 +158,7 @@ class PostViewSet(viewsets.ModelViewSet):
                     for post in posts:
                         if post["visibility"] == "PUBLIC" and post not in foreign_posts:
                             foreign_posts.append(post)
-            post_cache.set(request.user.fullId, foreign_posts, 300)
+            post_cache.set(request.user.fullId, foreign_posts, 600)
 
         post_data = json.dumps(serializer.data)
         post_data = json.loads(post_data)
@@ -181,7 +181,7 @@ class PostViewSet(viewsets.ModelViewSet):
                         uuid.NAMESPACE_X500, event["content"]+event["published"])
                     github_posts.append(event)
 
-                github_cache.set(request.user.githubUrl, github_posts, 300)
+                github_cache.set(request.user.githubUrl, github_posts, 900)
                 post_data += github_posts
 
         post_data.sort(key=lambda x: x["published"] if isinstance(
