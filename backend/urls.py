@@ -130,7 +130,7 @@ urlpatterns = [
     }))),
 
     # url of Comment Operations
-    path('posts/<uuid:postId>/comments/', CommentViewSet.as_view({
+    path('posts/<slug:postId>/comments/', CommentViewSet.as_view({
         "get": "get_post_comment",
         "post": "add_comment"
     })),
