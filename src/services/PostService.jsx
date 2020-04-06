@@ -16,6 +16,20 @@ export const getPosts = () => {
   });
 };
 
+export const getPostsByPage = (page, size) => {
+  return axios.get(`/author/posts?page=${page}&size=${size}`).then((response) => {
+    if (response.status === 200) {
+      if (response.data && response.data.posts) {
+        return response.data;
+      }
+      return {};
+    }
+
+    throw new Error("Unable to retrieve posts");
+  });
+};
+
+
 export const getSinglePost = (postId) => {
   return axios.get(`/posts/${postId}`).then((response) => {
     if (response.status === 200) {
@@ -58,7 +72,7 @@ export const createUserPosts = (postData) => {
   });
 };
 
-export const deleteUserPosts = (postId) => {
+export const deleteUserPost = (postId) => {
   const csrf = Cookies.get("csrftoken");
   const headers = {
     "X-CSRFToken": csrf,
@@ -73,7 +87,7 @@ export const deleteUserPosts = (postId) => {
   });
 };
 
-export const updateUserPosts = (post) => {
+export const updateUserPost = (post) => {
   const csrf = Cookies.get("csrftoken");
   const headers = {
     "X-CSRFToken": csrf,
