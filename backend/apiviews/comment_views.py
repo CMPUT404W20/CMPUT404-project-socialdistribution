@@ -87,8 +87,8 @@ class CommentViewSet(viewsets.ModelViewSet):
                                         status=status.HTTP_403_FORBIDDEN)
 
                 else:
-                    Response({"query": "addComment", "success": False, "message": "Post not Found"},
+                    return Response({"query": "addComment", "success": False, "message": "Post not Found"},
                              status=status.HTTP_404_NOT_FOUND)
             else:
-                Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
+                return Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
                          status=status.HTTP_400_BAD_REQUEST)
