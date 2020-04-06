@@ -121,7 +121,7 @@ class Post(models.Model):
             users = self.author.get_friends()
         elif self.visibility == "FOAF":
             users = self.author.get_friends()
-            users |= self.author.get_foaf()
+            users = users.union(self.author.get_foaf())
         elif self.visibility == "PRIVATE":
             visible_to = map(protocol_removed, self.visibleTo)
             users = User.objects.filter(fullId__in=visible_to)

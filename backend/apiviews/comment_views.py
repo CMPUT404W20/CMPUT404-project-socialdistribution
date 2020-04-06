@@ -49,7 +49,7 @@ class CommentViewSet(viewsets.ModelViewSet):
             host = Host.objects.get(url=source)
             endpoint = "posts/{}/comments".format(postId)
 
-            request.data["comment"]["id"] = str(uuid.uuid1())
+            request.data["comment"]["id"] = str(uuid.uuid4())
 
             response = post_to_host(endpoint, host, request.data)
 
@@ -87,8 +87,8 @@ class CommentViewSet(viewsets.ModelViewSet):
                                         status=status.HTTP_403_FORBIDDEN)
 
                 else:
-                    Response({"query": "addComment", "success": False, "message": "Post not Found"},
+                    return Response({"query": "addComment", "success": False, "message": "Post not Found"},
                              status=status.HTTP_404_NOT_FOUND)
             else:
-                Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
+                return Response({"query": "addComment", "success": False, "message": "Wrong request body format"},
                          status=status.HTTP_400_BAD_REQUEST)

@@ -61,7 +61,7 @@ class EditProfileModal extends Component {
         errorGithub = "Invalid github URL.";
       }
       // Check github url format
-      if (urlValidator && (urlValidator.protocol !== "https:" || urlValidator.host !== "github.com")) {
+      if (urlValidator && (urlValidator.protocol !== "https:" || !urlValidator.host.includes("github.com"))) {
         errorGithub = "Invalid github URL.";
       }
     }
