@@ -43,8 +43,24 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def add_comment(self, request, postId):
 
-        request_user = get_object_or_404(User, fullId=protocol_removed(
-            request.data["comment"]["author"]["id"]))
+        # request_user = get_object_or_404(User, fullId=protocol_removed(
+        #     request.data["comment"]["author"]["id"]))
+        request_user_id = protocol_removed(request.data["comment"]["author"]["id"])
+        request_user_host = request.data["comment"]["author"]["host"]
+
+        if not User.objects.filter(fullId=request_user_id).exists():
+            if Host.objects.filter(url=request_user_host).exists():
+                host_obj = Host.objects.get(url=request_user_host)
+                User.objects.create_user(username=request.data["comment"]["author"]["displayName"],
+                                        fullId=request_user_id,
+                                        host=host_obj)
+            else:
+                return Response({"query": "createFriend",
+                                         "success": False,
+                                         "message": "unauthorized host"},
+                                        status=status.HTTP_403_FORBIDDEN)
+        request_user = get_object_or_404(User, fullId=request_user_id)
+
         post = Post.objects.filter(pk=postId)
         if not post:
             source = get_host_from_id(request.data["post"])
@@ -73,8 +89,10 @@ class CommentViewSet(viewsets.ModelViewSet):
                         comment_data["content"] = comment_data["comment"]
                         request_user_id = protocol_removed(
                             request.data["comment"]["author"]["id"])
+                        author_host = protocol_removed(
+                            request.data["comment"]["author"]["host"])
+                        
                         comment_data["author"] = request_user_id
-
                         serializer = CommentSerializer(
                             data=comment_data, context={"request": request, "postId": postId})
 
