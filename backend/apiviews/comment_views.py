@@ -89,8 +89,6 @@ class CommentViewSet(viewsets.ModelViewSet):
                         comment_data["content"] = comment_data["comment"]
                         request_user_id = protocol_removed(
                             request.data["comment"]["author"]["id"])
-                        author_host = protocol_removed(
-                            request.data["comment"]["author"]["host"])
                         
                         comment_data["author"] = request_user_id
                         serializer = CommentSerializer(
